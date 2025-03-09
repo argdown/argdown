@@ -5,16 +5,9 @@ import { describe, it } from "mocha";
 import { argdown } from "../src/index";
 import { IArgdownRequest } from "@argdown/core";
 import path from "path";
-import rimraf from "rimraf";
+import * as rimraf from 'rimraf';
 const rimrafPromise = function(path: string) {
-  return new Promise<void>((resolve, reject) => {
-    rimraf(path, {}, function(err: Error | null | undefined) {
-      if (err) {
-        reject(err);
-      }
-      resolve();
-    });
-  });
+  return rimraf.rimraf(path,{});
 };
 
 describe("SvgToPdfExportPlugin", () => {

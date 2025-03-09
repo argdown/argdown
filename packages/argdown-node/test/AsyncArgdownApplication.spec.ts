@@ -7,7 +7,7 @@ import path from "path";
 const app = new AsyncArgdownApplication();
 
 describe("AsyncArgdownApplication", function() {
-  it("can run async", function() {
+  it("can run async", async function() {
     let plugin1 = {
       name: "TestPlugin2",
       runAsync: (_request: IArgdownRequest, response: IArgdownResponse) => {
@@ -30,12 +30,10 @@ describe("AsyncArgdownApplication", function() {
     };
     app.addPlugin(plugin1, "test");
     app.addPlugin(plugin2, "test");
-    return app
-      .runAsync({ process: ["test"], input: "Hallo Welt!" })
-      .then(response => {
-        expect((<any>response).asyncRunCompleted).to.be.true;
-        expect((<any>response).syncRunCompleted).to.be.true;
-      });
+    const response_2 = await app
+      .runAsync({ process: ["test"], input: "Hallo Welt!" });
+    expect((<any>response_2).asyncRunCompleted).to.be.true;
+    expect((<any>response_2).syncRunCompleted).to.be.true;
   });
   it("can load json config", async () => {
     const config = await app.loadConfig(
