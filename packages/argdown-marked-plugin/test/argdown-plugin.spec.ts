@@ -1,15 +1,16 @@
 import { expect } from "chai";
-import marked from "marked";
+import {marked, MarkedOptions} from "marked";
 import { addArgdownSupportToMarked } from "../src/argdown-marked-plugin";
+import { describe, it } from "mocha";
 
 describe("Marked Argdown Plugin", function() {
   const markedWithArgdown = addArgdownSupportToMarked(
-    marked,
+    async (src: string, options?: MarkedOptions) => await marked.parse(src, { ...(options || {}), async: true }),
     new marked.Renderer()
   );
   this.timeout(5000);
-  it("can replace code fences with argument maps", function() {
-    const result = markedWithArgdown(`
+  it("can replace code fences with argument maps", async function() {
+    const result = await markedWithArgdown(`
 # Markdown header
 
 Some *Markdown* text before the Argdown code fences.
