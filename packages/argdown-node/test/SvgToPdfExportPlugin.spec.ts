@@ -5,10 +5,7 @@ import { describe, it } from "mocha";
 import { argdown } from "../src/index";
 import { IArgdownRequest } from "@argdown/core";
 import path from "path";
-import * as rimraf from 'rimraf';
-const rimrafPromise = function(path: string) {
-  return rimraf.rimraf(path,{});
-};
+import { rimraf } from "rimraf"
 
 describe("SvgToPdfExportPlugin", () => {
   it("can generate pdf from svg (sanity test)", async () => {
@@ -39,7 +36,7 @@ describe("SvgToPdfExportPlugin", () => {
     await argdown.runAsync(request);
     const filePathToPdf = path.resolve(__dirname, "pdf/test.pdf");
     (<any>expect(filePathToPdf).to.be.a).file();
-    await rimrafPromise(path.resolve(__dirname, "pdf/"));
+    await rimraf(path.resolve(__dirname, "pdf/"));
   });
   it("can load custom font (sanity test)", async () => {
     const input = `
@@ -78,6 +75,6 @@ describe("SvgToPdfExportPlugin", () => {
     await argdown.runAsync(request);
     const filePathToPdf = path.resolve(__dirname, "pdf/test-font.pdf");
     (<any>expect(filePathToPdf).to.be.a).file();
-    await rimrafPromise(path.resolve(__dirname, "pdf/"));
+    await rimraf(path.resolve(__dirname, "pdf/"));
   });
 });
