@@ -60,7 +60,7 @@
     "lodash.isfunction": "^3.0.9",
     "lodash.isobject": "^3.0.2",
     "lodash.isstring": "^4.0.1",
-    "mkdirp": "^3.0.1",
+    "mkdirp": "^2.1.6",
     "pdfkit": "^0.16.0",
     "svg-to-pdfkit": "^0.1.8"
   },
