@@ -570,7 +570,7 @@ export type DefaultSettings<T> = { [K in keyof T]: DefaultSettingValue<T[K]> };
  * Plugins should use these methods together with mergeDefaults.
  */
 export const ensure = {
-  object: <T>(defaultValue: T) => {
+  object: <T extends Record<string, any>>(defaultValue: T) => {
     return {
       merge: (incoming: any) => {
         if (!incoming || !isObject(incoming)) {
