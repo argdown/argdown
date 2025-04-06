@@ -1,7 +1,7 @@
-const vfile = require("to-vfile");
-const argdown = require("@argdown/remark-plugin");
+import vfile from "to-vfile";
+import argdown from "@argdown/remark-plugin";
 
-module.exports = ({ markdownAST, markdownNode }, options) => {
+export default ({ markdownAST, markdownNode }, options) => {
   const file = vfile(markdownNode.fileAbsolutePath);
 
   return argdown(options)(markdownAST, file);
