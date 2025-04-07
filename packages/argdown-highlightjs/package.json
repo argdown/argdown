@@ -39,7 +39,7 @@
     "@parcel/transformer-typescript-tsc": "^2.14.4",
     "@parcel/validator-typescript": "^2.14.4",
     "highlight.js": "11.11.1",
-    "parcel": "^2.0.0-nightly.824",
+    "parcel": "^2.14.4",
     "postcss": "8.5.3",
     "rimraf": "^6.0.1",
     "ts-node": "10.9.2",
