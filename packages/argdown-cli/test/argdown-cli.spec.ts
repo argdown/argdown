@@ -3,19 +3,9 @@ chai.use(require("chai-fs"));
 import { expect } from "chai";
 import { describe, it } from "mocha";
 import * as path from "path";
-import rimraf from "rimraf";
+import { rimraf } from "rimraf";
 const fs = require("fs");
 
-const rimrafPromise = function(path: string) {
-  return new Promise<void>((resolve, reject) => {
-    rimraf(path, {}, function(err) {
-      if (err) {
-        reject(err);
-      }
-      resolve();
-    });
-  });
-};
 interface IExecCallback {
   (error: Error | null, stdout: any, stderr: any): void;
 }
@@ -165,7 +155,7 @@ describe("argdown-cli", function() {
     );
     const cmd =
       "node " + filePathToCli + " run test --config " + filePathToConfig;
-    return rimrafPromise(svgFolder)
+    return rimraf(svgFolder)
       .then(() => {
         return execPromise(cmd, (error, _stdout, stderr) => {
           expect(error).to.equal(null);
@@ -174,7 +164,7 @@ describe("argdown-cli", function() {
         });
       })
       .then(() => {
-        return rimrafPromise(svgFolder);
+        return rimraf(svgFolder);
       });
   });
   it("can load plugin from config and run process defined in config.processes", () => {
@@ -199,7 +189,7 @@ describe("argdown-cli", function() {
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
     const cmd =
       "node " + filePathToCli + " html " + filePath + " " + htmlFolder;
-    return rimrafPromise(htmlFolder)
+    return rimraf(htmlFolder)
       .then(() => {
         return execPromise(cmd, function(error, _stdout, stderr) {
           expect(error).to.equal(null);
@@ -218,7 +208,7 @@ describe("argdown-cli", function() {
         });
       })
       .then(() => {
-        return rimrafPromise(htmlFolder);
+        return rimraf(htmlFolder);
       });
   });
   it("can create web-component file", () => {
@@ -231,7 +221,7 @@ describe("argdown-cli", function() {
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
     const cmd =
       "node " + filePathToCli + " web-component " + filePath + " " + htmlFolder;
-    return rimrafPromise(htmlFolder)
+    return rimraf(htmlFolder)
       .then(() => {
         return execPromise(cmd, function(error, _stdout, stderr) {
           expect(error).to.equal(null);
@@ -240,7 +230,7 @@ describe("argdown-cli", function() {
         });
       })
       .then(() => {
-        return rimrafPromise(htmlFolder);
+        return rimraf(htmlFolder);
       });
   });
   it("can create dot file from map", () => {
@@ -250,7 +240,7 @@ describe("argdown-cli", function() {
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
     const cmd =
       "node " + filePathToCli + " map -f dot " + filePath + " " + dotFolder;
-    return rimrafPromise(dotFolder)
+    return rimraf(dotFolder)
       .then(() => {
         return execPromise(cmd, (error, _stdout, stderr) => {
           expect(error).to.equal(null);
@@ -262,7 +252,7 @@ describe("argdown-cli", function() {
         });
       })
       .then(() => {
-        return rimrafPromise(dotFolder);
+        return rimraf(dotFolder);
       });
   });
   it("can create graphml file from map", () => {
@@ -272,7 +262,7 @@ describe("argdown-cli", function() {
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
     const cmd =
       "node " + filePathToCli + " map -f graphml " + filePath + " " + dotFolder;
-    return rimrafPromise(dotFolder)
+    return rimraf(dotFolder)
       .then(() => {
         return execPromise(cmd, (error, _stdout, stderr) => {
           expect(error).to.equal(null);
@@ -284,7 +274,7 @@ describe("argdown-cli", function() {
         });
       })
       .then(() => {
-        return rimrafPromise(dotFolder);
+        return rimraf(dotFolder);
       });
   });
   it("can create svg file from map", () => {
@@ -294,7 +284,7 @@ describe("argdown-cli", function() {
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
     const cmd =
       "node " + filePathToCli + " map -f svg " + filePath + " " + svgFolder;
-    return rimrafPromise(svgFolder)
+    return rimraf(svgFolder)
       .then(() => {
         return execPromise(cmd, (error, _stdout, stderr) => {
           expect(error).to.equal(null);
@@ -303,7 +293,7 @@ describe("argdown-cli", function() {
         });
       })
       .then(() => {
-        return rimrafPromise(svgFolder);
+        return rimraf(svgFolder);
       });
   });
   it("can create pdf file from map", () => {
@@ -312,7 +302,7 @@ describe("argdown-cli", function() {
     let filePathToPdf = path.resolve(__dirname, "./pdf/test.pdf");
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
     const cmd = "node " + filePathToCli + " map " + filePath + " " + pdfFolder;
-    return rimrafPromise(pdfFolder)
+    return rimraf(pdfFolder)
       .then(() => {
         return execPromise(cmd, (error, _stdout, stderr) => {
           expect(error).to.equal(null);
@@ -321,7 +311,7 @@ describe("argdown-cli", function() {
         });
       })
       .then(() => {
-        return rimrafPromise(pdfFolder);
+        return rimraf(pdfFolder);
       });
   });
   it("can create json file", () => {
@@ -331,7 +321,7 @@ describe("argdown-cli", function() {
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
     const cmd =
       "node " + filePathToCli + " json " + filePath + " " + jsonFolder;
-    return rimrafPromise(jsonFolder)
+    return rimraf(jsonFolder)
       .then(() => {
         return execPromise(cmd, (error, _stdout, stderr) => {
           expect(error).to.equal(null);
@@ -340,7 +330,7 @@ describe("argdown-cli", function() {
         });
       })
       .then(() => {
-        return rimrafPromise(jsonFolder);
+        return rimraf(jsonFolder);
       });
   });
   it("can create png file from map", () => {
@@ -350,7 +340,7 @@ describe("argdown-cli", function() {
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
     const cmd =
       "node " + filePathToCli + " map -f png " + filePath + " " + imagesFolder;
-    return rimrafPromise(imagesFolder)
+    return rimraf(imagesFolder)
       .then(() => {
         return execPromise(cmd, (error, _stdout, stderr) => {
           expect(error).to.equal(null);
@@ -359,7 +349,7 @@ describe("argdown-cli", function() {
         });
       })
       .then(() => {
-        return rimrafPromise(imagesFolder);
+        return rimraf(imagesFolder);
       });
   });
   it("can create jpg file from map", () => {
@@ -369,7 +359,7 @@ describe("argdown-cli", function() {
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
     const cmd =
       "node " + filePathToCli + " map -f jpg " + filePath + " " + imagesFolder;
-    return rimrafPromise(imagesFolder)
+    return rimraf(imagesFolder)
       .then(() => {
         return execPromise(cmd, (error, _stdout, stderr) => {
           expect(error).to.equal(null);
@@ -378,7 +368,7 @@ describe("argdown-cli", function() {
         });
       })
       .then(() => {
-        return rimrafPromise(imagesFolder);
+        return rimraf(imagesFolder);
       });
   });
   it("can create webp file from map", () => {
@@ -388,7 +378,7 @@ describe("argdown-cli", function() {
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
     const cmd =
       "node " + filePathToCli + " map -f webp " + filePath + " " + imagesFolder;
-    return rimrafPromise(imagesFolder)
+    return rimraf(imagesFolder)
       .then(() => {
         return execPromise(cmd, (error, _stdout, stderr) => {
           expect(error).to.equal(null);
@@ -397,7 +387,7 @@ describe("argdown-cli", function() {
         });
       })
       .then(() => {
-        return rimrafPromise(imagesFolder);
+        return rimraf(imagesFolder);
       });
   });
   it("can create html file from markdown", () => {
@@ -407,7 +397,7 @@ describe("argdown-cli", function() {
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
     const cmd =
       "node " + filePathToCli + " markdown " + filePath + " " + htmlFolder;
-    return rimrafPromise(htmlFolder)
+    return rimraf(htmlFolder)
       .then(() => {
         return execPromise(cmd, (error, _stdout, stderr) => {
           expect(error).to.equal(null);
@@ -416,7 +406,7 @@ describe("argdown-cli", function() {
         });
       })
       .then(() => {
-        return rimrafPromise(filePathToHtml);
+        return rimraf(filePathToHtml);
       });
   });
   it("can include files", () => {
@@ -453,7 +443,7 @@ describe("argdown-cli", function() {
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
     const cmd =
       "node " + filePathToCli + ' json "' + globPath + '" ' + jsonFolder;
-    return rimrafPromise(jsonFolder)
+    return rimraf(jsonFolder)
       .then(() => {
         return execPromise(cmd, (error, _stdout, stderr) => {
           expect(error).to.equal(null);
@@ -464,7 +454,7 @@ describe("argdown-cli", function() {
         });
       })
       .then(() => {
-        return rimrafPromise(jsonFolder);
+        return rimraf(jsonFolder);
       });
   });
   it("can throw parser error", async () => {
