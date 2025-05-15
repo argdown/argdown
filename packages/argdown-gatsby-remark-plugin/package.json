@@ -6,6 +6,9 @@
   "files": [
     "index.js"
   ],
+  "engines": {
+    "node": ">= 22.11.0"
+  },
   "scripts": {},
   "keywords": [
     "gatsby-remark-plugin",

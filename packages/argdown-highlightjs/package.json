@@ -24,6 +24,9 @@
     "Argdown",
     "highlightjs"
   ],
+  "engines": {
+    "node": ">= 22.11.0"
+  },
   "author": "Christian Voigt",
   "license": "MIT",
   "devDependencies": {
