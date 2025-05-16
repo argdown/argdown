@@ -13,13 +13,14 @@ import {
 } from "@argdown/core";
 import { isAsyncPlugin } from "./IAsyncArgdownPlugin";
 import path from "path";
-import chokidar from "chokidar";
-import glob from "glob";
+import * as chokidar from "chokidar";
+import * as glob from "glob";
 import { promisify } from "util";
 import importFresh from "import-fresh";
 import { readFile } from "fs";
 
 const readFileAsync = promisify(readFile);
+const globAsync = promisify(glob.glob) as (pattern: string, options: any) => Promise<string[]>;
 
 export class AsyncArgdownApplication extends ArgdownApplication {
   async runAsync(
@@ -216,7 +217,7 @@ export class AsyncArgdownApplication extends ArgdownApplication {
 
     const $ = this;
     let absoluteInputGlob = path.resolve(req.rootPath, inputGlob);
-    const loadOptions: chokidar.WatchOptions = {};
+    const loadOptions: chokidar.ChokidarOptions = {};
     if (ignoreFiles) {
       // error in WatchOptions type declaration: option is called "ignore", not "ignored":
       (<any>loadOptions).ignore = ignoreFiles;
@@ -241,18 +242,7 @@ export class AsyncArgdownApplication extends ArgdownApplication {
           this.logger.log("verbose", `File ${path} has been removed.`);
         });
     } else {
-      let files: string[] = await new Promise<string[]>((resolve, reject) => {
-        glob(
-          absoluteInputGlob,
-          loadOptions,
-          (er: Error | null, files: string[]) => {
-            if (er) {
-              reject(er);
-            }
-            resolve(files);
-          }
-        );
-      });
+      let files: string[] = await globAsync(absoluteInputGlob, loadOptions);
       const promises = [];
       if (files.length == 0) {
         throw new ArgdownPluginError(
