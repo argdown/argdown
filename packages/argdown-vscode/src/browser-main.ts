@@ -99,9 +99,9 @@ export function activate(context: ExtensionContext) {
   client = createWorkerLanguageClient(context, clientOptions);
   logger.log("language server started");
 
-  const disposable = client.start();
-  context.subscriptions.push(disposable);
-
+  context.subscriptions.push(client);
+  client.start();
+  
   return {
     extendMarkdownIt(md: any) {
       const webComponentConfig = vscode.workspace.getConfiguration(

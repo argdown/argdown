@@ -30,10 +30,11 @@ export class GenerateDataUrlsPlugin implements IAsyncArgdownPlugin {
         const buffer = await imageUtils.getImage(image.path, baseDir);
         let mimeType = "";
         if (buffer) {
-          if (isSvg(buffer)) {
+          const bufferString = buffer.toString("utf-8"); 
+          if (isSvg(bufferString)) {
             mimeType = "svg+xml";
           } else {
-            const imageTypeResult = imageType(buffer);
+            const imageTypeResult = await imageType(buffer);
             if (imageTypeResult) {
               mimeType = imageTypeResult.mime;
             } else {

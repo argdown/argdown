@@ -167,7 +167,7 @@ const defaultSettings: DefaultSettings<IDotSettings> = {
       charactersInLine: 40
     }),
     images: ensure.object({
-      position: "top",
+      position: "top" as "top" | "bottom",
       padding: 0
     })
   }),
@@ -190,7 +190,7 @@ const defaultSettings: DefaultSettings<IDotSettings> = {
       charactersInLine: 40
     }),
     images: ensure.object({
-      position: "top",
+      position: "top" as "top" | "bottom",
       padding: 0
     })
   }),
