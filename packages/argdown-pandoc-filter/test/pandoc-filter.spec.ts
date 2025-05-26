@@ -1,6 +1,6 @@
 const util = require("util");
 const exec = util.promisify(require("child_process").exec);
-import rimraf from "rimraf";
+import { rimraf } from "rimraf";
 import path from "path";
 import { use, expect } from "chai";
 import chaiFs from "chai-fs";
@@ -19,16 +19,6 @@ async function execPandocOnFile(
   );
   return String(stdout);
 }
-const rimrafPromise = function(path: string) {
-  return new Promise<void>((resolve, reject) => {
-    rimraf(path, {}, function(err) {
-      if (err) {
-        reject(err);
-      }
-      resolve();
-    });
-  });
-};
 
 describe("Argdown Pandoc Filter", function() {
   this.timeout(100000);
@@ -43,29 +33,29 @@ describe("Argdown Pandoc Filter", function() {
   it("generates html with jpg image", async () => {
     let imagesFolder = path.resolve(__dirname, "./images/");
     let filePathToImage = path.resolve(imagesFolder, "map-1.jpg");
-    await rimrafPromise(imagesFolder);
+    await rimraf(imagesFolder);
     const output = await execPandocOnFile(`example-file-jpg.md`, "html");
     (expect(output) as any).to.matchSnapshot(this);
     (<any>expect(filePathToImage).to.be.a).file();
-    await rimrafPromise(imagesFolder);
+    await rimraf(imagesFolder);
   });
   it("generates html with png image", async () => {
     let imagesFolder = path.resolve(__dirname, "./images/");
     let filePathToImage = path.resolve(imagesFolder, "map-1.png");
-    await rimrafPromise(imagesFolder);
+    await rimraf(imagesFolder);
     const output = await execPandocOnFile(`example-file-png.md`, "html");
     (expect(output) as any).to.matchSnapshot(this);
     (<any>expect(filePathToImage).to.be.a).file();
-    await rimrafPromise(imagesFolder);
+    await rimraf(imagesFolder);
   });
   it("generates html with webp image", async () => {
     let imagesFolder = path.resolve(__dirname, "./images/");
     let filePathToImage = path.resolve(imagesFolder, "map-1.webp");
-    await rimrafPromise(imagesFolder);
+    await rimraf(imagesFolder);
     const output = await execPandocOnFile(`example-file-webp.md`, "html");
     (expect(output) as any).to.matchSnapshot(this);
     (<any>expect(filePathToImage).to.be.a).file();
-    await rimrafPromise(imagesFolder);
+    await rimraf(imagesFolder);
   });
   it("generates pdf with inline image", async () => {
     const output = await execPandocOnFile(`example-inline-jpg.md`, "pdf");
