@@ -388,7 +388,8 @@ export class DotExportPlugin implements IArgdownPlugin {
       const shape = settings.argument!.shape;
       const widthProp =
         label == `""` ? `, width="${settings.argument!.minWidth}"` : "";
-      dot += `  ${node.id} [label=${label}, margin="${
+      const tooltip = node.labelText || node.labelTitle || "";
+      dot += `  ${node.id} [label=${label}, tooltip="${escapeQuotesForDot(tooltip)}", margin="${
         settings.argument!.margin
       }", shape="${shape}", style="${
         settings.argument!.style
@@ -399,8 +400,8 @@ export class DotExportPlugin implements IArgdownPlugin {
       const shape = settings.statement!.shape;
       const widthProp =
         label == `""` ? `, width="${settings.statement!.minWidth}"` : "";
-
-      dot += `  ${node.id} [label=${label}, shape="${shape}",  margin="${
+      const tooltip = node.labelText || node.labelTitle || "";
+      dot += `  ${node.id} [label=${label}, tooltip="${escapeQuotesForDot(tooltip)}", shape="${shape}",  margin="${
         settings.statement!.margin
       }", style="${
         settings.statement!.style
