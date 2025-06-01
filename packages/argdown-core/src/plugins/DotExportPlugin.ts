@@ -271,7 +271,8 @@ export class DotExportPlugin implements IArgdownPlugin {
     const edges = response.map!.edges;
     for (let edge of edges) {
       let attributes = `type="${edge.relationType}", `;
-      attributes += `color="${edge.color}"`;
+      attributes += `color="${edge.color}", `;
+      attributes += `tooltip="${edge.relationType}"`;
       switch (edge.relationType) {
         case RelationType.CONTRARY:
           attributes += `, dir="both"`;
