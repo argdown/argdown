@@ -3,7 +3,7 @@
 // transform-loader webpack 5: https://github.com/blikblum/pdfkit-webpack-example/issues/9
 const TerserPlugin = require("terser-webpack-plugin");
 // const { dirname } = require("path");
-// const { fileURLToPath } from "url";
+// const { fileURLToPath } = require("url");
 
 // const __dirname = dirname(fileURLToPath(import.meta.url));
 //@ts-check
@@ -37,13 +37,11 @@ const webExtensionConfig = {
     mainFields: ["browser", "module", "main"],
     alias: {
       "unicode-properties": "unicode-properties/unicode-properties.cjs.js",
-      pdfkit: "pdfkit/js/pdfkit.standalone.js"
+      pdfkit: "pdfkit/js/pdfkit.standalone.js",
+      "process/browser": "process/browser.js"
     },
     // support reading TypeScript and JavaScript files, 📖 -> https://github.com/TypeStrong/ts-loader
-    extensions: [".ts", ".js"],
-    // alias: {
-    //     pdfkit: path.resolve(__dirname, 'node_modules/pdfkit/js/pdfkit.standalone.js')
-    // }
+    extensions: [".ts", ".js", ".mjs"],
     fallback: {
       // Webpack 5 no longer polyfills Node.js core modules automatically.
       // see https://webpack.js.org/configuration/resolve/#resolvefallback
@@ -53,7 +51,8 @@ const webExtensionConfig = {
       stream: false,
       crypto: require.resolve("crypto-browserify"),
       path: require.resolve("path-browserify"),
-      process: require.resolve("process")
+      process: require.resolve("process/browser"),
+      vm: require.resolve("vm-browserify")
     }
   },
   module: {
@@ -139,7 +138,11 @@ const webExtensionConfig = {
   },
   plugins: [
     new webpack.ProvidePlugin({
-      process: "process/browser" // provide a shim for the global `process` variable
+      process: "process/browser"
+    }),
+    new webpack.DefinePlugin({
+      "process.env.NODE_DEBUG": false,
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development")
     })
   ],
   performance: {
