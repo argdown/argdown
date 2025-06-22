@@ -1,101 +1,92 @@
 <template>
-  <div ref="output" class="dagre-d3-output map-output output">
+  <div class="dagre-d3-output map-output output">
     <div class="content">
-      <div class="rendered">
-        <svg ref="svg" width="100%" height="100%">
-          <g class="dagre" style="transform: translate(0, 10px)"></g>
-        </svg>
-      </div>
+      <div ref="container" class="rendered"></div>
     </div>
   </div>
 </template>
 
 <script>
-/*eslint-disable */
-import { DagreMap } from "@argdown/map-views";
+import { useArgdownStore } from "../store.js";
 import { EventBus } from "../event-bus.js";
 import { saveAsSvg, saveAsPng } from "../map-export.js";
+import { DagreMap } from "@argdown/map-views";
 
 var saveDagreAsPng = null;
 var saveDagreAsSvg = null;
 
 export default {
   name: "dagre-d3-output",
-  created: function() {
-    this.$_dagreMap = null;
-  },
   computed: {
-    map: function() {
-      // console.log('map called!')
-      this.updateSVG();
-      this.$store.getters.argdownData;
-      this.$store.getters.config;
-      return this.$store.getters.map;
+    store() {
+      return useArgdownStore();
     },
-    settings: function() {
-      // console.log('rankDir called!')
-      this.updateSVG();
-      return this.$store.getters.config.dagre;
-    }
-  },
-  watch: {
-    map: function() {
-      // console.log('map watcher called!')
+    map() {
+      this.updateMap();
+      this.store.configData;
+      this.store.configData;
+      return this.store.map;
     },
-    settings: function() {}
-  },
-  mounted: function() {
-    var el = this.$refs.svg;
-    var $store = this.$store;
-    this.$_dagreMap = new DagreMap(el);
-    this.updateSVG();
-    saveDagreAsPng = function() {
-      var scale = $store.state.pngScale;
-      saveAsPng(el, scale, true);
-    };
-    saveDagreAsSvg = function() {
-      saveAsSvg(el, true);
-    };
-    EventBus.$on("save-map-as-svg", saveDagreAsSvg);
-    EventBus.$on("save-map-as-png", saveDagreAsPng);
-  },
-  beforeDestroy: function() {
-    EventBus.$off("save-map-as-svg", saveDagreAsSvg);
-    EventBus.$off("save-map-as-png", saveDagreAsPng);
+    settings() {
+      return this.store.configData.dagre;
+    },
   },
   methods: {
-    updateSVG: function() {
-      if (!this.$_dagreMap) {
+    updateMap() {
+      if (!this.$_dagreD3Map) {
         return;
       }
-      const exceptions = this.$store.getters.argdownData.exceptions;
+      const exceptions = this.store.argdownData.exceptions;
       if (exceptions && exceptions.length > 0) {
         return;
       }
       const props = {
-        settings: this.$store.getters.config.dagre,
-        map: this.$store.getters.map
+        settings: this.store.configData.dagre,
+        map: this.store.map,
       };
-      this.$_dagreMap.render(props);
-    }
-  }
+      this.$_dagreD3Map.render(props).catch((e) => console.log(e));
+    },
+  },
+  watch: {
+    map() {
+      // console.log('map watcher called!')
+    },
+  },
+
+  mounted() {
+    const svgContainer = this.$refs.container;
+    this.$_dagreD3Map = new DagreMap(svgContainer);
+    this.updateMap();
+    var el = this.$refs.container;
+    var store = this.store;
+    saveDagreAsPng = function () {
+      var scale = store.pngScale;
+      saveAsPng(el.getElementsByTagName("svg")[0], scale, false);
+    };
+    saveDagreAsSvg = function () {
+      saveAsSvg(el.getElementsByTagName("svg")[0], false);
+    };
+    EventBus.$on("save-map-as-svg", saveDagreAsSvg);
+    EventBus.$on("save-map-as-png", saveDagreAsPng);
+  },
+  beforeUnmount() {
+    EventBus.$off("save-map-as-svg", saveDagreAsSvg);
+    EventBus.$off("save-map-as-png", saveDagreAsPng);
+  },
 };
 </script>
 
 <style lang="scss" scoped>
-.dagre-d3-output {
-  @import "../../node_modules/@argdown/map-views/dist/argdown-dagre.css";
-  .content {
+.content {
+  flex: 1;
+  overflow: auto;
+  .rendered {
     flex: 1;
-    overflow: auto;
-    .rendered {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      /* Firefox bug fix styles */
-      min-width: 0;
-      min-height: 0;
-    }
+    display: flex;
+    flex-direction: column;
+    /* Firefox bug fix styles */
+    min-width: 0;
+    min-height: 0;
   }
 }
 </style>

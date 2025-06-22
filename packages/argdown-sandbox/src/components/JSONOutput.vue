@@ -1,21 +1,28 @@
 <template>
-  <div class="json-output output">
-    <div class="content">
-      <div class="json-source">
-        <pre>{{$store.getters.json}}</pre>
-      </div>
-    </div>
+  <div class="json-output">
+    <pre>{{ store.json }}</pre>
   </div>
 </template>
 
 <script>
+import { useArgdownStore } from "../store.js";
+
 export default {
-  name: "json-output"
+  name: "json-output",
+  computed: {
+    store() {
+      return useArgdownStore();
+    },
+  },
 };
 </script>
 
 <style scoped>
-.output .content {
-  padding: 1em;
+.json-output {
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 0.2em;
+  margin: 1rem;
+  overflow: auto;
 }
 </style>

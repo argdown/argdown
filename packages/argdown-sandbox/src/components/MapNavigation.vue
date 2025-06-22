@@ -22,17 +22,17 @@
         <a class="save-as-svg" v-on:click.stop.prevent="saveAsSvg" href>svg</a>
         <a
           class="save as png"
-          v-on:click.stop.prevent="$store.commit('openSaveAsPngDialog')"
+          v-on:click.stop.prevent="store.openSaveAsPngDialog()"
           href
           >png</a
         >
       </li>
     </ul>
-    <div class="save-as-png-dialog" v-if="$store.state.showSaveAsPngDialog">
+    <div class="save-as-png-dialog" v-if="store.showSaveAsPngDialog">
       <h3>PNG Export</h3>
       <label for="save-as-png-scale">Scale</label>
       <input
-        v-model="$store.state.pngScale"
+        v-model="store.pngScale"
         type="number"
         min="0"
         max="100"
@@ -44,7 +44,7 @@
         </button>
         <button
           type="button"
-          v-on:click.prevent.stop="$store.commit('closeSaveAsPngDialog')"
+          v-on:click.prevent.stop="store.closeSaveAsPngDialog()"
         >
           Cancel
         </button>
@@ -52,6 +52,29 @@
     </div>
   </nav>
 </template>
+
+<script>
+import { useArgdownStore } from "../store.js";
+import { EventBus } from "../event-bus.js";
+
+export default {
+  computed: {
+    store() {
+      return useArgdownStore();
+    },
+  },
+  methods: {
+    saveAsSvg() {
+      EventBus.$emit("save-map-as-svg");
+    },
+    saveAsPng() {
+      EventBus.$emit("save-map-as-png");
+      this.store.closeSaveAsPngDialog();
+    },
+  },
+};
+</script>
+
 <style lang="scss" scoped>
 .save-map {
   border-left: 1px solid #eee;
@@ -94,19 +117,3 @@
   }
 }
 </style>
-
-<script>
-import { EventBus } from "../event-bus.js";
-
-export default {
-  methods: {
-    saveAsSvg: function () {
-      EventBus.$emit("save-map-as-svg");
-    },
-    saveAsPng: function () {
-      EventBus.$emit("save-map-as-png");
-      this.$store.commit("closeSaveAsPngDialog");
-    },
-  },
-};
-</script>

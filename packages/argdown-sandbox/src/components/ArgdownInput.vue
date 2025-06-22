@@ -1,112 +1,100 @@
 <template>
-  <div class="argdown-input" v-bind:class="{'use-argvu': useArgVu}">
-    <codemirror ref="codemirror" :options="editorOption" :value="value" @changes="updateValue"></codemirror>
+  <div class="argdown-input" v-bind:class="{ 'use-argvu': useArgVu }">
+    <textarea
+      ref="textarea"
+      v-model="localValue"
+      @input="updateValue"
+      class="argdown-textarea"
+    ></textarea>
   </div>
 </template>
 
 <script>
 import * as _ from "lodash";
-import { CodeMirror, codemirror } from "vue-codemirror";
-import * as argdownMode from "@argdown/codemirror-mode";
-
-import "codemirror/addon/mode/simple.js";
-import "codemirror/addon/lint/lint.js";
-
-CodeMirror.defineSimpleMode("argdown", argdownMode);
+import { useArgdownStore } from "../store.js";
 
 export default {
   name: "argdown-input",
   data() {
     return {
+      localValue: this.value,
       editorOption: {
         tabSize: 4,
         mode: "argdown",
         foldGutter: true,
+        // gutters: ["CodeMirror-linenumbers"],
         styleActiveLine: true,
         lineNumbers: true,
         lint: true,
         gutters: ["CodeMirror-lint-markers"],
         line: true,
         extraKeys: {
-          Tab: function(cm) {
+          Tab: function (cm) {
             let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
             cm.replaceSelection(spaces);
-          }
-        }
-      }
+          },
+        },
+      },
     };
   },
   props: ["value"],
-  created: function() {
-    const store = this.$store;
-    CodeMirror.registerHelper("lint", "argdown", function() {
-      const found = [];
-      const errors = store.getters.parserErrors;
-      if (!errors) {
-        return found;
-      }
-      for (let i = 0; i < errors.length; i++) {
-        let error = errors[i];
-        let startLine = error.token.startLine - 1;
-        let endLine = error.token.endLine - 1;
-        let startCol = error.token.startColumn - 1;
-        let endCol = error.token.endColumn;
-        found.push({
-          from: CodeMirror.Pos(startLine, startCol),
-          to: CodeMirror.Pos(endLine, endCol),
-          message: error.message,
-          severity: "error"
-        });
-      }
-      return found;
+  created: function () {
+    // Initialize the textarea with syntax highlighting
+    this.$nextTick(() => {
+      this.setupTextarea();
     });
   },
   methods: {
-    updateValue: function(codemirror) {
-      this.debouncedChangeEmission(codemirror.doc.getValue(), this);
+    setupTextarea() {
+      const textarea = this.$refs.textarea;
+      if (textarea) {
+        textarea.style.fontFamily = this.useArgVu ? "monospace" : "monospace";
+        textarea.style.fontSize = "1.25em";
+        textarea.style.padding = "1em";
+        textarea.style.border = "1px solid #eee";
+        textarea.style.width = "100%";
+        textarea.style.height = "100%";
+        textarea.style.resize = "none";
+        textarea.style.boxSizing = "border-box";
+      }
     },
-    debouncedChangeEmission: _.debounce(function(value, component) {
+    updateValue: function () {
+      this.debouncedChangeEmission(this.localValue, this);
+    },
+    debouncedChangeEmission: _.debounce(function (value, component) {
       component.$emit("change", value);
     }, 100),
-    refreshEditor: function() {
-      setTimeout(() => this.$refs.codemirror.codemirror.refresh(), 100);
-    }
+    refreshEditor: function () {
+      this.$nextTick(() => {
+        this.setupTextarea();
+      });
+    },
   },
   computed: {
-    useArgVu: {
-      get() {
-        return this.$store.state.useArgVu;
-      }
-    }
+    store() {
+      return useArgdownStore();
+    },
+    useArgVu() {
+      return this.store.useArgVuState;
+    },
   },
   watch: {
     useArgVu() {
       this.refreshEditor();
-    }
+    },
+    value(newVal) {
+      this.localValue = newVal;
+    },
   },
-  components: {
-    codemirror
-  }
 };
 </script>
 
 <style lang="scss">
-@import "../../node_modules/codemirror/lib/codemirror.css";
-@import "../../node_modules/codemirror/theme/monokai.css";
-@import "../../node_modules/codemirror/addon/lint/lint.css";
-@import "../../node_modules/@argdown/codemirror-mode/codemirror-argdown.css";
-@font-face {
-  font-family: "ArgVu";
-  src: url("/sandbox/ArgVuSansMono-Regular-8.2.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-feature-settings: "dlig";
-}
-.argdown-input.use-argvu .CodeMirror {
-  font-family: "ArgVu", mono-space;
-  font-feature-settings: "dlig";
+.argdown-input.use-argvu .argdown-textarea {
+  font-family: monospace;
   font-size: 1em;
 }
+
 .input-maximized {
   .argdown-input {
     max-width: 60em;
@@ -114,29 +102,24 @@ export default {
     margin: 0 auto;
   }
 }
+
 .argdown-input {
   flex: 1;
   overflow: hidden;
-  textarea {
+
+  .argdown-textarea {
     flex: 1;
     padding: 1em;
     width: 100%;
     height: 100%;
     font-size: 1.25em;
-  }
-  .vue-codemirror {
-    height: 100%;
-    width: 100%;
-  }
-  .CodeMirror {
     border: 1px solid #eee;
-    height: 100%;
-    width: 100%;
-    font-size: 1.25em;
-    pre {
-      padding: 0.1em 0.5em;
-      overflow: visible;
-      background-color: transparent;
+    resize: none;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+      border-color: #3e8eaf;
     }
   }
 }

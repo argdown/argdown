@@ -1,21 +1,28 @@
 <template>
-  <div class="dot-output output">
-    <div class="content">
-      <div class="dot-source">
-        <pre>{{$store.getters.dot}}</pre>
-      </div>
-    </div>
+  <div class="dot-output">
+    <pre>{{ store.dot }}</pre>
   </div>
 </template>
 
 <script>
+import { useArgdownStore } from "../store.js";
+
 export default {
-  name: "dot-output"
+  name: "dot-output",
+  computed: {
+    store() {
+      return useArgdownStore();
+    },
+  },
 };
 </script>
 
 <style scoped>
-.output .content {
-  padding: 1em;
+.dot-output {
+  padding: 1rem;
+  background-color: #f5f5f5;
+  border-radius: 0.2em;
+  margin: 1rem;
+  overflow: auto;
 }
 </style>
