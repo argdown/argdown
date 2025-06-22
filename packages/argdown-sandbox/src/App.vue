@@ -316,6 +316,9 @@ button .icon {
   flex: 1;
   min-width: 0;
   min-height: 0;
+  max-height: 90vh;
+  overflow: hidden;
+  
   .input-header,
   .output-header {
     height: 2.5em;
@@ -323,6 +326,7 @@ button .icon {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    flex-shrink: 0;
     h3 {
       margin: 0;
       padding: 0;
@@ -339,11 +343,16 @@ button .icon {
     display: flex;
     padding: 0;
     flex-direction: column;
+    max-height: 100vh;
+    overflow: hidden;
   }
   #right-slot {
     width: 50%;
     display: flex;
     flex-direction: column;
+    max-height: 100vh;
+    overflow: hidden;
+    
     .output {
       border-top: 1px solid $border-color;
       flex: 1;
@@ -352,6 +361,8 @@ button .icon {
       /* Firefox bug fix styles */
       min-width: 0;
       min-height: 0;
+      max-height: calc(100vh - 2.5em);
+      overflow: hidden;
       /* End of Firefox bug fix styles */
       .content {
         flex: 1;
@@ -361,6 +372,7 @@ button .icon {
         min-width: 0;
         min-height: 0;
         overflow: auto;
+        max-height: 100%;
       }
     }
   }

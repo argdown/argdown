@@ -131,6 +131,10 @@ export default {
   flex: 1;
   height: 100%;
   min-height: 0;
+  max-height: calc(100vh - 2.5em);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
   .argdown-editor {
     width: 100%;
@@ -144,6 +148,8 @@ export default {
     font-family: monospace;
     background-color: #fff;
     outline: none;
+    max-height: 100%;
+    flex: 1;
 
     &:focus {
       border-color: #3e8eaf;
