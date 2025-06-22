@@ -17,12 +17,19 @@ var saveDagreAsSvg = null;
 
 export default {
   name: "dagre-d3-output",
+  data() {
+    return {
+      $_dagreD3Map: null,
+    };
+  },
   computed: {
     store() {
       return useArgdownStore();
     },
     map() {
-      this.updateMap();
+      if (this.$_dagreD3Map) {
+        this.updateMap();
+      }
       this.store.configData;
       this.store.configData;
       return this.store.map;
@@ -44,7 +51,15 @@ export default {
         settings: this.store.configData.dagre,
         map: this.store.map,
       };
-      this.$_dagreD3Map.render(props).catch((e) => console.log(e));
+      
+      try {
+        const result = this.$_dagreD3Map.render(props);
+        if (result && typeof result.catch === 'function') {
+          result.catch((e) => console.log(e));
+        }
+      } catch (error) {
+        console.log('Error rendering map:', error);
+      }
     },
   },
   watch: {
@@ -80,13 +95,18 @@ export default {
 .content {
   flex: 1;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  
   .rendered {
     flex: 1;
     display: flex;
     flex-direction: column;
+    height: 100%;
+    min-height: 0;
     /* Firefox bug fix styles */
     min-width: 0;
-    min-height: 0;
   }
 }
 </style>

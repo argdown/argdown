@@ -89,13 +89,18 @@ export default {
 .content {
   flex: 1;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  
   .rendered {
     flex: 1;
     display: flex;
     flex-direction: column;
+    height: 100%;
+    min-height: 0;
     /* Firefox bug fix styles */
     min-width: 0;
-    min-height: 0;
   }
 }
 </style>

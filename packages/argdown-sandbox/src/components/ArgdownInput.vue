@@ -1,11 +1,12 @@
 <template>
   <div class="argdown-input" v-bind:class="{ 'use-argvu': useArgVu }">
-    <textarea
-      ref="textarea"
-      v-model="localValue"
+    <pre
+      ref="editor"
+      contenteditable="true"
       @input="updateValue"
-      class="argdown-textarea"
-    ></textarea>
+      @keydown="handleKeydown"
+      class="argdown-editor"
+    >{{ localValue }}</pre>
   </div>
 </template>
 
@@ -39,34 +40,57 @@ export default {
   },
   props: ["value"],
   created: function () {
-    // Initialize the textarea with syntax highlighting
+    // Initialize the editor
     this.$nextTick(() => {
-      this.setupTextarea();
+      this.setupEditor();
     });
   },
   methods: {
-    setupTextarea() {
-      const textarea = this.$refs.textarea;
-      if (textarea) {
-        textarea.style.fontFamily = this.useArgVu ? "monospace" : "monospace";
-        textarea.style.fontSize = "1.25em";
-        textarea.style.padding = "1em";
-        textarea.style.border = "1px solid #eee";
-        textarea.style.width = "100%";
-        textarea.style.height = "100%";
-        textarea.style.resize = "none";
-        textarea.style.boxSizing = "border-box";
+    setupEditor() {
+      const editor = this.$refs.editor;
+      if (editor) {
+        editor.style.fontFamily = "monospace";
+        editor.style.fontSize = "1.25em";
+        editor.style.padding = "1em";
+        editor.style.border = "1px solid #eee";
+        editor.style.width = "100%";
+        editor.style.height = "100%";
+        editor.style.boxSizing = "border-box";
+        editor.style.overflow = "auto";
+        editor.style.margin = "0";
+        editor.style.whiteSpace = "pre-wrap";
+        editor.style.wordWrap = "break-word";
       }
     },
-    updateValue: function () {
-      this.debouncedChangeEmission(this.localValue, this);
+    updateValue() {
+      const editor = this.$refs.editor;
+      if (editor) {
+        this.localValue = editor.textContent || '';
+        this.debouncedChangeEmission(this.localValue, this);
+      }
+    },
+    handleKeydown(event) {
+      // Handle tab key
+      if (event.key === 'Tab') {
+        event.preventDefault();
+        const selection = window.getSelection();
+        const range = selection.getRangeAt(0);
+        const tabNode = document.createTextNode('    '); // 4 spaces
+        range.deleteContents();
+        range.insertNode(tabNode);
+        range.setStartAfter(tabNode);
+        range.setEndAfter(tabNode);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        this.updateValue();
+      }
     },
     debouncedChangeEmission: _.debounce(function (value, component) {
       component.$emit("change", value);
     }, 100),
     refreshEditor: function () {
       this.$nextTick(() => {
-        this.setupTextarea();
+        this.setupEditor();
       });
     },
   },
@@ -90,7 +114,7 @@ export default {
 </script>
 
 <style lang="scss">
-.argdown-input.use-argvu .argdown-textarea {
+.argdown-input.use-argvu .argdown-editor {
   font-family: monospace;
   font-size: 1em;
 }
@@ -105,20 +129,23 @@ export default {
 
 .argdown-input {
   flex: 1;
-  overflow: hidden;
+  height: 100%;
+  min-height: 0;
 
-  .argdown-textarea {
-    flex: 1;
-    padding: 1em;
+  .argdown-editor {
     width: 100%;
     height: 100%;
+    margin: 0;
+    padding: 1em;
     font-size: 1.25em;
     border: 1px solid #eee;
-    resize: none;
     box-sizing: border-box;
+    overflow: auto;
+    font-family: monospace;
+    background-color: #fff;
+    outline: none;
 
     &:focus {
-      outline: none;
       border-color: #3e8eaf;
     }
   }
