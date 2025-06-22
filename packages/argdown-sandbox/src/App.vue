@@ -297,8 +297,20 @@ button .icon {
 }
 .output-maximized {
   .main-window {
+    max-height: 100vh !important;
+    height: 100vh !important;
+    
+    #left-slot {
+      display: none;
+    }
     #right-slot {
       width: 100%;
+      max-height: 100vh;
+      height: 100vh;
+    }
+    .output {
+      max-height: calc(100vh - 2.5em);
+      height: calc(100vh - 2.5em);
     }
   }
 }
