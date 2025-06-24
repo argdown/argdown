@@ -44,7 +44,7 @@
     "coverage": "nyc mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
     "report": "nyc report",
     "prepublishOnly": "npm run-script build",
-    "clean": "rimraf \"dist/*\"",
+    "clean": "rimraf \"dist/*\" --glob",
     "version:patch": "npm version patch"
   },
   "readmeFilename": "Readme.md",

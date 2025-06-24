@@ -11,6 +11,9 @@
     "argdown",
     "codemirror"
   ],
+  "scripts": {
+    "build": "echo \"Nothing to build here\""
+  },
   "author": "Christian Voigt",
   "license": "MIT",
   "bugs": {

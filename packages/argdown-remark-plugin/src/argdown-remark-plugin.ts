@@ -7,7 +7,7 @@ import { argdown } from "@argdown/core/dist/argdown";
 import defaultsDeep from "lodash.defaultsdeep";
 import { visit } from "unist-util-visit";
 import { Code } from "mdast";
-import { Parent, Node, Data } from "unist";
+import { Parent, Node } from "unist";
 import { Transformer } from "unified";
 import { u } from "unist-builder";
 
@@ -101,7 +101,7 @@ export const remarkArgdownPlugin = (
         parent.children.splice(index, 1, u("html", { value: htmlOutput }));
       }
     };
-    visit<Node<Data>, any>(tree, "code", visitor as any);
+    visit<Node, any>(tree, "code", visitor as any);
   };
 };
 export default remarkArgdownPlugin;

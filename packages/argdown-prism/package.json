@@ -3,6 +3,9 @@
   "version": "1.7.0",
   "description": "Prism language highlighting and theme for Argdown",
   "main": "index.js",
+  "scripts": {
+    "build": "echo \"Nothing to build here\""
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/christianvoigt/argdown/tree/master/packages/argdown-prism"
