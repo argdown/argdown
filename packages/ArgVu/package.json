@@ -14,6 +14,9 @@
     "font",
     "ligatures"
   ],
+  "scripts": {
+    "build": "echo \"Nothing to build here\""
+  },
   "author": "Peter Stahmer, Christian Voigt",
   "license": "SEE LICENSE IN LICENSE.md",
   "bugs": {

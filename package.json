@@ -3,30 +3,54 @@
   "author": "Christian Voigt <1pxsolidblack@googlemail.com>",
   "repository": "https://github.com/christianvoigt/argdown",
   "private": true,
+  "resolutions": {
+    "minimatch": "8.0.4",
+    "del": "8.0.0",
+    "globby": "14.0.0"
+  },
   "license": "MIT",
+  "workspaces": {
+    "packages": [
+      "packages/argdown-cli",
+      "packages/argdown-core",
+      "packages/argdown-codemirror-mode",
+      "packages/argdown-gatsby-remark-plugin",
+      "packages/argdown-highlightjs",
+      "packages/argdown-html",
+      "packages/argdown-image-export",
+      "packages/argdown-language-server",
+      "packages/argdown-map-views",
+      "packages/argdown-markdown-it-plugin",
+      "packages/argdown-marked-plugin",
+      "packages/argdown-node",
+      "packages/argdown-prism",
+      "packages/argdown-remark-plugin",
+      "packages/argdown-web-components"
+    ],
+    "nohoist": [
+        "**/glob",
+        "**/minimatch"
+    ]
+  },
   "scripts": {
-    "lerna:bootstrap": "lerna bootstrap",
-    "lerna:version": "lerna version",
-    "test": "lerna run test",
-    "test:coverage": "lerna run test:coverage",
-    "build": "lerna run build",
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":true}' yarn workspaces run test",
+    "test:coverage": "yarn workspaces test:coverage",
+    "build": "yarn workspaces run build",
     "docs:dev": "yarn run copy-web-component && vuepress dev ./docs",
     "docs:buildall": "build-docs.sh",
     "docs:build": "yarn run copy-web-component && vuepress build docs",
     "docs:deploy": "./deploy-docs.sh",
-    "prepare": "lerna run prepare",
     "copy-web-component": "node ./copy-web-component.js",
-    "install-package": "lerna add @types/pdfkit --scope=@argdown/node",
-    "lerna:upgrade": "lerna exec -- yarn upgrade",
-    "lerna:install": "lerna exec -- yarn install"
+    "install-package": "yarn workspace @argdown/node add @types/pdfkit",
+    "yarn:upgrade": "yarn workspaces foreach --all upgrade"
   },
   "readmeFilename": "Readme.md",
   "preferGlobal": true,
   "devDependencies": {
-    "@vuepress/plugin-pwa": "1.8.2",
+    "@vuepress/plugin-pwa": "1.9.10",
+    "typescript": "^5.x.x",
     "esm": "^3.2.25",
-    "lerna": "4.0.0",
-    "vuepress": "1.8.2"
+    "vuepress": "1.9.10"
   },
   "workspace-sources": {
     "*": [
@@ -34,7 +58,7 @@
     ]
   },
   "dependencies": {
-    "markdown-it-container": "3.0.0",
+    "markdown-it-container": "4.0.0",
     "vuepress-plugin-sitemap": "2.3.1"
   }
 }

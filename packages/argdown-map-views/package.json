@@ -64,7 +64,7 @@
     "test": "mocha -r ts-node/register --full-trace --require source-map-support/register ./test/**/*.spec.ts",
     "coverage": "nyc mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
     "report": "nyc report",
-    "clean": "rimraf \"dist/*\"",
+    "clean": "rimraf \"dist/*\" --glob",
     "prepublishOnly": "npm run-script build",
     "push": "git push --tags origin HEAD:master",
     "example": "parcel serve ./example/src/index.html",

@@ -82,7 +82,7 @@
     "test:defaults": "mocha -r ts-node/register --full-trace ./test/DefaultSettings.spec.ts",
     "coverage": "nyc mocha -r ts-node/register --full-trace --bail ./test/**/*.spec.ts",
     "report": "nyc report",
-    "clean": "rimraf \"dist/*\" && rimraf \"dist-esm/*\"",
+    "clean": "rimraf \"dist/*\" --glob && rimraf \"dist-esm/*\" --glob",
     "prepublishOnly": "yarn run build",
     "push": "git push --tags origin HEAD:master"
   },

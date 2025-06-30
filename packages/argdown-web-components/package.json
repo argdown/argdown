@@ -23,7 +23,7 @@
     "example": "parcel test/index.html --open",
     "example-dist": "parcel test/index-dist.html --open",
     "build": "yarn run clean && parcel build",
-    "clean": "rimraf \"dist/\"",
+    "clean": "rimraf \"dist/\" --glob",
     "prepublishOnly": "yarn run build"
   },
   "repository": {

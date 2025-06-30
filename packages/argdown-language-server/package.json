@@ -22,7 +22,7 @@
     "build-ts": "tsc -p .",
     "build-node": "webpack --config node.webpack.config.js --mode production",
     "build-browser": "webpack --config browser.webpack.config.js --mode production",
-    "clean": "rimraf \"dist/*\"",
+    "clean": "rimraf \"dist/*\" --glob",
     "watch": "tsc -w -p .",
     "prepublishOnly": "npm run build",
     "test": "mocha -r ts-node/register --full-trace --require source-map-support/register ./test/**/*.spec.ts"
@@ -45,6 +45,7 @@
     "style-loader": "^4.0.0",
     "transform-loader": "^0.2.4",
     "ts-loader": "^9.5.2",
+    "brfs": "^2.0.2",
     "ts-node": "^10.9.2",
     "typescript": "5.8.3",
     "vscode-languageserver": "^9.0.1",

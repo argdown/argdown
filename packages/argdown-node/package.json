@@ -19,7 +19,7 @@
     "test": "mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
     "coverage": "nyc mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
     "report": "nyc report",
-    "clean": "rimraf \"dist/*\" && rimraf \"dist-esm/*\"",
+    "clean": "rimraf \"dist/*\" --glob && rimraf \"dist-esm/*\" --glob",
     "prepublishOnly": "npm run-script build",
     "push": "git push --tags origin HEAD:master"
   },
@@ -35,7 +35,6 @@
   "dependencies": {
     "@aduh95/viz.js": "3.7.0",
     "@argdown/core": "^1.7.5",
-    "@types/glob": "^8.1.0",
     "@types/lodash.clonedeep": "^4.5.9",
     "@types/lodash.defaultsdeep": "^4.6.9",
     "@types/lodash.includes": "^4.3.9",

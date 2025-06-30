@@ -9,7 +9,7 @@
     "build:esm": "tsc -m es6 --target ES2018 --outDir dist-esm",
     "build:src": "tsc",
     "test": "mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
-    "clean": "rimraf \"dist/*\" && rimraf \"dist-esm/*\""
+    "clean": "rimraf \"dist/*\" --glob && rimraf \"dist-esm/*\" --glob"
   },
   "repository": {
     "type": "git",

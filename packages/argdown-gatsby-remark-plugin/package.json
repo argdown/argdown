@@ -9,7 +9,9 @@
   "engines": {
     "node": ">= 22.11.0"
   },
-  "scripts": {},
+  "scripts": {
+    "build": "echo \"Nothing to build here\""
+  },
   "keywords": [
     "gatsby-remark-plugin",
     "gatsby-plugin",
