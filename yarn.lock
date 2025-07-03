@@ -13390,9 +13390,9 @@ process@^0.11.1, process@^0.11.10:
   resolved "https://registry.yarnpkg.com/process/-/process-0.11.10.tgz#7332300e840161bda3e69a1d1d91a7d4bc16f182"
   integrity sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==
 
-"process@git+https://github.com/christianvoigt/node-process":
+"process@git+https://github.com/argdown/node-process":
   version "0.11.10"
-  resolved "git+https://github.com/christianvoigt/node-process#acef61c6bec0183a93644ecc192d482e85a09bce"
+  resolved "git+https://github.com/argdown/node-process#acef61c6bec0183a93644ecc192d482e85a09bce"
 
 progress@^2.0.0:
   version "2.0.3"
