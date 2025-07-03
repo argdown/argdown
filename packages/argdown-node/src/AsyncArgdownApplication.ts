@@ -20,7 +20,7 @@ import importFresh from "import-fresh";
 import { readFile } from "fs";
 
 const readFileAsync = promisify(readFile);
-const globAsync = promisify(glob.glob) as (pattern: string, options: any) => Promise<string[]>;
+const globAsync = glob.glob;
 
 export class AsyncArgdownApplication extends ArgdownApplication {
   async runAsync(
