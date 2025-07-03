@@ -31,7 +31,6 @@ describe("argdown-cli", function() {
     let filePathToCli = path.resolve(__dirname, "../dist//cli.js");
     const cmd =
       "node " + filePathToCli + " map -f dot " + filePath + " --stdout";
-    console.log("Command :: ", cmd)
     const cb: IExecCallback = (error, stdout, stderr) => {
       expect(error).to.equal(null);
       expect(stderr).to.equal("");
