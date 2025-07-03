@@ -21,7 +21,7 @@
   "dependencies": {
     "@aduh95/viz.js": "3.7.0",
     "@argdown/highlightjs": "1.7.5",
-    "@types/chai": "^5.2.0",
+    "@types/chai": "4.2.0",
     "@types/js-yaml": "^4.0.0",
     "@types/lodash.clonedeep": "^4.5.6",
     "@types/lodash.defaultsdeep": "^4.6.6",
@@ -88,9 +88,8 @@
   },
   "readmeFilename": "Readme.md",
   "devDependencies": {
-    "@types/jest": "^29.5.14",
     "@types/mocha": "^10.0.10",
-    "chai": "^5.2.0",
+    "chai": "4.2.0",
     "copyfiles": "^2.2.0",
     "glob": "^11.0.1",
     "mocha": "^11.1.0",

@@ -11,8 +11,10 @@
   "license": "MIT",
   "workspaces": {
     "packages": [
-      "packages/argdown-cli",
       "packages/argdown-core",
+      "packages/argdown-node",
+      "packages/argdown-markdown-it-plugin",
+      "packages/argdown-cli",
       "packages/argdown-codemirror-mode",
       "packages/argdown-gatsby-remark-plugin",
       "packages/argdown-highlightjs",
@@ -20,20 +22,21 @@
       "packages/argdown-image-export",
       "packages/argdown-language-server",
       "packages/argdown-map-views",
-      "packages/argdown-markdown-it-plugin",
       "packages/argdown-marked-plugin",
-      "packages/argdown-node",
       "packages/argdown-prism",
       "packages/argdown-remark-plugin",
       "packages/argdown-web-components"
     ],
     "nohoist": [
-        "**/glob",
-        "**/minimatch"
+      "**/glob",
+      "**/minimatch",
+      "**/chai",
+      "**/@types/chai"
     ]
   },
   "scripts": {
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":true}' yarn workspaces run test",
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":false}' yarn workspaces run test",
+    "test:full_log": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":true}' yarn workspaces run test",
     "test:coverage": "yarn workspaces test:coverage",
     "build": "yarn workspaces run build",
     "docs:dev": "yarn run copy-web-component && vuepress dev ./docs",
@@ -48,8 +51,8 @@
   "preferGlobal": true,
   "devDependencies": {
     "@vuepress/plugin-pwa": "1.9.10",
-    "typescript": "^5.x.x",
     "esm": "^3.2.25",
+    "typescript": "^5.x.x",
     "vuepress": "1.9.10"
   },
   "workspace-sources": {
