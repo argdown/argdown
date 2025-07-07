@@ -15,7 +15,8 @@
     "ligatures"
   ],
   "scripts": {
-    "build": "echo \"Nothing to build here\""
+    "build": "echo \"Nothing to build here\"",
+    "test": "echo \"No tests to run here\""
   },
   "author": "Peter Stahmer, Christian Voigt",
   "license": "SEE LICENSE IN LICENSE.md",
