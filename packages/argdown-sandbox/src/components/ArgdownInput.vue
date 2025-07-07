@@ -30,7 +30,7 @@ export default {
       theme: "default",
       tabSize: 4,
       indentUnit: 4,
-      lineWrapping: true,
+      lineWrapping: false,
       styleActiveLine: true,
       extraKeys: {
         Tab: function (cm) {
@@ -160,7 +160,7 @@ export default {
   }
 
   .CodeMirror-line {
-    line-height: 1.3 !important;
+    line-height: 1.4 !important;
   }
 }
 </style>
