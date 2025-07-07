@@ -4,7 +4,8 @@
   "description": "Prism language highlighting and theme for Argdown",
   "main": "index.js",
   "scripts": {
-    "build": "echo \"Nothing to build here\""
+    "build": "echo \"Nothing to build here\"",
+    "test": "echo \"No tests to run here\""
   },
   "repository": {
     "type": "git",

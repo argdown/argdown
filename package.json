@@ -18,14 +18,14 @@
       "packages/argdown-codemirror-mode",
       "packages/argdown-gatsby-remark-plugin",
       "packages/argdown-highlightjs",
-      "packages/argdown-html",
       "packages/argdown-image-export",
       "packages/argdown-language-server",
       "packages/argdown-map-views",
       "packages/argdown-marked-plugin",
       "packages/argdown-prism",
       "packages/argdown-remark-plugin",
-      "packages/argdown-web-components"
+      "packages/argdown-web-components",
+      "packages/ArgVu"
     ],
     "nohoist": [
       "**/glob",

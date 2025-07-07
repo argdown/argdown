@@ -12,7 +12,8 @@
     "codemirror"
   ],
   "scripts": {
-    "build": "echo \"Nothing to build here\""
+    "build": "echo \"Nothing to build here\"",
+    "test": "echo \"No tests to run here\""
   },
   "author": "Christian Voigt",
   "license": "MIT",
