@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@argdown/codemirror-mode": "^1.7.4",
+    "codemirror": "^5.65.19",
     "@argdown/core": "^1.7.5",
     "@argdown/map-views": "^1.7.10",
     "axios": "^1.7.9",

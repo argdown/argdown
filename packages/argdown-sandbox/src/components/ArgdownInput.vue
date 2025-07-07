@@ -1,97 +1,86 @@
 <template>
-  <div class="argdown-input" v-bind:class="{ 'use-argvu': useArgVu }">
-    <pre
-      ref="editor"
-      contenteditable="true"
-      @input="updateValue"
-      @keydown="handleKeydown"
-      class="argdown-editor"
-    >{{ localValue }}</pre>
+  <div class="argdown-input" :class="{ 'use-argvu': useArgVu }">
+    <textarea ref="editor" class="argdown-editor"></textarea>
   </div>
 </template>
 
 <script>
 import * as _ from "lodash";
 import { useArgdownStore } from "../store.js";
+import CodeMirror from "codemirror";
+import "codemirror/lib/codemirror.css";
+import "codemirror/addon/mode/simple";
+import argdownMode from "@argdown/codemirror-mode";
+import "@argdown/codemirror-mode/codemirror-argdown.css";
 
 export default {
   name: "argdown-input",
   data() {
     return {
       localValue: this.value,
-      editorOption: {
-        tabSize: 4,
+      editor: null,
+    };
+  },
+  props: ["value"],
+  mounted() {
+    CodeMirror.defineSimpleMode("argdown", argdownMode);
+    this.editor = CodeMirror.fromTextArea(this.$refs.editor, {
+      mode: "argdown",
+      lineNumbers: true,
+      theme: "default",
+      tabSize: 4,
+      indentUnit: 4,
+      lineWrapping: true,
+      styleActiveLine: true,
+      extraKeys: {
+        Tab: function (cm) {
+          let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+          cm.replaceSelection(spaces);
+        },
+      },
+    });
+    this.editor.setValue(this.localValue);
+    this.editor.on("change", (cm) => {
+      this.localValue = cm.getValue();
+      this.debouncedChangeEmission(this.localValue, this);
+    });
+    this.editor.setSize("100%", "100%");
+  },
+  beforeUnmount() {
+    if (this.editor) {
+      this.editor.toTextArea();
+    }
+  },
+  methods: {
+    debouncedChangeEmission: _.debounce(function (value, component) {
+      component.$emit("change", value);
+    }, 100),
+    refreshEditor() {
+      if (this.editor) {
+        this.editor.toTextArea();
+      }
+      // Re-initialize CodeMirror
+      this.editor = CodeMirror.fromTextArea(this.$refs.editor, {
         mode: "argdown",
-        foldGutter: true,
-        // gutters: ["CodeMirror-linenumbers"],
-        styleActiveLine: true,
         lineNumbers: true,
-        lint: true,
-        gutters: ["CodeMirror-lint-markers"],
-        line: true,
+        theme: "default",
+        tabSize: 4,
+        indentUnit: 4,
+        lineWrapping: true,
+        styleActiveLine: true,
         extraKeys: {
           Tab: function (cm) {
             let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
             cm.replaceSelection(spaces);
           },
         },
-      },
-    };
-  },
-  props: ["value"],
-  created: function () {
-    // Initialize the editor
-    this.$nextTick(() => {
-      this.setupEditor();
-    });
-  },
-  methods: {
-    setupEditor() {
-      const editor = this.$refs.editor;
-      if (editor) {
-        editor.style.fontFamily = "monospace";
-        editor.style.fontSize = "1.25em";
-        editor.style.padding = "1em";
-        editor.style.border = "1px solid #eee";
-        editor.style.width = "100%";
-        editor.style.height = "100%";
-        editor.style.boxSizing = "border-box";
-        editor.style.overflow = "auto";
-        editor.style.margin = "0";
-        editor.style.whiteSpace = "pre-wrap";
-        editor.style.wordWrap = "break-word";
-      }
-    },
-    updateValue() {
-      const editor = this.$refs.editor;
-      if (editor) {
-        this.localValue = editor.textContent || '';
-        this.debouncedChangeEmission(this.localValue, this);
-      }
-    },
-    handleKeydown(event) {
-      // Handle tab key
-      if (event.key === 'Tab') {
-        event.preventDefault();
-        const selection = window.getSelection();
-        const range = selection.getRangeAt(0);
-        const tabNode = document.createTextNode('    '); // 4 spaces
-        range.deleteContents();
-        range.insertNode(tabNode);
-        range.setStartAfter(tabNode);
-        range.setEndAfter(tabNode);
-        selection.removeAllRanges();
-        selection.addRange(range);
-        this.updateValue();
-      }
-    },
-    debouncedChangeEmission: _.debounce(function (value, component) {
-      component.$emit("change", value);
-    }, 100),
-    refreshEditor: function () {
-      this.$nextTick(() => {
-        this.setupEditor();
       });
+      this.editor.setValue(this.localValue);
+      this.editor.on("change", (cm) => {
+        this.localValue = cm.getValue();
+        this.debouncedChangeEmission(this.localValue, this);
+      });
+      this.editor.setSize("100%", "100%");
     },
   },
   computed: {
@@ -107,14 +96,18 @@ export default {
       this.refreshEditor();
     },
     value(newVal) {
-      this.localValue = newVal;
+      if (this.editor && newVal !== this.localValue) {
+        this.localValue = newVal;
+        this.editor.setValue(newVal);
+      }
     },
   },
 };
 </script>
 
 <style lang="scss">
-.argdown-input.use-argvu .argdown-editor {
+.argdown-input.use-argvu .argdown-editor,
+.argdown-input.use-argvu .CodeMirror {
   font-family: monospace;
   font-size: 1em;
 }
@@ -140,20 +133,34 @@ export default {
     width: 100%;
     height: 100%;
     margin: 0;
-    padding: 1em;
-    font-size: 1.25em;
     border: 1px solid #eee;
     box-sizing: border-box;
-    overflow: auto;
-    font-family: monospace;
     background-color: #fff;
-    outline: none;
     max-height: 100%;
     flex: 1;
+    font-family: monospace;
+    font-size: 1.25em;
+    padding: 1em;
+    resize: none;
+    outline: none;
 
     &:focus {
       border-color: #3e8eaf;
     }
+  }
+
+  .CodeMirror {
+    height: 100%;
+    font-family: monospace;
+    font-size: 1.25em;
+  }
+
+  .CodeMirror-gutters {
+    padding-left: 20px;
+  }
+
+  .CodeMirror-line {
+    line-height: 1.3 !important;
   }
 }
 </style>

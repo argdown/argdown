@@ -19,8 +19,8 @@
       <li>
         <div class="input-container argvu-font">
           <input
-            v-model="useArgVu"
-            v-bind:value="useArgVu"
+            :checked="useArgVu"
+            @change="toggleArgVu"
             type="checkbox"
             id="use-argvu"
           />
@@ -67,6 +67,9 @@ export default {
     },
     closeModal() {
       this.isModalVisible = false;
+    },
+    toggleArgVu(event) {
+      this.store.setUseArgVu(event.target.checked);
     },
   },
   data: () => {
