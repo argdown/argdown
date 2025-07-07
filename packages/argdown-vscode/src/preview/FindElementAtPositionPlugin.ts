@@ -8,8 +8,15 @@ import {
   TokenNames
 } from "@argdown/core";
 
+type IAstNodeExtension = IAstNode & {
+  startLine?: number;
+  endLine?: number;
+  startColumn?: number;
+  endColumn?: number;
+};
+
 const positionIsInRange = (
-  node: IAstNode,
+  node: IAstNodeExtension,
   settings: IFindElementAtPositionSettings
 ) => {
   if (
