@@ -24,7 +24,8 @@
     "example-dist": "parcel test/index-dist.html --open",
     "build": "yarn run clean && parcel build",
     "clean": "rimraf \"dist/\" --glob",
-    "prepublishOnly": "yarn run build"
+    "prepublishOnly": "yarn run build",
+    "test": "echo \"No tests to run here\""
   },
   "repository": {
     "type": "git",

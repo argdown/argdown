@@ -10,7 +10,8 @@
     "node": ">= 22.11.0"
   },
   "scripts": {
-    "build": "echo \"Nothing to build here\""
+    "build": "echo \"Nothing to build here\"",
+    "test": "echo \"No tests to run here\""
   },
   "keywords": [
     "gatsby-remark-plugin",
