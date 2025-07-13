@@ -5,7 +5,7 @@
         <div class="dropdown">
           <button class="text-button dropdown-button">Examples</button>
           <ul class="dropdown-content">
-            <li v-for="example in $store.getters.examples" :key="example.id">
+            <li v-for="example in store.examplesList" :key="example.id">
               <a href="#" v-on:click.prevent="loadExample(example.id)">{{
                 example.title
               }}</a>
@@ -19,8 +19,8 @@
       <li>
         <div class="input-container argvu-font">
           <input
-            v-model="useArgVu"
-            v-bind:value="useArgVu"
+            :checked="useArgVu"
+            @change="toggleArgVu"
             type="checkbox"
             id="use-argvu"
           />
@@ -28,30 +28,35 @@
         </div>
       </li>
     </ul>
-    <modal v-show="isModalVisible" @close="closeModal">
-      <div slot="header">Successfully copied shareable link</div>
-      <div slot="body">
+    <app-modal v-show="isModalVisible" @close="closeModal">
+      <template #header>Successfully copied shareable link</template>
+      <template #body>
         <input type="text" v-bind:value="link" style="width: 100%" /><br />
         <p>Show other people your Argdown code directly in the Sandbox!</p>
-      </div>
-    </modal>
+      </template>
+    </app-modal>
   </nav>
 </template>
 <script>
-import modal from "./modal.vue";
+import { useArgdownStore } from "../store.js";
+import appModal from "./modal.vue";
+
 export default {
   name: "input-navigation",
   components: {
-    modal: modal,
+    appModal: appModal,
   },
   methods: {
-    loadExample: function (example) {
-      this.$store.dispatch("loadExample", { id: example }).then(() => {
+    async loadExample(example) {
+      try {
+        await this.store.loadExample({ id: example });
         // do stuff
-      });
+      } catch (error) {
+        console.error("Failed to load example:", error);
+      }
     },
-    copyLink: function () {
-      const input = encodeURIComponent(this.$store.state.argdownInput);
+    copyLink() {
+      const input = encodeURIComponent(this.store.argdownInput);
       const link = `https://argdown.org/sandbox/map/?argdown=${input}`;
       navigator.clipboard.writeText(link);
       this.link = link;
@@ -63,6 +68,9 @@ export default {
     closeModal() {
       this.isModalVisible = false;
     },
+    toggleArgVu(event) {
+      this.store.setUseArgVu(event.target.checked);
+    },
   },
   data: () => {
     return {
@@ -71,13 +79,11 @@ export default {
     };
   },
   computed: {
-    useArgVu: {
-      set(value) {
-        this.$store.commit("setUseArgVu", value);
-      },
-      get() {
-        return this.$store.state.useArgVu;
-      },
+    store() {
+      return useArgdownStore();
+    },
+    useArgVu() {
+      return this.store.useArgVuState;
     },
   },
 };
