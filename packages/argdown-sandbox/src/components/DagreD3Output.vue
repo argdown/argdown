@@ -11,25 +11,19 @@ import { useArgdownStore } from "../store.js";
 import { EventBus } from "../event-bus.js";
 import { saveAsSvg, saveAsPng } from "../map-export.js";
 import { DagreMap } from "@argdown/map-views";
+import "../scss/dagre.css";
 
 var saveDagreAsPng = null;
 var saveDagreAsSvg = null;
 
 export default {
   name: "dagre-d3-output",
-  data() {
-    return {
-      $_dagreD3Map: null,
-    };
-  },
   computed: {
     store() {
       return useArgdownStore();
     },
     map() {
-      if (this.$_dagreD3Map) {
-        this.updateMap();
-      }
+      this.updateMap();
       this.store.configData;
       this.store.configData;
       return this.store.map;
@@ -69,9 +63,21 @@ export default {
   },
 
   mounted() {
-    const svgContainer = this.$refs.container;
-    this.$_dagreD3Map = new DagreMap(svgContainer);
+    const container = this.$refs.container;
+    
+    // Create SVG element
+    const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svgElement.setAttribute("width", "100%");
+    svgElement.setAttribute("height", "100%");
+    svgElement.style.display = "block";
+    
+    // Append SVG to container
+    container.appendChild(svgElement);
+    
+    // Create DagreMap with the SVG element
+    this.$_dagreD3Map = new DagreMap(svgElement);
     this.updateMap();
+    
     var el = this.$refs.container;
     var store = this.store;
     saveDagreAsPng = function () {

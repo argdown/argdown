@@ -2,7 +2,14 @@
   <nav class="app-navigation">
     <ul class="nav-list">
       <li><router-link to="/html">HTML</router-link></li>
-      <li><router-link to="/map">Map</router-link></li>
+      <li>
+        <router-link 
+          to="/map/viz-js" 
+          :class="{ 'router-link-active': $route.path.startsWith('/map') }"
+        >
+          Map
+        </router-link>
+      </li>
       <li><router-link to="/json">JSON</router-link></li>
       <li><a href="https://argdown.org">Documentation</a></li>
       <li>

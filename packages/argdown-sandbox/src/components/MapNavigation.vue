@@ -2,7 +2,7 @@
   <nav class="sub-nav">
     <ul class="nav-list">
       <li>
-        <router-link to="/map/">Viz Js Map</router-link>
+        <router-link to="/map/viz-js">Viz Js Map</router-link>
       </li>
       <li>
         <router-link to="/map/dagre-d3">Dagre D3 Map</router-link>
@@ -62,6 +62,21 @@ export default {
     store() {
       return useArgdownStore();
     },
+    currentRoute() {
+      return this.$route;
+    }
+  },
+  watch: {
+    currentRoute: {
+      handler(newRoute, oldRoute) {
+        console.log('MapNavigation: Route changed from', oldRoute?.name, 'to', newRoute?.name);
+        console.log('MapNavigation: Current route path:', newRoute?.path);
+      },
+      immediate: true
+    }
+  },
+  mounted() {
+    console.log('MapNavigation: Component mounted, current route:', this.$route.name);
   },
   methods: {
     saveAsSvg() {

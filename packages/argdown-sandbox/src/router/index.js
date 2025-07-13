@@ -43,7 +43,7 @@ const router = createRouter({
       },
     },
     {
-      path: "/map",
+      path: "/map/viz-js",
       name: "map-viz-js",
       components: {
         default: VizJsOutput,
@@ -75,6 +75,10 @@ const router = createRouter({
       },
     },
     {
+      path: "/map",
+      redirect: { name: "map-viz-js" }
+    },
+    {
       path: "/html",
       name: "html",
       components: {
@@ -104,6 +108,8 @@ const router = createRouter({
 
 let currentArgdownQuery = "";
 router.beforeEach((to, from, next) => {
+  console.log('Router: Navigating from', from.path, 'to', to.path, 'name:', to.name);
+  
   if (to.query.argdown && to.query.argdown != currentArgdownQuery) {
     const store = useArgdownStore();
     store.setArgdownInput(decodeURIComponent(to.query.argdown));
