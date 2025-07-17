@@ -5,9 +5,9 @@ var dagreCssHtml = '<style type="text/css">' + dagreCss + "</style>";
 // Edge Blob polyfill https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob
 if (!HTMLCanvasElement.prototype.toBlob) {
   Object.defineProperty(HTMLCanvasElement.prototype, "toBlob", {
-    value: function(callback, type, quality) {
+    value: function (callback, type, quality) {
       var canvas = this;
-      setTimeout(function() {
+      setTimeout(function () {
         var binStr = atob(canvas.toDataURL(type, quality).split(",")[1]);
         var len = binStr.length;
         var arr = new Uint8Array(len);
@@ -18,7 +18,7 @@ if (!HTMLCanvasElement.prototype.toBlob) {
 
         callback(new Blob([arr], { type: type || "image/png" }));
       });
-    }
+    },
   });
 }
 
@@ -35,7 +35,7 @@ function getSvgString(el, width, height, scale, isDagre) {
   if (!source.match(/^<svg[^>]+"http:\/\/www\.w3\.org\/1999\/xlink"/)) {
     source = source.replace(
       /^<svg/,
-      '<svg xmlns:xlink="http://www.w3.org/1999/xlink"'
+      '<svg xmlns:xlink="http://www.w3.org/1999/xlink"',
     );
   }
 
@@ -51,7 +51,7 @@ function getSvgString(el, width, height, scale, isDagre) {
       width +
       " " +
       height +
-      '" preserveAspectRatio="xMinYMin meet"'
+      '" preserveAspectRatio="xMinYMin meet"',
   );
 
   if (isDagre) {
@@ -82,11 +82,11 @@ function svgString2Image(svgString, width, height, callback) {
   canvas.height = height;
 
   var image = new Image();
-  image.onload = function() {
+  image.onload = function () {
     context.clearRect(0, 0, width, height);
     context.drawImage(image, 0, 0, width, height);
 
-    canvas.toBlob(function(blob) {
+    canvas.toBlob(function (blob) {
       var filesize = Math.round(blob.length / 1024) + " KB";
       if (callback) callback(blob, filesize);
     });
@@ -151,7 +151,7 @@ export function saveAsPng(el, scale, isDagreSvg) {
   var source = getSvgString(el, width, height, scale, isDagreSvg);
   width *= scale;
   height *= scale;
-  svgString2Image(source, width, height, function(blob) {
+  svgString2Image(source, width, height, function (blob) {
     if (!blob) {
       return;
     }

@@ -1,112 +1,117 @@
 <template>
-  <div class="argdown-input" v-bind:class="{'use-argvu': useArgVu}">
-    <codemirror ref="codemirror" :options="editorOption" :value="value" @changes="updateValue"></codemirror>
+  <div class="argdown-input" :class="{ 'use-argvu': useArgVu }">
+    <textarea ref="editor" class="argdown-editor"></textarea>
   </div>
 </template>
 
 <script>
 import * as _ from "lodash";
-import { CodeMirror, codemirror } from "vue-codemirror";
-import * as argdownMode from "@argdown/codemirror-mode";
-
-import "codemirror/addon/mode/simple.js";
-import "codemirror/addon/lint/lint.js";
-
-CodeMirror.defineSimpleMode("argdown", argdownMode);
+import { useArgdownStore } from "../store.js";
+import CodeMirror from "codemirror";
+import "codemirror/lib/codemirror.css";
+import "codemirror/addon/mode/simple";
+import argdownMode from "@argdown/codemirror-mode";
+import "@argdown/codemirror-mode/codemirror-argdown.css";
 
 export default {
   name: "argdown-input",
   data() {
     return {
-      editorOption: {
-        tabSize: 4,
-        mode: "argdown",
-        foldGutter: true,
-        styleActiveLine: true,
-        lineNumbers: true,
-        lint: true,
-        gutters: ["CodeMirror-lint-markers"],
-        line: true,
-        extraKeys: {
-          Tab: function(cm) {
-            let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
-            cm.replaceSelection(spaces);
-          }
-        }
-      }
+      localValue: this.value,
+      editor: null,
     };
   },
   props: ["value"],
-  created: function() {
-    const store = this.$store;
-    CodeMirror.registerHelper("lint", "argdown", function() {
-      const found = [];
-      const errors = store.getters.parserErrors;
-      if (!errors) {
-        return found;
-      }
-      for (let i = 0; i < errors.length; i++) {
-        let error = errors[i];
-        let startLine = error.token.startLine - 1;
-        let endLine = error.token.endLine - 1;
-        let startCol = error.token.startColumn - 1;
-        let endCol = error.token.endColumn;
-        found.push({
-          from: CodeMirror.Pos(startLine, startCol),
-          to: CodeMirror.Pos(endLine, endCol),
-          message: error.message,
-          severity: "error"
-        });
-      }
-      return found;
+  mounted() {
+    CodeMirror.defineSimpleMode("argdown", argdownMode);
+    this.editor = CodeMirror.fromTextArea(this.$refs.editor, {
+      mode: "argdown",
+      lineNumbers: true,
+      theme: "default",
+      tabSize: 4,
+      indentUnit: 4,
+      lineWrapping: false,
+      styleActiveLine: true,
+      extraKeys: {
+        Tab: function (cm) {
+          let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+          cm.replaceSelection(spaces);
+        },
+      },
     });
+    this.editor.setValue(this.localValue);
+    this.editor.on("change", (cm) => {
+      this.localValue = cm.getValue();
+      this.debouncedChangeEmission(this.localValue, this);
+    });
+    this.editor.setSize("100%", "100%");
+  },
+  beforeUnmount() {
+    if (this.editor) {
+      this.editor.toTextArea();
+    }
   },
   methods: {
-    updateValue: function(codemirror) {
-      this.debouncedChangeEmission(codemirror.doc.getValue(), this);
-    },
-    debouncedChangeEmission: _.debounce(function(value, component) {
+    debouncedChangeEmission: _.debounce(function (value, component) {
       component.$emit("change", value);
     }, 100),
-    refreshEditor: function() {
-      setTimeout(() => this.$refs.codemirror.codemirror.refresh(), 100);
-    }
+    refreshEditor() {
+      if (this.editor) {
+        this.editor.toTextArea();
+      }
+      // Re-initialize CodeMirror
+      this.editor = CodeMirror.fromTextArea(this.$refs.editor, {
+        mode: "argdown",
+        lineNumbers: true,
+        theme: "default",
+        tabSize: 4,
+        indentUnit: 4,
+        lineWrapping: true,
+        styleActiveLine: true,
+        extraKeys: {
+          Tab: function (cm) {
+            let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+            cm.replaceSelection(spaces);
+          },
+        },
+      });
+      this.editor.setValue(this.localValue);
+      this.editor.on("change", (cm) => {
+        this.localValue = cm.getValue();
+        this.debouncedChangeEmission(this.localValue, this);
+      });
+      this.editor.setSize("100%", "100%");
+    },
   },
   computed: {
-    useArgVu: {
-      get() {
-        return this.$store.state.useArgVu;
-      }
-    }
+    store() {
+      return useArgdownStore();
+    },
+    useArgVu() {
+      return this.store.useArgVuState;
+    },
   },
   watch: {
     useArgVu() {
       this.refreshEditor();
-    }
+    },
+    value(newVal) {
+      if (this.editor && newVal !== this.localValue) {
+        this.localValue = newVal;
+        this.editor.setValue(newVal);
+      }
+    },
   },
-  components: {
-    codemirror
-  }
 };
 </script>
 
 <style lang="scss">
-@import "../../node_modules/codemirror/lib/codemirror.css";
-@import "../../node_modules/codemirror/theme/monokai.css";
-@import "../../node_modules/codemirror/addon/lint/lint.css";
-@import "../../node_modules/@argdown/codemirror-mode/codemirror-argdown.css";
-@font-face {
-  font-family: "ArgVu";
-  src: url("/sandbox/ArgVuSansMono-Regular-8.2.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-feature-settings: "dlig";
-}
+.argdown-input.use-argvu .argdown-editor,
 .argdown-input.use-argvu .CodeMirror {
-  font-family: "ArgVu", mono-space;
-  font-feature-settings: "dlig";
+  font-family: monospace;
   font-size: 1em;
 }
+
 .input-maximized {
   .argdown-input {
     max-width: 60em;
@@ -114,30 +119,48 @@ export default {
     margin: 0 auto;
   }
 }
+
 .argdown-input {
   flex: 1;
+  height: 100%;
+  min-height: 0;
+  max-height: calc(100vh - 2.5em);
   overflow: hidden;
-  textarea {
-    flex: 1;
-    padding: 1em;
+  display: flex;
+  flex-direction: column;
+
+  .argdown-editor {
     width: 100%;
     height: 100%;
-    font-size: 1.25em;
-  }
-  .vue-codemirror {
-    height: 100%;
-    width: 100%;
-  }
-  .CodeMirror {
+    margin: 0;
     border: 1px solid #eee;
-    height: 100%;
-    width: 100%;
+    box-sizing: border-box;
+    background-color: #fff;
+    max-height: 100%;
+    flex: 1;
+    font-family: monospace;
     font-size: 1.25em;
-    pre {
-      padding: 0.1em 0.5em;
-      overflow: visible;
-      background-color: transparent;
+    padding: 1em;
+    resize: none;
+    outline: none;
+
+    &:focus {
+      border-color: #3e8eaf;
     }
+  }
+
+  .CodeMirror {
+    height: 100%;
+    font-family: monospace;
+    font-size: 1.25em;
+  }
+
+  .CodeMirror-gutters {
+    padding-left: 20px;
+  }
+
+  .CodeMirror-line {
+    line-height: 1.4 !important;
   }
 }
 </style>

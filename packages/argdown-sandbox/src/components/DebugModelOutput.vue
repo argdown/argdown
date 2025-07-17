@@ -1,31 +1,71 @@
 <template>
-  <div class="output debug-model-output">
+  <div class="debug-model-output output">
     <div class="content">
-  <h3>Statements</h3>
-  <table v-if="$store.getters.statements">
-  <tr class="statement" v-for="(key,index) in Object.keys($store.getters.statements)" :key="index">
-    <td class="title"><b>title: </b> "{{$store.getters.statements[key].title}}": </td><td class="relations"><b>relations: </b> {{($store.getters.statements[key].relations)? $store.getters.statements[key].relations.length : 0}}</td>
-  </tr>
-  </table>
-  <h3>Arguments</h3>
-  <table v-if="$store.getters.arguments">
-  <tr class="argument" v-for="(key,index) in Object.keys($store.getters.arguments)" :key="index">
-    <td class="title"><b>title: </b>"{{$store.getters.arguments[key].title}}"</td><td class="relations"><b>relations:</b> {{($store.getters.arguments[key].relations)? $store.getters.arguments[key].relations.length : 0}}</td>
-  </tr>
-  </table>
-  <h3>Relations</h3>
-  <table v-if="$store.getters.relations">
-  <tr class="relation" v-for="(relation,index) in $store.getters.relations" :key="index">
-    <td class="from"><b>from:</b> "{{relation.from.title}}"</td><td class="to"> <b>to:</b> "{{relation.to.title}}", </td><td class="type"> <b>type:</b> "{{relation.type}}"</td><td class="status"> <b>status:</b> "{{relation.status}}"</td>
-  </tr>
-  </table>
-</div>
-</div>
+      <table v-if="store.statements">
+        <tr
+          class="statement"
+          v-for="(key, index) in Object.keys(store.statements)"
+          :key="index"
+        >
+          <td class="title">
+            <b>title: </b> "{{ store.statements[key].title }}":
+          </td>
+          <td class="relations">
+            <b>relations: </b>
+            {{
+              store.statements[key].relations
+                ? store.statements[key].relations.length
+                : 0
+            }}
+          </td>
+        </tr>
+      </table>
+      <table v-if="store.arguments">
+        <tr
+          class="argument"
+          v-for="(key, index) in Object.keys(store.arguments)"
+          :key="index"
+        >
+          <td class="title">
+            <b>title: </b>"{{ store.arguments[key].title }}"
+          </td>
+          <td class="relations">
+            <b>relations:</b>
+            {{
+              store.arguments[key].relations
+                ? store.arguments[key].relations.length
+                : 0
+            }}
+          </td>
+        </tr>
+      </table>
+      <table v-if="store.relations">
+        <tr
+          class="relation"
+          v-for="(relation, index) in store.relations"
+          :key="index"
+        >
+          <td class="relation-type">
+            <b>type: </b>{{ relation.relationType }}
+          </td>
+          <td class="relation-from"><b>from: </b>{{ relation.from }}</td>
+          <td class="relation-to"><b>to: </b>{{ relation.to }}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </template>
 
 <script>
+import { useArgdownStore } from "../store.js";
+
 export default {
-  name: "debug-model-output"
+  name: "debug-model-output",
+  computed: {
+    store() {
+      return useArgdownStore();
+    },
+  },
 };
 </script>
 

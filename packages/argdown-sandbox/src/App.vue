@@ -3,28 +3,28 @@
     <div
       id="top-slot"
       v-if="
-        $store.state.viewState != 'input-maximized' &&
-        $store.state.viewState != 'output-maximized'
+        store.viewState != 'input-maximized' &&
+        store.viewState != 'output-maximized'
       "
     >
       <app-header></app-header>
       <app-navigation></app-navigation>
     </div>
     <div class="main-window">
-      <div id="left-slot" v-if="$store.state.viewState != 'output-maximized'">
+      <div id="left-slot" v-if="store.viewState != 'output-maximized'">
         <div class="input-header">
           <InputNavigation />
           <button
-            v-if="$store.state.viewState != 'input-maximized'"
+            v-if="store.viewState != 'input-maximized'"
             class="button"
-            v-on:click="$store.commit('setViewState', 'input-maximized')"
+            v-on:click="store.setViewState('input-maximized')"
           >
             <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
           </button>
           <button
-            v-if="$store.state.viewState == 'input-maximized'"
+            v-if="store.viewState == 'input-maximized'"
             class="button"
-            v-on:click="$store.commit('setViewState', 'default')"
+            v-on:click="store.setViewState('default')"
           >
             <img
               class="expand icon"
@@ -34,31 +34,31 @@
           </button>
         </div>
         <argdown-input
-          v-bind:value="$store.state.argdownInput"
+          v-bind:value="store.argdownInput"
           v-on:change="
             (value) => {
-              $store.commit('setArgdownInput', value);
+              store.setArgdownInput(value);
             }
           "
         ></argdown-input>
       </div>
-      <div id="right-slot" v-if="$store.state.viewState != 'input-maximized'">
+      <div id="right-slot" v-if="store.viewState != 'input-maximized'">
         <div class="output-header">
           <div class="output-sub-menu">
             <router-view name="output-header"></router-view>
           </div>
           <div class="output-view-state-buttons">
             <button
-              v-if="$store.state.viewState != 'output-maximized'"
+              v-if="store.viewState != 'output-maximized'"
               class="button"
-              v-on:click="$store.commit('setViewState', 'output-maximized')"
+              v-on:click="store.setViewState('output-maximized')"
             >
               <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
             </button>
             <button
-              v-if="$store.state.viewState == 'output-maximized'"
+              v-if="store.viewState == 'output-maximized'"
               class="button"
-              v-on:click="$store.commit('setViewState', 'default')"
+              v-on:click="store.setViewState('default')"
             >
               <img
                 class="expand icon"
@@ -66,7 +66,7 @@
                 alt="Compress"
               />
             </button>
-            <!-- <button class="button" v-on:click="$store.commit('toggleSettings')">
+            <!-- <button class="button" v-on:click="store.toggleSettings()">
             <img class="toggle-settings icon" src="./assets/cog.svg" alt="Settings">
             </button>-->
           </div>
@@ -74,13 +74,14 @@
         <router-view></router-view>
         <router-view name="output-footer"></router-view>
       </div>
-      <!-- <settings v-if="$store.state.showSettings"></settings> -->
+      <!-- <settings v-if="store.showSettings"></settings> -->
     </div>
   </div>
 </template>
 
 <script>
 /* eslint-disable */
+import { useArgdownStore } from "./store.js";
 import AppHeader from "@/components/AppHeader";
 import ArgdownInput from "@/components/ArgdownInput";
 import AppNavigation from "@/components/AppNavigation";
@@ -97,10 +98,13 @@ export default {
     };
   },
   computed: {
+    store() {
+      return useArgdownStore();
+    },
     viewStateClass: function () {
       return {
-        [this.$store.state.viewState]: true,
-        // "show-settings": this.$store.state.showSettings
+        [this.store.viewState]: true,
+        // "show-settings": this.store.showSettings
       };
     },
   },
@@ -113,7 +117,7 @@ export default {
     // Settings
   },
   created() {
-    this.$store.commit("setArgdownInput", this.$store.state.argdownInput); // ensure that the initial input is parsed
+    this.store.setArgdownInput(this.store.argdownInput); // ensure that the initial input is parsed
   },
 };
 </script>
@@ -132,16 +136,36 @@ body {
   margin: 0;
   padding: 0;
   width: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    Segoe UI,
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    Fira Sans,
+    Droid Sans,
+    Helvetica Neue,
+    sans-serif;
   -moz-osx-font-smoothing: grayscale;
 }
 h1,
 h2,
 h3,
 h4 {
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    Segoe UI,
+    Roboto,
+    Oxygen,
+    Ubuntu,
+    Cantarell,
+    Fira Sans,
+    Droid Sans,
+    Helvetica Neue,
+    sans-serif;
   font-weight: 500;
 }
 button {
@@ -273,8 +297,20 @@ button .icon {
 }
 .output-maximized {
   .main-window {
+    max-height: 100vh !important;
+    height: 100vh !important;
+    
+    #left-slot {
+      display: none;
+    }
     #right-slot {
       width: 100%;
+      max-height: 100vh;
+      height: 100vh;
+    }
+    .output {
+      max-height: calc(100vh - 2.5em);
+      height: calc(100vh - 2.5em);
     }
   }
 }
@@ -292,6 +328,9 @@ button .icon {
   flex: 1;
   min-width: 0;
   min-height: 0;
+  max-height: 90vh;
+  overflow: hidden;
+  
   .input-header,
   .output-header {
     height: 2.5em;
@@ -299,6 +338,7 @@ button .icon {
     display: flex;
     justify-content: space-between;
     flex-direction: row;
+    flex-shrink: 0;
     h3 {
       margin: 0;
       padding: 0;
@@ -315,11 +355,16 @@ button .icon {
     display: flex;
     padding: 0;
     flex-direction: column;
+    max-height: 100vh;
+    overflow: hidden;
   }
   #right-slot {
     width: 50%;
     display: flex;
     flex-direction: column;
+    max-height: 100vh;
+    overflow: hidden;
+    
     .output {
       border-top: 1px solid $border-color;
       flex: 1;
@@ -328,6 +373,8 @@ button .icon {
       /* Firefox bug fix styles */
       min-width: 0;
       min-height: 0;
+      max-height: calc(100vh - 2.5em);
+      overflow: hidden;
       /* End of Firefox bug fix styles */
       .content {
         flex: 1;
@@ -337,6 +384,7 @@ button .icon {
         min-width: 0;
         min-height: 0;
         overflow: auto;
+        max-height: 100%;
       }
     }
   }
