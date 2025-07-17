@@ -1,6 +1,6 @@
 <script>
 export default {
-  name: "modal",
+  name: "app-modal",
   methods: {
     close() {
       this.$emit("close");
@@ -10,7 +10,7 @@ export default {
 </script>
 <template>
   <transition name="modal-fade">
-    <div class="modal-backdrop">
+    <div class="modal-backdrop" v-if="true">
       <div
         class="modal"
         role="dialog"
@@ -19,7 +19,7 @@ export default {
       >
         <header class="modal-header" id="modalTitle">
           <slot name="header">
-            This is the default tile!
+            This is the default title!
 
             <button
               type="button"

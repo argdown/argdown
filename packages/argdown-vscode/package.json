@@ -16,7 +16,7 @@
     "url": "https://github.com/christianvoigt/argdown/issues"
   },
   "engines": {
-    "vscode": "^1.63.1"
+    "vscode": "^1.99.1"
   },
   "categories": [
     "Programming Languages",
@@ -533,7 +533,6 @@
     "open-in-browser": "vscode-test-web --extensionDevelopmentPath=. ./test"
   },
   "dependencies": {
-    "@aduh95/viz.js": "3.7.0",
     "@argdown/core": "^1.7.5",
     "@argdown/language-server": "^1.7.12",
     "@argdown/map-views": "^1.7.10",
@@ -547,6 +546,7 @@
     "lodash.throttle": "^4.1.1",
     "pdfkit": "^0.16.0",
     "string-replace-loader": "^3.1.0",
+    "viz.js": "^2.1.2",
     "vscode-languageclient": "9.0.1"
   },
   "devDependencies": {
@@ -567,7 +567,7 @@
     "glob": "^11.0.1",
     "mocha": "11.1.0",
     "path-browserify": "^1.0.1",
-    "process": "git+https://github.com/argdown/node-process",
+    "process": "^0.11.10",
     "raw-loader": "^4.0.1",
     "rimraf": "^6.0.1",
     "style-loader": "4.0.0",
@@ -575,6 +575,7 @@
     "transform-loader": "^0.2.4",
     "ts-loader": "^9.5.2",
     "typescript": "^5.8.3",
+    "vm-browserify": "^1.1.2",
     "webpack": "^5.99.5",
     "webpack-cli": "6.0.1"
   }

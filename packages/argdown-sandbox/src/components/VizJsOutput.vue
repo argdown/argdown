@@ -7,6 +7,7 @@
 </template>
 
 <script>
+import { useArgdownStore } from "../store.js";
 import { EventBus } from "../event-bus.js";
 import { saveAsSvg, saveAsPng } from "../map-export.js";
 import { VizJsMap } from "@argdown/map-views";
@@ -19,40 +20,46 @@ var basePath = process.env.BASE_URL || "/";
 
 export default {
   name: "viz-js-output",
+  computed: {
+    store() {
+      return useArgdownStore();
+    },
+    dot() {
+      this.updateMap();
+      this.store.configData;
+      return this.store.dot;
+    },
+    config() {
+      return this.store.configData;
+    },
+  },
   methods: {
-    updateMap: function () {
+    updateMap() {
       if (!this.$_vizJsMap) {
         return;
       }
-      const exceptions = this.$store.getters.argdownData.exceptions;
+      const exceptions = this.store.argdownData.exceptions;
       if (exceptions && exceptions.length > 0) {
         return;
       }
       let images = undefined;
-      if(this.$store.getters.config.images && this.$store.getters.config.images.files){
-        images = Object.values(this.$store.getters.config.images.files);
+      if (this.config.images && this.config.images.files) {
+        images = Object.values(this.config.images.files);
       }
       const props = {
-        dot: this.$store.getters.dot,
-        settings: {...this.$store.getters.config.vizJs, images},
+        dot: this.store.dot,
+        settings: { ...this.config.vizJs, images },
       };
       this.$_vizJsMap.render(props).catch((e) => console.log(e));
     },
   },
-  computed: {
-    dot: function () {
-      this.updateMap();
-      this.$store.getters.config;
-      return this.$store.getters.dot;
-    },
-  },
   watch: {
-    dot: function () {
+    dot() {
       // console.log('map watcher called!')
     },
   },
 
-  mounted: function () {
+  mounted() {
     const svgContainer = this.$refs.container;
     const workerURL = basePath + "render.browser.js";
     this.$_vizJsMap = new VizJsMap(svgContainer, null, {
@@ -60,9 +67,9 @@ export default {
     });
     this.updateMap();
     var el = this.$refs.container;
-    var $store = this.$store;
+    var store = this.store;
     saveVizAsPng = function () {
-      var scale = $store.state.pngScale;
+      var scale = store.pngScale;
       saveAsPng(el.getElementsByTagName("svg")[0], scale, false);
     };
     saveVizAsSvg = function () {
@@ -71,7 +78,7 @@ export default {
     EventBus.$on("save-map-as-svg", saveVizAsSvg);
     EventBus.$on("save-map-as-png", saveVizAsPng);
   },
-  beforeDestroy: function () {
+  beforeUnmount() {
     EventBus.$off("save-map-as-svg", saveVizAsSvg);
     EventBus.$off("save-map-as-png", saveVizAsPng);
   },
@@ -82,13 +89,18 @@ export default {
 .content {
   flex: 1;
   overflow: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  
   .rendered {
     flex: 1;
     display: flex;
     flex-direction: column;
+    height: 100%;
+    min-height: 0;
     /* Firefox bug fix styles */
     min-width: 0;
-    min-height: 0;
   }
 }
 </style>
