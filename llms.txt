@@ -2,7 +2,9 @@
 
 > Argdown is a simple syntax for analyzing complex argumentation.
 
-## Documentation
+## Docs
 
-- [argdown.org](https://argdown.org)
+- [Guide](https://argdown.org/guide/): Argdown How-to Guides
+- [Syntax](https://argdown.org/syntax/): Argdown Syntax Reference
+- [API](https://argdown.org/api/): Argdown API Documentation
 
