@@ -7,6 +7,7 @@
   "scripts": {
     "serve": "npm run copy-examples && vue-cli-service serve --open",
     "build": "npm run copy-examples && vue-cli-service build --dest ../../docs/.vuepress/dist/sandbox",
+    "test": "echo \"No tests to run here\"",
     "lint": "vue-cli-service lint",
     "copy-examples": "rimraf \"./public/examples\" && copyfiles -f \"../../examples/*.argdown\" ./public/examples"
   },
@@ -20,7 +21,9 @@
     "vue": "^3.4.28",
     "vue-router": "^4.3.2",
     "pinia": "^2.2.1",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "webpack": "5.99.9",
+    "webpack-cli": "^6.0.1"
   },
   "devDependencies": {
     "@babel/plugin-syntax-dynamic-import": "^7.8.3",
