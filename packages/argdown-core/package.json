@@ -19,7 +19,7 @@
     "dist-esm/"
   ],
   "dependencies": {
-    "@aduh95/viz.js": "3.7.0",
+    "@aduh95/viz.js": "3.4.0",
     "@argdown/highlightjs": "1.7.5",
     "@types/chai": "4.2.0",
     "@types/js-yaml": "^4.0.0",

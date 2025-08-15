@@ -11,8 +11,7 @@ import {
   MapPlugin,
   GroupPlugin,
   ColorPlugin,
-  DotExportPlugin,
-  LabelMode
+  DotExportPlugin
 } from "../src";
 import { SyncDotToSvgExportPlugin } from "../src/plugins/SyncDotToSvgExportPlugin";
 
@@ -46,17 +45,14 @@ describe("SyncDotToSvgExportPlugin", function() {
         "export-dot",
         "export-dot-as-svg"
       ],
-      logLevel: "error",
-      map: {
-        argumentLabelMode:  LabelMode.TITLE ,     
-        statementLabelMode: LabelMode.TITLE 
-      }
+      logLevel: "error"
     };
     const response = await app.run(request);
     //let's do some tests for the labels
-    expect(response.svg).to.contain(">n0</text>");
-    expect(response.svg).to.contain(">n1</text>");
-    expect(response.svg).to.contain(">n2</text>");
+    expect(response.svg).to.contain(">A</text>");
+    expect(response.svg).to.contain(">B</text>");
+    expect(response.svg).to.contain(">C</text>");
+    expect(response.svg).to.contain(">test</text>");
     expect(response.svg).to.exist;
   });
 });
