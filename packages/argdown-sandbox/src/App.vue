@@ -88,7 +88,7 @@ import AppNavigation from "@/components/AppNavigation";
 // import Settings from "@/components/Settings";
 import InputNavigation from "@/components/InputNavigation";
 
-import "../node_modules/@argdown/core/dist/plugins/argdown.css";
+import "@argdown/core/dist/plugins/argdown.css";
 
 export default {
   name: "app",
