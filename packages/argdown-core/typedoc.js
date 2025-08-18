@@ -1,5 +1,5 @@
 module.exports = {
-  out: "../../docs/.vuepress/dist/argdown-core",
+  out: "../argdown-docs/docs/.vuepress/dist/argdown-core",
 
   readme: "none",
   exclude: ["**/lexer.ts", "**/parser.ts"],

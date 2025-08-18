@@ -25,6 +25,7 @@ images:
     files:
         dog1: {path: "dog1.jpg", width: 100, height: 85}
 ===
+// ...
 ```
 
 The path to your image file can either be a local path or a url (for security reasons it must be an "https://" address or be relative to the document's url). If you use a relative local file path the path will be relative to the location of your Argdown file.

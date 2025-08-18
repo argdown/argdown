@@ -35,7 +35,7 @@ For further information about the code, consult the [API section](https://christ
 To install this Monorepo
 
 - fork/pull or download this repository
-- run `npm install` in the main folder.
+- run `yarn install` in the main folder to install the dependencies of all packages. This will call .
 - run `npm run lerna:bootstrap` to install the dependencies of all packages. This will call `lerna bootstrap`.
 - run `npm run docs:dev` if you want to work on the documentation. Run `npm run` to see the other scripts available.
 

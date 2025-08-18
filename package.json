@@ -25,6 +25,7 @@
       "packages/argdown-remark-plugin",
       "packages/argdown-web-components",
       "packages/argdown-sandbox",
+      "packages/argdown-docs",
       "packages/ArgVu"
     ],
     "nohoist": [
@@ -45,11 +46,6 @@
     "test:full_log": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":true}' yarn workspaces run test",
     "test:coverage": "yarn workspaces test:coverage",
     "build": "yarn workspaces run build",
-    "docs:dev": "yarn run copy-web-component && vuepress dev ./docs",
-    "docs:buildall": "./build-docs.sh",
-    "docs:build": "yarn run copy-web-component && vuepress build docs",
-    "docs:deploy": "./deploy-docs.sh",
-    "copy-web-component": "node ./copy-web-component.js",
     "install-package": "yarn workspace @argdown/node add @types/pdfkit",
     "yarn:upgrade": "yarn workspaces foreach --all upgrade"
   },
