@@ -1,6 +1,6 @@
-var argdown = require("../../packages/argdown-core/dist/argdown.js").argdown;
+var argdown = require("@argdown/core/dist/argdown.js").argdown;
 var cheatSheetPlugin = require("./markdown-it-plugin-argdown-cheat-sheet");
-var createArgdownPlugin = require("../../packages/argdown-markdown-it-plugin/dist/argdown-markdown-it-plugin.js")
+var createArgdownPlugin = require("@argdown/markdown-it-plugin/dist/argdown-markdown-it-plugin.js")
   .default;
 var container = require("markdown-it-container");
 function createContainer(klass, defaultTitle) {

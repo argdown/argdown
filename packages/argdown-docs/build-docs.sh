@@ -1,8 +1,8 @@
-./#!/usr/bin/env sh
+#! /usr/bin/env sh
 
 npm run docs:build
 
-cd ./packages/argdown-core
+cd ../argdown-core
 
 npm run docs:build
 
@@ -10,7 +10,7 @@ cd ../argdown-node
 
 npm run docs:build
 
-cd ../../
+cd ../argdown-docs
 
 cp ./docs/.vuepress/public/404.html ./docs/.vuepress/dist/404.html
 

@@ -28,21 +28,22 @@ All code is published under the MIT license. The optional Argvu font is publishe
 
 ## About this repository
 
-This repository is a [Monorepo](https://en.wikipedia.org/wiki/Monorepo) containing all packages of the Argdown project. We use [lerna](https://github.com/lerna/lerna) to manage their internal dependencies. You can find all packages in the `packages/` folder.
+This repository is a [Monorepo](https://en.wikipedia.org/wiki/Monorepo) containing all packages of the Argdown project. We use [yarn-workspaces](https://yarnpkg.com/features/workspaces) to manage their internal dependencies. You can find all packages in the `packages/` folder.
 
 For further information about the code, consult the [API section](https://christianvoigt.github.io/argdown/api/) of the documentation.
 
 To install this Monorepo
 
 - fork/pull or download this repository
-- run `npm install` in the main folder.
-- run `npm run lerna:bootstrap` to install the dependencies of all packages. This will call `lerna bootstrap`.
-- run `npm run docs:dev` if you want to work on the documentation. Run `npm run` to see the other scripts available.
+- run `yarn install` in the main folder to install the dependencies of all packages. This will install all the libraries for all the argdown packages.
+- run `yarn build` to build all of the packages. This will call `yarn workspaces run build`.
+- Run `npm run` to see the other scripts available.
 
 ### Installing npm packages
 
 Example:
 
 ```bash
-lerna add xmlbuilder --scope=@argdown/core
+cd packages/argdown-core
+yarn add xmlbuilder
 ```

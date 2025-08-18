@@ -1,7 +1,7 @@
 .DS_Store
 node_modules
 
-/docs/.vuepress/dist/
+/packages/argdown-docs/docs/.vuepress/dist/
 
 .nyc_output
 

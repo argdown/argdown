@@ -7,7 +7,7 @@ import {
 import { argdown as defaultArgdownApplication } from "@argdown/core/dist/argdown";
 import type MarkdownIt from "markdown-it"; 
 import defaultsDeep from "lodash.defaultsdeep";
-import type { Token } from "markdown-it";
+import { Token } from "markdown-it";
 
 const createArgdownPlugin = (config?: ((env:any)=>IArgdownRequest) | IArgdownRequest, customArgdownApplication?: ArgdownApplication) => {
   const argdown = customArgdownApplication || defaultArgdownApplication;

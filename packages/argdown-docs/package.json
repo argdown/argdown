@@ -1,0 +1,37 @@
+{
+  "name": "@argdown/docs",
+  "version": "1.0.0",
+  "description": "The Argdown documentation website.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/christianvoigt/argdown/tree/master/packages/argdown-docs"
+  },
+  "keywords": [
+    "argdown",
+    "documentation"
+  ],
+  "scripts": {
+    "docs:dev": "yarn run copy-web-component && vuepress dev ./docs",
+    "build": "./build-docs.sh",
+    "docs:build": "yarn run copy-web-component && vuepress build docs",
+    "docs:deploy": "./deploy-docs.sh",
+    "copy-web-component": "node ./copy-web-component.js",
+    "test": "echo \"No tests to run here\""
+  },
+  "author": "Christian Voigt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/christianvoigt/argdown/issues"
+  },
+  "homepage": "https://github.com/christianvoigt/argdown",
+  "devDependencies": {
+    "@vuepress/plugin-pwa": "1.8.2",
+    "esm": "^3.2.25",
+    "vuepress": "1.8.2"
+  },
+  "dependencies": {
+    "markdown-it-container": "4.0.0",
+    "vuepress-plugin-sitemap": "2.3.1"
+  }
+}
