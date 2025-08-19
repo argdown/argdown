@@ -41,6 +41,3 @@ node_modules
 *.vsix
 
 CHANGELOG.md
-
-# web test
-.vscode-test-web

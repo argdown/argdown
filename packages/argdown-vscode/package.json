@@ -523,14 +523,11 @@
     "build-node-extension": "webpack --config node-extension.webpack.config.js --mode development",
     "build-web-extension": "webpack --config web-extension.webpack.config.js --mode development",
     "build-preview": "webpack --config preview.webpack.config.js --mode development",
-    "build-test": "tsc --project tsconfig-test.json",
-    "test": "sh ./scripts/e2e.sh",
     "dev-build": "npm run dev-build-extension && npm run dev-build-preview && npm run copy-changelog",
     "dev-build-extension": "tsc -p ./",
     "clean": "rimraf \"dist/\"",
     "dev-build-preview": "webpack --config preview.webpack.config.js --mode development",
-    "copy-changelog": "node ./copy-changelog.js",
-    "open-in-browser": "vscode-test-web --extensionDevelopmentPath=. ./test"
+    "copy-changelog": "node ./copy-changelog.js"
   },
   "dependencies": {
     "@argdown/core": "^1.7.5",
@@ -547,7 +544,8 @@
     "pdfkit": "^0.16.0",
     "string-replace-loader": "^3.1.0",
     "viz.js": "^2.1.2",
-    "vscode-languageclient": "9.0.1"
+    "vscode-languageclient": "9.0.1",
+    "vscode-uri": "^3.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.26.10",
@@ -558,14 +556,11 @@
     "@types/lodash.throttle": "^4.1.9",
     "@types/node": "^22.14.1",
     "@types/vscode": "^1.99.1",
-    "@vscode/test-electron": "^2.5.2",
-    "@vscode/test-web": "^0.0.68",
     "babel-loader": "10.0.0",
     "brfs": "^2.0.2",
     "crypto-browserify": "^3.12.1",
     "css-loader": "7.1.2",
     "glob": "^11.0.1",
-    "mocha": "11.1.0",
     "path-browserify": "^1.0.1",
     "process": "^0.11.10",
     "raw-loader": "^4.0.1",
