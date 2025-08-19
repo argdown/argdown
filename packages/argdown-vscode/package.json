@@ -526,6 +526,7 @@
     "dev-build": "npm run dev-build-extension && npm run dev-build-preview && npm run copy-changelog",
     "dev-build-extension": "tsc -p ./",
     "clean": "rimraf \"dist/\"",
+    "test": "echo \"No tests to run here\"",
     "dev-build-preview": "webpack --config preview.webpack.config.js --mode development",
     "copy-changelog": "node ./copy-changelog.js"
   },
