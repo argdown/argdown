@@ -1,6 +1,6 @@
 var extendMarkdown = require("./extendMarkdown");
 var domain = "https://argdown.org";
-var discord = "https://discord.gg/7WHc4FSt";
+var discord = "https://discord.gg/rFe7nuDbzs";
 // domain = "http://localhost:8080";
 
 module.exports = {
