@@ -21,6 +21,7 @@
       "packages/argdown-remark-plugin",
       "packages/argdown-web-components",
       "packages/argdown-sandbox",
+      "packages/argdown-vscode",
       "packages/argdown-docs",
       "packages/ArgVu"
     ],
