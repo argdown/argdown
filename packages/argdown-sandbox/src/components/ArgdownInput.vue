@@ -1,12 +1,13 @@
 <template>
   <div class="argdown-input" :class="{ 'use-argvu': useArgVu }">
-    <textarea ref="editor" class="argdown-editor"></textarea>
+    <textarea ref="editorRef" class="argdown-editor"></textarea>
   </div>
 </template>
 
 <script>
 import * as _ from "lodash";
 import { useArgdownStore } from "../store.js";
+import { ref, watch, nextTick, onMounted, onBeforeUnmount } from "vue";
 import CodeMirror from "codemirror";
 import "codemirror/lib/codemirror.css";
 import "codemirror/addon/mode/simple";
@@ -15,52 +16,41 @@ import "@argdown/codemirror-mode/codemirror-argdown.css";
 
 export default {
   name: "argdown-input",
-  data() {
-    return {
-      localValue: this.value,
-      editor: null,
-    };
-  },
   props: ["value"],
-  mounted() {
-    CodeMirror.defineSimpleMode("argdown", argdownMode);
-    this.editor = CodeMirror.fromTextArea(this.$refs.editor, {
-      mode: "argdown",
-      lineNumbers: true,
-      theme: "default",
-      tabSize: 4,
-      indentUnit: 4,
-      lineWrapping: false,
-      styleActiveLine: true,
-      extraKeys: {
-        Tab: function (cm) {
-          let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
-          cm.replaceSelection(spaces);
-        },
-      },
-    });
-    this.editor.setValue(this.localValue);
-    this.editor.on("change", (cm) => {
-      this.localValue = cm.getValue();
-      this.debouncedChangeEmission(this.localValue, this);
-    });
-    this.editor.setSize("100%", "100%");
-  },
-  beforeUnmount() {
-    if (this.editor) {
-      this.editor.toTextArea();
-    }
-  },
-  methods: {
-    debouncedChangeEmission: _.debounce(function (value, component) {
-      component.$emit("change", value);
-    }, 100),
-    refreshEditor() {
-      if (this.editor) {
-        this.editor.toTextArea();
+  setup(props, { emit }) {
+    const store = useArgdownStore();
+    
+    // Store setup logging
+    console.log('Component setup - store ID:', store.$id);
+    
+    // Create a local reactive ref for useArgVu
+    const useArgVu = ref(store.useArgVu);
+    
+
+    
+    const localValue = ref(props.value);
+    const editor = ref(null);
+    const editorRef = ref(null);
+    
+    // Add a reactive flag to track when we need to refresh
+    const needsRefresh = ref(false);
+    
+    const debouncedChangeEmission = _.debounce(function (value) {
+      emit("change", value);
+    }, 100);
+    
+    const refreshEditor = () => {
+      // Check if the ref exists before proceeding
+      if (!editorRef.value) {
+        console.log("Editor ref not available yet, skipping refresh");
+        return;
+      }
+      
+      if (editor.value) {
+        editor.value.toTextArea();
       }
       // Re-initialize CodeMirror
-      this.editor = CodeMirror.fromTextArea(this.$refs.editor, {
+      editor.value = CodeMirror.fromTextArea(editorRef.value, {
         mode: "argdown",
         lineNumbers: true,
         theme: "default",
@@ -75,32 +65,83 @@ export default {
           },
         },
       });
-      this.editor.setValue(this.localValue);
-      this.editor.on("change", (cm) => {
-        this.localValue = cm.getValue();
-        this.debouncedChangeEmission(this.localValue, this);
+      editor.value.setValue(localValue.value);
+      editor.value.on("change", (cm) => {
+        localValue.value = cm.getValue();
+        debouncedChangeEmission(localValue.value);
       });
-      this.editor.setSize("100%", "100%");
-    },
-  },
-  computed: {
-    store() {
-      return useArgdownStore();
-    },
-    useArgVu() {
-      return this.store.useArgVuState;
-    },
-  },
-  watch: {
-    useArgVu() {
-      this.refreshEditor();
-    },
-    value(newVal) {
-      if (this.editor && newVal !== this.localValue) {
-        this.localValue = newVal;
-        this.editor.setValue(newVal);
+      editor.value.setSize("100%", "100%");
+    };
+    
+    onMounted(() => {
+      CodeMirror.defineSimpleMode("argdown", argdownMode);
+      editor.value = CodeMirror.fromTextArea(editorRef.value, {
+        mode: "argdown",
+        lineNumbers: true,
+        theme: "default",
+        tabSize: 4,
+        indentUnit: 4,
+        lineWrapping: false,
+        styleActiveLine: true,
+        extraKeys: {
+          Tab: function (cm) {
+            let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+            cm.replaceSelection(spaces);
+          },
+        },
+      });
+      editor.value.setValue(localValue.value);
+      editor.value.on("change", (cm) => {
+        localValue.value = cm.getValue();
+        debouncedChangeEmission(localValue.value);
+      });
+      editor.value.setSize("100%", "100%");
+    });
+    
+    onBeforeUnmount(() => {
+      if (editor.value) {
+        editor.value.toTextArea();
       }
-    },
+      // Clean up the interval
+      clearInterval(intervalId);
+    });
+    
+    // Poll for store changes since reactivity isn't working
+    let lastUseArgVu = store.useArgVu;
+    const checkStoreChanges = () => {
+      const currentUseArgVu = store.useArgVu;
+      if (currentUseArgVu !== lastUseArgVu) {
+        lastUseArgVu = currentUseArgVu;
+        useArgVu.value = currentUseArgVu;
+        needsRefresh.value = true;
+        nextTick(() => {
+          if (needsRefresh.value) {
+            refreshEditor();
+            needsRefresh.value = false;
+          }
+        });
+      }
+    };
+    
+    // Check every 200ms (reduced frequency for better performance)
+    const intervalId = setInterval(checkStoreChanges, 200);
+    
+    // Watch for value prop changes
+    watch(() => props.value, (newVal) => {
+      if (editor.value && newVal !== localValue.value) {
+        localValue.value = newVal;
+        editor.value.setValue(newVal);
+      }
+    });
+    
+    return {
+      store,
+      useArgVu,
+      localValue,
+      editor,
+      editorRef,
+      refreshEditor
+    };
   },
 };
 </script>
@@ -108,8 +149,9 @@ export default {
 <style lang="scss">
 .argdown-input.use-argvu .argdown-editor,
 .argdown-input.use-argvu .CodeMirror {
-  font-family: monospace;
-  font-size: 1em;
+  font-family: 'ArgVu Sans Mono Regular', monospace !important;
+  font-size: 1em !important;
+  font-feature-settings: 'dlig' 1;
 }
 
 .input-maximized {

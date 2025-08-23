@@ -126,6 +126,13 @@ export default {
 /* eslint-disable */
 $border-color: #eee;
 $accent-color: #3e8eaf;
+
+@font-face {
+  font-family: 'ArgVu Sans Mono Regular';
+  src: url('./assets/ArgVuSansMono-Regular-8.2.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
 * {
   box-sizing: border-box;
 }

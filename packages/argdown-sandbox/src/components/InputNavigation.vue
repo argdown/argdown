@@ -39,6 +39,8 @@
 </template>
 <script>
 import { useArgdownStore } from "../store.js";
+import { storeToRefs } from "pinia";
+import { ref } from "vue";
 import appModal from "./modal.vue";
 
 export default {
@@ -46,45 +48,54 @@ export default {
   components: {
     appModal: appModal,
   },
-  methods: {
-    async loadExample(example) {
+  setup() {
+    const store = useArgdownStore();
+    const { useArgVu, argdownInput, examplesList } = storeToRefs(store);
+    
+    const isModalVisible = ref(false);
+    const link = ref("");
+    
+    const loadExample = async (example) => {
       try {
-        await this.store.loadExample({ id: example });
+        await store.loadExample({ id: example });
         // do stuff
       } catch (error) {
         console.error("Failed to load example:", error);
       }
-    },
-    copyLink() {
-      const input = encodeURIComponent(this.store.argdownInput);
-      const link = `https://argdown.org/sandbox/map/?argdown=${input}`;
-      navigator.clipboard.writeText(link);
-      this.link = link;
-      this.showModal();
-    },
-    showModal() {
-      this.isModalVisible = true;
-    },
-    closeModal() {
-      this.isModalVisible = false;
-    },
-    toggleArgVu(event) {
-      this.store.setUseArgVu(event.target.checked);
-    },
-  },
-  data: () => {
-    return {
-      isModalVisible: false,
-      link: "",
     };
-  },
-  computed: {
-    store() {
-      return useArgdownStore();
-    },
-    useArgVu() {
-      return this.store.useArgVuState;
-    },
+    
+    const copyLink = () => {
+      const input = encodeURIComponent(argdownInput.value);
+      const linkText = `https://argdown.org/sandbox/map/?argdown=${input}`;
+      navigator.clipboard.writeText(linkText);
+      link.value = linkText;
+      showModal();
+    };
+    
+    const showModal = () => {
+      isModalVisible.value = true;
+    };
+    
+    const closeModal = () => {
+      isModalVisible.value = false;
+    };
+    
+    const toggleArgVu = (event) => {
+      store.setUseArgVu(event.target.checked);
+    };
+    
+    return {
+      store,
+      useArgVu,
+      examplesList,
+      isModalVisible,
+      link,
+      loadExample,
+      copyLink,
+      showModal,
+      closeModal,
+      toggleArgVu
+    };
   },
 };
 </script>
