@@ -5,7 +5,7 @@
         <div class="dropdown">
           <button class="text-button dropdown-button">Examples</button>
           <ul class="dropdown-content">
-            <li v-for="example in store.examplesList" :key="example.id">
+            <li v-for="example in examplesList" :key="example.id">
               <a href="#" v-on:click.prevent="loadExample(example.id)">{{
                 example.title
               }}</a>
@@ -38,9 +38,6 @@
   </nav>
 </template>
 <script>
-import { useArgdownStore } from "../store.js";
-import { storeToRefs } from "pinia";
-import { ref } from "vue";
 import appModal from "./modal.vue";
 
 export default {
@@ -48,54 +45,52 @@ export default {
   components: {
     appModal: appModal,
   },
-  setup() {
-    const store = useArgdownStore();
-    const { useArgVu, argdownInput, examplesList } = storeToRefs(store);
-    
-    const isModalVisible = ref(false);
-    const link = ref("");
-    
-    const loadExample = async (example) => {
+  data() {
+    return {
+      isModalVisible: false,
+      link: ""
+    };
+  },
+  computed: {
+    useArgVu() {
+      return this.$store.state.useArgVu;
+    },
+    examplesList() {
+      return this.$store.getters.examplesList;
+    },
+    argdownInput() {
+      return this.$store.state.argdownInput;
+    }
+  },
+  methods: {
+    async loadExample(example) {
       try {
-        await store.loadExample({ id: example });
+        await this.$store.dispatch('loadExample', { id: example });
         // do stuff
       } catch (error) {
         console.error("Failed to load example:", error);
       }
-    };
+    },
     
-    const copyLink = () => {
-      const input = encodeURIComponent(argdownInput.value);
+    copyLink() {
+      const input = encodeURIComponent(this.argdownInput);
       const linkText = `https://argdown.org/sandbox/map/?argdown=${input}`;
       navigator.clipboard.writeText(linkText);
-      link.value = linkText;
-      showModal();
-    };
+      this.link = linkText;
+      this.showModal();
+    },
     
-    const showModal = () => {
-      isModalVisible.value = true;
-    };
+    showModal() {
+      this.isModalVisible = true;
+    },
     
-    const closeModal = () => {
-      isModalVisible.value = false;
-    };
+    closeModal() {
+      this.isModalVisible = false;
+    },
     
-    const toggleArgVu = (event) => {
-      store.setUseArgVu(event.target.checked);
-    };
-    
-    return {
-      store,
-      useArgVu,
-      examplesList,
-      isModalVisible,
-      link,
-      loadExample,
-      copyLink,
-      showModal,
-      closeModal,
-      toggleArgVu
-    };
-  },
+    toggleArgVu(event) {
+      this.$store.dispatch('setUseArgVu', event.target.checked);
+    }
+  }
 };
 </script>

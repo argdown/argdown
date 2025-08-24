@@ -127,16 +127,11 @@
 </template>
 
 <script>
-import { useArgdownStore } from "../store.js";
-
 export default {
   name: "settings",
   computed: {
-    store() {
-      return useArgdownStore();
-    },
     config() {
-      return this.store.configData;
+      return this.$store.getters.configData;
     },
   },
 };

@@ -20,31 +20,31 @@
       >
         save map as
         <a class="save-as-svg" v-on:click.stop.prevent="saveAsSvg" href>svg</a>
-        <a
-          class="save as png"
-          v-on:click.stop.prevent="store.openSaveAsPngDialog()"
-          href
-          >png</a
-        >
+                 <a
+           class="save as png"
+           v-on:click.stop.prevent="$store.dispatch('openSaveAsPngDialog')"
+           href
+           >png</a
+         >
       </li>
     </ul>
-    <div class="save-as-png-dialog" v-if="store.showSaveAsPngDialog">
-      <h3>PNG Export</h3>
-      <label for="save-as-png-scale">Scale</label>
-      <input
-        v-model="store.pngScale"
-        type="number"
-        min="0"
-        max="100"
-        id="save-as-png-scale"
-      />
+         <div class="save-as-png-dialog" v-if="$store.state.showSaveAsPngDialog">
+       <h3>PNG Export</h3>
+       <label for="save-as-png-scale">Scale</label>
+       <input
+         v-model="$store.state.pngScale"
+         type="number"
+         min="0"
+         max="100"
+         id="save-as-png-scale"
+       />
       <div class="submit-cancel">
         <button type="button" v-on:click.prevent.stop="saveAsPng">
           Create PNG
         </button>
         <button
           type="button"
-          v-on:click.prevent.stop="store.closeSaveAsPngDialog()"
+          v-on:click.prevent.stop="$store.dispatch('closeSaveAsPngDialog')"
         >
           Cancel
         </button>
@@ -54,14 +54,10 @@
 </template>
 
 <script>
-import { useArgdownStore } from "../store.js";
 import { EventBus } from "../event-bus.js";
 
 export default {
   computed: {
-    store() {
-      return useArgdownStore();
-    },
     currentRoute() {
       return this.$route;
     }
@@ -84,7 +80,7 @@ export default {
     },
     saveAsPng() {
       EventBus.$emit("save-map-as-png");
-      this.store.closeSaveAsPngDialog();
+      this.$store.dispatch('closeSaveAsPngDialog');
     },
   },
 };

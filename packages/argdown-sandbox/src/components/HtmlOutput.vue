@@ -10,8 +10,6 @@
 </template>
 
 <script>
-import { useArgdownStore } from "../store.js";
-
 export default {
   name: "html-output",
   props: {
@@ -21,13 +19,10 @@ export default {
     }
   },
   computed: {
-    store() {
-      return useArgdownStore();
-    },
     html() {
-      return this.store.html;
-    },
-  },
+      return this.$store.getters.html;
+    }
+  }
 };
 </script>
 

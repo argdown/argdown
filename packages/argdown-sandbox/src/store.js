@@ -1,4 +1,5 @@
-import { defineStore } from "pinia";
+import Vue from 'vue';
+import Vuex from 'vuex';
 import _ from "lodash";
 import { dagreDefaultSettings } from "@argdown/map-views";
 import { vizJsDefaultSettings } from "@argdown/map-views";
@@ -26,6 +27,8 @@ import {
   ExplodeArgumentsPlugin,
 } from "@argdown/core";
 import axios from "axios";
+
+Vue.use(Vuex);
 
 const app = new ArgdownApplication();
 const parserPlugin = new ParserPlugin();
@@ -102,8 +105,8 @@ var examples = {
   },
 };
 
-export const useArgdownStore = defineStore("argdown", {
-  state: () => ({
+export default new Vuex.Store({
+  state: {
     argdownInput: primer,
     examples: examples,
     useArgVu: false,
@@ -138,7 +141,7 @@ export const useArgdownStore = defineStore("argdown", {
     showSettings: false,
     showSaveAsPngDialog: false,
     pngScale: 1,
-  }),
+  },
 
   getters: {
     argdownData: (state) => {
@@ -150,7 +153,8 @@ export const useArgdownStore = defineStore("argdown", {
         state.config,
       );
       try {
-        return app.run(request);
+        const result = app.run(request);
+        return result;
       } catch (e) {
         if (request.logLevel === "verbose") {
           console.log(e);
@@ -158,30 +162,34 @@ export const useArgdownStore = defineStore("argdown", {
         return {};
       }
     },
-    configData(state) {
-      const data = this.argdownData;
+    configData: (state, getters) => {
+      const data = getters.argdownData;
       return _.defaultsDeep({}, data.frontMatter, state.config);
     },
     examplesList: (state) => {
       return state.examples ? Object.values(state.examples) : [];
     },
-    html() {
-      const data = this.argdownData;
-      if (!data?.ast) {
-        return null;
-      }
+    html: (state) => {
+      const input = state.argdownInput;
       const request = _.defaultsDeep(
         {
-          process: ["colorize", "export-html"],
+          input: input,
+          process: ["parse-input", "build-model", "colorize", "export-html"],
         },
-        data.frontMatter,
-        this.configData,
+        state.config,
       );
-      const response = app.run(request, data);
-      return response.html;
+      try {
+        const response = app.run(request);
+        return response.html;
+      } catch (e) {
+        if (request.logLevel === "verbose") {
+          console.log(e);
+        }
+        return null;
+      }
     },
-    dot() {
-      const data = this.argdownData;
+    dot: (state, getters) => {
+      const data = getters.argdownData;
       if (!data?.ast) {
         return null;
       }
@@ -195,13 +203,13 @@ export const useArgdownStore = defineStore("argdown", {
           ],
         },
         data.frontMatter,
-        this.configData,
+        getters.configData,
       );
       const response = app.run(request, data);
       return response.dot;
     },
-    graphml() {
-      const data = this.argdownData;
+    graphml: (state, getters) => {
+      const data = getters.argdownData;
       if (!data?.ast) {
         return null;
       }
@@ -210,13 +218,13 @@ export const useArgdownStore = defineStore("argdown", {
           process: ["build-map", "colorize", "export-graphml"],
         },
         data.frontMatter,
-        this.configData,
+        getters.configData,
       );
       const response = app.run(request, data);
       return response.graphml;
     },
-    json() {
-      const data = this.argdownData;
+    json: (state, getters) => {
+      const data = getters.argdownData;
       if (!data?.ast) {
         return null;
       }
@@ -225,36 +233,35 @@ export const useArgdownStore = defineStore("argdown", {
           process: ["build-map", "colorize", "export-json"],
         },
         data.frontMatter,
-        this.configData,
+        getters.configData,
       );
       const response = app.run(request, data);
       return response.json;
     },
-    parserErrors() {
-      return this.argdownData?.parserErrors || [];
+    parserErrors: (state, getters) => {
+      return getters.argdownData?.parserErrors || [];
     },
-    lexerErrors() {
-      return this.argdownData?.lexerErrors || [];
+    lexerErrors: (state, getters) => {
+      return getters.argdownData?.lexerErrors || [];
     },
-    statements() {
-      return this.argdownData?.statements || [];
+    statements: (state, getters) => {
+      return getters.argdownData?.statements || [];
     },
-    arguments() {
-      return this.argdownData?.arguments || [];
+    arguments: (state, getters) => {
+      return getters.argdownData?.arguments || [];
     },
-    relations() {
-      return this.argdownData?.relations || [];
+    relations: (state, getters) => {
+      return getters.argdownData?.relations || [];
     },
-    ast() {
-      return this.argdownData?.ast ? astToString(this.argdownData.ast) : null;
+    ast: (state, getters) => {
+      return getters.argdownData?.ast ? astToString(getters.argdownData.ast) : null;
     },
-    tokens() {
-      const data = this.argdownData;
-      // eslint-disable-next-line
+    tokens: (state, getters) => {
+      const data = getters.argdownData;
       return data?.tokens ? tokensToString(data.tokens) : null;
     },
-    map() {
-      const data = this.argdownData;
+    map: (state, getters) => {
+      const data = getters.argdownData;
       if (!data?.ast) {
         return null;
       }
@@ -263,56 +270,80 @@ export const useArgdownStore = defineStore("argdown", {
           process: ["build-map", "colorize", "transform-closed-groups"],
         },
         data.frontMatter,
-        this.configData,
+        getters.configData,
       );
       const response = app.run(request, data);
       return response.map;
     },
-    tags() {
-      return this.argdownData?.tags || [];
+    tags: (state, getters) => {
+      return getters.argdownData?.tags || [];
     },
     useArgVuState: (state) => {
       return state.useArgVu;
     },
   },
 
-  actions: {
-    setUseArgVu(value) {
-      this.useArgVu = value;
+  mutations: {
+    setUseArgVu(state, value) {
+      state.useArgVu = value;
     },
-    setArgdownInput(value) {
-      this.argdownInput = value;
+    setArgdownInput(state, value) {
+      state.argdownInput = value;
     },
-    setViewState(value) {
-      this.viewState = value;
+    setViewState(state, value) {
+      state.viewState = value;
     },
-    cacheExample({ id, content }) {
-      var example = this.examples[id];
+    cacheExample(state, { id, content }) {
+      var example = state.examples[id];
       if (example) {
         example.cachedContent = content;
       }
     },
-    toggleSettings() {
-      this.showSettings = !this.showSettings;
+    toggleSettings(state) {
+      state.showSettings = !state.showSettings;
     },
-    openSaveAsPngDialog() {
-      this.showSaveAsPngDialog = true;
+    openSaveAsPngDialog(state) {
+      state.showSaveAsPngDialog = true;
     },
-    closeSaveAsPngDialog() {
-      this.showSaveAsPngDialog = false;
+    closeSaveAsPngDialog(state) {
+      state.showSaveAsPngDialog = false;
     },
-    async loadExample(payload) {
-      var example = this.examples[payload.id];
+  },
+
+  actions: {
+    setUseArgVu({ commit }, value) {
+      commit('setUseArgVu', value);
+    },
+    setArgdownInput({ commit }, value) {
+      commit('setArgdownInput', value);
+    },
+    setViewState({ commit }, value) {
+      commit('setViewState', value);
+    },
+    cacheExample({ commit }, payload) {
+      commit('cacheExample', payload);
+    },
+    toggleSettings({ commit }) {
+      commit('toggleSettings');
+    },
+    openSaveAsPngDialog({ commit }) {
+      commit('openSaveAsPngDialog');
+    },
+    closeSaveAsPngDialog({ commit }) {
+      commit('closeSaveAsPngDialog');
+    },
+    async loadExample({ commit, dispatch }, payload) {
+      var example = this.state.examples[payload.id];
       if (!example) {
         throw new Error("Could not find example");
       }
       if (example.cachedContent) {
-        this.setArgdownInput(example.cachedContent);
+        dispatch('setArgdownInput', example.cachedContent);
         return;
       }
       const response = await axios.get(example.url);
-      this.cacheExample({ id: example.id, content: response.data });
-      this.setArgdownInput(response.data);
+      commit('cacheExample', { id: example.id, content: response.data });
+      dispatch('setArgdownInput', response.data);
     },
   },
 });

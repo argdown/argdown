@@ -3,69 +3,69 @@
     <div
       id="top-slot"
       v-if="
-        store.viewState != 'input-maximized' &&
-        store.viewState != 'output-maximized'
+        $store.state.viewState != 'input-maximized' &&
+        $store.state.viewState != 'output-maximized'
       "
     >
       <app-header></app-header>
       <app-navigation></app-navigation>
     </div>
     <div class="main-window">
-      <div id="left-slot" v-if="store.viewState != 'output-maximized'">
-        <div class="input-header">
-          <InputNavigation />
-          <button
-            v-if="store.viewState != 'input-maximized'"
-            class="button"
-            v-on:click="store.setViewState('input-maximized')"
-          >
-            <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
-          </button>
-          <button
-            v-if="store.viewState == 'input-maximized'"
-            class="button"
-            v-on:click="store.setViewState('default')"
-          >
-            <img
-              class="expand icon"
-              src="./assets/compress.svg"
-              alt="Compress"
-            />
-          </button>
-        </div>
-        <argdown-input
-          v-bind:value="store.argdownInput"
-          v-on:change="
-            (value) => {
-              store.setArgdownInput(value);
-            }
-          "
-        ></argdown-input>
-      </div>
-      <div id="right-slot" v-if="store.viewState != 'input-maximized'">
-        <div class="output-header">
-          <div class="output-sub-menu">
-            <router-view name="output-header"></router-view>
-          </div>
-          <div class="output-view-state-buttons">
-            <button
-              v-if="store.viewState != 'output-maximized'"
-              class="button"
-              v-on:click="store.setViewState('output-maximized')"
-            >
-              <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
-            </button>
-            <button
-              v-if="store.viewState == 'output-maximized'"
-              class="button"
-              v-on:click="store.setViewState('default')"
-            >
-              <img
-                class="expand icon"
-                src="./assets/compress.svg"
-                alt="Compress"
-              />
-            </button>
+             <div id="left-slot" v-if="$store.state.viewState != 'output-maximized'">
+         <div class="input-header">
+           <InputNavigation />
+           <button
+             v-if="$store.state.viewState != 'input-maximized'"
+             class="button"
+             v-on:click="$store.dispatch('setViewState', 'input-maximized')"
+           >
+             <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
+           </button>
+           <button
+             v-if="$store.state.viewState == 'input-maximized'"
+             class="button"
+             v-on:click="$store.dispatch('setViewState', 'default')"
+           >
+             <img
+               class="expand icon"
+               src="./assets/compress.svg"
+               alt="Compress"
+             />
+           </button>
+         </div>
+                  <argdown-input
+            v-bind:value="$store.state.argdownInput"
+            v-on:change="
+              (value) => {
+                $store.dispatch('setArgdownInput', value);
+              }
+            "
+          ></argdown-input>
+       </div>
+       <div id="right-slot" v-if="$store.state.viewState != 'input-maximized'">
+         <div class="output-header">
+           <div class="output-sub-menu">
+             <router-view name="output-header"></router-view>
+           </div>
+           <div class="output-view-state-buttons">
+             <button
+               v-if="$store.state.viewState != 'output-maximized'"
+               class="button"
+               v-on:click="$store.dispatch('setViewState', 'output-maximized')"
+             >
+               <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
+             </button>
+             <button
+               v-if="$store.state.viewState == 'output-maximized'"
+               class="button"
+               v-on:click="$store.dispatch('setViewState', 'default')"
+             >
+               <img
+                 class="expand icon"
+                 src="./assets/compress.svg"
+                 alt="Compress"
+               />
+             </button>
             <!-- <button class="button" v-on:click="store.toggleSettings()">
             <img class="toggle-settings icon" src="./assets/cog.svg" alt="Settings">
             </button>-->
@@ -81,7 +81,6 @@
 
 <script>
 /* eslint-disable */
-import { useArgdownStore } from "./store.js";
 import AppHeader from "@/components/AppHeader";
 import ArgdownInput from "@/components/ArgdownInput";
 import AppNavigation from "@/components/AppNavigation";
@@ -98,13 +97,10 @@ export default {
     };
   },
   computed: {
-    store() {
-      return useArgdownStore();
-    },
     viewStateClass: function () {
       return {
-        [this.store.viewState]: true,
-        // "show-settings": this.store.showSettings
+        [this.$store.state.viewState]: true,
+        // "show-settings": this.$store.state.showSettings
       };
     },
   },
@@ -117,7 +113,7 @@ export default {
     // Settings
   },
   created() {
-    this.store.setArgdownInput(this.store.argdownInput); // ensure that the initial input is parsed
+    this.$store.dispatch('setArgdownInput', this.$store.state.argdownInput); // ensure that the initial input is parsed
   },
 };
 </script>

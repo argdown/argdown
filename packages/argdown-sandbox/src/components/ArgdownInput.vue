@@ -6,8 +6,6 @@
 
 <script>
 import * as _ from "lodash";
-import { useArgdownStore } from "../store.js";
-import { ref, watch, nextTick, onMounted, onBeforeUnmount } from "vue";
 import CodeMirror from "codemirror";
 import "codemirror/lib/codemirror.css";
 import "codemirror/addon/mode/simple";
@@ -17,40 +15,64 @@ import "@argdown/codemirror-mode/codemirror-argdown.css";
 export default {
   name: "argdown-input",
   props: ["value"],
-  setup(props, { emit }) {
-    const store = useArgdownStore();
+  data() {
+    return {
+      localValue: this.value,
+      editor: null,
+      needsRefresh: false
+    };
+  },
+  computed: {
+    useArgVu() {
+      return this.$store.state.useArgVu;
+    }
+  },
+  watch: {
+    useArgVu(newVal, oldVal) {
+      if (newVal !== oldVal) {
+        this.needsRefresh = true;
+        this.$nextTick(() => {
+          if (this.needsRefresh) {
+            this.refreshEditor();
+            this.needsRefresh = false;
+          }
+        });
+      }
+    },
+    '$store.state.argdownInput'(newVal) {
+      if (this.editor && newVal !== this.localValue) {
+        // Only update if it's a significant change (example switching)
+        if (!newVal.includes(this.localValue) && !this.localValue.includes(newVal)) {
+          console.log('Setting editor value to new content (example switch)');
+          this.localValue = newVal;
+          this.editor.setValue(newVal);
+          this.editor.refresh();
+        }
+      }
+    },
+    value(newVal) {
+      if (this.editor && newVal !== this.localValue) {
+        this.localValue = newVal;
+        this.editor.setValue(newVal);
+      }
+    }
+  },
+  methods: {
+    debouncedChangeEmission: _.debounce(function (value) {
+      this.$emit("change", value);
+    }, 100),
     
-    // Store setup logging
-    console.log('Component setup - store ID:', store.$id);
-    
-    // Create a local reactive ref for useArgVu
-    const useArgVu = ref(store.useArgVu);
-    
-
-    
-    const localValue = ref(props.value);
-    const editor = ref(null);
-    const editorRef = ref(null);
-    
-    // Add a reactive flag to track when we need to refresh
-    const needsRefresh = ref(false);
-    
-    const debouncedChangeEmission = _.debounce(function (value) {
-      emit("change", value);
-    }, 100);
-    
-    const refreshEditor = () => {
-      // Check if the ref exists before proceeding
-      if (!editorRef.value) {
+    refreshEditor() {
+      if (!this.$refs.editorRef) {
         console.log("Editor ref not available yet, skipping refresh");
         return;
       }
       
-      if (editor.value) {
-        editor.value.toTextArea();
+      if (this.editor) {
+        this.editor.toTextArea();
       }
       // Re-initialize CodeMirror
-      editor.value = CodeMirror.fromTextArea(editorRef.value, {
+      this.editor = CodeMirror.fromTextArea(this.$refs.editorRef, {
         mode: "argdown",
         lineNumbers: true,
         theme: "default",
@@ -59,90 +81,50 @@ export default {
         lineWrapping: true,
         styleActiveLine: true,
         extraKeys: {
-          Tab: function (cm) {
+          Tab: (cm) => {
             let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
             cm.replaceSelection(spaces);
           },
         },
       });
-      editor.value.setValue(localValue.value);
-      editor.value.on("change", (cm) => {
-        localValue.value = cm.getValue();
-        debouncedChangeEmission(localValue.value);
+      this.editor.setValue(this.localValue);
+      this.editor.on("change", (cm) => {
+        this.localValue = cm.getValue();
+        this.debouncedChangeEmission(cm.getValue());
       });
-      editor.value.setSize("100%", "100%");
-    };
-    
-    onMounted(() => {
-      CodeMirror.defineSimpleMode("argdown", argdownMode);
-      editor.value = CodeMirror.fromTextArea(editorRef.value, {
-        mode: "argdown",
-        lineNumbers: true,
-        theme: "default",
-        tabSize: 4,
-        indentUnit: 4,
-        lineWrapping: false,
-        styleActiveLine: true,
-        extraKeys: {
-          Tab: function (cm) {
-            let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
-            cm.replaceSelection(spaces);
-          },
-        },
-      });
-      editor.value.setValue(localValue.value);
-      editor.value.on("change", (cm) => {
-        localValue.value = cm.getValue();
-        debouncedChangeEmission(localValue.value);
-      });
-      editor.value.setSize("100%", "100%");
-    });
-    
-    onBeforeUnmount(() => {
-      if (editor.value) {
-        editor.value.toTextArea();
-      }
-      // Clean up the interval
-      clearInterval(intervalId);
-    });
-    
-    // Poll for store changes since reactivity isn't working
-    let lastUseArgVu = store.useArgVu;
-    const checkStoreChanges = () => {
-      const currentUseArgVu = store.useArgVu;
-      if (currentUseArgVu !== lastUseArgVu) {
-        lastUseArgVu = currentUseArgVu;
-        useArgVu.value = currentUseArgVu;
-        needsRefresh.value = true;
-        nextTick(() => {
-          if (needsRefresh.value) {
-            refreshEditor();
-            needsRefresh.value = false;
-          }
-        });
-      }
-    };
-    
-    // Check every 200ms (reduced frequency for better performance)
-    const intervalId = setInterval(checkStoreChanges, 200);
-    
-    // Watch for value prop changes
-    watch(() => props.value, (newVal) => {
-      if (editor.value && newVal !== localValue.value) {
-        localValue.value = newVal;
-        editor.value.setValue(newVal);
-      }
-    });
-    
-    return {
-      store,
-      useArgVu,
-      localValue,
-      editor,
-      editorRef,
-      refreshEditor
-    };
+      this.editor.setSize("100%", "100%");
+    }
   },
+  mounted() {
+    CodeMirror.defineSimpleMode("argdown", argdownMode);
+    this.editor = CodeMirror.fromTextArea(this.$refs.editorRef, {
+      mode: "argdown",
+      lineNumbers: true,
+      theme: "default",
+      tabSize: 4,
+      indentUnit: 4,
+      lineWrapping: false,
+      styleActiveLine: true,
+      extraKeys: {
+        Tab: (cm) => {
+          let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+          cm.replaceSelection(spaces);
+        },
+      },
+    });
+    this.editor.setValue(this.localValue);
+    this.editor.on("change", (cm) => {
+      this.localValue = cm.getValue();
+      this.debouncedChangeEmission(cm.getValue());
+    });
+    this.editor.setSize("100%", "100%");
+  },
+  // eslint-disable-next-line vue/no-deprecated-destroyed-lifecycle
+  beforeDestroy() {
+    if (this.editor) {
+      this.editor.toTextArea();
+    }
+  }
 };
 </script>
 

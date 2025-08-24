@@ -1,4 +1,5 @@
-import { createRouter, createWebHistory } from "vue-router";
+import Vue from "vue";
+import VueRouter from "vue-router";
 import HtmlOutput from "@/components/HtmlOutput";
 import HtmlNavigation from "@/components/HtmlNavigation";
 import JSONOutput from "@/components/JSONOutput";
@@ -9,14 +10,16 @@ import DebugLexerParserOutput from "@/components/DebugLexerParserOutput";
 import DebugModelOutput from "@/components/DebugModelOutput";
 import DebugNavigation from "@/components/DebugNavigation";
 import MapNavigation from "@/components/MapNavigation";
-import { useArgdownStore } from "../store";
+
+Vue.use(VueRouter);
 
 const VizJsOutput = () => import("@/components/VizJsOutput.vue");
 
 const DagreD3Output = () => import("@/components/DagreD3Output.vue");
 
-const router = createRouter({
-  history: createWebHistory("/sandbox/"),
+const router = new VueRouter({
+  mode: "history",
+  base: "/sandbox/",
   scrollBehavior(to) {
     if (to.hash) {
       return {
@@ -109,8 +112,11 @@ const router = createRouter({
 let currentArgdownQuery = "";
 router.beforeEach((to, from, next) => {
   if (to.query.argdown && to.query.argdown != currentArgdownQuery) {
-    const store = useArgdownStore();
-    store.setArgdownInput(decodeURIComponent(to.query.argdown));
+    // Access store through the Vue instance
+    const store = router.app.$store;
+    if (store) {
+      store.dispatch('setArgdownInput', decodeURIComponent(to.query.argdown));
+    }
     currentArgdownQuery = to.query.argdown;
     delete to.query.argdown;
     next(to);

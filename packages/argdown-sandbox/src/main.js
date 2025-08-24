@@ -1,20 +1,20 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import { createApp } from "vue";
-import { createPinia } from "pinia";
+import Vue from "vue";
 import App from "./App";
 import router from "./router";
+import store from "./store";
 
-const app = createApp(App);
-const pinia = createPinia();
+Vue.config.productionTip = false;
 
-app.config.globalProperties.$filters = {
-  tokenName: function (token) {
-    return token.tokenType.name;
-  },
-};
+Vue.filter('tokenName', function (token) {
+  return token.tokenType.name;
+});
 
-app.use(pinia);
-app.use(router);
-
-app.mount("#app");
+/* eslint-disable no-new */
+new Vue({
+  el: '#app',
+  router,
+  store,
+  render: h => h(App)
+});

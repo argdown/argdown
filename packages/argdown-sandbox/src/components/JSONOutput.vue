@@ -1,19 +1,17 @@
 <template>
   <div class="json-output">
-    <pre>{{ store.json }}</pre>
+    <pre>{{ json }}</pre>
   </div>
 </template>
 
 <script>
-import { useArgdownStore } from "../store.js";
-
 export default {
   name: "json-output",
   computed: {
-    store() {
-      return useArgdownStore();
-    },
-  },
+    json() {
+      return this.$store.getters.json;
+    }
+  }
 };
 </script>
 

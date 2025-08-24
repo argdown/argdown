@@ -18,9 +18,9 @@
     "@argdown/map-views": "^1.7.10",
     "axios": "^1.7.9",
     "file-saver": "^2.0.5",
-    "vue": "^3.4.28",
-    "vue-router": "^4.3.2",
-    "pinia": "^2.2.1",
+    "vue": "^2.7.16",
+    "vue-router": "^3.6.5",
+    "vuex": "^3.6.2",
     "lodash": "^4.17.21",
     "webpack": "5.99.9",
     "webpack-cli": "^6.0.1"

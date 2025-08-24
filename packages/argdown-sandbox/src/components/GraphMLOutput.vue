@@ -1,19 +1,17 @@
 <template>
   <div class="graphml-output">
-    <pre>{{ store.graphml }}</pre>
+    <pre>{{ graphml }}</pre>
   </div>
 </template>
 
 <script>
-import { useArgdownStore } from "../store.js";
-
 export default {
   name: "graphml-output",
   computed: {
-    store() {
-      return useArgdownStore();
-    },
-  },
+    graphml() {
+      return this.$store.getters.graphml;
+    }
+  }
 };
 </script>
 

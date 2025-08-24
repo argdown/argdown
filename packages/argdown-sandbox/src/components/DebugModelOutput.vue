@@ -1,48 +1,48 @@
 <template>
   <div class="debug-model-output output">
     <div class="content">
-      <table v-if="store.statements">
+      <table v-if="statements">
         <tr
           class="statement"
-          v-for="(key, index) in Object.keys(store.statements)"
+          v-for="(key, index) in Object.keys(statements)"
           :key="index"
         >
           <td class="title">
-            <b>title: </b> "{{ store.statements[key].title }}":
+            <b>title: </b> "{{ statements[key].title }}":
           </td>
           <td class="relations">
             <b>relations: </b>
             {{
-              store.statements[key].relations
-                ? store.statements[key].relations.length
+              statements[key].relations
+                ? statements[key].relations.length
                 : 0
             }}
           </td>
         </tr>
       </table>
-      <table v-if="store.arguments">
+      <table v-if="arguments">
         <tr
           class="argument"
-          v-for="(key, index) in Object.keys(store.arguments)"
+          v-for="(key, index) in Object.keys(arguments)"
           :key="index"
         >
           <td class="title">
-            <b>title: </b>"{{ store.arguments[key].title }}"
+            <b>title: </b>"{{ arguments[key].title }}"
           </td>
           <td class="relations">
             <b>relations:</b>
             {{
-              store.arguments[key].relations
-                ? store.arguments[key].relations.length
+              arguments[key].relations
+                ? arguments[key].relations.length
                 : 0
             }}
           </td>
         </tr>
       </table>
-      <table v-if="store.relations">
+      <table v-if="relations">
         <tr
           class="relation"
-          v-for="(relation, index) in store.relations"
+          v-for="(relation, index) in relations"
           :key="index"
         >
           <td class="relation-type">
@@ -57,15 +57,19 @@
 </template>
 
 <script>
-import { useArgdownStore } from "../store.js";
-
 export default {
   name: "debug-model-output",
   computed: {
-    store() {
-      return useArgdownStore();
+    statements() {
+      return this.$store.getters.statements;
     },
-  },
+    arguments() {
+      return this.$store.getters.arguments;
+    },
+    relations() {
+      return this.$store.getters.relations;
+    }
+  }
 };
 </script>
 

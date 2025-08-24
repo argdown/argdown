@@ -2,13 +2,13 @@
   <div class="debug-output output">
     <div class="content">
       <div
-        v-if="store.lexerErrors && store.lexerErrors.length > 0"
+        v-if="lexerErrors && lexerErrors.length > 0"
         class="lexer-errors"
       >
-        <h2>Parser Errors ({{ store.lexerErrors.length }})</h2>
+        <h2>Parser Errors ({{ lexerErrors.length }})</h2>
         <table
           class="lexer-error error"
-          v-for="(error, index) in store.lexerErrors"
+          v-for="(error, index) in lexerErrors"
           :key="index"
         >
           <tbody>
@@ -20,13 +20,13 @@
         </table>
       </div>
       <div
-        v-if="store.parserErrors && store.parserErrors.length > 0"
+        v-if="parserErrors && parserErrors.length > 0"
         class="parser-errors"
       >
-        <h2>Parser Errors ({{ store.parserErrors.length }})</h2>
+        <h2>Parser Errors ({{ parserErrors.length }})</h2>
         <table
           class="parser-error error"
-          v-for="(error, index) in store.parserErrors"
+          v-for="(error, index) in parserErrors"
           :key="index"
         >
           <tbody>
@@ -37,28 +37,35 @@
           </tbody>
         </table>
       </div>
-      <div v-if="store.ast" class="ast">
+      <div v-if="ast" class="ast">
         <h2>AST</h2>
-        <pre v-html="store.ast"></pre>
+        <pre v-html="ast"></pre>
       </div>
-      <div v-if="store.tokens" class="tokens">
+      <div v-if="tokens" class="tokens">
         <h2>Tokens</h2>
-        <pre v-html="store.tokens"></pre>
+        <pre v-html="tokens"></pre>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { useArgdownStore } from "../store.js";
-
 export default {
   name: "debug-lexer-parser-output",
   computed: {
-    store() {
-      return useArgdownStore();
+    lexerErrors() {
+      return this.$store.getters.lexerErrors;
     },
-  },
+    parserErrors() {
+      return this.$store.getters.parserErrors;
+    },
+    ast() {
+      return this.$store.getters.ast;
+    },
+    tokens() {
+      return this.$store.getters.tokens;
+    }
+  }
 };
 </script>
 

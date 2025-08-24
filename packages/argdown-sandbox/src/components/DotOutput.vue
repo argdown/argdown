@@ -1,19 +1,17 @@
 <template>
   <div class="dot-output">
-    <pre>{{ store.dot }}</pre>
+    <pre>{{ dot }}</pre>
   </div>
 </template>
 
 <script>
-import { useArgdownStore } from "../store.js";
-
 export default {
   name: "dot-output",
   computed: {
-    store() {
-      return useArgdownStore();
-    },
-  },
+    dot() {
+      return this.$store.getters.dot;
+    }
+  }
 };
 </script>
 
