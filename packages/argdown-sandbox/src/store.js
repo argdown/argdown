@@ -301,7 +301,27 @@ export const useArgdownStore = defineStore('argdown', () => {
   }
 
   function setArgdownInput(value) {
-    argdownInput.value = value;
+    // Only update if we have a valid string value
+    if (typeof value === 'string') {
+      argdownInput.value = value;
+    } else if (value && typeof value === 'object') {
+      // For objects, be more conservative - only update if we can extract meaningful content
+      if (value.content && typeof value.content === 'string') {
+        argdownInput.value = value.content;
+      } else if (value.data && typeof value.data === 'string') {
+        argdownInput.value = value.data;
+      } else if (value.text && typeof value.text === 'string') {
+        argdownInput.value = value.text;
+      } else {
+        // Don't update if we can't extract meaningful string content
+        console.log('Skipping object update - no valid string content found');
+        return;
+      }
+    } else {
+      // For other types (null, undefined, etc.), don't update to preserve existing content
+      console.log('Skipping update - invalid value type:', typeof value);
+      return;
+    }
   }
 
   function setViewState(value) {
@@ -337,8 +357,10 @@ export const useArgdownStore = defineStore('argdown', () => {
       return;
     }
     const response = await axios.get(example.url);
-    cacheExample({ id: example.id, content: response.data });
-    setArgdownInput(response.data);
+    // Ensure we cache the string content
+    const content = typeof response.data === 'string' ? response.data : String(response.data || '');
+    cacheExample({ id: example.id, content: content });
+    setArgdownInput(content);
   }
 
   return {

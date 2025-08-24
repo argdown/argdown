@@ -20,7 +20,7 @@ export default {
   setup(props, { emit }) {
     const store = useArgdownStore();
     const editorRef = ref(null);
-    const localValue = ref(props.value);
+    const localValue = ref(String(props.value || ''));
     const editor = ref(null);
     const needsRefresh = ref(false);
     
@@ -55,7 +55,7 @@ export default {
           },
         },
       });
-      editor.value.setValue(localValue.value);
+      editor.value.setValue(String(localValue.value || ''));
       editor.value.on("change", (cm) => {
         localValue.value = cm.getValue();
         debouncedChangeEmission(cm.getValue());
@@ -76,21 +76,73 @@ export default {
     });
     
     watch(() => store.argdownInput, (newVal) => {
-      if (editor.value && newVal !== localValue.value) {
-        // Only update if it's a significant change (example switching)
-        if (!newVal.includes(localValue.value) && !localValue.value.includes(newVal)) {
-          console.log('Setting editor value to new content (example switch)');
-          localValue.value = newVal;
+      // Only process if we have a valid string value
+      if (typeof newVal === 'string' && newVal !== localValue.value) {
+        console.log('Setting editor value to new string content');
+        localValue.value = newVal;
+        if (editor.value) {
           editor.value.setValue(newVal);
           editor.value.refresh();
         }
+      } else if (newVal && typeof newVal === 'object') {
+        // For objects, be more conservative - only update if we can extract meaningful content
+        let newValStr = null;
+        
+        // Try to extract content from common properties
+        if (newVal.content && typeof newVal.content === 'string') {
+          newValStr = newVal.content;
+        } else if (newVal.data && typeof newVal.data === 'string') {
+          newValStr = newVal.data;
+        } else if (newVal.text && typeof newVal.text === 'string') {
+          newValStr = newVal.text;
+        }
+        
+        // Only update if we found valid string content and it's different
+        if (newValStr && newValStr !== localValue.value) {
+          console.log('Setting editor value to extracted object content');
+          localValue.value = newValStr;
+          if (editor.value) {
+            editor.value.setValue(newValStr);
+            editor.value.refresh();
+          }
+        } else {
+          console.log('Skipping object update - no valid string content found or no change');
+        }
+      } else if (newVal === null || newVal === undefined) {
+        // Don't clear the editor for null/undefined values
+        console.log('Skipping update - null/undefined value, preserving existing content');
+      } else {
+        // For other types, log but don't update
+        console.log('Skipping update - unexpected value type:', typeof newVal, newVal);
       }
     });
     
     watch(() => props.value, (newVal) => {
-      if (editor.value && newVal !== localValue.value) {
+      // Only update if we have a valid string value and it's different
+      if (typeof newVal === 'string' && newVal !== localValue.value) {
+        console.log('Props value changed, updating editor');
         localValue.value = newVal;
-        editor.value.setValue(newVal);
+        if (editor.value) {
+          editor.value.setValue(newVal);
+        }
+      } else if (newVal && typeof newVal === 'object') {
+        // For objects, be conservative
+        let newValStr = null;
+        if (newVal.content && typeof newVal.content === 'string') {
+          newValStr = newVal.content;
+        } else if (newVal.data && typeof newVal.data === 'string') {
+          newValStr = newVal.data;
+        } else if (newVal.text && typeof newVal.text === 'string') {
+          newValStr = newVal.text;
+        }
+        
+        if (newValStr && newValStr !== localValue.value) {
+          console.log('Props object value changed, updating editor');
+          localValue.value = newValStr;
+          if (editor.value) {
+            editor.value.setValue(newValStr);
+          }
+        }
       }
     });
     
@@ -111,7 +163,7 @@ export default {
           },
         },
       });
-      editor.value.setValue(localValue.value);
+      editor.value.setValue(String(localValue.value || ''));
       editor.value.on("change", (cm) => {
         localValue.value = cm.getValue();
         debouncedChangeEmission(cm.getValue());
