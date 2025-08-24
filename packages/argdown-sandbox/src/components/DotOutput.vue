@@ -5,12 +5,16 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+import { useArgdownStore } from '../store.js';
+
 export default {
   name: "dot-output",
-  computed: {
-    dot() {
-      return this.$store.getters.dot;
-    }
+  setup() {
+    const store = useArgdownStore();
+    const dot = computed(() => store.dot);
+    
+    return { dot };
   }
 };
 </script>

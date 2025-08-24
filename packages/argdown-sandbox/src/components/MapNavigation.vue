@@ -22,17 +22,17 @@
         <a class="save-as-svg" v-on:click.stop.prevent="saveAsSvg" href>svg</a>
                  <a
            class="save as png"
-           v-on:click.stop.prevent="$store.dispatch('openSaveAsPngDialog')"
+           v-on:click.stop.prevent="openSaveAsPngDialog"
            href
            >png</a
          >
       </li>
     </ul>
-         <div class="save-as-png-dialog" v-if="$store.state.showSaveAsPngDialog">
+         <div class="save-as-png-dialog" v-if="showSaveAsPngDialog">
        <h3>PNG Export</h3>
        <label for="save-as-png-scale">Scale</label>
        <input
-         v-model="$store.state.pngScale"
+         v-model="pngScale"
          type="number"
          min="0"
          max="100"
@@ -42,47 +42,62 @@
         <button type="button" v-on:click.prevent.stop="saveAsPng">
           Create PNG
         </button>
-        <button
-          type="button"
-          v-on:click.prevent.stop="$store.dispatch('closeSaveAsPngDialog')"
-        >
-          Cancel
-        </button>
+                 <button
+           type="button"
+           v-on:click.prevent.stop="closeSaveAsPngDialog"
+         >
+           Cancel
+         </button>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
+import { computed, watch, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { useArgdownStore } from '../store.js';
 import { EventBus } from "../event-bus.js";
 
 export default {
-  computed: {
-    currentRoute() {
-      return this.$route;
-    }
-  },
-  watch: {
-    currentRoute: {
-      handler(newRoute, oldRoute) {
-        console.log('MapNavigation: Route changed from', oldRoute?.name, 'to', newRoute?.name);
-        console.log('MapNavigation: Current route path:', newRoute?.path);
-      },
-      immediate: true
-    }
-  },
-  mounted() {
-    console.log('MapNavigation: Component mounted, current route:', this.$route.name);
-  },
-  methods: {
-    saveAsSvg() {
+  setup() {
+    const route = useRoute();
+    const store = useArgdownStore();
+    
+    const currentRoute = computed(() => route);
+    
+    watch(currentRoute, (newRoute, oldRoute) => {
+      console.log('MapNavigation: Route changed from', oldRoute?.name, 'to', newRoute?.name);
+      console.log('MapNavigation: Current route path:', newRoute?.path);
+    }, { immediate: true });
+    
+    onMounted(() => {
+      console.log('MapNavigation: Component mounted, current route:', route.name);
+    });
+    
+    function saveAsSvg() {
       EventBus.$emit("save-map-as-svg");
-    },
-    saveAsPng() {
+    }
+    
+    function saveAsPng() {
       EventBus.$emit("save-map-as-png");
-      this.$store.dispatch('closeSaveAsPngDialog');
-    },
-  },
+      store.closeSaveAsPngDialog();
+    }
+    
+    function closeSaveAsPngDialog() {
+      store.closeSaveAsPngDialog();
+    }
+    
+    return {
+      currentRoute,
+      saveAsSvg,
+      saveAsPng,
+      showSaveAsPngDialog: store.showSaveAsPngDialog,
+      pngScale: store.pngScale,
+      openSaveAsPngDialog: store.openSaveAsPngDialog,
+      closeSaveAsPngDialog
+    };
+  }
 };
 </script>
 

@@ -10,6 +10,9 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+import { useArgdownStore } from '../store.js';
+
 export default {
   name: "html-output",
   props: {
@@ -18,10 +21,11 @@ export default {
       default: false
     }
   },
-  computed: {
-    html() {
-      return this.$store.getters.html;
-    }
+  setup() {
+    const store = useArgdownStore();
+    const html = computed(() => store.html);
+    
+    return { html };
   }
 };
 </script>

@@ -127,13 +127,17 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+import { useArgdownStore } from '../store.js';
+
 export default {
   name: "settings",
-  computed: {
-    config() {
-      return this.$store.getters.configData;
-    },
-  },
+  setup() {
+    const store = useArgdownStore();
+    const config = computed(() => store.configData);
+    
+    return { config };
+  }
 };
 </script>
 

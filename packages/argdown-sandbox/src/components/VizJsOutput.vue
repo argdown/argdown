@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
+import { useArgdownStore } from '../store.js';
 import { EventBus } from "../event-bus.js";
 import { saveAsSvg, saveAsPng } from "../map-export.js";
 import { VizJsMap } from "@argdown/map-views";
@@ -19,75 +21,74 @@ var basePath = process.env.BASE_URL || "/";
 
 export default {
   name: "viz-js-output",
-  data() {
-    return {
-      vizJsMap: null
-    };
-  },
-  computed: {
-    dot() {
-      return this.$store.getters.dot;
-    },
-    configData() {
-      return this.$store.getters.configData;
-    },
-    argdownData() {
-      return this.$store.getters.argdownData;
-    },
-    pngScale() {
-      return this.$store.state.pngScale;
-    }
-  },
-  watch: {
-    dot() {
-      this.updateMap();
-    }
-  },
-  methods: {
-    updateMap() {
-      if (!this.vizJsMap) {
+  setup() {
+    const store = useArgdownStore();
+    const container = ref(null);
+    const vizJsMap = ref(null);
+    
+    const dot = computed(() => store.dot);
+    const configData = computed(() => store.configData);
+    const argdownData = computed(() => store.argdownData);
+    const pngScale = computed(() => store.pngScale);
+    
+    function updateMap() {
+      if (!vizJsMap.value) {
         return;
       }
-      const exceptions = this.argdownData.exceptions;
+      const exceptions = argdownData.value.exceptions;
       if (exceptions && exceptions.length > 0) {
         return;
       }
       let images = undefined;
-      if (this.configData.images && this.configData.images.files) {
-        images = Object.values(this.configData.images.files);
+      if (configData.value.images && configData.value.images.files) {
+        images = Object.values(configData.value.images.files);
       }
       const props = {
-        dot: this.dot,
-        settings: { ...this.configData.vizJs, images },
+        dot: dot.value,
+        settings: { ...configData.value.vizJs, images },
       };
-      this.vizJsMap.render(props).catch((e) => console.log(e));
+      vizJsMap.value.render(props).catch((e) => console.log(e));
     }
-  },
-
-  mounted() {
-    const svgContainer = this.$refs.container;
-    const workerURL = basePath + "render.browser.js";
-    const vizMap = new VizJsMap(svgContainer, null, {
-      workerURL: workerURL,
+    
+    watch(dot, () => {
+      updateMap();
     });
-    this.vizJsMap = vizMap;
-    this.updateMap();
-    var el = this.$refs.container;
-    saveVizAsPng = () => {
-      var scale = this.pngScale;
-      saveAsPng(el.getElementsByTagName("svg")[0], scale, false);
+    
+    onMounted(() => {
+      const svgContainer = container.value;
+      const workerURL = basePath + "render.browser.js";
+      const vizMap = new VizJsMap(svgContainer, null, {
+        workerURL: workerURL,
+      });
+      vizJsMap.value = vizMap;
+      updateMap();
+      var el = container.value;
+      saveVizAsPng = () => {
+        var scale = pngScale.value;
+        saveAsPng(el.getElementsByTagName("svg")[0], scale, false);
+      };
+      saveVizAsSvg = () => {
+        saveAsSvg(el.getElementsByTagName("svg")[0], false);
+      };
+      EventBus.$on("save-map-as-svg", saveVizAsSvg);
+      EventBus.$on("save-map-as-png", saveVizAsPng);
+    });
+    
+    onBeforeUnmount(() => {
+      EventBus.$off("save-map-as-svg", saveVizAsSvg);
+      EventBus.$off("save-map-as-png", saveVizAsPng);
+    });
+    
+    return {
+      container,
+      vizJsMap,
+      dot,
+      configData,
+      argdownData,
+      pngScale,
+      updateMap
     };
-    saveVizAsSvg = () => {
-      saveAsSvg(el.getElementsByTagName("svg")[0], false);
-    };
-    EventBus.$on("save-map-as-svg", saveVizAsSvg);
-    EventBus.$on("save-map-as-png", saveVizAsPng);
-  },
-  // eslint-disable-next-line vue/no-deprecated-destroyed-lifecycle
-  beforeDestroy() {
-    EventBus.$off("save-map-as-svg", saveVizAsSvg);
-    EventBus.$off("save-map-as-png", saveVizAsPng);
-  },
+  }
 };
 </script>
 

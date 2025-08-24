@@ -5,12 +5,16 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+import { useArgdownStore } from '../store.js';
+
 export default {
   name: "graphml-output",
-  computed: {
-    graphml() {
-      return this.$store.getters.graphml;
-    }
+  setup() {
+    const store = useArgdownStore();
+    const graphml = computed(() => store.graphml);
+    
+    return { graphml };
   }
 };
 </script>

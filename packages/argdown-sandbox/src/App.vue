@@ -3,26 +3,26 @@
     <div
       id="top-slot"
       v-if="
-        $store.state.viewState != 'input-maximized' &&
-        $store.state.viewState != 'output-maximized'
+        viewState != 'input-maximized' &&
+        viewState != 'output-maximized'
       "
     >
       <app-header></app-header>
       <app-navigation></app-navigation>
     </div>
     <div class="main-window">
-             <div id="left-slot" v-if="$store.state.viewState != 'output-maximized'">
+             <div id="left-slot" v-if="viewState != 'output-maximized'">
          <div class="input-header">
            <InputNavigation />
            <button
-             v-if="$store.state.viewState != 'input-maximized'"
+             v-if="viewState != 'input-maximized'"
              class="button"
-             v-on:click="$store.dispatch('setViewState', 'input-maximized')"
+                            v-on:click="setViewState('input-maximized')"
            >
              <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
            </button>
            <button
-             v-if="$store.state.viewState == 'input-maximized'"
+             v-if="viewState == 'input-maximized'"
              class="button"
              v-on:click="$store.dispatch('setViewState', 'default')"
            >
@@ -34,31 +34,31 @@
            </button>
          </div>
                   <argdown-input
-            v-bind:value="$store.state.argdownInput"
-            v-on:change="
-              (value) => {
-                $store.dispatch('setArgdownInput', value);
-              }
-            "
+            v-bind:value="argdownInput"
+                          v-on:change="
+                (value) => {
+                  setArgdownInput(value);
+                }
+              "
           ></argdown-input>
        </div>
-       <div id="right-slot" v-if="$store.state.viewState != 'input-maximized'">
+       <div id="right-slot" v-if="viewState != 'input-maximized'">
          <div class="output-header">
            <div class="output-sub-menu">
              <router-view name="output-header"></router-view>
            </div>
            <div class="output-view-state-buttons">
              <button
-               v-if="$store.state.viewState != 'output-maximized'"
+               v-if="viewState != 'output-maximized'"
                class="button"
-               v-on:click="$store.dispatch('setViewState', 'output-maximized')"
+                                v-on:click="setViewState('output-maximized')"
              >
                <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
              </button>
              <button
-               v-if="$store.state.viewState == 'output-maximized'"
+               v-if="viewState == 'output-maximized'"
                class="button"
-               v-on:click="$store.dispatch('setViewState', 'default')"
+               v-on:click="setViewState('default')"
              >
                <img
                  class="expand icon"
@@ -81,6 +81,8 @@
 
 <script>
 /* eslint-disable */
+import { computed, onMounted } from 'vue';
+import { useArgdownStore } from './store.js';
 import AppHeader from "@/components/AppHeader";
 import ArgdownInput from "@/components/ArgdownInput";
 import AppNavigation from "@/components/AppNavigation";
@@ -91,19 +93,6 @@ import "@argdown/core/dist/plugins/argdown.css";
 
 export default {
   name: "app",
-  data: function () {
-    return {
-      argdownInput: "",
-    };
-  },
-  computed: {
-    viewStateClass: function () {
-      return {
-        [this.$store.state.viewState]: true,
-        // "show-settings": this.$store.state.showSettings
-      };
-    },
-  },
   components: {
     AppHeader,
     ArgdownInput,
@@ -112,9 +101,28 @@ export default {
     // ,
     // Settings
   },
-  created() {
-    this.$store.dispatch('setArgdownInput', this.$store.state.argdownInput); // ensure that the initial input is parsed
-  },
+  setup() {
+    const store = useArgdownStore();
+    
+    const viewStateClass = computed(() => {
+      return {
+        [store.viewState]: true,
+        // "show-settings": store.showSettings
+      };
+    });
+    
+    onMounted(() => {
+      store.setArgdownInput(store.argdownInput); // ensure that the initial input is parsed
+    });
+    
+    return {
+      viewStateClass,
+      viewState: store.viewState,
+      argdownInput: store.argdownInput,
+      setViewState: store.setViewState,
+      setArgdownInput: store.setArgdownInput
+    };
+  }
 };
 </script>
 

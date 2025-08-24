@@ -57,18 +57,18 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+import { useArgdownStore } from '../store.js';
+
 export default {
   name: "debug-model-output",
-  computed: {
-    statements() {
-      return this.$store.getters.statements;
-    },
-    arguments() {
-      return this.$store.getters.arguments;
-    },
-    relations() {
-      return this.$store.getters.relations;
-    }
+  setup() {
+    const store = useArgdownStore();
+    const statements = computed(() => store.statements);
+    const arguments_ = computed(() => store.arguments);
+    const relations = computed(() => store.relations);
+    
+    return { statements, arguments: arguments_, relations };
   }
 };
 </script>

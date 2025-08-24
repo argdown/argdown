@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue';
+import { useArgdownStore } from '../store.js';
 import * as _ from "lodash";
 import CodeMirror from "codemirror";
 import "codemirror/lib/codemirror.css";
@@ -15,64 +17,30 @@ import "@argdown/codemirror-mode/codemirror-argdown.css";
 export default {
   name: "argdown-input",
   props: ["value"],
-  data() {
-    return {
-      localValue: this.value,
-      editor: null,
-      needsRefresh: false
-    };
-  },
-  computed: {
-    useArgVu() {
-      return this.$store.state.useArgVu;
-    }
-  },
-  watch: {
-    useArgVu(newVal, oldVal) {
-      if (newVal !== oldVal) {
-        this.needsRefresh = true;
-        this.$nextTick(() => {
-          if (this.needsRefresh) {
-            this.refreshEditor();
-            this.needsRefresh = false;
-          }
-        });
-      }
-    },
-    '$store.state.argdownInput'(newVal) {
-      if (this.editor && newVal !== this.localValue) {
-        // Only update if it's a significant change (example switching)
-        if (!newVal.includes(this.localValue) && !this.localValue.includes(newVal)) {
-          console.log('Setting editor value to new content (example switch)');
-          this.localValue = newVal;
-          this.editor.setValue(newVal);
-          this.editor.refresh();
-        }
-      }
-    },
-    value(newVal) {
-      if (this.editor && newVal !== this.localValue) {
-        this.localValue = newVal;
-        this.editor.setValue(newVal);
-      }
-    }
-  },
-  methods: {
-    debouncedChangeEmission: _.debounce(function (value) {
-      this.$emit("change", value);
-    }, 100),
+  setup(props, { emit }) {
+    const store = useArgdownStore();
+    const editorRef = ref(null);
+    const localValue = ref(props.value);
+    const editor = ref(null);
+    const needsRefresh = ref(false);
     
-    refreshEditor() {
-      if (!this.$refs.editorRef) {
+    const useArgVu = computed(() => store.useArgVu);
+    
+    const debouncedChangeEmission = _.debounce((value) => {
+      emit("change", value);
+    }, 100);
+    
+    function refreshEditor() {
+      if (!editorRef.value) {
         console.log("Editor ref not available yet, skipping refresh");
         return;
       }
       
-      if (this.editor) {
-        this.editor.toTextArea();
+      if (editor.value) {
+        editor.value.toTextArea();
       }
       // Re-initialize CodeMirror
-      this.editor = CodeMirror.fromTextArea(this.$refs.editorRef, {
+      editor.value = CodeMirror.fromTextArea(editorRef.value, {
         mode: "argdown",
         lineNumbers: true,
         theme: "default",
@@ -87,43 +55,84 @@ export default {
           },
         },
       });
-      this.editor.setValue(this.localValue);
-      this.editor.on("change", (cm) => {
-        this.localValue = cm.getValue();
-        this.debouncedChangeEmission(cm.getValue());
+      editor.value.setValue(localValue.value);
+      editor.value.on("change", (cm) => {
+        localValue.value = cm.getValue();
+        debouncedChangeEmission(cm.getValue());
       });
-      this.editor.setSize("100%", "100%");
+      editor.value.setSize("100%", "100%");
     }
-  },
-  mounted() {
-    CodeMirror.defineSimpleMode("argdown", argdownMode);
-    this.editor = CodeMirror.fromTextArea(this.$refs.editorRef, {
-      mode: "argdown",
-      lineNumbers: true,
-      theme: "default",
-      tabSize: 4,
-      indentUnit: 4,
-      lineWrapping: false,
-      styleActiveLine: true,
-      extraKeys: {
-        Tab: (cm) => {
-          let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
-          cm.replaceSelection(spaces);
+    
+    watch(useArgVu, (newVal, oldVal) => {
+      if (newVal !== oldVal) {
+        needsRefresh.value = true;
+        nextTick(() => {
+          if (needsRefresh.value) {
+            refreshEditor();
+            needsRefresh.value = false;
+          }
+        });
+      }
+    });
+    
+    watch(() => store.argdownInput, (newVal) => {
+      if (editor.value && newVal !== localValue.value) {
+        // Only update if it's a significant change (example switching)
+        if (!newVal.includes(localValue.value) && !localValue.value.includes(newVal)) {
+          console.log('Setting editor value to new content (example switch)');
+          localValue.value = newVal;
+          editor.value.setValue(newVal);
+          editor.value.refresh();
+        }
+      }
+    });
+    
+    watch(() => props.value, (newVal) => {
+      if (editor.value && newVal !== localValue.value) {
+        localValue.value = newVal;
+        editor.value.setValue(newVal);
+      }
+    });
+    
+    onMounted(() => {
+      CodeMirror.defineSimpleMode("argdown", argdownMode);
+      editor.value = CodeMirror.fromTextArea(editorRef.value, {
+        mode: "argdown",
+        lineNumbers: true,
+        theme: "default",
+        tabSize: 4,
+        indentUnit: 4,
+        lineWrapping: false,
+        styleActiveLine: true,
+        extraKeys: {
+          Tab: (cm) => {
+            let spaces = Array(cm.getOption("indentUnit") + 1).join(" ");
+            cm.replaceSelection(spaces);
+          },
         },
-      },
+      });
+      editor.value.setValue(localValue.value);
+      editor.value.on("change", (cm) => {
+        localValue.value = cm.getValue();
+        debouncedChangeEmission(cm.getValue());
+      });
+      editor.value.setSize("100%", "100%");
     });
-    this.editor.setValue(this.localValue);
-    this.editor.on("change", (cm) => {
-      this.localValue = cm.getValue();
-      this.debouncedChangeEmission(cm.getValue());
+    
+    onBeforeUnmount(() => {
+      if (editor.value) {
+        editor.value.toTextArea();
+      }
     });
-    this.editor.setSize("100%", "100%");
-  },
-  // eslint-disable-next-line vue/no-deprecated-destroyed-lifecycle
-  beforeDestroy() {
-    if (this.editor) {
-      this.editor.toTextArea();
-    }
+    
+    return {
+      editorRef,
+      localValue,
+      editor,
+      needsRefresh,
+      useArgVu,
+      refreshEditor
+    };
   }
 };
 </script>

@@ -38,6 +38,8 @@
   </nav>
 </template>
 <script>
+import { ref, computed } from 'vue';
+import { useArgdownStore } from '../store.js';
 import appModal from "./modal.vue";
 
 export default {
@@ -45,52 +47,56 @@ export default {
   components: {
     appModal: appModal,
   },
-  data() {
-    return {
-      isModalVisible: false,
-      link: ""
-    };
-  },
-  computed: {
-    useArgVu() {
-      return this.$store.state.useArgVu;
-    },
-    examplesList() {
-      return this.$store.getters.examplesList;
-    },
-    argdownInput() {
-      return this.$store.state.argdownInput;
-    }
-  },
-  methods: {
-    async loadExample(example) {
+  setup() {
+    const store = useArgdownStore();
+    const isModalVisible = ref(false);
+    const link = ref("");
+    
+    const useArgVu = computed(() => store.useArgVu);
+    const examplesList = computed(() => store.examplesList);
+    const argdownInput = computed(() => store.argdownInput);
+    
+    async function loadExample(example) {
       try {
-        await this.$store.dispatch('loadExample', { id: example });
+        await store.loadExample({ id: example });
         // do stuff
       } catch (error) {
         console.error("Failed to load example:", error);
       }
-    },
+    }
     
-    copyLink() {
-      const input = encodeURIComponent(this.argdownInput);
+    function copyLink() {
+      const input = encodeURIComponent(argdownInput.value);
       const linkText = `https://argdown.org/sandbox/map/?argdown=${input}`;
       navigator.clipboard.writeText(linkText);
-      this.link = linkText;
-      this.showModal();
-    },
-    
-    showModal() {
-      this.isModalVisible = true;
-    },
-    
-    closeModal() {
-      this.isModalVisible = false;
-    },
-    
-    toggleArgVu(event) {
-      this.$store.dispatch('setUseArgVu', event.target.checked);
+      link.value = linkText;
+      showModal();
     }
+    
+    function showModal() {
+      isModalVisible.value = true;
+    }
+    
+    function closeModal() {
+      isModalVisible.value = false;
+    }
+    
+    function toggleArgVu(event) {
+      store.setUseArgVu(event.target.checked);
+    }
+    
+    return {
+      isModalVisible,
+      link,
+      useArgVu,
+      examplesList,
+      argdownInput,
+      loadExample,
+      copyLink,
+      showModal,
+      closeModal,
+      toggleArgVu
+    };
   }
 };
 </script>

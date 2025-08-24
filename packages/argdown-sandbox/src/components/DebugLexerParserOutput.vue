@@ -50,21 +50,19 @@
 </template>
 
 <script>
+import { computed } from 'vue';
+import { useArgdownStore } from '../store.js';
+
 export default {
   name: "debug-lexer-parser-output",
-  computed: {
-    lexerErrors() {
-      return this.$store.getters.lexerErrors;
-    },
-    parserErrors() {
-      return this.$store.getters.parserErrors;
-    },
-    ast() {
-      return this.$store.getters.ast;
-    },
-    tokens() {
-      return this.$store.getters.tokens;
-    }
+  setup() {
+    const store = useArgdownStore();
+    const lexerErrors = computed(() => store.lexerErrors);
+    const parserErrors = computed(() => store.parserErrors);
+    const ast = computed(() => store.ast);
+    const tokens = computed(() => store.tokens);
+    
+    return { lexerErrors, parserErrors, ast, tokens };
   }
 };
 </script>

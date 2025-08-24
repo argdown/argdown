@@ -7,6 +7,8 @@
 </template>
 
 <script>
+import { ref, computed, watch, onMounted, onBeforeUnmount } from 'vue';
+import { useArgdownStore } from '../store.js';
 import { EventBus } from "../event-bus.js";
 import { saveAsSvg, saveAsPng } from "../map-export.js";
 import { DagreMap } from "@argdown/map-views";
@@ -17,46 +19,31 @@ var saveDagreAsSvg = null;
 
 export default {
   name: "dagre-d3-output",
-  data() {
-    return {
-      dagreD3Map: null
-    };
-  },
-  computed: {
-    map() {
-      return this.$store.getters.map;
-    },
-    configData() {
-      return this.$store.getters.configData;
-    },
-    argdownData() {
-      return this.$store.getters.argdownData;
-    },
-    pngScale() {
-      return this.$store.state.pngScale;
-    }
-  },
-  watch: {
-    map() {
-      this.updateMap();
-    }
-  },
-  methods: {
-    updateMap() {
-      if (!this.dagreD3Map) {
+  setup() {
+    const store = useArgdownStore();
+    const container = ref(null);
+    const dagreD3Map = ref(null);
+    
+    const map = computed(() => store.map);
+    const configData = computed(() => store.configData);
+    const argdownData = computed(() => store.argdownData);
+    const pngScale = computed(() => store.pngScale);
+    
+    function updateMap() {
+      if (!dagreD3Map.value) {
         return;
       }
-      const exceptions = this.argdownData.exceptions;
+      const exceptions = argdownData.value.exceptions;
       if (exceptions && exceptions.length > 0) {
         return;
       }
       const props = {
-        settings: this.configData.dagre,
-        map: this.map,
+        settings: configData.value.dagre,
+        map: map.value,
       };
       
       try {
-        const result = this.dagreD3Map.render(props);
+        const result = dagreD3Map.value.render(props);
         if (result && typeof result.catch === 'function') {
           result.catch((e) => console.log(e));
         }
@@ -64,41 +51,55 @@ export default {
         console.log('Error rendering map:', error);
       }
     }
-  },
-
-  mounted() {
-    const container = this.$refs.container;
     
-    // Create SVG element
-    const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svgElement.setAttribute("width", "100%");
-    svgElement.setAttribute("height", "100%");
-    svgElement.style.display = "block";
+    watch(map, () => {
+      updateMap();
+    });
     
-    // Append SVG to container
-    container.appendChild(svgElement);
+    onMounted(() => {
+      const containerEl = container.value;
+      
+      // Create SVG element
+      const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svgElement.setAttribute("width", "100%");
+      svgElement.setAttribute("height", "100%");
+      svgElement.style.display = "block";
+      
+      // Append SVG to container
+      containerEl.appendChild(svgElement);
+      
+      // Create DagreMap with the SVG element
+      const dagreMap = new DagreMap(svgElement);
+      dagreD3Map.value = dagreMap;
+      updateMap();
+      
+      var el = containerEl;
+      saveDagreAsPng = () => {
+        var scale = pngScale.value;
+        saveAsPng(el.getElementsByTagName("svg")[0], scale, false);
+      };
+      saveDagreAsSvg = () => {
+        saveAsSvg(el.getElementsByTagName("svg")[0], false);
+      };
+      EventBus.$on("save-map-as-svg", saveDagreAsSvg);
+      EventBus.$on("save-map-as-png", saveDagreAsPng);
+    });
     
-    // Create DagreMap with the SVG element
-    const dagreMap = new DagreMap(svgElement);
-    this.dagreD3Map = dagreMap;
-    this.updateMap();
+    onBeforeUnmount(() => {
+      EventBus.$off("save-map-as-svg", saveDagreAsSvg);
+      EventBus.$off("save-map-as-png", saveDagreAsPng);
+    });
     
-    var el = this.$refs.container;
-    saveDagreAsPng = () => {
-      var scale = this.pngScale;
-      saveAsPng(el.getElementsByTagName("svg")[0], scale, false);
+    return {
+      container,
+      dagreD3Map,
+      map,
+      configData,
+      argdownData,
+      pngScale,
+      updateMap
     };
-    saveDagreAsSvg = () => {
-      saveAsSvg(el.getElementsByTagName("svg")[0], false);
-    };
-    EventBus.$on("save-map-as-svg", saveDagreAsSvg);
-    EventBus.$on("save-map-as-png", saveDagreAsPng);
-  },
-  // eslint-disable-next-line vue/no-deprecated-destroyed-lifecycle
-  beforeDestroy() {
-    EventBus.$off("save-map-as-svg", saveDagreAsSvg);
-    EventBus.$off("save-map-as-png", saveDagreAsPng);
-  },
+  }
 };
 </script>
 
