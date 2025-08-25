@@ -313,13 +313,9 @@ export const useArgdownStore = defineStore('argdown', () => {
       } else if (value.text && typeof value.text === 'string') {
         argdownInput.value = value.text;
       } else {
-        // Don't update if we can't extract meaningful string content
-        console.log('Skipping object update - no valid string content found');
         return;
       }
     } else {
-      // For other types (null, undefined, etc.), don't update to preserve existing content
-      console.log('Skipping update - invalid value type:', typeof value);
       return;
     }
   }

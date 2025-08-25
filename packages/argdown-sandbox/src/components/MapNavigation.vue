@@ -66,15 +66,6 @@ export default {
     
     const currentRoute = computed(() => route);
     
-    watch(currentRoute, (newRoute, oldRoute) => {
-      console.log('MapNavigation: Route changed from', oldRoute?.name, 'to', newRoute?.name);
-      console.log('MapNavigation: Current route path:', newRoute?.path);
-    }, { immediate: true });
-    
-    onMounted(() => {
-      console.log('MapNavigation: Component mounted, current route:', route.name);
-    });
-    
     function saveAsSvg() {
       EventBus.$emit("save-map-as-svg");
     }

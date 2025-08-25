@@ -30,9 +30,10 @@ export default {
       emit("change", value);
     }, 100);
     
+    function sizeEditorToContainer() {}
+
     function refreshEditor() {
       if (!editorRef.value) {
-        console.log("Editor ref not available yet, skipping refresh");
         return;
       }
       
@@ -60,7 +61,8 @@ export default {
         localValue.value = cm.getValue();
         debouncedChangeEmission(cm.getValue());
       });
-      editor.value.setSize("100%", "100%");
+      // Ensure sizing happens after DOM is painted
+      requestAnimationFrame(() => sizeEditorToContainer());
     }
     
     watch(useArgVu, (newVal, oldVal) => {
@@ -76,19 +78,15 @@ export default {
     });
     
     watch(() => store.argdownInput, (newVal) => {
-      // Only process if we have a valid string value
       if (typeof newVal === 'string' && newVal !== localValue.value) {
-        console.log('Setting editor value to new string content');
         localValue.value = newVal;
         if (editor.value) {
           editor.value.setValue(newVal);
           editor.value.refresh();
         }
       } else if (newVal && typeof newVal === 'object') {
-        // For objects, be more conservative - only update if we can extract meaningful content
         let newValStr = null;
         
-        // Try to extract content from common properties
         if (newVal.content && typeof newVal.content === 'string') {
           newValStr = newVal.content;
         } else if (newVal.data && typeof newVal.data === 'string') {
@@ -97,30 +95,18 @@ export default {
           newValStr = newVal.text;
         }
         
-        // Only update if we found valid string content and it's different
         if (newValStr && newValStr !== localValue.value) {
-          console.log('Setting editor value to extracted object content');
           localValue.value = newValStr;
           if (editor.value) {
             editor.value.setValue(newValStr);
             editor.value.refresh();
           }
-        } else {
-          console.log('Skipping object update - no valid string content found or no change');
-        }
-      } else if (newVal === null || newVal === undefined) {
-        // Don't clear the editor for null/undefined values
-        console.log('Skipping update - null/undefined value, preserving existing content');
-      } else {
-        // For other types, log but don't update
-        console.log('Skipping update - unexpected value type:', typeof newVal, newVal);
-      }
+        } 
+      } 
     });
     
     watch(() => props.value, (newVal) => {
-      // Only update if we have a valid string value and it's different
       if (typeof newVal === 'string' && newVal !== localValue.value) {
-        console.log('Props value changed, updating editor');
         localValue.value = newVal;
         if (editor.value) {
           editor.value.setValue(newVal);
@@ -137,7 +123,6 @@ export default {
         }
         
         if (newValStr && newValStr !== localValue.value) {
-          console.log('Props object value changed, updating editor');
           localValue.value = newValStr;
           if (editor.value) {
             editor.value.setValue(newValStr);
@@ -146,6 +131,8 @@ export default {
       }
     });
     
+    let resizeObserver = null;
+
     onMounted(() => {
       CodeMirror.defineSimpleMode("argdown", argdownMode);
       editor.value = CodeMirror.fromTextArea(editorRef.value, {
@@ -168,10 +155,10 @@ export default {
         localValue.value = cm.getValue();
         debouncedChangeEmission(cm.getValue());
       });
-      editor.value.setSize("100%", "100%");
     });
     
     onBeforeUnmount(() => {
+      resizeObserver = null;
       if (editor.value) {
         editor.value.toTextArea();
       }
@@ -206,23 +193,24 @@ export default {
 }
 
 .argdown-input {
-  flex: 1;
+  flex: 1 1 auto;
   height: 100%;
-  min-height: 0;
-  max-height: calc(100vh - 2.5em);
+  min-height: 0; /* Chrome: allow flex children to shrink properly */
+  max-height: 100%;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 
   .argdown-editor {
     width: 100%;
-    height: 100%;
+    height: 0;
+    display: none;
     margin: 0;
     border: 1px solid #eee;
     box-sizing: border-box;
     background-color: #fff;
     max-height: 100%;
-    flex: 1;
+    flex: 0 0 auto;
     font-family: monospace;
     font-size: 1.25em;
     padding: 1em;
@@ -235,9 +223,22 @@ export default {
   }
 
   .CodeMirror {
-    height: 100%;
+    /* Allow editor to grow with flex container */
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0; /* Chrome: critical to avoid collapsing */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
     font-family: monospace;
     font-size: 1.25em;
+  }
+
+  /* Ensure CodeMirror internals fill available height even when empty */
+  .CodeMirror-scroll {
+    flex: 1 1 auto;
+    height: auto;
+    min-height: 0; /* Chrome: allow scroll area to expand */
   }
 
   .CodeMirror-gutters {

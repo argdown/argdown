@@ -143,7 +143,7 @@ $accent-color: #3e8eaf;
 html,
 body {
   display: flex;
-  height: 100%;
+  height: 100vh;
   margin: 0;
   padding: 0;
   width: 100%;
@@ -197,6 +197,8 @@ button {
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100vh;
+  min-height: 0;
 
   #top-slot {
     height: 3.5em;
@@ -294,6 +296,8 @@ button .icon {
 }
 .input-maximized {
   .main-window {
+    height: 100vh !important;
+    max-height: 100vh !important;
     #left-slot {
       align-items: center;
       width: 100%;
@@ -339,7 +343,9 @@ button .icon {
   flex: 1;
   min-width: 0;
   min-height: 0;
-  max-height: 90vh;
+  /* Use remaining viewport height below top header (3.5em) */
+  height: calc(100vh - 3.5em);
+  max-height: calc(100vh - 3.5em);
   overflow: hidden;
   
   .input-header,
@@ -366,14 +372,23 @@ button .icon {
     display: flex;
     padding: 0;
     flex-direction: column;
-    max-height: 100vh;
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
     overflow: hidden;
+    /* Ensure children can expand */
+    & > * {
+      min-height: 0;
+    }
+    align-items: stretch;
   }
   #right-slot {
     width: 50%;
     display: flex;
     flex-direction: column;
-    max-height: 100vh;
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
     overflow: hidden;
     
     .output {
