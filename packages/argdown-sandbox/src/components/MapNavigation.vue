@@ -62,6 +62,8 @@ export default {
     const store = useArgdownStore();
     
     const currentRoute = computed(() => route);
+    const showSaveAsPngDialog = computed(() => store.showSaveAsPngDialog);
+    const pngScale = computed(() => store.pngScale);
     
     function saveAsSvg() {
       EventBus.$emit("save-map-as-svg");
@@ -72,6 +74,10 @@ export default {
       store.closeSaveAsPngDialog();
     }
     
+    function openSaveAsPngDialog() {
+      store.openSaveAsPngDialog();
+    }
+    
     function closeSaveAsPngDialog() {
       store.closeSaveAsPngDialog();
     }
@@ -80,9 +86,9 @@ export default {
       currentRoute,
       saveAsSvg,
       saveAsPng,
-      showSaveAsPngDialog: store.showSaveAsPngDialog,
-      pngScale: store.pngScale,
-      openSaveAsPngDialog: store.openSaveAsPngDialog,
+      openSaveAsPngDialog,
+      showSaveAsPngDialog,
+      pngScale,
       closeSaveAsPngDialog
     };
   }
