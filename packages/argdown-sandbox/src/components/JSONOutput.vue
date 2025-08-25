@@ -1,19 +1,21 @@
 <template>
   <div class="json-output">
-    <pre>{{ store.json }}</pre>
+    <pre>{{ json }}</pre>
   </div>
 </template>
 
 <script>
-import { useArgdownStore } from "../store.js";
+import { computed } from 'vue';
+import { useArgdownStore } from '../store.js';
 
 export default {
   name: "json-output",
-  computed: {
-    store() {
-      return useArgdownStore();
-    },
-  },
+  setup() {
+    const store = useArgdownStore();
+    const json = computed(() => store.json);
+    
+    return { json };
+  }
 };
 </script>
 

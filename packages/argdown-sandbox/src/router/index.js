@@ -9,11 +9,8 @@ import DebugLexerParserOutput from "@/components/DebugLexerParserOutput";
 import DebugModelOutput from "@/components/DebugModelOutput";
 import DebugNavigation from "@/components/DebugNavigation";
 import MapNavigation from "@/components/MapNavigation";
-import { useArgdownStore } from "../store";
 
 const VizJsOutput = () => import("@/components/VizJsOutput.vue");
-
-const DagreD3Output = () => import("@/components/DagreD3Output.vue");
 
 const router = createRouter({
   history: createWebHistory("/sandbox/"),
@@ -47,14 +44,6 @@ const router = createRouter({
       name: "map-viz-js",
       components: {
         default: VizJsOutput,
-        "output-header": MapNavigation,
-      },
-    },
-    {
-      path: "/map/dagre-d3",
-      name: "map-dagre-d3",
-      components: {
-        default: DagreD3Output,
         "output-header": MapNavigation,
       },
     },
@@ -108,11 +97,8 @@ const router = createRouter({
 
 let currentArgdownQuery = "";
 router.beforeEach((to, from, next) => {
-  console.log('Router: Navigating from', from.path, 'to', to.path, 'name:', to.name);
-  
   if (to.query.argdown && to.query.argdown != currentArgdownQuery) {
-    const store = useArgdownStore();
-    store.setArgdownInput(decodeURIComponent(to.query.argdown));
+    // We'll handle this in the component that needs it
     currentArgdownQuery = to.query.argdown;
     delete to.query.argdown;
     next(to);

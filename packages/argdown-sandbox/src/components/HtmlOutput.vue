@@ -10,7 +10,8 @@
 </template>
 
 <script>
-import { useArgdownStore } from "../store.js";
+import { computed } from 'vue';
+import { useArgdownStore } from '../store.js';
 
 export default {
   name: "html-output",
@@ -20,14 +21,12 @@ export default {
       default: false
     }
   },
-  computed: {
-    store() {
-      return useArgdownStore();
-    },
-    html() {
-      return this.store.html;
-    },
-  },
+  setup() {
+    const store = useArgdownStore();
+    const html = computed(() => store.html);
+    
+    return { html };
+  }
 };
 </script>
 

@@ -3,69 +3,69 @@
     <div
       id="top-slot"
       v-if="
-        store.viewState != 'input-maximized' &&
-        store.viewState != 'output-maximized'
+        viewState != 'input-maximized' &&
+        viewState != 'output-maximized'
       "
     >
       <app-header></app-header>
       <app-navigation></app-navigation>
     </div>
     <div class="main-window">
-      <div id="left-slot" v-if="store.viewState != 'output-maximized'">
-        <div class="input-header">
-          <InputNavigation />
-          <button
-            v-if="store.viewState != 'input-maximized'"
-            class="button"
-            v-on:click="store.setViewState('input-maximized')"
-          >
-            <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
-          </button>
-          <button
-            v-if="store.viewState == 'input-maximized'"
-            class="button"
-            v-on:click="store.setViewState('default')"
-          >
-            <img
-              class="expand icon"
-              src="./assets/compress.svg"
-              alt="Compress"
-            />
-          </button>
-        </div>
-        <argdown-input
-          v-bind:value="store.argdownInput"
-          v-on:change="
-            (value) => {
-              store.setArgdownInput(value);
-            }
-          "
-        ></argdown-input>
-      </div>
-      <div id="right-slot" v-if="store.viewState != 'input-maximized'">
-        <div class="output-header">
-          <div class="output-sub-menu">
-            <router-view name="output-header"></router-view>
-          </div>
-          <div class="output-view-state-buttons">
-            <button
-              v-if="store.viewState != 'output-maximized'"
-              class="button"
-              v-on:click="store.setViewState('output-maximized')"
-            >
-              <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
-            </button>
-            <button
-              v-if="store.viewState == 'output-maximized'"
-              class="button"
-              v-on:click="store.setViewState('default')"
-            >
-              <img
-                class="expand icon"
-                src="./assets/compress.svg"
-                alt="Compress"
-              />
-            </button>
+             <div id="left-slot" v-if="viewState != 'output-maximized'">
+         <div class="input-header">
+           <InputNavigation />
+           <button
+             v-if="viewState != 'input-maximized'"
+             class="button"
+                            v-on:click="setViewState('input-maximized')"
+           >
+             <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
+           </button>
+           <button
+             v-if="viewState == 'input-maximized'"
+             class="button"
+             v-on:click="setViewState('default')"
+           >
+             <img
+               class="expand icon"
+               src="./assets/compress.svg"
+               alt="Compress"
+             />
+           </button>
+         </div>
+                  <argdown-input
+            v-bind:value="argdownInput"
+                          v-on:change="
+                (value) => {
+                  setArgdownInput(value);
+                }
+              "
+          ></argdown-input>
+       </div>
+       <div id="right-slot" v-if="viewState != 'input-maximized'">
+         <div class="output-header">
+           <div class="output-sub-menu">
+             <router-view name="output-header"></router-view>
+           </div>
+           <div class="output-view-state-buttons">
+             <button
+               v-if="viewState != 'output-maximized'"
+               class="button"
+                                v-on:click="setViewState('output-maximized')"
+             >
+               <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
+             </button>
+             <button
+               v-if="viewState == 'output-maximized'"
+               class="button"
+               v-on:click="setViewState('default')"
+             >
+               <img
+                 class="expand icon"
+                 src="./assets/compress.svg"
+                 alt="Compress"
+               />
+             </button>
             <!-- <button class="button" v-on:click="store.toggleSettings()">
             <img class="toggle-settings icon" src="./assets/cog.svg" alt="Settings">
             </button>-->
@@ -81,7 +81,9 @@
 
 <script>
 /* eslint-disable */
-import { useArgdownStore } from "./store.js";
+import { computed, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
+import { useArgdownStore } from './store.js';
 import AppHeader from "@/components/AppHeader";
 import ArgdownInput from "@/components/ArgdownInput";
 import AppNavigation from "@/components/AppNavigation";
@@ -92,22 +94,6 @@ import "@argdown/core/dist/plugins/argdown.css";
 
 export default {
   name: "app",
-  data: function () {
-    return {
-      argdownInput: "",
-    };
-  },
-  computed: {
-    store() {
-      return useArgdownStore();
-    },
-    viewStateClass: function () {
-      return {
-        [this.store.viewState]: true,
-        // "show-settings": this.store.showSettings
-      };
-    },
-  },
   components: {
     AppHeader,
     ArgdownInput,
@@ -116,9 +102,23 @@ export default {
     // ,
     // Settings
   },
-  created() {
-    this.store.setArgdownInput(this.store.argdownInput); // ensure that the initial input is parsed
-  },
+  setup() {
+    const store = useArgdownStore();
+    const { viewState, argdownInput } = storeToRefs(store);
+    const viewStateClass = computed(() => viewState.value);
+    
+    onMounted(() => {
+      store.setArgdownInput(argdownInput.value); // ensure that the initial input is parsed
+    });
+    
+    return {
+      viewStateClass,
+      viewState,
+      argdownInput,
+      setViewState: store.setViewState,
+      setArgdownInput: store.setArgdownInput
+    };
+  }
 };
 </script>
 
@@ -126,13 +126,20 @@ export default {
 /* eslint-disable */
 $border-color: #eee;
 $accent-color: #3e8eaf;
+
+@font-face {
+  font-family: 'ArgVu Sans Mono Regular';
+  src: url('./assets/ArgVuSansMono-Regular-8.2.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
 * {
   box-sizing: border-box;
 }
 html,
 body {
   display: flex;
-  height: 100%;
+  height: 100vh;
   margin: 0;
   padding: 0;
   width: 100%;
@@ -186,6 +193,8 @@ button {
   display: flex;
   flex-direction: column;
   width: 100%;
+  height: 100vh;
+  min-height: 0;
 
   #top-slot {
     height: 3.5em;
@@ -283,14 +292,15 @@ button .icon {
 }
 .input-maximized {
   .main-window {
+    height: 100vh !important;
+    max-height: 100vh !important;
     #left-slot {
       align-items: center;
-      width: 100%;
+      width: 100% !important;
     }
     .input-header {
-      max-width: 60em;
       width: 100%;
-      margin: 0 auto;
+      margin: 0;
       border-right: 0;
     }
   }
@@ -328,7 +338,9 @@ button .icon {
   flex: 1;
   min-width: 0;
   min-height: 0;
-  max-height: 90vh;
+  /* Use remaining viewport height below top header (3.5em) */
+  height: calc(100vh - 3.5em);
+  max-height: calc(100vh - 3.5em);
   overflow: hidden;
   
   .input-header,
@@ -355,14 +367,23 @@ button .icon {
     display: flex;
     padding: 0;
     flex-direction: column;
-    max-height: 100vh;
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
     overflow: hidden;
+    align-items: stretch;
+    /* Ensure children can expand */
+    & > * {
+      min-height: 0;
+    }
   }
   #right-slot {
     width: 50%;
     display: flex;
     flex-direction: column;
-    max-height: 100vh;
+    height: 100%;
+    min-height: 0;
+    max-height: 100%;
     overflow: hidden;
     
     .output {

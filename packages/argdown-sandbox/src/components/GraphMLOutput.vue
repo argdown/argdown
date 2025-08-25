@@ -1,19 +1,21 @@
 <template>
   <div class="graphml-output">
-    <pre>{{ store.graphml }}</pre>
+    <pre>{{ graphml }}</pre>
   </div>
 </template>
 
 <script>
-import { useArgdownStore } from "../store.js";
+import { computed } from 'vue';
+import { useArgdownStore } from '../store.js';
 
 export default {
   name: "graphml-output",
-  computed: {
-    store() {
-      return useArgdownStore();
-    },
-  },
+  setup() {
+    const store = useArgdownStore();
+    const graphml = computed(() => store.graphml);
+    
+    return { graphml };
+  }
 };
 </script>
 
