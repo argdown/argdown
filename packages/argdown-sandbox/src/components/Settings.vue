@@ -60,32 +60,6 @@
         v-model="config.map.groupDepth"
       />
     </div>
-    <h3>Dagre Settings</h3>
-    <div class="setting">
-      <label for="dagreRankDir">Rank direction</label>
-      <select id="dagreRankDir" v-model="config.dagre.rankDir">
-        <option value="TB">Top to bottom</option>
-        <option value="BT">Bottom to top</option>
-        <option value="LR">Left to right</option>
-        <option value="RL">Right to left</option>
-      </select>
-    </div>
-    <div class="setting">
-      <label for="dagreRankSep">Rank separation</label>
-      <input
-        id="dagreRankSep"
-        type="number"
-        v-model="config.dagre.rankSep"
-      />
-    </div>
-    <div class="setting">
-      <label for="dagreNodeSep">Node separation</label>
-      <input
-        id="dagreNodeSep"
-        type="number"
-        v-model="config.dagre.nodeSep"
-      />
-    </div>
     <h3>GraphViz Settings</h3>
     <div class="setting">
       <label for="graphVizRankDir">Rank direction</label>

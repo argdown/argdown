@@ -371,11 +371,11 @@ button .icon {
     min-height: 0;
     max-height: 100%;
     overflow: hidden;
+    align-items: stretch;
     /* Ensure children can expand */
     & > * {
       min-height: 0;
     }
-    align-items: stretch;
   }
   #right-slot {
     width: 50%;

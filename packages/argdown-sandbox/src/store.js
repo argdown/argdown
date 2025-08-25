@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import _ from "lodash";
-import { dagreDefaultSettings } from "@argdown/map-views";
 import { vizJsDefaultSettings } from "@argdown/map-views";
 import {
   ArgdownApplication,
@@ -128,7 +127,6 @@ export const useArgdownStore = defineStore('argdown', () => {
         size: "10,10",
       },
     },
-    dagre: _.defaultsDeep({}, dagreDefaultSettings),
     vizJs: _.defaultsDeep({}, vizJsDefaultSettings),
     model: {
       removeTagsFromText: false,

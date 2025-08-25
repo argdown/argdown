@@ -131,7 +131,6 @@ export default {
       }
     });
     
-    let resizeObserver = null;
 
     onMounted(() => {
       CodeMirror.defineSimpleMode("argdown", argdownMode);
@@ -158,7 +157,6 @@ export default {
     });
     
     onBeforeUnmount(() => {
-      resizeObserver = null;
       if (editor.value) {
         editor.value.toTextArea();
       }

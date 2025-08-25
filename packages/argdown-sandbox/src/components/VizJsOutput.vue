@@ -65,10 +65,10 @@ export default {
       var el = container.value;
       saveVizAsPng = () => {
         var scale = pngScale.value;
-        saveAsPng(el.getElementsByTagName("svg")[0], scale, false);
+        saveAsPng(el.getElementsByTagName("svg")[0], scale);
       };
       saveVizAsSvg = () => {
-        saveAsSvg(el.getElementsByTagName("svg")[0], false);
+        saveAsSvg(el.getElementsByTagName("svg")[0]);
       };
       EventBus.$on("save-map-as-svg", saveVizAsSvg);
       EventBus.$on("save-map-as-png", saveVizAsPng);

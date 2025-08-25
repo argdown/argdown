@@ -1,6 +1,4 @@
 import FileSaver from "file-saver";
-import dagreCss from "!!raw-loader!./scss/dagre.css";
-var dagreCssHtml = '<style type="text/css">' + dagreCss + "</style>";
 
 // Edge Blob polyfill https://developer.mozilla.org/en-US/docs/Web/API/HTMLCanvasElement/toBlob
 if (!HTMLCanvasElement.prototype.toBlob) {
@@ -22,7 +20,7 @@ if (!HTMLCanvasElement.prototype.toBlob) {
   });
 }
 
-function getSvgString(el, width, height, scale, isDagre) {
+function getSvgString(el, width, height, scale) {
   var source = new XMLSerializer().serializeToString(el);
 
   source = source.replace(/(\w+)?:?xlink=/g, "xmlns:xlink="); // Fix root xlink without namespace
@@ -54,17 +52,7 @@ function getSvgString(el, width, height, scale, isDagre) {
       '" preserveAspectRatio="xMinYMin meet"',
   );
 
-  if (isDagre) {
-    // insert css
-    var match = /^<svg.*?>/.exec(source);
-    if (match) {
-      var insertAt = match.index + match[0].length;
-      source =
-        source.slice(0, insertAt) + dagreCssHtml + source.slice(insertAt);
-    }
-    // use marker refs without url
-    source = source.replace(/marker-end="url\(.*?#/g, 'marker-end="url(#');
-  }
+
 
   // add xml declaration
   source = '<?xml version="1.0" standalone="no"?>\r\n' + source;
@@ -128,7 +116,7 @@ function svgString2Image(svgString, width, height, callback) {
 //   var dataUrl = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svgString)
 //   img.src = dataUrl
 // }
-export function saveAsSvg(el, isDagreSvg) {
+export function saveAsSvg(el) {
   var width = el.clientWidth;
   var height = el.clientHeight;
   if (width === 0 || height === 0) {
@@ -136,11 +124,11 @@ export function saveAsSvg(el, isDagreSvg) {
     width = box.right - box.left;
     height = box.bottom - box.top;
   }
-  var source = getSvgString(el, width, height, 1, isDagreSvg);
+  var source = getSvgString(el, width, height, 1);
   var blob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
   FileSaver.saveAs(blob, "map.svg");
 }
-export function saveAsPng(el, scale, isDagreSvg) {
+export function saveAsPng(el, scale) {
   var width = el.clientWidth;
   var height = el.clientHeight;
   if (width === 0 || height === 0) {
@@ -148,7 +136,7 @@ export function saveAsPng(el, scale, isDagreSvg) {
     width = box.right - box.left;
     height = box.bottom - box.top;
   }
-  var source = getSvgString(el, width, height, scale, isDagreSvg);
+  var source = getSvgString(el, width, height, scale);
   width *= scale;
   height *= scale;
   svgString2Image(source, width, height, function (blob) {
