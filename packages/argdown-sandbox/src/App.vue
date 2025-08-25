@@ -24,7 +24,7 @@
            <button
              v-if="viewState == 'input-maximized'"
              class="button"
-             v-on:click="$store.dispatch('setViewState', 'default')"
+             v-on:click="setViewState('default')"
            >
              <img
                class="expand icon"
@@ -82,6 +82,7 @@
 <script>
 /* eslint-disable */
 import { computed, onMounted } from 'vue';
+import { storeToRefs } from 'pinia';
 import { useArgdownStore } from './store.js';
 import AppHeader from "@/components/AppHeader";
 import ArgdownInput from "@/components/ArgdownInput";
@@ -103,22 +104,17 @@ export default {
   },
   setup() {
     const store = useArgdownStore();
-    
-    const viewStateClass = computed(() => {
-      return {
-        [store.viewState]: true,
-        // "show-settings": store.showSettings
-      };
-    });
+    const { viewState, argdownInput } = storeToRefs(store);
+    const viewStateClass = computed(() => viewState.value);
     
     onMounted(() => {
-      store.setArgdownInput(store.argdownInput); // ensure that the initial input is parsed
+      store.setArgdownInput(argdownInput.value); // ensure that the initial input is parsed
     });
     
     return {
       viewStateClass,
-      viewState: store.viewState,
-      argdownInput: store.argdownInput,
+      viewState,
+      argdownInput,
       setViewState: store.setViewState,
       setArgdownInput: store.setArgdownInput
     };
@@ -300,12 +296,11 @@ button .icon {
     max-height: 100vh !important;
     #left-slot {
       align-items: center;
-      width: 100%;
+      width: 100% !important;
     }
     .input-header {
-      max-width: 60em;
       width: 100%;
-      margin: 0 auto;
+      margin: 0;
       border-right: 0;
     }
   }

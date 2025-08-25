@@ -186,9 +186,8 @@ export default {
 
 .input-maximized {
   .argdown-input {
-    max-width: 60em;
     width: 100%;
-    margin: 0 auto;
+    margin: 0;
   }
 }
 

@@ -142,9 +142,13 @@ export const useArgdownStore = defineStore('argdown', () => {
 
   // Computed properties (getters)
   const argdownData = computed(() => {
+    const inputVal = typeof argdownInput.value === 'string' ? argdownInput.value : '';
+    if (!inputVal || inputVal.trim().length === 0) {
+      return {};
+    }
     const request = _.defaultsDeep(
       {
-        input: argdownInput.value,
+        input: inputVal,
         process: ["parse-input", "build-model"],
       },
       config.value,
@@ -170,7 +174,10 @@ export const useArgdownStore = defineStore('argdown', () => {
   });
 
   const html = computed(() => {
-    const input = argdownInput.value;
+    const input = typeof argdownInput.value === 'string' ? argdownInput.value : '';
+    if (!input || input.trim().length === 0) {
+      return null;
+    }
     const request = _.defaultsDeep(
       {
         input: input,
