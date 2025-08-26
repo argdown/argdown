@@ -1,6 +1,6 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
+import { ref, computed } from 'vue';
 import _ from "lodash";
-import { dagreDefaultSettings } from "@argdown/map-views";
 import { vizJsDefaultSettings } from "@argdown/map-views";
 import {
   ArgdownApplication,
@@ -102,217 +102,306 @@ var examples = {
   },
 };
 
-export const useArgdownStore = defineStore("argdown", {
-  state: () => ({
-    argdownInput: primer,
-    examples: examples,
-    useArgVu: false,
-    config: {
-      selection: {
-        excludeDisconnected: true,
-        statementSelectionMode: StatementSelectionMode.WITH_TITLE,
-      },
-      map: {
-        statementLabelMode: LabelMode.HIDE_UNTITLED,
-        argumentLabelMode: LabelMode.HIDE_UNTITLED,
-      },
-      group: {
-        groupDepth: 2,
-      },
-      dot: {
-        graphVizSettings: {
-          rankdir: "BT",
-          concentrate: "false",
-          ratio: "auto",
-          size: "10,10",
-        },
-      },
-      dagre: _.defaultsDeep({}, dagreDefaultSettings),
-      vizJs: _.defaultsDeep({}, vizJsDefaultSettings),
-      model: {
-        removeTagsFromText: false,
-      },
-      logLevel: "error",
+export const useArgdownStore = defineStore('argdown', () => {
+  // State
+  const argdownInput = ref(primer);
+  const examplesData = ref(examples);
+  const useArgVu = ref(false);
+  const config = ref({
+    selection: {
+      excludeDisconnected: true,
+      statementSelectionMode: StatementSelectionMode.WITH_TITLE,
     },
-    viewState: "default",
-    showSettings: false,
-    showSaveAsPngDialog: false,
-    pngScale: 1,
-  }),
+    map: {
+      statementLabelMode: LabelMode.HIDE_UNTITLED,
+      argumentLabelMode: LabelMode.HIDE_UNTITLED,
+    },
+    group: {
+      groupDepth: 2,
+    },
+    dot: {
+      graphVizSettings: {
+        rankdir: "BT",
+        concentrate: "false",
+        ratio: "auto",
+        size: "10,10",
+      },
+    },
+    vizJs: _.defaultsDeep({}, vizJsDefaultSettings),
+    model: {
+      removeTagsFromText: false,
+    },
+    logLevel: "error",
+  });
+  const viewState = ref("default");
+  const showSettings = ref(false);
+  const showSaveAsPngDialog = ref(false);
+  const pngScale = ref(1);
 
-  getters: {
-    argdownData: (state) => {
-      const request = _.defaultsDeep(
-        {
-          input: state.argdownInput,
-          process: ["parse-input", "build-model"],
-        },
-        state.config,
-      );
-      try {
-        return app.run(request);
-      } catch (e) {
-        if (request.logLevel === "verbose") {
-          console.log(e);
-        }
-        return {};
+  // Computed properties (getters)
+  const argdownData = computed(() => {
+    const inputVal = typeof argdownInput.value === 'string' ? argdownInput.value : '';
+    if (!inputVal || inputVal.trim().length === 0) {
+      return {};
+    }
+    const request = _.defaultsDeep(
+      {
+        input: inputVal,
+        process: ["parse-input", "build-model"],
+      },
+      config.value,
+    );
+    try {
+      const result = app.run(request);
+      return result;
+    } catch (e) {
+      if (request.logLevel === "verbose") {
+        console.log(e);
       }
-    },
-    configData(state) {
-      const data = this.argdownData;
-      return _.defaultsDeep({}, data.frontMatter, state.config);
-    },
-    examplesList: (state) => {
-      return state.examples ? Object.values(state.examples) : [];
-    },
-    html() {
-      const data = this.argdownData;
-      if (!data?.ast) {
-        return null;
-      }
-      const request = _.defaultsDeep(
-        {
-          process: ["colorize", "export-html"],
-        },
-        data.frontMatter,
-        this.configData,
-      );
-      const response = app.run(request, data);
+      return {};
+    }
+  });
+
+  const configData = computed(() => {
+    const data = argdownData.value;
+    return _.defaultsDeep({}, data.frontMatter, config.value);
+  });
+
+  const examplesList = computed(() => {
+    return examplesData.value ? Object.values(examplesData.value) : [];
+  });
+
+  const html = computed(() => {
+    const input = typeof argdownInput.value === 'string' ? argdownInput.value : '';
+    if (!input || input.trim().length === 0) {
+      return null;
+    }
+    const request = _.defaultsDeep(
+      {
+        input: input,
+        process: ["parse-input", "build-model", "colorize", "export-html"],
+      },
+      config.value,
+    );
+    try {
+      const response = app.run(request);
       return response.html;
-    },
-    dot() {
-      const data = this.argdownData;
-      if (!data?.ast) {
-        return null;
+    } catch (e) {
+      if (request.logLevel === "verbose") {
+        console.log(e);
       }
-      const request = _.defaultsDeep(
-        {
-          process: [
-            "build-map",
-            "transform-closed-groups",
-            "colorize",
-            "export-dot",
-          ],
-        },
-        data.frontMatter,
-        this.configData,
-      );
-      const response = app.run(request, data);
-      return response.dot;
-    },
-    graphml() {
-      const data = this.argdownData;
-      if (!data?.ast) {
-        return null;
-      }
-      const request = _.defaultsDeep(
-        {
-          process: ["build-map", "colorize", "export-graphml"],
-        },
-        data.frontMatter,
-        this.configData,
-      );
-      const response = app.run(request, data);
-      return response.graphml;
-    },
-    json() {
-      const data = this.argdownData;
-      if (!data?.ast) {
-        return null;
-      }
-      const request = _.defaultsDeep(
-        {
-          process: ["build-map", "colorize", "export-json"],
-        },
-        data.frontMatter,
-        this.configData,
-      );
-      const response = app.run(request, data);
-      return response.json;
-    },
-    parserErrors() {
-      return this.argdownData?.parserErrors || [];
-    },
-    lexerErrors() {
-      return this.argdownData?.lexerErrors || [];
-    },
-    statements() {
-      return this.argdownData?.statements || [];
-    },
-    arguments() {
-      return this.argdownData?.arguments || [];
-    },
-    relations() {
-      return this.argdownData?.relations || [];
-    },
-    ast() {
-      return this.argdownData?.ast ? astToString(this.argdownData.ast) : null;
-    },
-    tokens() {
-      const data = this.argdownData;
-      // eslint-disable-next-line
-      return data?.tokens ? tokensToString(data.tokens) : null;
-    },
-    map() {
-      const data = this.argdownData;
-      if (!data?.ast) {
-        return null;
-      }
-      const request = _.defaultsDeep(
-        {
-          process: ["build-map", "colorize", "transform-closed-groups"],
-        },
-        data.frontMatter,
-        this.configData,
-      );
-      const response = app.run(request, data);
-      return response.map;
-    },
-    tags() {
-      return this.argdownData?.tags || [];
-    },
-    useArgVuState: (state) => {
-      return state.useArgVu;
-    },
-  },
+      return null;
+    }
+  });
 
-  actions: {
-    setUseArgVu(value) {
-      this.useArgVu = value;
-    },
-    setArgdownInput(value) {
-      this.argdownInput = value;
-    },
-    setViewState(value) {
-      this.viewState = value;
-    },
-    cacheExample({ id, content }) {
-      var example = this.examples[id];
-      if (example) {
-        example.cachedContent = content;
-      }
-    },
-    toggleSettings() {
-      this.showSettings = !this.showSettings;
-    },
-    openSaveAsPngDialog() {
-      this.showSaveAsPngDialog = true;
-    },
-    closeSaveAsPngDialog() {
-      this.showSaveAsPngDialog = false;
-    },
-    async loadExample(payload) {
-      var example = this.examples[payload.id];
-      if (!example) {
-        throw new Error("Could not find example");
-      }
-      if (example.cachedContent) {
-        this.setArgdownInput(example.cachedContent);
+  const dot = computed(() => {
+    const data = argdownData.value;
+    if (!data?.ast) {
+      return null;
+    }
+    const request = _.defaultsDeep(
+      {
+        process: [
+          "build-map",
+          "transform-closed-groups",
+          "colorize",
+          "export-dot",
+        ],
+      },
+      data.frontMatter,
+      configData.value,
+    );
+    const response = app.run(request, data);
+    return response.dot;
+  });
+
+  const graphml = computed(() => {
+    const data = argdownData.value;
+    if (!data?.ast) {
+      return null;
+    }
+    const request = _.defaultsDeep(
+      {
+        process: ["build-map", "colorize", "export-graphml"],
+      },
+      data.frontMatter,
+      configData.value,
+    );
+    const response = app.run(request, data);
+    return response.graphml;
+  });
+
+  const json = computed(() => {
+    const data = argdownData.value;
+    if (!data?.ast) {
+      return null;
+    }
+    const request = _.defaultsDeep(
+      {
+        process: ["build-map", "colorize", "export-json"],
+      },
+      data.frontMatter,
+      configData.value,
+    );
+    const response = app.run(request, data);
+    return response.json;
+  });
+
+  const parserErrors = computed(() => {
+    return argdownData.value?.parserErrors || [];
+  });
+
+  const lexerErrors = computed(() => {
+    return argdownData.value?.lexerErrors || [];
+  });
+
+  const statements = computed(() => {
+    return argdownData.value?.statements || [];
+  });
+
+  const arguments_ = computed(() => {
+    return argdownData.value?.arguments || [];
+  });
+
+  const relations = computed(() => {
+    return argdownData.value?.relations || [];
+  });
+
+  const ast = computed(() => {
+    return argdownData.value?.ast ? astToString(argdownData.value.ast) : null;
+  });
+
+  const tokens = computed(() => {
+    const data = argdownData.value;
+    return data?.tokens ? tokensToString(data.tokens) : null;
+  });
+
+  const map = computed(() => {
+    const data = argdownData.value;
+    if (!data?.ast) {
+      return null;
+    }
+    const request = _.defaultsDeep(
+      {
+        process: ["build-map", "colorize", "transform-closed-groups"],
+      },
+      data.frontMatter,
+      configData.value,
+    );
+    const response = app.run(request, data);
+    return response.map;
+  });
+
+  const tags = computed(() => {
+    return argdownData.value?.tags || [];
+  });
+
+  const useArgVuState = computed(() => {
+    return useArgVu.value;
+  });
+
+  // Actions
+  function setUseArgVu(value) {
+    useArgVu.value = value;
+  }
+
+  function setArgdownInput(value) {
+    // Only update if we have a valid string value
+    if (typeof value === 'string') {
+      argdownInput.value = value;
+    } else if (value && typeof value === 'object') {
+      // For objects, be more conservative - only update if we can extract meaningful content
+      if (value.content && typeof value.content === 'string') {
+        argdownInput.value = value.content;
+      } else if (value.data && typeof value.data === 'string') {
+        argdownInput.value = value.data;
+      } else if (value.text && typeof value.text === 'string') {
+        argdownInput.value = value.text;
+      } else {
         return;
       }
-      const response = await axios.get(example.url);
-      this.cacheExample({ id: example.id, content: response.data });
-      this.setArgdownInput(response.data);
-    },
-  },
+    } else {
+      return;
+    }
+  }
+
+  function setViewState(value) {
+    viewState.value = value;
+  }
+
+  function cacheExample({ id, content }) {
+    var example = examplesData.value[id];
+    if (example) {
+      example.cachedContent = content;
+    }
+  }
+
+  function toggleSettings() {
+    showSettings.value = !showSettings.value;
+  }
+
+  function openSaveAsPngDialog() {
+    showSaveAsPngDialog.value = true;
+  }
+
+  function closeSaveAsPngDialog() {
+    showSaveAsPngDialog.value = false;
+  }
+
+  async function loadExample(payload) {
+    var example = examplesData.value[payload.id];
+    if (!example) {
+      throw new Error("Could not find example");
+    }
+    if (example.cachedContent) {
+      setArgdownInput(example.cachedContent);
+      return;
+    }
+    const response = await axios.get(example.url);
+    // Ensure we cache the string content
+    const content = typeof response.data === 'string' ? response.data : String(response.data || '');
+    cacheExample({ id: example.id, content: content });
+    setArgdownInput(content);
+  }
+
+  return {
+    // State
+    argdownInput,
+    examples: examplesData,
+    useArgVu,
+    config,
+    viewState,
+    showSettings,
+    showSaveAsPngDialog,
+    pngScale,
+    
+    // Computed properties
+    argdownData,
+    configData,
+    examplesList,
+    html,
+    dot,
+    graphml,
+    json,
+    parserErrors,
+    lexerErrors,
+    statements,
+    arguments: arguments_,
+    relations,
+    ast,
+    tokens,
+    map,
+    tags,
+    useArgVuState,
+    
+    // Actions
+    setUseArgVu,
+    setArgdownInput,
+    setViewState,
+    cacheExample,
+    toggleSettings,
+    openSaveAsPngDialog,
+    closeSaveAsPngDialog,
+    loadExample,
+  };
 });

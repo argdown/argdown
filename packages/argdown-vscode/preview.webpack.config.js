@@ -30,7 +30,8 @@ module.exports = {
       stream: false,
       crypto: require.resolve("crypto-browserify"),
       path: require.resolve("path-browserify"),
-      process: require.resolve("process")
+      process: require.resolve("process"),
+      vm: require.resolve("vm-browserify")
     }
   },
   output: {

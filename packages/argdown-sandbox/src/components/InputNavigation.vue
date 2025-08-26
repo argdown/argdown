@@ -5,7 +5,7 @@
         <div class="dropdown">
           <button class="text-button dropdown-button">Examples</button>
           <ul class="dropdown-content">
-            <li v-for="example in store.examplesList" :key="example.id">
+            <li v-for="example in examplesList" :key="example.id">
               <a href="#" v-on:click.prevent="loadExample(example.id)">{{
                 example.title
               }}</a>
@@ -38,7 +38,8 @@
   </nav>
 </template>
 <script>
-import { useArgdownStore } from "../store.js";
+import { ref, computed } from 'vue';
+import { useArgdownStore } from '../store.js';
 import appModal from "./modal.vue";
 
 export default {
@@ -46,45 +47,56 @@ export default {
   components: {
     appModal: appModal,
   },
-  methods: {
-    async loadExample(example) {
+  setup() {
+    const store = useArgdownStore();
+    const isModalVisible = ref(false);
+    const link = ref("");
+    
+    const useArgVu = computed(() => store.useArgVu);
+    const examplesList = computed(() => store.examplesList);
+    const argdownInput = computed(() => store.argdownInput);
+    
+    async function loadExample(example) {
       try {
-        await this.store.loadExample({ id: example });
+        await store.loadExample({ id: example });
         // do stuff
       } catch (error) {
         console.error("Failed to load example:", error);
       }
-    },
-    copyLink() {
-      const input = encodeURIComponent(this.store.argdownInput);
-      const link = `https://argdown.org/sandbox/map/?argdown=${input}`;
-      navigator.clipboard.writeText(link);
-      this.link = link;
-      this.showModal();
-    },
-    showModal() {
-      this.isModalVisible = true;
-    },
-    closeModal() {
-      this.isModalVisible = false;
-    },
-    toggleArgVu(event) {
-      this.store.setUseArgVu(event.target.checked);
-    },
-  },
-  data: () => {
+    }
+    
+    function copyLink() {
+      const input = encodeURIComponent(argdownInput.value);
+      const linkText = `https://argdown.org/sandbox/map/?argdown=${input}`;
+      navigator.clipboard.writeText(linkText);
+      link.value = linkText;
+      showModal();
+    }
+    
+    function showModal() {
+      isModalVisible.value = true;
+    }
+    
+    function closeModal() {
+      isModalVisible.value = false;
+    }
+    
+    function toggleArgVu(event) {
+      store.setUseArgVu(event.target.checked);
+    }
+    
     return {
-      isModalVisible: false,
-      link: "",
+      isModalVisible,
+      link,
+      useArgVu,
+      examplesList,
+      argdownInput,
+      loadExample,
+      copyLink,
+      showModal,
+      closeModal,
+      toggleArgVu
     };
-  },
-  computed: {
-    store() {
-      return useArgdownStore();
-    },
-    useArgVu() {
-      return this.store.useArgVuState;
-    },
-  },
+  }
 };
 </script>

@@ -4860,7 +4860,7 @@
   optionalDependencies:
     prettier "^1.18.2 || ^2.0.0"
 
-"@vue/compiler-sfc@3.5.19", "@vue/compiler-sfc@^3.4.28", "@vue/compiler-sfc@^3.5.18":
+"@vue/compiler-sfc@3.5.19":
   version "3.5.19"
   resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.5.19.tgz#7f9792ad7de5d4be9b6a32129c75e1f6cd4da015"
   integrity sha512-YWCm1CYaJ+2RvNmhCwI7t3I3nU+hOrWGWMsn+Z/kmm1jy5iinnVtlmkiZwbLlbV1SRizX7vHsc0/bG5dj0zRTg==
@@ -4870,6 +4870,21 @@
     "@vue/compiler-dom" "3.5.19"
     "@vue/compiler-ssr" "3.5.19"
     "@vue/shared" "3.5.19"
+    estree-walker "^2.0.2"
+    magic-string "^0.30.17"
+    postcss "^8.5.6"
+    source-map-js "^1.2.1"
+
+"@vue/compiler-sfc@^3.4.28", "@vue/compiler-sfc@^3.5.18":
+  version "3.5.18"
+  resolved "https://registry.yarnpkg.com/@vue/compiler-sfc/-/compiler-sfc-3.5.18.tgz#ba1e849561337d809937994cdaf900539542eeca"
+  integrity sha512-5aBjvGqsWs+MoxswZPoTB9nSDb3dhd1x30xrrltKujlCxo48j8HGDNj3QPhF4VIS0VQDUrA1xUfp2hEa+FNyXA==
+  dependencies:
+    "@babel/parser" "^7.28.0"
+    "@vue/compiler-core" "3.5.18"
+    "@vue/compiler-dom" "3.5.18"
+    "@vue/compiler-ssr" "3.5.18"
+    "@vue/shared" "3.5.18"
     estree-walker "^2.0.2"
     magic-string "^0.30.17"
     postcss "^8.5.6"
