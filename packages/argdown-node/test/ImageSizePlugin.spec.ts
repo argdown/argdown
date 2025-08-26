@@ -29,7 +29,7 @@ describe("ImageSizePlugin", function(){
     expect(request.images!.files!["./argdown-mark.svg"].height).to.equal(128);
   });
   it("can set image size from url", async () => {
-    const url = "https://github.com/christianvoigt/argdown/blob/master/argdown-arrow.png?raw=true";
+    const url = "https://github.com/christianvoigt/argdown/blob/main/argdown-arrow.png?raw=true";
 
     const input = `
         <A>: test {images: ["${url}"]}

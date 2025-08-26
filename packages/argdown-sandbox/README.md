@@ -23,8 +23,8 @@ The sandbox is only intended for giving users a first impression of Argdown. For
 
 ## Development
 
-`npm run serve`
+`yarn serve`
 
 ## Building
 
-`npm run build`
+`yarn build`

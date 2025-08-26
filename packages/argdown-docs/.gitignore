@@ -1,6 +1,7 @@
 .DS_Store
 node_modules
 
+/packages/argdown-docs/docs/.vuepress/dist/
 
 .nyc_output
 
@@ -28,5 +29,6 @@ lerna-debug.log*
 *.sln
 
 .vscode
-.parcel-cache
-.cache
+
+# Build folders
+docs/.vuepress/dist/
