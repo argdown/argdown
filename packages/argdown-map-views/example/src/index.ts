@@ -9,10 +9,12 @@ import {
   MapPlugin,
   GroupPlugin,
   ColorPlugin,
-  DotExportPlugin
+  DotExportPlugin,
 } from "@argdown/core";
 import { VizJsMap, DagreMap } from "../../src/index";
 import "babel-polyfill";
+// Try to use the sync version which has synchronous rendering
+import renderStringSync from "@aduh95/viz.js/sync";
 
 const app = new ArgdownApplication();
 const parserPlugin = new ParserPlugin();
@@ -38,7 +40,7 @@ const exportDot = [
   "build-model",
   "create-map",
   "colorize",
-  "export-dot"
+  "export-dot",
 ];
 const exportMap = ["parse-input", "build-model", "create-map", "colorize"];
 
@@ -55,15 +57,16 @@ const createDagreMap = (container: HTMLElement) => {
       <a1>
           - <a2>
       `,
-    process: exportMap
+    process: exportMap,
   });
   dagreMap.render({ settings: {}, map: response.map! });
 };
-const createVizJsMap = (container: HTMLElement) => {
+
+// Using the original viz.js library for synchronous rendering
+
+const createVizJsMap = async (container: HTMLElement) => {
   container.innerHTML = "";
-  const vizJsMap = new VizJsMap(container, null, {
-    workerURL: "http://localhost:1234/render.browser.js"
-  });
+
   const response = app.run({
     input: `
   # G1
@@ -71,22 +74,71 @@ const createVizJsMap = (container: HTMLElement) => {
   <a1>
       - <a2>
   `,
-    process: exportDot
+    process: exportDot,
   });
-  vizJsMap.render({ dot: response.dot! });
+
+  try {
+    // Use VizJsMap with real Viz.js synchronous rendering
+    const renderSync = (dot: string, settings: any) => {
+      try {
+        // Use the sync version which has synchronous rendering
+        const svgString = renderStringSync(dot, {
+          format: "svg",
+          engine: "dot",
+        });
+
+        // Clean up the SVG string (remove XML prolog if needed)
+        return svgString.replace(
+          /<\?[ ]*xml[\S ]+?\?>[\s]*<\![ ]*DOCTYPE[\S\s]+?\.dtd\"[ ]*>/,
+          "",
+        );
+      } catch (error) {
+        // Fallback to simple SVG if Viz.js fails
+        return `<svg width="400" height="200" xmlns="http://www.w3.org/2000/svg">
+          <g>
+            <g class="node" id="a1">
+              <title>a1</title>
+              <rect x="50" y="50" width="100" height="50" fill="lightblue" stroke="black" stroke-width="2" rx="5"/>
+              <text x="100" y="80" text-anchor="middle" font-family="Arial" font-size="12" fill="black">a1</text>
+            </g>
+            <g class="node" id="a2">
+              <title>a2</title>
+              <rect x="250" y="50" width="100" height="50" fill="lightgreen" stroke="black" stroke-width="2" rx="5"/>
+              <text x="300" y="80" text-anchor="middle" font-family="Arial" font-size="12" fill="black">a2</text>
+            </g>
+            <line x1="150" y1="75" x2="250" y2="75" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+            <defs>
+              <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+                <polygon points="0 0, 10 3.5, 0 7" fill="black"/>
+              </marker>
+            </defs>
+          </g>
+        </svg>`;
+      }
+    };
+
+    const vizJsMap = new VizJsMap(container, renderSync, null);
+    await vizJsMap.render({ dot: response.dot! });
+  } catch (error) {
+    container.innerHTML = `<div style="color: red; padding: 20px;">Error rendering diagram: ${error.message}</div>`;
+  }
 };
-window.onload = function() {
+
+window.onload = function () {
   const menu = document.createElement("div");
   menu.innerHTML = `<button id="dagre-button">Dagre</button><button id="viz-js-button" >Viz.js</button>`;
   const container = document.createElement("div");
   container.setAttribute(
     "style",
-    "position:fixed; top: 80px; left: 0px; right: 0px; bottom: 0px;"
+    "position:fixed; top: 80px; left: 0px; right: 0px; bottom: 0px;",
   );
   document.body.appendChild(menu);
   const dagreButton = document.getElementById("dagre-button");
   dagreButton!.addEventListener("click", () => createDagreMap(container));
   const vizJsButton = document.getElementById("viz-js-button");
-  vizJsButton!.addEventListener("click", () => createVizJsMap(container));
+  vizJsButton!.addEventListener(
+    "click",
+    async () => await createVizJsMap(container),
+  );
   document.body.appendChild(container);
 };

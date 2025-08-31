@@ -48,13 +48,15 @@
   "readmeFilename": "Readme.md",
   "preferGlobal": true,
   "devDependencies": {
+    "@vue/component-compiler-utils": "^3.0.0",
     "@vuepress/plugin-pwa": "1.9.10",
     "esm": "^3.2.25",
+    "stream-browserify": "^3.0.0",
     "typescript": "^5.x.x",
-    "vuepress": "1.9.10",
-    "webpack": "^4.8.1",
+    "vm-browserify": "^1.1.2",
     "vue": "^2.6.10",
-    "@vue/component-compiler-utils": "^3.0.0"
+    "vuepress": "1.9.10",
+    "webpack": "^4.8.1"
   },
   "workspace-sources": {
     "*": [

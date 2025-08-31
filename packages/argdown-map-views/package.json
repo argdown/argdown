@@ -72,8 +72,8 @@
     "clean": "rimraf \"dist/*\" --glob",
     "prepublishOnly": "npm run-script build",
     "push": "git push --tags origin HEAD:master",
-    "example": "parcel serve ./example/src/index.html",
-    "build-example": "parcel build ./example/src/index.html --dist-dir example-dist"
+    "example": "set PARCEL_WORKERS=0 && parcel serve ./example/src/index.html",
+    "build-example": "set PARCEL_WORKERS=0 && parcel build ./example/src/index.html --dist-dir example-dist"
   },
   "nyc": {
     "include": [
@@ -95,7 +95,8 @@
     "instrument": true
   },
   "staticFiles": {
-    "staticPath": "example/public"
+    "staticPath": "example/public",
+    "staticOutPath": "."
   },
   "browserslist": [
     "last 1 Chrome versions"
