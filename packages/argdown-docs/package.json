@@ -13,7 +13,7 @@
   ],
   "scripts": {
     "docs:dev": "yarn run copy-web-component && vuepress dev ./docs",
-    "build": "./build-docs.sh",
+    "build": "yarn run docs:build && ./build-docs.sh",
     "docs:build": "yarn run copy-web-component && vuepress build docs",
     "docs:deploy": "./deploy-docs.sh",
     "copy-web-component": "node ./copy-web-component.js",
