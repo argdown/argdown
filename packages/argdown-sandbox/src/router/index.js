@@ -11,6 +11,7 @@ import DebugNavigation from "@/components/DebugNavigation";
 import MapNavigation from "@/components/MapNavigation";
 
 const VizJsOutput = () => import("@/components/VizJsOutput.vue");
+const DagreD3Output = () => import("@/components/DagreD3Output.vue");
 
 const router = createRouter({
   history: createWebHistory("/sandbox/"),
@@ -44,6 +45,14 @@ const router = createRouter({
       name: "map-viz-js",
       components: {
         default: VizJsOutput,
+        "output-header": MapNavigation,
+      },
+    },
+    {
+      path: "/map/dagre-d3",
+      name: "map-dagre-d3",
+      components: {
+        default: DagreD3Output,
         "output-header": MapNavigation,
       },
     },

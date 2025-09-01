@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import _ from "lodash";
-import { vizJsDefaultSettings } from "@argdown/map-views";
+import { vizJsDefaultSettings, dagreDefaultSettings } from "@argdown/map-views";
 import {
   ArgdownApplication,
   ParserPlugin,
@@ -128,6 +128,7 @@ export const useArgdownStore = defineStore('argdown', () => {
       },
     },
     vizJs: _.defaultsDeep({}, vizJsDefaultSettings),
+    dagre: _.defaultsDeep({}, dagreDefaultSettings),
     model: {
       removeTagsFromText: false,
     },

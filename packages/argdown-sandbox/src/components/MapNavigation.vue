@@ -5,6 +5,9 @@
         <router-link to="/map/viz-js">Viz Js Map</router-link>
       </li>
       <li>
+        <router-link to="/map/dagre-d3">Dagre D3 Map</router-link>
+      </li>
+      <li>
         <router-link to="/map/dot">Dot Source</router-link>
       </li>
       <li>
@@ -13,7 +16,7 @@
       <!-- <li><router-link to="/map/graphml">GraphML Source</router-link></li> -->
       <li
         class="save-map"
-        v-if="$route.name == 'map-viz-js'"
+        v-if="$route.name == 'map-viz-js' || $route.name == 'map-dagre-d3'"
       >
         save map as
         <a class="save-as-svg" v-on:click.stop.prevent="saveAsSvg" href>svg</a>
