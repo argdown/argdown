@@ -43,7 +43,8 @@
     "test:coverage": "yarn workspaces test:coverage",
     "build": "yarn workspaces run build",
     "install-package": "yarn workspace @argdown/node add @types/pdfkit",
-    "yarn:upgrade": "yarn workspaces foreach --all upgrade"
+    "yarn:upgrade": "yarn workspaces foreach --all upgrade",
+    "docs:dev": "yarn workspace @argdown/docs run docs:dev"
   },
   "readmeFilename": "Readme.md",
   "preferGlobal": true,
