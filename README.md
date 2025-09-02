@@ -34,6 +34,7 @@ For further information about the code, consult the [API section](https://argdow
 
 To install this Monorepo
 
+- install requirements (node>=vx.xx.xx, yarn>=x.xx.xx)
 - fork/pull or download this repository
 - run `yarn install` in the main folder to install the dependencies of all packages. This will install all the libraries for all the argdown packages.
 - run `yarn build` to build all of the packages. This will call `yarn workspaces run build`.
