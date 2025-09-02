@@ -30,7 +30,7 @@ All code is published under the MIT license. The optional Argvu font is publishe
 
 This repository is a [Monorepo](https://en.wikipedia.org/wiki/Monorepo) containing all packages of the Argdown project. We use [yarn-workspaces](https://yarnpkg.com/features/workspaces) to manage their internal dependencies. You can find all packages in the `packages/` folder.
 
-For further information about the code, consult the [API section](https://christianvoigt.github.io/argdown/api/) of the documentation.
+For further information about the code, consult the [API section](https://argdown.github.io/argdown/api/) of the documentation.
 
 To install this Monorepo
 

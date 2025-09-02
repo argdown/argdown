@@ -287,7 +287,7 @@ Now that you have learned the basics of Argdown you can:
 
 ::: buttonlist
 
-- [Browser Sandbox](https://christianvoigt.github.io/argdown/sandbox/) Try out Argdown in your browser. Includes a live preview of the generated map.
+- [Browser Sandbox](https://argdown.github.io/argdown/sandbox/) Try out Argdown in your browser. Includes a live preview of the generated map.
 - [VS Code Extension](/guide/installing-the-vscode-extension.html) Install the Argdown VS Code extension for full Argdown language support in one of the best code editors around. Includes a live preview, syntax highlighting, content assist, code linting and export options.
 - [Commandline Tool](/guide/installing-the-commandline-tool.html) If you prefer to work with the commandline install the Argdown commandline tool. You can define custom processes in your config file and use them in a task runner to export several argument maps for the same document at once.
 
