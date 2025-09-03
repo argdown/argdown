@@ -35,7 +35,7 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@argdown/web-components": "^1.7.11",
+    "@argdown/web-components": "workspace:^",
     "@parcel/transformer-typescript-tsc": "2.15.2",
     "@types/chai": "^5.2.2",
     "@types/mocha": "^10.0.10",
@@ -52,7 +52,7 @@
     "typescript": "^5.8.3"
   },
   "dependencies": {
-    "@argdown/core": "^1.7.5",
+    "@argdown/core": "workspace:^",
     "@types/lodash.defaultsdeep": "^4.6.9",
     "@types/markdown-it": "^14.1.2",
     "lodash.defaultsdeep": "^4.6.1"

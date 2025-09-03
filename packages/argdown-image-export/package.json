@@ -26,6 +26,7 @@
   "license": "MIT",
   "devDependencies": {
     "@types/chai": "^5.2.1",
+    "@types/lodash.defaultsdeep": "^4.6.6",
     "@types/mocha": "^10.0.10",
     "chai": "^5.2.0",
     "mocha": "11.1.0",
@@ -34,8 +35,8 @@
     "typescript": "5.8.2"
   },
   "dependencies": {
-    "@argdown/core": "^1.7.5",
-    "@argdown/node": "^1.7.5",
+    "@argdown/core": "workspace:^",
+    "@argdown/node": "workspace:^",
     "lodash.defaultsdeep": "^4.6.1",
     "svg-to-img": "^2.0.9"
   }

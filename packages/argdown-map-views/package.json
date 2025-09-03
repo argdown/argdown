@@ -29,7 +29,7 @@
   "readmeFilename": "Readme.md",
   "dependencies": {
     "@aduh95/viz.js": "3.4.0",
-    "@argdown/core": "^1.7.5",
+    "@argdown/core": "workspace:^",
     "@types/dagre-d3": "^0.6.2",
     "@types/lodash.defaultsdeep": "^4.6.6",
     "babel-polyfill": "^6.26.0",

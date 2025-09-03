@@ -30,9 +30,8 @@
     "email": "1pxsolidblack@gmail.com"
   },
   "license": "MIT",
-  "devDependencies": {},
   "dependencies": {
-    "@argdown/remark-plugin": "^1.7.7",
+    "@argdown/remark-plugin": "workspace:^",
     "to-vfile": "^8.0.0"
   },
   "browserslist": [

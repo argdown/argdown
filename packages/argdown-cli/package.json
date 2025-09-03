@@ -14,9 +14,9 @@
   "license": "MIT",
   "main": "dist/cli.js",
   "dependencies": {
-    "@argdown/core": "^1.7.5",
-    "@argdown/markdown-it-plugin": "^1.7.5",
-    "@argdown/node": "^1.7.5",
+    "@argdown/core": "workspace:^",
+    "@argdown/markdown-it-plugin": "workspace:^",
+    "@argdown/node": "workspace:^",
     "@types/markdown-it": "^14.1.2",
     "@types/yargs": "^17.0.33",
     "import-global": "^1.1.1",
@@ -51,7 +51,7 @@
   "readmeFilename": "Readme.md",
   "preferGlobal": true,
   "devDependencies": {
-    "@argdown/image-export": "^1.7.5",
+    "@argdown/image-export": "workspace:^",
     "@types/chai": "^5.2.1",
     "@types/chai-fs": "^2.0.2",
     "@types/mocha": "^10.0.10",

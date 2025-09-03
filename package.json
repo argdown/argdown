@@ -4,39 +4,9 @@
   "repository": "https://github.com/argdown/argdown",
   "private": true,
   "license": "MIT",
-  "workspaces": {
-    "packages": [
-      "packages/argdown-core",
-      "packages/argdown-node",
-      "packages/argdown-markdown-it-plugin",
-      "packages/argdown-cli",
-      "packages/argdown-codemirror-mode",
-      "packages/argdown-gatsby-remark-plugin",
-      "packages/argdown-highlightjs",
-      "packages/argdown-image-export",
-      "packages/argdown-language-server",
-      "packages/argdown-map-views",
-      "packages/argdown-marked-plugin",
-      "packages/argdown-prism",
-      "packages/argdown-remark-plugin",
-      "packages/argdown-web-components",
-      "packages/argdown-sandbox",
-      "packages/argdown-docs",
-      "packages/ArgVu"
-    ],
-    "nohoist": [
-      "**/glob",
-      "**/minimatch",
-      "**/chai",
-      "**/@types/chai",
-      "**/mocha",
-      "**/ts-node",
-      "**/globby",
-      "**/vue/**",
-      "**/@vue/**",
-      "**/webpack/**"
-    ]
-  },
+  "workspaces": [
+    "packages/*"
+  ],
   "scripts": {
     "test": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":false}' yarn workspaces run test",
     "test:full_log": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":true}' yarn workspaces run test",
@@ -67,5 +37,6 @@
   "dependencies": {
     "markdown-it-container": "4.0.0",
     "vuepress-plugin-sitemap": "2.3.1"
-  }
+  },
+  "packageManager": "yarn@4.9.4"
 }

@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "@aduh95/viz.js": "3.4.0",
-    "@argdown/highlightjs": "1.7.5",
+    "@argdown/highlightjs": "workspace:^",
     "@types/chai": "4.2.0",
     "@types/js-yaml": "^4.0.0",
     "@types/lodash.clonedeep": "^4.5.6",

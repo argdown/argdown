@@ -36,9 +36,10 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@argdown/web-components": "^1.7.11",
+    "@argdown/web-components": "workspace:^",
     "@parcel/transformer-typescript-tsc": "^2.13.3",
     "@types/chai": "^5.0.1",
+    "@types/lodash.defaultsdeep": "^4.6.6",
     "@types/marked": "^6.0.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.13.10",
@@ -54,7 +55,7 @@
     "typescript": "^5.8.2"
   },
   "dependencies": {
-    "@argdown/core": "^1.7.5",
+    "@argdown/core": "workspace:^",
     "lodash.defaultsdeep": "^4.6.1"
   },
   "browserslist": [

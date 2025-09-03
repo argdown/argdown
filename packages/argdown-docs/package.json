@@ -26,6 +26,8 @@
   },
   "homepage": "https://github.com/christianvoigt/argdown",
   "devDependencies": {
+    "@argdown/core": "workspace:^",
+    "@argdown/markdown-it-plugin": "workspace:^",
     "@vuepress/plugin-pwa": "1.8.2",
     "esm": "^3.2.25",
     "vuepress": "1.8.2"

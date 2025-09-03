@@ -28,12 +28,13 @@
     "test": "mocha -r ts-node/register --full-trace --require source-map-support/register ./test/**/*.spec.ts"
   },
   "devDependencies": {
-    "@argdown/core": "^1.7.5",
-    "@argdown/node": "^1.7.5",
+    "@argdown/core": "workspace:^",
+    "@argdown/node": "workspace:^",
     "@types/chai": "5.2.2",
     "@types/mocha": "^10.0.10",
     "@types/node": "22.15.24",
     "@types/webpack": "^5.28.5",
+    "brfs": "^2.0.2",
     "chai": "^5.2.0",
     "crypto-browserify": "^3.12.1",
     "mocha": "^11.5.0",
@@ -45,7 +46,6 @@
     "style-loader": "^4.0.0",
     "transform-loader": "^0.2.4",
     "ts-loader": "^9.5.2",
-    "brfs": "^2.0.2",
     "ts-node": "^10.9.2",
     "typescript": "5.8.3",
     "vscode-languageserver": "^9.0.1",

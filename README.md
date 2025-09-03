@@ -34,17 +34,11 @@ For further information about the code, consult the [API section](https://argdow
 
 To install this Monorepo
 
-- install requirements (node >= 22.11.0, yarn>=x.xx.xx)
-- fork/pull or download this repository
+- install requirements (`node>=22.11.0`, `yarn>=4.9.4` via `corepack`)
+- clone this repository and cd into project dir
+- activate yarn with `yarn set version berry`
 - run `yarn install` in the main folder to install the dependencies of all packages. This will install all the libraries for all the argdown packages.
-- run `yarn build` to build all of the packages. This will call `yarn workspaces run build`.
-- Run `npm run` to see the other scripts available.
+- run `yarn workspaces foreach -A --topological-dev --exclude . run build`.
+- run `yarn workspaces foreach -A --topological-dev --exclude . run test` for tests
+- run `yarn workspace @argdown/docs run docs:dev` to deploy website locally.
 
-### Installing npm packages
-
-Example:
-
-```bash
-cd packages/argdown-core
-yarn add xmlbuilder
-```

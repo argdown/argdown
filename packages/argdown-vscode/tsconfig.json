@@ -6,6 +6,7 @@
     "lib": ["es6", "es2015.promise", "dom"],
     "outDir": "./dist",
     "rootDir": "./src",
+    "typeRoots": ["./types", "./node_modules/@types"],
     "sourceMap": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
