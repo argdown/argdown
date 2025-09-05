@@ -44,7 +44,6 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.24",
     "chai": "^5.2.0",
-    "marked": "^15.0.7",
     "mocha": "^11.1.0",
     "nyc": "^17.1.0",
     "parcel": "^2.13.3",
@@ -56,7 +55,8 @@
   },
   "dependencies": {
     "@argdown/core": "workspace:^",
-    "lodash.defaultsdeep": "^4.6.1"
+    "lodash.defaultsdeep": "^4.6.1",
+    "marked": "^15.0.7"
   },
   "browserslist": [
     "last 2 Chrome versions"

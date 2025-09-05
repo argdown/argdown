@@ -38,10 +38,11 @@
     "@argdown/web-components": "workspace:^",
     "@parcel/transformer-typescript-tsc": "2.15.2",
     "@types/chai": "^5.2.2",
+    "@types/lodash.defaultsdeep": "^4.6.9",
+    "@types/markdown-it": "^14.1.2",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.24",
     "chai": "^5.2.0",
-    "markdown-it": "^14.1.0",
     "mocha": "^11.5.0",
     "nyc": "^17.1.0",
     "parcel": "2.15.2",
@@ -53,9 +54,8 @@
   },
   "dependencies": {
     "@argdown/core": "workspace:^",
-    "@types/lodash.defaultsdeep": "^4.6.9",
-    "@types/markdown-it": "^14.1.2",
-    "lodash.defaultsdeep": "^4.6.1"
+    "lodash.defaultsdeep": "^4.6.1",
+    "markdown-it": "^14.1.0"
   },
   "browserslist": "> 0.2%"
 }

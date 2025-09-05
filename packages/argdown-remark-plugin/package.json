@@ -39,6 +39,7 @@
     "@argdown/web-components": "workspace:^",
     "@parcel/transformer-typescript-tsc": "^2.14.4",
     "@types/chai": "^5.2.2",
+    "@types/lodash.defaultsdeep": "^4.6.9",
     "@types/mdast": "^4.0.4",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.24",
@@ -57,7 +58,6 @@
   },
   "dependencies": {
     "@argdown/core": "workspace:^",
-    "@types/lodash.defaultsdeep": "^4.6.9",
     "lodash.defaultsdeep": "^4.6.1",
     "unist-builder": "4.0.0",
     "unist-util-is": "6.0.0",
