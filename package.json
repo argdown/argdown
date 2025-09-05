@@ -23,11 +23,11 @@
     "@vuepress/plugin-pwa": "1.9.10",
     "esm": "^3.2.25",
     "stream-browserify": "^3.0.0",
-    "typescript": "^5.x.x",
+    "typescript": "5.8.3",
     "vm-browserify": "^1.1.2",
     "vue": "^2.6.10",
     "vuepress": "1.9.10",
-    "webpack": "^4.8.1"
+    "webpack": "5.99.9"
   },
   "workspace-sources": {
     "*": [
@@ -35,6 +35,7 @@
     ]
   },
   "dependencies": {
+    "@yarnpkg/types": "^4.0.1",
     "markdown-it-container": "4.0.0",
     "vuepress-plugin-sitemap": "2.3.1"
   },

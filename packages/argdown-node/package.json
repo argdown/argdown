@@ -42,7 +42,7 @@
     "@types/lodash.isfunction": "^3.0.9",
     "@types/lodash.isobject": "^3.0.9",
     "@types/lodash.isstring": "^4.0.9",
-    "@types/node": "^22.13.10",
+    "@types/node": "^22.15.24",
     "@types/pdfkit": "^0.13.9",
     "axios": "^1.8.2",
     "brfs": "^2.0.2",
@@ -65,7 +65,7 @@
     "svg-to-pdfkit": "^0.1.8"
   },
   "devDependencies": {
-    "@types/chai": "^5.2.0",
+    "@types/chai": "^5.2.2",
     "@types/chai-fs": "^2.0.5",
     "@types/mocha": "^10.0.10",
     "chai": "4.2.0",
@@ -78,7 +78,7 @@
     "source-map-support": "^0.5.21",
     "ts-node": "^10.9.2",
     "typedoc": "0.27.9",
-    "typescript": "5.8.2"
+    "typescript": "5.8.3"
   },
   "nyc": {
     "include": [

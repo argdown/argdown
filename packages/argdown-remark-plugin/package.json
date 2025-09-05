@@ -40,8 +40,8 @@
     "@parcel/transformer-typescript-tsc": "^2.14.4",
     "@types/chai": "^5.2.2",
     "@types/mdast": "^4.0.4",
-    "@types/mocha": "10.0.10",
-    "@types/node": "22.15.24",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^22.15.24",
     "@types/unist": "^3.0.3",
     "chai": "^5.2.0",
     "mocha": "^11.5.0",
@@ -53,11 +53,11 @@
     "rimraf": "^6.0.1",
     "source-map-support": "^0.5.16",
     "ts-node": "10.9.2",
-    "typescript": "^5.8.3"
+    "typescript": "5.8.3"
   },
   "dependencies": {
     "@argdown/core": "workspace:^",
-    "@types/lodash.defaultsdeep": "^4.6.6",
+    "@types/lodash.defaultsdeep": "^4.6.9",
     "lodash.defaultsdeep": "^4.6.1",
     "unist-builder": "4.0.0",
     "unist-util-is": "6.0.0",

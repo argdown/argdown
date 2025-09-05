@@ -25,14 +25,14 @@
   "author": "Christian Voigt",
   "license": "MIT",
   "devDependencies": {
-    "@types/chai": "^5.2.1",
-    "@types/lodash.defaultsdeep": "^4.6.6",
+    "@types/chai": "^5.2.2",
+    "@types/lodash.defaultsdeep": "^4.6.9",
     "@types/mocha": "^10.0.10",
     "chai": "^5.2.0",
     "mocha": "11.1.0",
     "rimraf": "^6.0.1",
     "ts-node": "10.9.2",
-    "typescript": "5.8.2"
+    "typescript": "5.8.3"
   },
   "dependencies": {
     "@argdown/core": "workspace:^",

@@ -52,10 +52,10 @@
   "preferGlobal": true,
   "devDependencies": {
     "@argdown/image-export": "workspace:^",
-    "@types/chai": "^5.2.1",
-    "@types/chai-fs": "^2.0.2",
+    "@types/chai": "^5.2.2",
+    "@types/chai-fs": "^2.0.5",
     "@types/mocha": "^10.0.10",
-    "@types/node": "^22.13.14",
+    "@types/node": "^22.15.24",
     "chai": "^5.2.0",
     "chai-fs": "^2.0.0",
     "copyfiles": "^2.2.0",
@@ -68,7 +68,7 @@
     "source-map-support": "^0.5.21",
     "ts-node": "^10.9.2",
     "typedoc": "0.28.3",
-    "typescript": "^5.8.2"
+    "typescript": "5.8.3"
   },
   "resolutions": {
     "@types/markdown-it": "^14.1.2"

@@ -50,11 +50,11 @@ __metadata:
     "@argdown/image-export": "workspace:^"
     "@argdown/markdown-it-plugin": "workspace:^"
     "@argdown/node": "workspace:^"
-    "@types/chai": "npm:^5.2.1"
-    "@types/chai-fs": "npm:^2.0.2"
+    "@types/chai": "npm:^5.2.2"
+    "@types/chai-fs": "npm:^2.0.5"
     "@types/markdown-it": "npm:^14.1.2"
     "@types/mocha": "npm:^10.0.10"
-    "@types/node": "npm:^22.13.14"
+    "@types/node": "npm:^22.15.24"
     "@types/yargs": "npm:^17.0.33"
     chai: "npm:^5.2.0"
     chai-fs: "npm:^2.0.0"
@@ -71,7 +71,7 @@ __metadata:
     source-map-support: "npm:^0.5.21"
     ts-node: "npm:^10.9.2"
     typedoc: "npm:0.28.3"
-    typescript: "npm:^5.8.2"
+    typescript: "npm:5.8.3"
     yargs: "npm:^17.7.2"
   bin:
     argdown: ./dist/cli.js
@@ -92,16 +92,16 @@ __metadata:
   dependencies:
     "@aduh95/viz.js": "npm:3.4.0"
     "@argdown/highlightjs": "workspace:^"
-    "@types/chai": "npm:4.2.0"
+    "@types/chai": "npm:^5.2.2"
     "@types/js-yaml": "npm:^4.0.0"
-    "@types/lodash.clonedeep": "npm:^4.5.6"
-    "@types/lodash.defaultsdeep": "npm:^4.6.6"
+    "@types/lodash.clonedeep": "npm:^4.5.9"
+    "@types/lodash.defaultsdeep": "npm:^4.6.9"
     "@types/lodash.last": "npm:^3.0.6"
     "@types/lodash.merge": "npm:^4.6.6"
     "@types/lodash.partialright": "npm:^4.2.6"
     "@types/lodash.union": "npm:^4.6.6"
     "@types/mocha": "npm:^10.0.10"
-    "@types/node": "npm:^22.13.11"
+    "@types/node": "npm:^22.15.24"
     "@yarnpkg/pnpify": "npm:^4.1.4"
     chai: "npm:4.2.0"
     chevrotain: "npm:9.1.0"
@@ -125,7 +125,7 @@ __metadata:
     string-pixel-width: "npm:^1.10.0"
     ts-node: "npm:^10.1.0"
     typedoc: "npm:^0.28.1"
-    typescript: "npm:^5.8.2"
+    typescript: "npm:5.8.3"
     xmlbuilder: "npm:^15.1.0"
   languageName: unknown
   linkType: soft
@@ -148,7 +148,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@argdown/gatsby-remark-plugin@workspace:packages/argdown-gatsby-remark-plugin"
   dependencies:
-    "@argdown/remark-plugin": "npm:^1.7.7"
+    "@argdown/remark-plugin": "workspace:^"
     to-vfile: "npm:^8.0.0"
   languageName: unknown
   linkType: soft
@@ -183,8 +183,8 @@ __metadata:
   dependencies:
     "@argdown/core": "workspace:^"
     "@argdown/node": "workspace:^"
-    "@types/chai": "npm:^5.2.1"
-    "@types/lodash.defaultsdeep": "npm:^4.6.6"
+    "@types/chai": "npm:^5.2.2"
+    "@types/lodash.defaultsdeep": "npm:^4.6.9"
     "@types/mocha": "npm:^10.0.10"
     chai: "npm:^5.2.0"
     lodash.defaultsdeep: "npm:^4.6.1"
@@ -192,7 +192,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     svg-to-img: "npm:^2.0.9"
     ts-node: "npm:10.9.2"
-    typescript: "npm:5.8.2"
+    typescript: "npm:5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -202,13 +202,14 @@ __metadata:
   dependencies:
     "@argdown/core": "workspace:^"
     "@argdown/node": "workspace:^"
-    "@types/chai": "npm:5.2.2"
+    "@types/chai": "npm:^5.2.2"
     "@types/mocha": "npm:^10.0.10"
-    "@types/node": "npm:22.15.24"
+    "@types/node": "npm:^22.15.24"
     "@types/webpack": "npm:^5.28.5"
     brfs: "npm:^2.0.2"
     chai: "npm:^5.2.0"
     crypto-browserify: "npm:^3.12.1"
+    css-loader: "npm:^7.1.2"
     mocha: "npm:^11.5.0"
     path-browserify: "npm:^1.0.1"
     process: "git+https://github.com/argdown/node-process"
@@ -237,11 +238,11 @@ __metadata:
     "@parcel/config-default": "npm:^2.15.4"
     "@parcel/transformer-typescript-tsc": "npm:^2.15.4"
     "@types/d3": "npm:7.4.3"
-    "@types/dagre-d3": "npm:^0.6.2"
+    "@types/dagre-d3": "npm:0.6.6"
     "@types/lodash": "npm:^4.14.172"
-    "@types/lodash.defaultsdeep": "npm:^4.6.6"
-    "@types/mocha": "npm:10.0.10"
-    "@types/node": "npm:22.14.0"
+    "@types/lodash.defaultsdeep": "npm:^4.6.9"
+    "@types/mocha": "npm:^10.0.10"
+    "@types/node": "npm:^22.15.24"
     babel-polyfill: "npm:^6.26.0"
     chai: "npm:^5.2.0"
     copyfiles: "npm:^2.1.1"
@@ -268,7 +269,7 @@ __metadata:
   resolution: "@argdown/markdown-it-plugin@workspace:packages/argdown-markdown-it-plugin"
   dependencies:
     "@argdown/core": "workspace:^"
-    "@argdown/web-components": "npm:^1.7.11"
+    "@argdown/web-components": "workspace:^"
     "@parcel/transformer-typescript-tsc": "npm:2.15.2"
     "@types/chai": "npm:^5.2.2"
     "@types/lodash.defaultsdeep": "npm:^4.6.9"
@@ -285,7 +286,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     source-map-support: "npm:^0.5.21"
     ts-node: "npm:^10.9.2"
-    typescript: "npm:^5.8.3"
+    typescript: "npm:5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -294,13 +295,13 @@ __metadata:
   resolution: "@argdown/marked-plugin@workspace:packages/argdown-marked-plugin"
   dependencies:
     "@argdown/core": "workspace:^"
-    "@argdown/web-components": "npm:^1.7.11"
+    "@argdown/web-components": "workspace:^"
     "@parcel/transformer-typescript-tsc": "npm:^2.13.3"
-    "@types/chai": "npm:^5.0.1"
-    "@types/lodash.defaultsdeep": "npm:^4.6.6"
+    "@types/chai": "npm:^5.2.2"
+    "@types/lodash.defaultsdeep": "npm:^4.6.9"
     "@types/marked": "npm:^6.0.0"
     "@types/mocha": "npm:^10.0.10"
-    "@types/node": "npm:^22.13.10"
+    "@types/node": "npm:^22.15.24"
     chai: "npm:^5.2.0"
     lodash.defaultsdeep: "npm:^4.6.1"
     marked: "npm:^15.0.7"
@@ -311,7 +312,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     source-map-support: "npm:^0.5.16"
     ts-node: "npm:^10.9.2"
-    typescript: "npm:^5.8.2"
+    typescript: "npm:5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -321,15 +322,16 @@ __metadata:
   dependencies:
     "@vue/component-compiler-utils": "npm:^3.0.0"
     "@vuepress/plugin-pwa": "npm:1.9.10"
+    "@yarnpkg/types": "npm:^4.0.1"
     esm: "npm:^3.2.25"
     markdown-it-container: "npm:4.0.0"
     stream-browserify: "npm:^3.0.0"
-    typescript: "npm:^5.x.x"
+    typescript: "npm:5.8.3"
     vm-browserify: "npm:^1.1.2"
     vue: "npm:^2.6.10"
     vuepress: "npm:1.9.10"
     vuepress-plugin-sitemap: "npm:2.3.1"
-    webpack: "npm:^4.8.1"
+    webpack: "npm:5.99.9"
   languageName: unknown
   linkType: soft
 
@@ -339,7 +341,7 @@ __metadata:
   dependencies:
     "@aduh95/viz.js": "npm:3.4.0"
     "@argdown/core": "workspace:^"
-    "@types/chai": "npm:^5.2.0"
+    "@types/chai": "npm:^5.2.2"
     "@types/chai-fs": "npm:^2.0.5"
     "@types/lodash.clonedeep": "npm:^4.5.9"
     "@types/lodash.defaultsdeep": "npm:^4.6.9"
@@ -349,7 +351,7 @@ __metadata:
     "@types/lodash.isobject": "npm:^3.0.9"
     "@types/lodash.isstring": "npm:^4.0.9"
     "@types/mocha": "npm:^10.0.10"
-    "@types/node": "npm:^22.13.10"
+    "@types/node": "npm:^22.15.24"
     "@types/pdfkit": "npm:^0.13.9"
     axios: "npm:^1.8.2"
     brfs: "npm:^2.0.2"
@@ -379,7 +381,7 @@ __metadata:
     svg-to-pdfkit: "npm:^0.1.8"
     ts-node: "npm:^10.9.2"
     typedoc: "npm:0.27.9"
-    typescript: "npm:5.8.2"
+    typescript: "npm:5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -389,7 +391,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@argdown/remark-plugin@npm:^1.7.7, @argdown/remark-plugin@workspace:packages/argdown-remark-plugin":
+"@argdown/remark-plugin@workspace:^, @argdown/remark-plugin@workspace:packages/argdown-remark-plugin":
   version: 0.0.0-use.local
   resolution: "@argdown/remark-plugin@workspace:packages/argdown-remark-plugin"
   dependencies:
@@ -397,10 +399,10 @@ __metadata:
     "@argdown/web-components": "workspace:^"
     "@parcel/transformer-typescript-tsc": "npm:^2.14.4"
     "@types/chai": "npm:^5.2.2"
-    "@types/lodash.defaultsdeep": "npm:^4.6.6"
+    "@types/lodash.defaultsdeep": "npm:^4.6.9"
     "@types/mdast": "npm:^4.0.4"
-    "@types/mocha": "npm:10.0.10"
-    "@types/node": "npm:22.15.24"
+    "@types/mocha": "npm:^10.0.10"
+    "@types/node": "npm:^22.15.24"
     "@types/unist": "npm:^3.0.3"
     chai: "npm:^5.2.0"
     lodash.defaultsdeep: "npm:^4.6.1"
@@ -413,7 +415,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     source-map-support: "npm:^0.5.16"
     ts-node: "npm:10.9.2"
-    typescript: "npm:^5.8.3"
+    typescript: "npm:5.8.3"
     unist-builder: "npm:4.0.0"
     unist-util-is: "npm:6.0.0"
     unist-util-visit: "npm:5.0.0"
@@ -477,12 +479,12 @@ __metadata:
     "@types/dagre-d3": "npm:0.6.6"
     "@types/lodash.defaultsdeep": "npm:^4.6.9"
     "@types/lodash.throttle": "npm:^4.1.9"
-    "@types/node": "npm:^22.14.1"
+    "@types/node": "npm:^22.15.24"
     "@types/vscode": "npm:^1.99.1"
     babel-loader: "npm:10.0.0"
     brfs: "npm:^2.0.2"
     crypto-browserify: "npm:^3.12.1"
-    css-loader: "npm:7.1.2"
+    css-loader: "npm:^7.1.2"
     d3-selection: "npm:^3.0.0"
     dagre-d3: "npm:^0.6.3"
     glob: "npm:^11.0.1"
@@ -498,17 +500,17 @@ __metadata:
     terser-webpack-plugin: "npm:^5.3.14"
     transform-loader: "npm:^0.2.4"
     ts-loader: "npm:^9.5.2"
-    typescript: "npm:^5.8.3"
+    typescript: "npm:5.8.3"
     viz.js: "npm:^2.1.2"
     vm-browserify: "npm:^1.1.2"
     vscode-languageclient: "npm:9.0.1"
     vscode-uri: "npm:^3.0.7"
-    webpack: "npm:^5.99.5"
-    webpack-cli: "npm:6.0.1"
+    webpack: "npm:5.99.9"
+    webpack-cli: "npm:^6.0.1"
   languageName: unknown
   linkType: soft
 
-"@argdown/web-components@npm:^1.7.11, @argdown/web-components@workspace:^, @argdown/web-components@workspace:packages/argdown-web-components":
+"@argdown/web-components@workspace:^, @argdown/web-components@workspace:packages/argdown-web-components":
   version: 0.0.0-use.local
   resolution: "@argdown/web-components@workspace:packages/argdown-web-components"
   dependencies:
@@ -523,7 +525,7 @@ __metadata:
     parcel: "npm:2.14.4"
     parcel-plugin-static-files-copy: "npm:^2.5.1"
     rimraf: "npm:^6.0.1"
-    typescript: "npm:^5.8.3"
+    typescript: "npm:5.8.3"
   languageName: unknown
   linkType: soft
 
@@ -5202,7 +5204,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chai-fs@npm:^2.0.2, @types/chai-fs@npm:^2.0.5":
+"@types/chai-fs@npm:^2.0.5":
   version: 2.0.5
   resolution: "@types/chai-fs@npm:2.0.5"
   dependencies:
@@ -5211,19 +5213,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/chai@npm:*, @types/chai@npm:5.2.2, @types/chai@npm:^5.0.1, @types/chai@npm:^5.2.0, @types/chai@npm:^5.2.1, @types/chai@npm:^5.2.2":
+"@types/chai@npm:*, @types/chai@npm:^5.2.2":
   version: 5.2.2
   resolution: "@types/chai@npm:5.2.2"
   dependencies:
     "@types/deep-eql": "npm:*"
   checksum: 10c0/49282bf0e8246800ebb36f17256f97bd3a8c4fb31f92ad3c0eaa7623518d7e87f1eaad4ad206960fcaf7175854bdff4cb167e4fe96811e0081b4ada83dd533ec
-  languageName: node
-  linkType: hard
-
-"@types/chai@npm:4.2.0":
-  version: 4.2.0
-  resolution: "@types/chai@npm:4.2.0"
-  checksum: 10c0/da2ff5fe309f548207edd1bfa12669cadaabe407788cea0e9bd2d6d6f26079812042c931c738c6faa1cedf77d8967713ffcc78eb11b1374caa54a9af83aaf3ad
   languageName: node
   linkType: hard
 
@@ -5798,7 +5793,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/dagre-d3@npm:0.6.6, @types/dagre-d3@npm:^0.6.2":
+"@types/dagre-d3@npm:0.6.6":
   version: 0.6.6
   resolution: "@types/dagre-d3@npm:0.6.6"
   dependencies:
@@ -6023,7 +6018,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash.clonedeep@npm:^4.5.6, @types/lodash.clonedeep@npm:^4.5.9":
+"@types/lodash.clonedeep@npm:^4.5.9":
   version: 4.5.9
   resolution: "@types/lodash.clonedeep@npm:4.5.9"
   dependencies:
@@ -6032,7 +6027,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/lodash.defaultsdeep@npm:^4.6.6, @types/lodash.defaultsdeep@npm:^4.6.9":
+"@types/lodash.defaultsdeep@npm:^4.6.9":
   version: 4.6.9
   resolution: "@types/lodash.defaultsdeep@npm:4.6.9"
   dependencies:
@@ -6206,7 +6201,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mocha@npm:10.0.10, @types/mocha@npm:^10.0.10":
+"@types/mocha@npm:^10.0.10":
   version: 10.0.10
   resolution: "@types/mocha@npm:10.0.10"
   checksum: 10c0/d2b8c48138cde6923493e42b38e839695eb42edd04629abe480a8f34c0e3f50dd82a55832c2e8d2b6e6f9e4deb492d7d733e600fbbdd5a0ceccbcfc6844ff9d5
@@ -6238,24 +6233,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:22.14.0":
-  version: 22.14.0
-  resolution: "@types/node@npm:22.14.0"
-  dependencies:
-    undici-types: "npm:~6.21.0"
-  checksum: 10c0/9d79f3fa1af9c2c869514f419c4a4905b34c10e12915582fd1784868ac4e74c6d306cf5eb47ef889b6750ab85a31be96618227b86739c4a3e0b1c15063f384c6
-  languageName: node
-  linkType: hard
-
-"@types/node@npm:22.15.24":
-  version: 22.15.24
-  resolution: "@types/node@npm:22.15.24"
-  dependencies:
-    undici-types: "npm:~6.21.0"
-  checksum: 10c0/16c38e98168fa6c3d2f2b6e95f14f80878d969b39093bc5384385a884d73a7fe361c563b36f14bc27536b337f5baad74321f717b31d2c061b9c48074567eb8c6
-  languageName: node
-  linkType: hard
-
 "@types/node@npm:^18.17.15":
   version: 18.19.123
   resolution: "@types/node@npm:18.19.123"
@@ -6265,7 +6242,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^22.13.10, @types/node@npm:^22.13.11, @types/node@npm:^22.13.14, @types/node@npm:^22.14.1, @types/node@npm:^22.15.24":
+"@types/node@npm:^22.15.24":
   version: 22.18.0
   resolution: "@types/node@npm:22.18.0"
   dependencies:
@@ -7934,6 +7911,15 @@ __metadata:
   bin:
     shell: ./lib/cli.js
   checksum: 10c0/0cbbfa7c446bc0450f5fdc6f892eb4e8ebdc6addce4f4366fdcb6cb63e5e8b33096db80d6c1f27e0277e008f384f2041d6abaae381b31574495c4c3a71e0192b
+  languageName: node
+  linkType: hard
+
+"@yarnpkg/types@npm:^4.0.1":
+  version: 4.0.1
+  resolution: "@yarnpkg/types@npm:4.0.1"
+  dependencies:
+    tslib: "npm:^2.4.0"
+  checksum: 10c0/90226789475680ba599833571dd76c0718dd5b4c5022481263ef309d6a628f6246671cd6ca86e49c966ddefa7aca6ccef82240dc1476d2cea702ea5bee2a6b72
   languageName: node
   linkType: hard
 
@@ -10639,30 +10625,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-loader@npm:7.1.2, css-loader@npm:^7.1.2":
-  version: 7.1.2
-  resolution: "css-loader@npm:7.1.2"
-  dependencies:
-    icss-utils: "npm:^5.1.0"
-    postcss: "npm:^8.4.33"
-    postcss-modules-extract-imports: "npm:^3.1.0"
-    postcss-modules-local-by-default: "npm:^4.0.5"
-    postcss-modules-scope: "npm:^3.2.0"
-    postcss-modules-values: "npm:^4.0.0"
-    postcss-value-parser: "npm:^4.2.0"
-    semver: "npm:^7.5.4"
-  peerDependencies:
-    "@rspack/core": 0.x || 1.x
-    webpack: ^5.27.0
-  peerDependenciesMeta:
-    "@rspack/core":
-      optional: true
-    webpack:
-      optional: true
-  checksum: 10c0/edec9ed71e3c416c9c6ad41c138834c94baf7629de3b97a3337ae8cec4a45e05c57bdb7c4b4d267229fc04b8970d0d1c0734ded8dcd0ac8c7c286b36facdbbf0
-  languageName: node
-  linkType: hard
-
 "css-loader@npm:^2.1.1":
   version: 2.1.1
   resolution: "css-loader@npm:2.1.1"
@@ -10705,6 +10667,30 @@ __metadata:
     webpack:
       optional: true
   checksum: 10c0/bb52434138085fed06a33e2ffbdae9ee9014ad23bf60f59d6b7ee67f28f26c6b1764024d3030bd19fd884d6ee6ee2224eaed64ad19eb18fbbb23d148d353a965
+  languageName: node
+  linkType: hard
+
+"css-loader@npm:^7.1.2":
+  version: 7.1.2
+  resolution: "css-loader@npm:7.1.2"
+  dependencies:
+    icss-utils: "npm:^5.1.0"
+    postcss: "npm:^8.4.33"
+    postcss-modules-extract-imports: "npm:^3.1.0"
+    postcss-modules-local-by-default: "npm:^4.0.5"
+    postcss-modules-scope: "npm:^3.2.0"
+    postcss-modules-values: "npm:^4.0.0"
+    postcss-value-parser: "npm:^4.2.0"
+    semver: "npm:^7.5.4"
+  peerDependencies:
+    "@rspack/core": 0.x || 1.x
+    webpack: ^5.27.0
+  peerDependenciesMeta:
+    "@rspack/core":
+      optional: true
+    webpack:
+      optional: true
+  checksum: 10c0/edec9ed71e3c416c9c6ad41c138834c94baf7629de3b97a3337ae8cec4a45e05c57bdb7c4b4d267229fc04b8970d0d1c0734ded8dcd0ac8c7c286b36facdbbf0
   languageName: node
   linkType: hard
 
@@ -24626,16 +24612,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.8.2":
-  version: 5.8.2
-  resolution: "typescript@npm:5.8.2"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/5c4f6fbf1c6389b6928fe7b8fcd5dc73bb2d58cd4e3883f1d774ed5bd83b151cbac6b7ecf11723de56d4676daeba8713894b1e9af56174f2f9780ae7848ec3c6
-  languageName: node
-  linkType: hard
-
 "typescript@npm:5.8.3":
   version: 5.8.3
   resolution: "typescript@npm:5.8.3"
@@ -24646,26 +24622,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^5.8.2, typescript@npm:^5.8.3, typescript@npm:^5.x.x":
-  version: 5.9.2
-  resolution: "typescript@npm:5.9.2"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/cd635d50f02d6cf98ed42de2f76289701c1ec587a363369255f01ed15aaf22be0813226bff3c53e99d971f9b540e0b3cc7583dbe05faded49b1b0bed2f638a18
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>":
-  version: 5.8.2
-  resolution: "typescript@patch:typescript@npm%3A5.8.2#optional!builtin<compat/typescript>::version=5.8.2&hash=5786d5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/5448a08e595cc558ab321e49d4cac64fb43d1fa106584f6ff9a8d8e592111b373a995a1d5c7f3046211c8a37201eb6d0f1566f15cdb7a62a5e3be01d087848e2
-  languageName: node
-  linkType: hard
-
 "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>":
   version: 5.8.3
   resolution: "typescript@patch:typescript@npm%3A5.8.3#optional!builtin<compat/typescript>::version=5.8.3&hash=5786d5"
@@ -24673,16 +24629,6 @@ __metadata:
     tsc: bin/tsc
     tsserver: bin/tsserver
   checksum: 10c0/39117e346ff8ebd87ae1510b3a77d5d92dae5a89bde588c747d25da5c146603a99c8ee588c7ef80faaf123d89ed46f6dbd918d534d641083177d5fac38b8a1cb
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@npm%3A^5.8.2#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.8.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.x.x#optional!builtin<compat/typescript>":
-  version: 5.9.2
-  resolution: "typescript@patch:typescript@npm%3A5.9.2#optional!builtin<compat/typescript>::version=5.9.2&hash=5786d5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 10c0/34d2a8e23eb8e0d1875072064d5e1d9c102e0bdce56a10a25c0b917b8aa9001a9cf5c225df12497e99da107dc379360bc138163c66b55b95f5b105b50578067e
   languageName: node
   linkType: hard
 
@@ -25675,7 +25621,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack-cli@npm:6.0.1, webpack-cli@npm:^6.0.1":
+"webpack-cli@npm:^6.0.1":
   version: 6.0.1
   resolution: "webpack-cli@npm:6.0.1"
   dependencies:
@@ -25970,7 +25916,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"webpack@npm:^5, webpack@npm:^5.54.0, webpack@npm:^5.99.5":
+"webpack@npm:^5, webpack@npm:^5.54.0":
   version: 5.101.3
   resolution: "webpack@npm:5.101.3"
   dependencies:

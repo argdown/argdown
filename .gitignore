@@ -1,4 +1,6 @@
 .DS_Store
+.yarn
+.vscode
 node_modules
 
 
