@@ -325,6 +325,7 @@ __metadata:
     "@yarnpkg/types": "npm:^4.0.1"
     esm: "npm:^3.2.25"
     markdown-it-container: "npm:4.0.0"
+    nyc: "npm:^17.1.0"
     stream-browserify: "npm:^3.0.0"
     typescript: "npm:5.8.3"
     vm-browserify: "npm:^1.1.2"

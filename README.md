@@ -38,7 +38,7 @@ To install this Monorepo
 - clone this repository and cd into project dir
 - activate yarn with `yarn set version berry`
 - run `yarn install` in the main folder to install the dependencies of all packages. This will install all the libraries for all the argdown packages.
-- run `yarn workspaces foreach -A --topological-dev --exclude . run build`.
-- run `yarn workspaces foreach -A --topological-dev --exclude . run test` for tests
+- run `yarn build`.
+- run `yarn test` / `yarn test:coverage` for tests
 - run `yarn workspace @argdown/docs run docs:dev` to deploy website locally.
 

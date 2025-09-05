@@ -8,13 +8,28 @@
     "packages/*"
   ],
   "scripts": {
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":false}' yarn workspaces run test",
-    "test:full_log": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":true}' yarn workspaces run test",
-    "test:coverage": "yarn workspaces test:coverage",
-    "build": "yarn workspaces run build",
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":false}' yarn workspaces foreach -A --exclude . run test",
+    "test:full_log": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":true}' yarn workspaces foreach -A --exclude . run test",
+    "test:coverage": "nyc yarn workspaces foreach -A --exclude . run test",
+    "build": "yarn workspaces foreach -A --topological-dev --exclude . run build",
     "install-package": "yarn workspace @argdown/node add @types/pdfkit",
     "yarn:upgrade": "yarn workspaces foreach --all upgrade",
     "docs:dev": "yarn workspace @argdown/docs run docs:dev"
+  },
+  "nyc": {
+    "all": true,
+    "include": [
+      "packages/**/src/**/*.ts"
+    ],
+    "extension": [
+      ".ts"
+    ],
+    "reporter": [
+      "text",
+      "html"
+    ],
+    "sourceMap": true,
+    "instrument": true
   },
   "readmeFilename": "Readme.md",
   "preferGlobal": true,
@@ -22,6 +37,7 @@
     "@vue/component-compiler-utils": "^3.0.0",
     "@vuepress/plugin-pwa": "1.9.10",
     "esm": "^3.2.25",
+    "nyc": "^17.1.0",
     "stream-browserify": "^3.0.0",
     "typescript": "5.8.3",
     "vm-browserify": "^1.1.2",
