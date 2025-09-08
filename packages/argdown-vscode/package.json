@@ -526,7 +526,7 @@
     "dev-build": "npm run dev-build-extension && npm run dev-build-preview && npm run copy-changelog",
     "dev-build-extension": "tsc -p ./",
     "clean": "rimraf \"dist/\"",
-    "test": "echo \"No tests to run here\"",
+    "test": "echo 'TODO: make vscode-test work'",
     "dev-build-preview": "webpack --config preview.webpack.config.js --mode development",
     "copy-changelog": "node ./copy-changelog.js"
   },
@@ -558,6 +558,8 @@
     "@types/lodash.throttle": "^4.1.9",
     "@types/node": "^22.15.24",
     "@types/vscode": "^1.99.1",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2",
     "babel-loader": "10.0.0",
     "brfs": "^2.0.2",
     "crypto-browserify": "^3.12.1",
