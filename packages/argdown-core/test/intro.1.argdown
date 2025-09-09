@@ -10,7 +10,7 @@ Argdown is a simple syntax for defining argumentative structures, inspired by Ma
 ## Argdown Basics
 
 This is a normal statement with __bold__ and __italic__ text 
-and a [link](https://github.com/christianvoigt/argdown-parser).
+and a [link](https://github.com/argdown/argdown-parser).
 
 [Statement 1]: Another statement (after a blank line), this time with a title defined in square brackets. 
 We can use the title to refer to this statement later or mention it in other statements.

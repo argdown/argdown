@@ -74,6 +74,6 @@ model:
 
 ## Using the ArgVu font ligatures for logical symbols
 
-If you use the [ArgVu](https://github.com/christianvoigt/argdown/tree/master/packages/ArgVu) font with Argdown code and activate the `dlig` font ligatures, the shortcodes for logical symbols will automatically be displayed as their unicode counterparts (so :A: will look like ∀ and :<->: will look like ↔), _without changing the underlying code_. This way you can "magically" enter logical symbols in an Argdown document without copy & paste.
+If you use the [ArgVu](https://github.com/argdown/argdown/tree/master/packages/ArgVu) font with Argdown code and activate the `dlig` font ligatures, the shortcodes for logical symbols will automatically be displayed as their unicode counterparts (so :A: will look like ∀ and :<->: will look like ↔), _without changing the underlying code_. This way you can "magically" enter logical symbols in an Argdown document without copy & paste.
 
 You can try this out in the [Argdown Sandbox](https://argdown.org/sandbox) by clicking on "Use ArgVu font" above the code editor.

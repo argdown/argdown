@@ -291,11 +291,11 @@ Now that you have learned the basics of Argdown you can:
 - [VS Code Extension](/guide/installing-the-vscode-extension.html) Install the Argdown VS Code extension for full Argdown language support in one of the best code editors around. Includes a live preview, syntax highlighting, content assist, code linting and export options.
 - [Commandline Tool](/guide/installing-the-commandline-tool.html) If you prefer to work with the commandline install the Argdown commandline tool. You can define custom processes in your config file and use them in a task runner to export several argument maps for the same document at once.
 
-Also, check out our free [ArgVu](https://github.com/christianvoigt/argdown/tree/master/packages/ArgVu) font. It comes with Argdown-specific font-ligatures and glyphs.
+Also, check out our free [ArgVu](https://github.com/argdown/argdown/tree/master/packages/ArgVu) font. It comes with Argdown-specific font-ligatures and glyphs.
 
 ::::tip
 
 If you are getting unexpected results in your map, take a look at the [syntax rules](/syntax) of Argdown and do not forget to separate top-level elements by empty lines.
 
-For any questions not answered by this documentation, don't hesitate to [open a new issue](https://github.com/christianvoigt/argdown/issues) on github.
+For any questions not answered by this documentation, don't hesitate to [open a new issue](https://github.com/argdown/argdown/issues) on github.
 :::

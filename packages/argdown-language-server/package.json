@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/christianvoigt/argdown/tree/master/packages/argdown-language-server"
+    "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-language-server"
   },
   "scripts": {
     "build": "npm run clean && npm run build-node && npm run build-browser",

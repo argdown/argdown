@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/christianvoigt/argdown/tree/master/packages/argdown-png-export"
+    "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-png-export"
   },
   "keywords": [
     "Argdown",

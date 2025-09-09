@@ -6,7 +6,7 @@
 
 ## Features:
 
-- API documentation for [Argdown-Core](https://github.com/christianvoigt/argdown/tree/master/packages/argdown-core) and [Argdown-Node](https://github.com/christianvoigt/argdown/tree/master/packages/argdown-node), made with the help of the [TypeDoc](https://typedoc.org/) library.
+- API documentation for [Argdown-Core](https://github.com/argdown/argdown/tree/master/packages/argdown-core) and [Argdown-Node](https://github.com/argdown/argdown/tree/master/packages/argdown-node), made with the help of the [TypeDoc](https://typedoc.org/) library.
 - Guides on the Argdown Argumentation syntax: [Syntax](https://argdown.org/guide/creating-argument-maps.html).
 - Guides on publishing argument maps: [Publish](https://argdown.org/guide/creating-argument-maps.html).
 - Guides on configuring the Argdown parser: [Configuration](https://argdown.org/guide/configuration.html).

@@ -6,7 +6,7 @@ ArgVu is a font that adds Argdown-specific font ligatures and glyphs to [DejaVu 
 
 Check out ArgVu in the [Argdown Sandbox](https://argdown.org/sandbox) by selecting the "Use ArgVu font" checkbox above the code editor.
 
-ArgVu is designed by [Peter Stahmer](http://peterstahmer.de/), funded by the [KIT Debatelab](http://debatelab.philosophie.kit.edu/) and published under a [free license](https://github.com/christianvoigt/argdown/tree/master/packages/ArgVu/LICENSE.md) (based on DejaVu's license).
+ArgVu is designed by [Peter Stahmer](http://peterstahmer.de/), funded by the [KIT Debatelab](http://debatelab.philosophie.kit.edu/) and published under a [free license](https://github.com/argdown/argdown/tree/master/packages/ArgVu/LICENSE.md) (based on DejaVu's license).
 
 ## Features
 
@@ -45,7 +45,7 @@ Argdown will display these shortcodes directly as the logical symbols they are r
 
 To activate ArgVu and its ligatures for Argdown documents in VS Code do the following:
 
-1. [Download ArgVu](https://github.com/christianvoigt/argdown/raw/master/packages/ArgVu/ArgVuSansMono-Regular-8.2.otf) and install it in your system
+1. [Download ArgVu](https://github.com/argdown/argdown/raw/master/packages/ArgVu/ArgVuSansMono-Regular-8.2.otf) and install it in your system
 2. Start VS Code and open the settings.
 3. Click on the "Open Settings (JSON)" button on the top right, beside the tab menu to edit the settings as a JSON text document.
 4. Add the following to the JSON file:

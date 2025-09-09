@@ -36,13 +36,13 @@ You can try out @argdown/cli without installing it by running:
 npx @argdown/cli map
 ```
 
-If you want to export your map to png, jpg or webp you have to additionally install the [`@argdown/image-export` plugin](https://github.com/christianvoigt/argdown/tree/master/packages/argdown-image-export):
+If you want to export your map to png, jpg or webp you have to additionally install the [`@argdown/image-export` plugin](https://github.com/argdown/argdown/tree/master/packages/argdown-image-export):
 
 ```bash
 npm install -g @argdown/image-export
 ```
 
-`@argdown/cli` will automatically search for the plugin on your computer and use it as needed. If you are using Linux, you might have to install additional dependencies. Please consult the [plugin's README](https://github.com/christianvoigt/argdown/tree/master/packages/argdown-image-export) for more information.
+`@argdown/cli` will automatically search for the plugin on your computer and use it as needed. If you are using Linux, you might have to install additional dependencies. Please consult the [plugin's README](https://github.com/argdown/argdown/tree/master/packages/argdown-image-export) for more information.
 
 ## Available commands
 

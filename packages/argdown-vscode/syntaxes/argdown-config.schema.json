@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://github.com/christianvoigt/argdown/tree/master/packages/argdown-vscode/syntaxes/argdown-config.schema.json",
+  "$id": "https://github.com/argdown/argdown/tree/master/packages/argdown-vscode/syntaxes/argdown-config.schema.json",
   "title": "Argdown Config",
   "type": "object",
   "definitions": {

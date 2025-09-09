@@ -24,7 +24,7 @@ If you want to start working right away, you should install the [Argdown VS Code
 
 The development of Argdown and Argdown-related tools is funded by the [DebateLab](http://debatelab.philosophie.kit.edu/) at KIT, Karlsruhe.
 
-All code is published under the MIT license. The optional Argvu font is published under a [Free License](https://github.com/christianvoigt/argdown/tree/master/packages/argvu/LICENSE.md).
+All code is published under the MIT license. The optional Argvu font is published under a [Free License](https://github.com/argdown/argdown/tree/master/packages/argvu/LICENSE.md).
 
 ## About this repository
 

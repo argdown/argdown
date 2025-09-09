@@ -10,10 +10,10 @@
   "homepage": "https://argdown.org",
   "repository": {
     "type": "git",
-    "url": "https://github.com/christianvoigt/argdown"
+    "url": "https://github.com/argdown/argdown"
   },
   "bugs": {
-    "url": "https://github.com/christianvoigt/argdown/issues"
+    "url": "https://github.com/argdown/argdown/issues"
   },
   "engines": {
     "vscode": "^1.99.1"

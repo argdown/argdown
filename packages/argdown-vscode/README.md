@@ -40,7 +40,7 @@ If you prefer to work a different theme, you can also add custom Argdown colors 
 
 ## Using ArgVu font ligatures in VSCode
 
-If you are looking for the perfect font for your Argdown code, check out our free [ArgVu](https://github.com/christianvoigt/argdown/tree/master/packages/ArgVu) font. It comes with Argdown-specific font-ligatures and glyphs. After installing the font, you can activate it in VSCode by adding the following to your `settings.json`:
+If you are looking for the perfect font for your Argdown code, check out our free [ArgVu](https://github.com/argdown/argdown/tree/master/packages/ArgVu) font. It comes with Argdown-specific font-ligatures and glyphs. After installing the font, you can activate it in VSCode by adding the following to your `settings.json`:
 
 ```json
     "[argdown]": {
@@ -49,7 +49,7 @@ If you are looking for the perfect font for your Argdown code, check out our fre
     },
 ```
 
-See [ArgVu's Readme](https://github.com/christianvoigt/argdown/tree/master/packages/ArgVu/README.md) file for more detailed instructions.
+See [ArgVu's Readme](https://github.com/argdown/argdown/tree/master/packages/ArgVu/README.md) file for more detailed instructions.
 
 ## Map Preview
 
@@ -170,6 +170,6 @@ In `settings.json` we have to add the custom colors to the `editor.tokenColorCus
 }
 ```
 
-You can find the scopes that are used by the Argdown syntax highlighter in the Argdown Light theme. You find the file of the theme [here](https://github.com/christianvoigt/argdown/blob/master/packages/argdown-vscode/themes/argdown-light.json). Simply copy & paste everything from the `tokenColors` array into the `textMateRules` array, change the colors according to your taste and you are good to go.
+You can find the scopes that are used by the Argdown syntax highlighter in the Argdown Light theme. You find the file of the theme [here](https://github.com/argdown/argdown/blob/master/packages/argdown-vscode/themes/argdown-light.json). Simply copy & paste everything from the `tokenColors` array into the `textMateRules` array, change the colors according to your taste and you are good to go.
 
 While you are at it you might also want to adjust the colors in the HTML and map previews. To achieve that you can add an `argdown.config.json` file in your workspace folder and use the `color` configuration options. Please consult the Argdown documentation for further details.

@@ -30,7 +30,7 @@ You need to activate a custom VS Code theme in order to get full support of the 
 
 Now you have added full syntax highlighting support to VS Code. The Argdown custom theme is the default VS Code light theme enhanced by some special colors for things like attack and support relations. So it will work fine with other programming languages as well.
 
-You can also [activate our free ArgVu font](https://github.com/christianvoigt/argdown/tree/master/packages/ArgVu) in VSCode. It comes with Argdown-specific font-ligatures and glyphs.
+You can also [activate our free ArgVu font](https://github.com/argdown/argdown/tree/master/packages/ArgVu) in VSCode. It comes with Argdown-specific font-ligatures and glyphs.
 
 :::tip Next step
 If you are new to Argdown, the next step is to follow along with our [first example](/guide/a-first-example.html).
@@ -50,6 +50,6 @@ If you are new to Argdown, the next step is to follow along with our [first exam
 
 For further help on using the Argdown extension, please read the extension's README file. You can read it directly in VS Code if you open the "extension gallery" again, search for the "Argdown" extension and click on the search result. This will open the Readme file in VS Code.
 
-You can also find the [Readme](https://github.com/christianvoigt/argdown/blob/master/packages/argdown-vscode/README.md) in the argdown repository.
+You can also find the [Readme](https://github.com/argdown/argdown/blob/master/packages/argdown-vscode/README.md) in the argdown repository.
 
-If you run into any issues while installing or running the extension, you can search for existing issues or post a new issue in the [Argdown repository](https://github.com/christianvoigt/argdown/issues).
+If you run into any issues while installing or running the extension, you can search for existing issues or post a new issue in the [Argdown repository](https://github.com/argdown/argdown/issues).

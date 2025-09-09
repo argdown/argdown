@@ -144,7 +144,7 @@ By default the width is set to `100%` and the height is set to `auto` and is app
 
 ### Using the ArgVu font for the source view
 
-Here is how you activate the [ArgVu font](https://github.com/christianvoigt/argdown/tree/master/packages/ArgVu) for the source view:
+Here is how you activate the [ArgVu font](https://github.com/argdown/argdown/tree/master/packages/ArgVu) for the source view:
 
 ```argdown
 ===
@@ -162,7 +162,7 @@ In this case the font styles for the components will change and the ArgVu font l
 
 Because the ArgVu font is not loaded by the css of this webpage, the source view in the example above will only use ArgVu if you have installed it on your computer.
 
-If you want to use this feature, you should load the [ArgVu](https://github.com/christianvoigt/argdown/tree/master/packages/ArgVu) font file [in your css](https://stackoverflow.com/questions/107936/how-to-add-some-non-standard-font-to-a-website) so that it is also used for users who have not installed it.
+If you want to use this feature, you should load the [ArgVu](https://github.com/argdown/argdown/tree/master/packages/ArgVu) font file [in your css](https://stackoverflow.com/questions/107936/how-to-add-some-non-standard-font-to-a-website) so that it is also used for users who have not installed it.
 
 :::
 

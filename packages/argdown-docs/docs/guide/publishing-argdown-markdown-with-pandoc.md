@@ -27,7 +27,7 @@ npm install -g @argdown/image-export
 ```
 
 :::tip
-If you run this on Linux, check out the plugin's [README](https://github.com/christianvoigt/argdown/tree/master/packages/argdown-image-export) for how to install additional dependencies.
+If you run this on Linux, check out the plugin's [README](https://github.com/argdown/argdown/tree/master/packages/argdown-image-export) for how to install additional dependencies.
 :::
 
 The pandoc filter will automatically look for the image export plugin on your computer and use it as needed.
@@ -174,7 +174,7 @@ Use the `format` configuration property to choose one of the following image for
 - `jpg`
 - `webp`
 
-The latter three are only supported if you install the [`@argdown/image-export`](https://github.com/christianvoigt/argdown/tree/master/packages/argdown-image-export) plugin (see installation instructions).
+The latter three are only supported if you install the [`@argdown/image-export`](https://github.com/argdown/argdown/tree/master/packages/argdown-image-export) plugin (see installation instructions).
 
 If you use the `file` mode, the Argdown parser will automatically name the exported image files (either by calling them `map-1`, `map-2`, ... or by using the figure id defined with `#fig:some-id`).
 

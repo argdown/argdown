@@ -27,7 +27,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/christianvoigt/argdown/tree/master/packages/argdown-markdown-it-plugin"
+    "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-markdown-it-plugin"
   },
   "author": {
     "name": "Christian Voigt",

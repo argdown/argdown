@@ -7,7 +7,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/christianvoigt/argdown.git"
+    "url": "git+https://github.com/argdown/argdown.git"
   },
   "keywords": [
     "Argdown",
@@ -21,7 +21,7 @@
   "author": "Peter Stahmer, Christian Voigt",
   "license": "SEE LICENSE IN LICENSE.md",
   "bugs": {
-    "url": "https://github.com/christianvoigt/argdown/issues"
+    "url": "https://github.com/argdown/argdown/issues"
   },
-  "homepage": "https://github.com/christianvoigt/argdown#readme"
+  "homepage": "https://github.com/argdown/argdown#readme"
 }

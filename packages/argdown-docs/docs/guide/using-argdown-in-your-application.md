@@ -52,4 +52,4 @@ console.log(response.svg);
 
 For more information about how the `ArgdownApplication` class manages plugins, processors and processes, please consult the [API documents](/api/) of `@argdown/core` and `@argdown/node`.
 
-If you need further help integrating Argdown into your own application or writing custom plugins, you can also open an issue in the [Argdown Github repository](https://github.com/christianvoigt/argdown/issues).
+If you need further help integrating Argdown into your own application or writing custom plugins, you can also open an issue in the [Argdown Github repository](https://github.com/argdown/argdown/issues).

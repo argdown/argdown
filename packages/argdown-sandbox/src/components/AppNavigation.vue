@@ -13,7 +13,7 @@
       <li><router-link to="/json">JSON</router-link></li>
       <li><a href="https://argdown.org">Documentation</a></li>
       <li>
-        <a href="https://github.com/christianvoigt/argdown">View on Github</a>
+        <a href="https://github.com/argdown/argdown">View on Github</a>
       </li>
     </ul>
   </nav>

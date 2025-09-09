@@ -8,7 +8,7 @@ meta:
 # Configuration Cheat Sheet
 
 :::tip
-The VSCode extension will help you write `argdown.config.json` files with code completion, validation and hover context information. See the [extension's README for a small tutorial](https://github.com/christianvoigt/argdown/tree/master/packages/argdown-vscode/README.md#configuration-files) on how to use these features.
+The VSCode extension will help you write `argdown.config.json` files with code completion, validation and hover context information. See the [extension's README for a small tutorial](https://github.com/argdown/argdown/tree/master/packages/argdown-vscode/README.md#configuration-files) on how to use these features.
 
 If you are overwhelmed by this cheat sheet or the syntax of the configuration file, simply start playing around with code completion in VSCode to explore the config options step by step. The hover "tooltips" will often contain all the information you need.
 :::

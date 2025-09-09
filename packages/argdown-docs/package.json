@@ -5,7 +5,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/christianvoigt/argdown/tree/master/packages/argdown-docs"
+    "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-docs"
   },
   "keywords": [
     "argdown",
@@ -22,9 +22,9 @@
   "author": "Christian Voigt",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/christianvoigt/argdown/issues"
+    "url": "https://github.com/argdown/argdown/issues"
   },
-  "homepage": "https://github.com/christianvoigt/argdown",
+  "homepage": "https://github.com/argdown/argdown",
   "devDependencies": {
     "@argdown/core": "workspace:^",
     "@argdown/markdown-it-plugin": "workspace:^",
