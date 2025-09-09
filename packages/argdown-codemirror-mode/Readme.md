@@ -1,6 +1,6 @@
 # @argdown/codemirror-mode
 
-![Argdown logo](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/argdown-arrow.png "Argdown logo")
+![Argdown logo](https://raw.githubusercontent.com/argdown/argdown/HEAD/argdown-arrow.png "Argdown logo")
 
 A simple Codemirror syntax highlighting mode for the Argdown argumentation syntax.
 

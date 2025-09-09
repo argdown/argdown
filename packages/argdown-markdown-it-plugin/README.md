@@ -1,6 +1,6 @@
 # @argdown/markdown-it-plugin
 
-![Argdown logo](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/argdown-arrow.png "Argdown logo")
+![Argdown logo](https://raw.githubusercontent.com/argdown/argdown/HEAD/argdown-arrow.png "Argdown logo")
 
 This package is part of the [Argdown project](https://argdown.org) and adds Argdown support to the markdown-it Markdown parser.
 

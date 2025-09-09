@@ -1,6 +1,6 @@
 # @argdown/image-export
 
-![Argdown logo](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/argdown-arrow.png "Argdown logo")
+![Argdown logo](https://raw.githubusercontent.com/argdown/argdown/HEAD/argdown-arrow.png "Argdown logo")
 
 An [Argdown](https://argdown.org) parser plugin for exporting svg argument maps to png, jpg or webp files. The plugin uses [svg-to-img](https://github.com/etienne-martin/svg-to-img) which in turn uses the headless Chrome/Chromium browser [puppeteer](https://github.com/puppeteer/puppeteer). It loads the svg into the browser and makes a snapshot.
 

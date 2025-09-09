@@ -1,6 +1,6 @@
 # @argdown/node
 
-![Argdown logo](https://raw.githubusercontent.com/christianvoigt/argdown/HEAD/argdown-arrow.png "Argdown logo")
+![Argdown logo](https://raw.githubusercontent.com/argdown/argdown/HEAD/argdown-arrow.png "Argdown logo")
 
 This package consists of classes specific for running Argdown applications in Node.js:
 

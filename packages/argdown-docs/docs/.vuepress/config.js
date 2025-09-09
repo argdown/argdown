@@ -77,7 +77,7 @@ module.exports = {
     extendMarkdown: extendMarkdown
   },
   themeConfig: {
-    repo: "christianvoigt/argdown",
+    repo: "argdown/argdown",
     docsDir: "docs",
     algolia: {
       apiKey: "6f7a8a8ebb4447a94088be7ef719ea1f",
