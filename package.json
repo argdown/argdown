@@ -55,5 +55,8 @@
     "markdown-it-container": "4.0.0",
     "vuepress-plugin-sitemap": "2.3.1"
   },
+  "resolutions": {
+    "@types/markdown-it": "^14.1.2"
+  },
   "packageManager": "yarn@4.9.4"
 }
