@@ -1,0 +1,20 @@
+# Test Argdown Document
+
+[Statement 1]: This is a test statement for the test workspace.
+
+<Argument 1>: This is a test argument.
+  + [Statement 1]
+  - [Statement 2]: This contradicts statement 1.
+
+[Statement 2]: Another statement.
+
+## More Complex Example
+
+[Premise A]: All humans are mortal.
+[Premise B]: Socrates is human.
+[Conclusion]: Therefore, Socrates is mortal.
+
+<Classical Syllogism>: A classic example of deductive reasoning.
+  + [Premise A]
+  + [Premise B]
+  - [Conclusion]

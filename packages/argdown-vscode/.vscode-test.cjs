@@ -2,7 +2,12 @@
 const { defineConfig } = require('@vscode/test-cli');
 
 module.exports = defineConfig({ 
-  files: 'dist/test/**/*.test.js',
+  files: 'test/**/*.test.js',
   extensionDevelopmentPath: '.',
-  timeout: 30000
+  workspaceFolder: 'test/fixtures/workspace_a',
+  mocha: {
+    ui: 'tdd',
+    timeout: 30000,
+    color: true
+  }
 });
