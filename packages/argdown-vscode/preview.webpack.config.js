@@ -36,7 +36,7 @@ module.exports = {
   },
   output: {
     filename: "[name].js",
-    path: path.resolve(__dirname, "media")
+    path: path.resolve(__dirname, "dist/preview")
   },
   node: {
     global: false

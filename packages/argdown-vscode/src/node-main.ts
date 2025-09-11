@@ -98,7 +98,7 @@ export function activate(context: vscode.ExtensionContext) {
   let debugOptions: ForkOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
-  const serverPath = context.asAbsolutePath("dist/server-node.js");
+  const serverPath = context.asAbsolutePath("dist/server/server-node.js");
   let serverOptions: ServerOptions = {
     run: {
       module: serverPath,

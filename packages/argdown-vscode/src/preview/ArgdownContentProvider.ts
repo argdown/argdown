@@ -188,8 +188,19 @@ export class ArgdownContentProvider {
     resourceProvider: WebviewResourceProvider,
     mediaFile: string
   ): vscode.Uri {
+    // Determine the correct subdirectory based on file type
+    let subdirectory: string;
+    if (mediaFile === "pre.js") {
+      subdirectory = "dist/preview";
+    } else if (["htmlView.js", "dagreView.js", "vizjsView.js"].includes(mediaFile)) {
+      subdirectory = "dist/preview";
+    } else {
+      // Default to media for other files (CSS, images, etc.)
+      subdirectory = "media";
+    }
+    
     return resourceProvider.asWebviewUri(
-      vscode.Uri.joinPath(this.context.extensionUri, "media", mediaFile)
+      vscode.Uri.joinPath(this.context.extensionUri, subdirectory, mediaFile)
     );
   }
   private fixHref(
