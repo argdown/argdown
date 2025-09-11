@@ -144,7 +144,7 @@ module.exports = defineConfig({
     // Enforce consistent Node.js engine requirement across all packages
     for (const workspace of Yarn.workspaces()) {
       if (workspace.manifest.name !== '@argdown/monorepo') {
-        workspace.set('engines.node', '>= 22.14.0');
+        workspace.set('engines.node', '>= 22.11.0');
       }
     }
   },

@@ -6,7 +6,7 @@
   "module": "./dist-esm/index.js",
   "types": "./dist-esm/index.d.ts",
   "engines": {
-    "node": ">= 22.14.0"
+    "node": ">= 22.11.0"
   },
   "scripts": {
     "deploy": "npm run test && npm run build && npm version patch && npm run push",

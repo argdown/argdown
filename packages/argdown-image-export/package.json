@@ -20,7 +20,7 @@
     "png"
   ],
   "engines": {
-    "node": ">= 22.14.0"
+    "node": ">= 22.11.0"
   },
   "author": "Christian Voigt",
   "license": "MIT",

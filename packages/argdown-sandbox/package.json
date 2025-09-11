@@ -71,6 +71,6 @@
     "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-sandbox"
   },
   "engines": {
-    "node": ">= 22.14.0"
+    "node": ">= 22.11.0"
   }
 }
