@@ -58,7 +58,7 @@ describe("SyncDotToSvgExportPlugin", function() {
   it("can generate tooltips in svg format", async () => {
     const input = `
         [Statement Title]: Statement text content
-        
+
         <Argument Title>: Argument text content
             - [Statement Title]
             + <Another Argument>: More argument text
@@ -83,8 +83,8 @@ describe("SyncDotToSvgExportPlugin", function() {
       expect(response.svg).to.contain("<svg");
       expect(response.svg).to.contain("</svg>");
 
-      // Check that tooltips are converted to SVG <title> elements
-      // SVG tooltips are represented as <title> elements within <g> or other elements
+      // Check that tooltips are added via xlink:title attributes
+      // Tooltips should be in the format: <a xlink:title="tooltip">
       expect(response.svg).to.contain('xlink:title="Statement text content"');
       expect(response.svg).to.contain('xlink:title="Argument text content"');
       expect(response.svg).to.contain('xlink:title="More argument text"');
