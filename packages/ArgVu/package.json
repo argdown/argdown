@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/argdown/argdown/issues"
   },
-  "homepage": "https://github.com/argdown/argdown#readme"
+  "homepage": "https://github.com/argdown/argdown#readme",
+  "engines": {
+    "node": ">= 22.14.0"
+  }
 }

@@ -16,7 +16,8 @@
     "url": "https://github.com/argdown/argdown/issues"
   },
   "engines": {
-    "vscode": "^1.99.0"
+    "vscode": "^1.99.0",
+    "node": ">= 22.14.0"
   },
   "categories": [
     "Programming Languages",

@@ -51,5 +51,8 @@
     "parcel-plugin-static-files-copy": "^2.5.1",
     "rimraf": "^6.0.1",
     "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">= 22.14.0"
   }
 }

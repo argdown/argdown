@@ -57,5 +57,8 @@
     "lodash.defaultsdeep": "^4.6.1",
     "markdown-it": "^14.1.0"
   },
-  "browserslist": "> 0.2%"
+  "browserslist": "> 0.2%",
+  "engines": {
+    "node": ">= 22.14.0"
+  }
 }

@@ -15,5 +15,8 @@
     "Argdown"
   ],
   "author": "Christian Voigt",
-  "license": "MIT"
+  "license": "MIT",
+  "engines": {
+    "node": ">= 22.14.0"
+  }
 }

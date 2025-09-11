@@ -119,5 +119,8 @@
     ],
     "sourceMap": true,
     "instrument": true
+  },
+  "engines": {
+    "node": ">= 22.14.0"
   }
 }

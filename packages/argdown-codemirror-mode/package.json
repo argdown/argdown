@@ -23,5 +23,8 @@
   "homepage": "https://github.com/argdown/argdown",
   "devDependencies": {
     "codemirror": "^5.25.0"
+  },
+  "engines": {
+    "node": ">= 22.14.0"
   }
 }

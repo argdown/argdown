@@ -1,7 +1,7 @@
 {
   "name": "@argdown/pandoc-filter",
   "engines": {
-    "node": ">= 13.7.0"
+    "node": ">= 22.14.0"
   },
   "version": "1.7.7",
   "description": "Turns Argdown code fences into svg, png, jpg, webp or web-component argument maps",
