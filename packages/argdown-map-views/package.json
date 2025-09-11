@@ -40,6 +40,7 @@
   },
   "devDependencies": {
     "@parcel/config-default": "^2.15.4",
+    "@parcel/core": "^2.14.4",
     "@parcel/transformer-typescript-tsc": "^2.15.4",
     "@types/d3": "7.4.3",
     "@types/dagre-d3": "0.6.6",
@@ -47,7 +48,7 @@
     "@types/lodash.defaultsdeep": "^4.6.9",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.24",
-    "chai": "^5.2.0",
+    "chai": "^4.3.10",
     "copyfiles": "^2.1.1",
     "mocha": "11.1.0",
     "nyc": "^17.1.0",

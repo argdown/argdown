@@ -120,5 +120,20 @@ module.exports = defineConfig({
     for (const dep of Yarn.dependencies({ ident: 'css-loader' })) {
       dep.update('^7.1.2');
     }
+
+    // Enforce consistent versions for common dependencies across packages
+    const commonDependencyConstraints = [
+      { ident: 'chai', version: '^4.3.10' },
+      { ident: 'chalk', version: '^2.4.2' }, // Compatible with vuepress-plugin-sitemap
+      { ident: 'commander', version: '^2.20.3' }, // Compatible with vuepress-plugin-sitemap
+      { ident: '@parcel/core', version: '^2.14.4' },
+      { ident: '@babel/core', version: '^7.24.1' }
+    ];
+
+    for (const { ident, version } of commonDependencyConstraints) {
+      for (const dep of Yarn.dependencies({ ident })) {
+        dep.update(version);
+      }
+    }
   },
 });

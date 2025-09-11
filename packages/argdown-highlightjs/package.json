@@ -32,6 +32,7 @@
   "license": "MIT",
   "devDependencies": {
     "@parcel/config-default": "^2.14.4",
+    "@parcel/core": "^2.14.4",
     "@parcel/optimizer-cssnano": "^2.14.4",
     "@parcel/optimizer-htmlnano": "^2.14.4",
     "@parcel/packager-css": "^2.14.4",
@@ -42,6 +43,7 @@
     "@parcel/transformer-posthtml": "^2.14.4",
     "@parcel/transformer-typescript-tsc": "^2.14.4",
     "@parcel/validator-typescript": "^2.14.4",
+    "@types/node": "^22.15.24",
     "highlight.js": "11.11.1",
     "parcel": "^2.14.4",
     "postcss": "8.5.3",

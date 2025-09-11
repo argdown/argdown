@@ -46,7 +46,7 @@ __metadata:
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^22.15.24"
     "@types/yargs": "npm:^17.0.33"
-    chai: "npm:^5.2.0"
+    chai: "npm:^4.3.10"
     chai-fs: "npm:^2.0.0"
     copyfiles: "npm:^2.2.0"
     glob: "npm:^11.0.1"
@@ -93,7 +93,7 @@ __metadata:
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^22.15.24"
     "@yarnpkg/pnpify": "npm:^4.1.4"
-    chai: "npm:4.2.0"
+    chai: "npm:^4.3.10"
     chevrotain: "npm:9.1.0"
     copyfiles: "npm:^2.2.0"
     eventemitter3: "npm:^5.0.1"
@@ -127,6 +127,8 @@ __metadata:
     "@argdown/core": "workspace:^"
     "@argdown/markdown-it-plugin": "workspace:^"
     "@vuepress/plugin-pwa": "npm:1.8.2"
+    chalk: "npm:^2.4.2"
+    commander: "npm:^2.20.3"
     esm: "npm:^3.2.25"
     markdown-it-container: "npm:4.0.0"
     vuepress: "npm:1.8.2"
@@ -148,6 +150,7 @@ __metadata:
   resolution: "@argdown/highlightjs@workspace:packages/argdown-highlightjs"
   dependencies:
     "@parcel/config-default": "npm:^2.14.4"
+    "@parcel/core": "npm:^2.14.4"
     "@parcel/optimizer-cssnano": "npm:^2.14.4"
     "@parcel/optimizer-htmlnano": "npm:^2.14.4"
     "@parcel/packager-css": "npm:^2.14.4"
@@ -158,6 +161,7 @@ __metadata:
     "@parcel/transformer-posthtml": "npm:^2.14.4"
     "@parcel/transformer-typescript-tsc": "npm:^2.14.4"
     "@parcel/validator-typescript": "npm:^2.14.4"
+    "@types/node": "npm:^22.15.24"
     highlight.js: "npm:11.11.1"
     parcel: "npm:^2.14.4"
     postcss: "npm:8.5.3"
@@ -176,7 +180,8 @@ __metadata:
     "@types/chai": "npm:^5.2.2"
     "@types/lodash.defaultsdeep": "npm:^4.6.9"
     "@types/mocha": "npm:^10.0.10"
-    chai: "npm:^5.2.0"
+    "@types/node": "npm:^22.15.24"
+    chai: "npm:^4.3.10"
     lodash.defaultsdeep: "npm:^4.6.1"
     mocha: "npm:11.1.0"
     rimraf: "npm:^6.0.1"
@@ -197,7 +202,7 @@ __metadata:
     "@types/node": "npm:^22.15.24"
     "@types/webpack": "npm:^5.28.5"
     brfs: "npm:^2.0.2"
-    chai: "npm:^5.2.0"
+    chai: "npm:^4.3.10"
     crypto-browserify: "npm:^3.12.1"
     css-loader: "npm:^7.1.2"
     mocha: "npm:^11.5.0"
@@ -226,6 +231,7 @@ __metadata:
     "@aduh95/viz.js": "npm:3.4.0"
     "@argdown/core": "workspace:^"
     "@parcel/config-default": "npm:^2.15.4"
+    "@parcel/core": "npm:^2.14.4"
     "@parcel/transformer-typescript-tsc": "npm:^2.15.4"
     "@types/d3": "npm:7.4.3"
     "@types/dagre-d3": "npm:0.6.6"
@@ -234,7 +240,7 @@ __metadata:
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^22.15.24"
     babel-polyfill: "npm:^6.26.0"
-    chai: "npm:^5.2.0"
+    chai: "npm:^4.3.10"
     copyfiles: "npm:^2.1.1"
     d3-selection: "npm:3.0.0"
     d3-transition: "npm:3.0.1"
@@ -266,7 +272,7 @@ __metadata:
     "@types/markdown-it": "npm:^14.1.2"
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^22.15.24"
-    chai: "npm:^5.2.0"
+    chai: "npm:^4.3.10"
     lodash.defaultsdeep: "npm:^4.6.1"
     markdown-it: "npm:^14.1.0"
     mocha: "npm:^11.5.0"
@@ -286,13 +292,14 @@ __metadata:
   dependencies:
     "@argdown/core": "workspace:^"
     "@argdown/web-components": "workspace:^"
+    "@parcel/core": "npm:^2.14.4"
     "@parcel/transformer-typescript-tsc": "npm:^2.13.3"
     "@types/chai": "npm:^5.2.2"
     "@types/lodash.defaultsdeep": "npm:^4.6.9"
     "@types/marked": "npm:^6.0.0"
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^22.15.24"
-    chai: "npm:^5.2.0"
+    chai: "npm:^4.3.10"
     lodash.defaultsdeep: "npm:^4.6.1"
     marked: "npm:^15.0.7"
     mocha: "npm:^11.1.0"
@@ -313,6 +320,8 @@ __metadata:
     "@vue/component-compiler-utils": "npm:^3.0.0"
     "@vuepress/plugin-pwa": "npm:1.9.10"
     "@yarnpkg/types": "npm:^4.0.1"
+    chalk: "npm:^2.4.2"
+    commander: "npm:^2.20.3"
     esm: "npm:^3.2.25"
     markdown-it-container: "npm:4.0.0"
     nyc: "npm:^17.1.0"
@@ -346,7 +355,7 @@ __metadata:
     "@types/pdfkit": "npm:^0.13.9"
     axios: "npm:^1.8.2"
     brfs: "npm:^2.0.2"
-    chai: "npm:4.2.0"
+    chai: "npm:^4.3.10"
     chai-fs: "npm:^2.0.0"
     chokidar: "npm:^4.0.3"
     copyfiles: "npm:^2.2.0"
@@ -388,7 +397,7 @@ __metadata:
     "@types/lodash.defaultsdeep": "npm:^4.6.9"
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^22.15.24"
-    chai: "npm:^5.2.0"
+    chai: "npm:^4.3.10"
     chai-fs: "npm:^2.0.0"
     cross-env: "npm:^7.0.3"
     import-global: "npm:^1.1.1"
@@ -401,6 +410,14 @@ __metadata:
     source-map-support: "npm:0.5.21"
     ts-node: "npm:^10.9.2"
     typescript: "npm:5.8.3"
+  peerDependencies:
+    pandoc: ">=3.6.0"
+    rsvg-convert: ">=2.60.0"
+  peerDependenciesMeta:
+    pandoc:
+      optional: false
+    rsvg-convert:
+      optional: true
   bin:
     argdown-filter: dist/index.js
   languageName: unknown
@@ -418,6 +435,7 @@ __metadata:
   dependencies:
     "@argdown/core": "workspace:^"
     "@argdown/web-components": "workspace:^"
+    "@parcel/core": "npm:^2.14.4"
     "@parcel/transformer-typescript-tsc": "npm:^2.14.4"
     "@types/chai": "npm:^5.2.2"
     "@types/lodash.defaultsdeep": "npm:^4.6.9"
@@ -425,7 +443,7 @@ __metadata:
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^22.15.24"
     "@types/unist": "npm:^3.0.3"
-    chai: "npm:^5.2.0"
+    chai: "npm:^4.3.10"
     lodash.defaultsdeep: "npm:^4.6.1"
     mocha: "npm:^11.5.0"
     nyc: "npm:^17.1.0"
@@ -450,6 +468,7 @@ __metadata:
     "@argdown/codemirror-mode": "workspace:^"
     "@argdown/core": "workspace:^"
     "@argdown/map-views": "workspace:^"
+    "@babel/core": "npm:^7.24.1"
     "@babel/eslint-parser": "npm:^7.24.1"
     "@babel/plugin-syntax-dynamic-import": "npm:^7.8.3"
     "@vue/cli-plugin-babel": "npm:^5.0.8"
@@ -519,7 +538,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/core@npm:^7.11.0, @babel/core@npm:^7.12.16, @babel/core@npm:^7.23.9, @babel/core@npm:^7.26.10, @babel/core@npm:^7.8.4":
+"@babel/core@npm:^7.11.0, @babel/core@npm:^7.12.16, @babel/core@npm:^7.23.9, @babel/core@npm:^7.24.1, @babel/core@npm:^7.8.4":
   version: 7.28.4
   resolution: "@babel/core@npm:7.28.4"
   dependencies:
@@ -2558,7 +2577,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/core@npm:2.15.4":
+"@parcel/core@npm:2.15.4, @parcel/core@npm:^2.14.4":
   version: 2.15.4
   resolution: "@parcel/core@npm:2.15.4"
   dependencies:
@@ -8364,7 +8383,7 @@ __metadata:
     "@argdown/markdown-it-plugin": "workspace:^"
     "@argdown/node": "workspace:^"
     "@argdown/web-components": "workspace:^"
-    "@babel/core": "npm:^7.26.10"
+    "@babel/core": "npm:^7.24.1"
     "@babel/plugin-transform-modules-commonjs": "npm:^7.26.3"
     "@babel/preset-env": "npm:^7.26.9"
     "@types/d3": "npm:7.4.3"
@@ -8590,13 +8609,6 @@ __metadata:
   version: 1.1.0
   resolution: "assertion-error@npm:1.1.0"
   checksum: 10c0/25456b2aa333250f01143968e02e4884a34588a8538fbbf65c91a637f1dbfb8069249133cd2f4e530f10f624d206a664e7df30207830b659e9f5298b00a4099b
-  languageName: node
-  linkType: hard
-
-"assertion-error@npm:^2.0.1":
-  version: 2.0.1
-  resolution: "assertion-error@npm:2.0.1"
-  checksum: 10c0/bbbcb117ac6480138f8c93cf7f535614282dea9dc828f540cdece85e3c665e8f78958b96afac52f29ff883c72638e6a87d469ecc9fe5bc902df03ed24a55dba8
   languageName: node
   linkType: hard
 
@@ -9664,34 +9676,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chai@npm:4.2.0":
-  version: 4.2.0
-  resolution: "chai@npm:4.2.0"
+"chai@npm:^4.3.10":
+  version: 4.5.0
+  resolution: "chai@npm:4.5.0"
   dependencies:
     assertion-error: "npm:^1.1.0"
-    check-error: "npm:^1.0.2"
-    deep-eql: "npm:^3.0.1"
-    get-func-name: "npm:^2.0.0"
-    pathval: "npm:^1.1.0"
-    type-detect: "npm:^4.0.5"
-  checksum: 10c0/cf076c9160ec4ab05b18e5c5c7c777f84963055902e32f5a70d9639267eaecf16f652d5a91b996a0d96b6d45d8e2ce1b152c6c2dbcf872f3b8fbb8411b0307f4
+    check-error: "npm:^1.0.3"
+    deep-eql: "npm:^4.1.3"
+    get-func-name: "npm:^2.0.2"
+    loupe: "npm:^2.3.6"
+    pathval: "npm:^1.1.1"
+    type-detect: "npm:^4.1.0"
+  checksum: 10c0/b8cb596bd1aece1aec659e41a6e479290c7d9bee5b3ad63d2898ad230064e5b47889a3bc367b20100a0853b62e026e2dc514acf25a3c9385f936aa3614d4ab4d
   languageName: node
   linkType: hard
 
-"chai@npm:^5.2.0":
-  version: 5.3.3
-  resolution: "chai@npm:5.3.3"
-  dependencies:
-    assertion-error: "npm:^2.0.1"
-    check-error: "npm:^2.1.1"
-    deep-eql: "npm:^5.0.1"
-    loupe: "npm:^3.1.0"
-    pathval: "npm:^2.0.0"
-  checksum: 10c0/b360fd4d38861622e5010c2f709736988b05c7f31042305fa3f4e9911f6adb80ccfb4e302068bf8ed10e835c2e2520cba0f5edc13d878b886987e5aa62483f53
-  languageName: node
-  linkType: hard
-
-"chalk@npm:^2.1.0, chalk@npm:^2.3.2, chalk@npm:^2.4.1":
+"chalk@npm:^2.1.0, chalk@npm:^2.3.2, chalk@npm:^2.4.1, chalk@npm:^2.4.2":
   version: 2.4.2
   resolution: "chalk@npm:2.4.2"
   dependencies:
@@ -9750,19 +9750,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"check-error@npm:^1.0.2":
+"check-error@npm:^1.0.3":
   version: 1.0.3
   resolution: "check-error@npm:1.0.3"
   dependencies:
     get-func-name: "npm:^2.0.2"
   checksum: 10c0/94aa37a7315c0e8a83d0112b5bfb5a8624f7f0f81057c73e4707729cdd8077166c6aefb3d8e2b92c63ee130d4a2ff94bad46d547e12f3238cc1d78342a973841
-  languageName: node
-  linkType: hard
-
-"check-error@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "check-error@npm:2.1.1"
-  checksum: 10c0/979f13eccab306cf1785fa10941a590b4e7ea9916ea2a4f8c87f0316fc3eab07eabefb6e587424ef0f88cbcd3805791f172ea739863ca3d7ce2afc54641c7f0e
   languageName: node
   linkType: hard
 
@@ -10198,7 +10191,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:2, commander@npm:^2.20.0":
+"commander@npm:2, commander@npm:^2.20.0, commander@npm:^2.20.3":
   version: 2.20.3
   resolution: "commander@npm:2.20.3"
   checksum: 10c0/74c781a5248c2402a0a3e966a0a2bba3c054aad144f5c023364be83265e796b20565aa9feff624132ff629aa64e16999fa40a743c10c12f7c61e96a794b99288
@@ -11784,19 +11777,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"deep-eql@npm:^3.0.1":
-  version: 3.0.1
-  resolution: "deep-eql@npm:3.0.1"
+"deep-eql@npm:^4.1.3":
+  version: 4.1.4
+  resolution: "deep-eql@npm:4.1.4"
   dependencies:
     type-detect: "npm:^4.0.0"
-  checksum: 10c0/80b33c1c7713b3d5db89e6b5e9b22050f39c8a88e12a015616da8391e013988790d045a5c612b0c6dc43cc4bec51eadbe0fcf6075cc9717f8f56efdb305b6e6f
-  languageName: node
-  linkType: hard
-
-"deep-eql@npm:^5.0.1":
-  version: 5.0.2
-  resolution: "deep-eql@npm:5.0.2"
-  checksum: 10c0/7102cf3b7bb719c6b9c0db2e19bf0aa9318d141581befe8c7ce8ccd39af9eaa4346e5e05adef7f9bd7015da0f13a3a25dcfe306ef79dc8668aedbecb658dd247
+  checksum: 10c0/264e0613493b43552fc908f4ff87b8b445c0e6e075656649600e1b8a17a57ee03e960156fce7177646e4d2ddaf8e5ee616d76bd79929ff593e5c79e4e5e6c517
   languageName: node
   linkType: hard
 
@@ -14249,7 +14235,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-func-name@npm:^2.0.0, get-func-name@npm:^2.0.2":
+"get-func-name@npm:^2.0.1, get-func-name@npm:^2.0.2":
   version: 2.0.2
   resolution: "get-func-name@npm:2.0.2"
   checksum: 10c0/89830fd07623fa73429a711b9daecdb304386d237c71268007f788f113505ef1d4cc2d0b9680e072c5082490aec9df5d7758bf5ac6f1c37062855e8e3dc0b9df
@@ -17467,10 +17453,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loupe@npm:^3.1.0":
-  version: 3.2.1
-  resolution: "loupe@npm:3.2.1"
-  checksum: 10c0/910c872cba291309664c2d094368d31a68907b6f5913e989d301b5c25f30e97d76d77f23ab3bf3b46d0f601ff0b6af8810c10c31b91d2c6b2f132809ca2cc705
+"loupe@npm:^2.3.6":
+  version: 2.3.7
+  resolution: "loupe@npm:2.3.7"
+  dependencies:
+    get-func-name: "npm:^2.0.1"
+  checksum: 10c0/71a781c8fc21527b99ed1062043f1f2bb30bdaf54fa4cf92463427e1718bc6567af2988300bc243c1f276e4f0876f29e3cbf7b58106fdc186915687456ce5bf4
   languageName: node
   linkType: hard
 
@@ -20036,17 +20024,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pathval@npm:^1.1.0":
+"pathval@npm:^1.1.1":
   version: 1.1.1
   resolution: "pathval@npm:1.1.1"
   checksum: 10c0/f63e1bc1b33593cdf094ed6ff5c49c1c0dc5dc20a646ca9725cc7fe7cd9995002d51d5685b9b2ec6814342935748b711bafa840f84c0bb04e38ff40a335c94dc
-  languageName: node
-  linkType: hard
-
-"pathval@npm:^2.0.0":
-  version: 2.0.1
-  resolution: "pathval@npm:2.0.1"
-  checksum: 10c0/460f4709479fbf2c45903a65655fc8f0a5f6d808f989173aeef5fdea4ff4f303dc13f7870303999add60ec49d4c14733895c0a869392e9866f1091fa64fd7581
   languageName: node
   linkType: hard
 
@@ -24714,7 +24695,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"type-detect@npm:^4.0.0, type-detect@npm:^4.0.5":
+"type-detect@npm:^4.0.0, type-detect@npm:^4.1.0":
   version: 4.1.0
   resolution: "type-detect@npm:4.1.0"
   checksum: 10c0/df8157ca3f5d311edc22885abc134e18ff8ffbc93d6a9848af5b682730ca6a5a44499259750197250479c5331a8a75b5537529df5ec410622041650a7f293e2a

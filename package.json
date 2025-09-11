@@ -52,6 +52,8 @@
   },
   "dependencies": {
     "@yarnpkg/types": "^4.0.1",
+    "chalk": "^2.4.2",
+    "commander": "^2.20.3",
     "markdown-it-container": "4.0.0",
     "vuepress-plugin-sitemap": "2.3.1"
   },

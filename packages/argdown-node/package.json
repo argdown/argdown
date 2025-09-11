@@ -67,7 +67,7 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.24",
     "@types/pdfkit": "^0.13.9",
-    "chai": "4.2.0",
+    "chai": "^4.3.10",
     "chai-fs": "^2.0.0",
     "copyfiles": "^2.2.0",
     "intercept-stdout": "^0.1.2",

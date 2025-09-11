@@ -557,7 +557,7 @@
     "vscode-uri": "^3.0.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.10",
+    "@babel/core": "^7.24.1",
     "@babel/preset-env": "^7.26.9",
     "@types/d3": "7.4.3",
     "@types/dagre-d3": "0.6.6",

@@ -42,7 +42,7 @@
     "@types/markdown-it": "^14.1.2",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.24",
-    "chai": "^5.2.0",
+    "chai": "^4.3.10",
     "mocha": "^11.5.0",
     "nyc": "^17.1.0",
     "parcel": "2.15.2",

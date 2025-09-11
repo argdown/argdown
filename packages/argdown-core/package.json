@@ -90,7 +90,7 @@
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.24",
     "@yarnpkg/pnpify": "^4.1.4",
-    "chai": "4.2.0",
+    "chai": "^4.3.10",
     "copyfiles": "^2.2.0",
     "glob": "^11.0.1",
     "mocha": "^11.1.0",

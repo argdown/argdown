@@ -45,7 +45,7 @@
     "@types/lodash.defaultsdeep": "^4.6.9",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.24",
-    "chai": "^5.2.0",
+    "chai": "^4.3.10",
     "chai-fs": "^2.0.0",
     "cross-env": "^7.0.3",
     "mocha": "^11.5.0",

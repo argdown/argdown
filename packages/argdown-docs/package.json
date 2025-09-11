@@ -29,6 +29,8 @@
     "@argdown/core": "workspace:^",
     "@argdown/markdown-it-plugin": "workspace:^",
     "@vuepress/plugin-pwa": "1.8.2",
+    "chalk": "^2.4.2",
+    "commander": "^2.20.3",
     "esm": "^3.2.25",
     "vuepress": "1.8.2",
     "vuepress-plugin-sitemap": "2.3.1"
