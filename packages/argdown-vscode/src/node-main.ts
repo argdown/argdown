@@ -2,7 +2,6 @@
 
 // import * as vscode from "vscode";
 import * as vscode from "vscode";
-import * as path from "path";
 import {
   LanguageClient,
   LanguageClientOptions,
@@ -99,16 +98,14 @@ export function activate(context: vscode.ExtensionContext) {
   let debugOptions: ForkOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
-  const modulePath = context.asAbsolutePath(
-    path.join("node_modules", "@argdown", "language-server")
-  );
+  const serverPath = context.asAbsolutePath("dist/server-node.js");
   let serverOptions: ServerOptions = {
     run: {
-      module: modulePath,
+      module: serverPath,
       transport: TransportKind.ipc
     },
     debug: {
-      module: modulePath,
+      module: serverPath,
       transport: TransportKind.ipc,
       options: debugOptions
     }
