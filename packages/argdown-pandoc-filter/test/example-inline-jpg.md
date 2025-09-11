@@ -1,0 +1,15 @@
+---
+argdown:
+  mode: "inline"
+---
+
+# Test
+
+The map:
+
+```argdown-map
+[s]
+    - <a>
+```
+
+<div><span>Some really boring html</span></div>
