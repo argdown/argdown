@@ -11,7 +11,7 @@ import pixelWidth from "string-pixel-width";
 import cloneDeep from "lodash.clonedeep";
 
 const mdurl = require("mdurl");
-const punycode = require("punycode");
+const punycode = require("punycode/");
 
 // taken from: https://github.com/markdown-it/markdown-it/blob/master/lib/common/utils.js
 

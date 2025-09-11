@@ -32,7 +32,7 @@
     "lodash.partialright": "^4.2.1",
     "lodash.union": "^4.6.0",
     "mdurl": "^2.0.0",
-    "punycode": "^2.1.1",
+    "punycode": "^2.3.1",
     "string-pixel-width": "^1.10.0",
     "xmlbuilder": "^15.1.0"
   },

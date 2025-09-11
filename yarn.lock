@@ -109,7 +109,7 @@ __metadata:
     mdurl: "npm:^2.0.0"
     mocha: "npm:^11.1.0"
     nyc: "npm:^17.1.0"
-    punycode: "npm:^2.1.1"
+    punycode: "npm:^2.3.1"
     rimraf: "npm:^6.0.1"
     source-map-support: "npm:^0.5.16"
     string-pixel-width: "npm:^1.10.0"

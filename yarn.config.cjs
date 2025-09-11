@@ -116,6 +116,11 @@ module.exports = defineConfig({
       dep.update('^0.16.0');
     }
 
+    // Enforce consistent version for punycode (userland alternative to deprecated Node.js module)
+    for (const dep of Yarn.dependencies({ ident: 'punycode' })) {
+      dep.update('^2.3.1');
+    }
+
     // Enforce consistent version for css-loader
     for (const dep of Yarn.dependencies({ ident: 'css-loader' })) {
       dep.update('^7.1.2');
