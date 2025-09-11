@@ -6,7 +6,7 @@
   "author": "Christian Voigt",
   "license": "MIT",
   "version": "1.8.2",
-  "publisher": "christianvoigt",
+  "publisher": "argdown",
   "homepage": "https://argdown.org",
   "repository": {
     "type": "git",
@@ -99,10 +99,10 @@
     ],
     "markdown.markdownItPlugins": true,
     "markdown.previewStyles": [
-      "./node_modules/@argdown/web-components/dist/argdown-map.css"
+      "./media/argdown-map.css"
     ],
     "markdown.previewScripts": [
-      "./node_modules/@argdown/web-components/dist/argdown-map.js"
+      "./media/argdown-map.js"
     ],
     "jsonValidation": [
       {
@@ -515,12 +515,12 @@
   },
   "vsce": {
     "dependencies": false,
-    "useYarn": false
+    "useYarn": true
   },  
   "scripts": {
     "vscode:prepublish": "npm run build",
-    "vscode:bundle": "npx @vscode/vsce package",
-    "build": "npm run clean && npm run build-node-extension && npm run build-web-extension && npm run build-preview && npm run copy-changelog",
+    "vscode:package": "npx @vscode/vsce package",
+    "build": "npm run clean && npm run build-node-extension && npm run build-web-extension && npm run build-preview && npm run copy-changelog && npm run copy-web-components",
     "watch-web": "webpack --config web-extension.webpack.config.js --mode development --watch",
     "package-web": "webpack --mode production --devtool hidden-source-map",
     "watch": "tsc -w -p ./",
@@ -533,7 +533,8 @@
     "clean": "rimraf \"dist/\"",
     "test": "echo 'TODO: make vscode-test work'",
     "dev-build-preview": "webpack --config preview.webpack.config.js --mode development",
-    "copy-changelog": "node ./copy-changelog.js"
+    "copy-changelog": "node ./copy-changelog.js",
+    "copy-web-components": "cp ../argdown-web-components/dist/argdown-map.* media/"
   },
   "dependencies": {
     "@aduh95/viz.js": "3.4.0",
