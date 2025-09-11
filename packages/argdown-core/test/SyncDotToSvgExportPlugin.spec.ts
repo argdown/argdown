@@ -55,4 +55,42 @@ describe("SyncDotToSvgExportPlugin", function() {
     expect(response.svg).to.contain(">test</text>");
     expect(response.svg).to.exist;
   });
+  it("can generate tooltips in svg format", async () => {
+    const input = `
+        [Statement Title]: Statement text content
+        
+        <Argument Title>: Argument text content
+            - [Statement Title]
+            + <Another Argument>: More argument text
+        `;
+    const request: IArgdownRequest = {
+      input,
+      process: [
+        "parse-input",
+        "build-model",
+        "create-map",
+        "add-colors",
+        "export-dot",
+        "export-dot-as-svg"
+      ],
+      logLevel: "error"
+    };
+    const response = await app.run(request);
+    
+    try {
+      // Verify the SVG is generated successfully
+      expect(response.svg).to.exist;
+      expect(response.svg).to.contain("<svg");
+      expect(response.svg).to.contain("</svg>");
+
+      // Check that tooltips are converted to SVG <title> elements
+      // SVG tooltips are represented as <title> elements within <g> or other elements
+      expect(response.svg).to.contain('xlink:title="Statement text content"');
+      expect(response.svg).to.contain('xlink:title="Argument text content"');
+      expect(response.svg).to.contain('xlink:title="More argument text"');
+    } catch (error) {
+      console.error("Generated SVG:", response.svg);
+      throw error;
+    }
+  });
 });
