@@ -5,17 +5,17 @@
 </template>
 
 <script>
-import { computed } from 'vue';
-import { useArgdownStore } from '../store.js';
+import { computed } from "vue";
+import { useArgdownStore } from "../store.js";
 
 export default {
   name: "dot-output",
   setup() {
     const store = useArgdownStore();
     const dot = computed(() => store.dot);
-    
+
     return { dot };
-  }
+  },
 };
 </script>
 

@@ -32,10 +32,7 @@
     <h3>Map Settings</h3>
     <div class="setting">
       <label for="argumentLabelMode">Argument label mode</label>
-      <select
-        id="argumentLabelMode"
-        v-model="config.map.argumentLabelMode"
-      >
+      <select id="argumentLabelMode" v-model="config.map.argumentLabelMode">
         <option value="HIDE_UNTITLED">Hide untitled</option>
         <option value="SHOW_TITLE">Show title</option>
         <option value="SHOW_TITLE_IF_DIFFERENT">Show title if different</option>
@@ -43,10 +40,7 @@
     </div>
     <div class="setting">
       <label for="statementLabelMode">Statement label mode</label>
-      <select
-        id="statementLabelMode"
-        v-model="config.map.statementLabelMode"
-      >
+      <select id="statementLabelMode" v-model="config.map.statementLabelMode">
         <option value="HIDE_UNTITLED">Hide untitled</option>
         <option value="SHOW_TITLE">Show title</option>
         <option value="SHOW_TITLE_IF_DIFFERENT">Show title if different</option>
@@ -54,11 +48,7 @@
     </div>
     <div class="setting">
       <label for="groupDepth">Group depth</label>
-      <input
-        id="groupDepth"
-        type="number"
-        v-model="config.map.groupDepth"
-      />
+      <input id="groupDepth" type="number" v-model="config.map.groupDepth" />
     </div>
     <h3>GraphViz Settings</h3>
     <div class="setting">
@@ -101,17 +91,17 @@
 </template>
 
 <script>
-import { computed } from 'vue';
-import { useArgdownStore } from '../store.js';
+import { computed } from "vue";
+import { useArgdownStore } from "../store.js";
 
 export default {
   name: "settings",
   setup() {
     const store = useArgdownStore();
     const config = computed(() => store.configData);
-    
+
     return { config };
-  }
+  },
 };
 </script>
 

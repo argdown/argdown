@@ -5,17 +5,17 @@
 </template>
 
 <script>
-import { computed } from 'vue';
-import { useArgdownStore } from '../store.js';
+import { computed } from "vue";
+import { useArgdownStore } from "../store.js";
 
 export default {
   name: "json-output",
   setup() {
     const store = useArgdownStore();
     const json = computed(() => store.json);
-    
+
     return { json };
-  }
+  },
 };
 </script>
 

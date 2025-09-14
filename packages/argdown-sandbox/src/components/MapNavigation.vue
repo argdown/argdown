@@ -20,71 +20,68 @@
       >
         save map as
         <a class="save-as-svg" v-on:click.stop.prevent="saveAsSvg" href>svg</a>
-                 <a
-           class="save as png"
-           v-on:click.stop.prevent="openSaveAsPngDialog"
-           href
-           >png</a
-         >
+        <a
+          class="save as png"
+          v-on:click.stop.prevent="openSaveAsPngDialog"
+          href
+          >png</a
+        >
       </li>
     </ul>
-         <div class="save-as-png-dialog" v-if="showSaveAsPngDialog">
-       <h3>PNG Export</h3>
-       <label for="save-as-png-scale">Scale</label>
-       <input
-         v-model="pngScale"
-         type="number"
-         min="0"
-         max="100"
-         id="save-as-png-scale"
-       />
+    <div class="save-as-png-dialog" v-if="showSaveAsPngDialog">
+      <h3>PNG Export</h3>
+      <label for="save-as-png-scale">Scale</label>
+      <input
+        v-model="pngScale"
+        type="number"
+        min="0"
+        max="100"
+        id="save-as-png-scale"
+      />
       <div class="submit-cancel">
         <button type="button" v-on:click.prevent.stop="saveAsPng">
           Create PNG
         </button>
-                 <button
-           type="button"
-           v-on:click.prevent.stop="closeSaveAsPngDialog"
-         >
-           Cancel
-         </button>
+        <button type="button" v-on:click.prevent.stop="closeSaveAsPngDialog">
+          Cancel
+        </button>
       </div>
     </div>
   </nav>
 </template>
 
 <script>
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
-import { useArgdownStore } from '../store.js';
+import { computed } from "vue";
+import { useRoute } from "vue-router";
+import { useArgdownStore } from "../store.js";
 import { EventBus } from "../event-bus.js";
 
 export default {
   setup() {
     const route = useRoute();
     const store = useArgdownStore();
-    
+
     const currentRoute = computed(() => route);
     const showSaveAsPngDialog = computed(() => store.showSaveAsPngDialog);
     const pngScale = computed(() => store.pngScale);
-    
+
     function saveAsSvg() {
       EventBus.$emit("save-map-as-svg");
     }
-    
+
     function saveAsPng() {
       EventBus.$emit("save-map-as-png");
       store.closeSaveAsPngDialog();
     }
-    
+
     function openSaveAsPngDialog() {
       store.openSaveAsPngDialog();
     }
-    
+
     function closeSaveAsPngDialog() {
       store.closeSaveAsPngDialog();
     }
-    
+
     return {
       currentRoute,
       saveAsSvg,
@@ -92,9 +89,9 @@ export default {
       openSaveAsPngDialog,
       showSaveAsPngDialog,
       pngScale,
-      closeSaveAsPngDialog
+      closeSaveAsPngDialog,
     };
-  }
+  },
 };
 </script>
 

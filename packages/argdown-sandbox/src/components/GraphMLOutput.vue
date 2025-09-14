@@ -5,17 +5,17 @@
 </template>
 
 <script>
-import { computed } from 'vue';
-import { useArgdownStore } from '../store.js';
+import { computed } from "vue";
+import { useArgdownStore } from "../store.js";
 
 export default {
   name: "graphml-output",
   setup() {
     const store = useArgdownStore();
     const graphml = computed(() => store.graphml);
-    
+
     return { graphml };
-  }
+  },
 };
 </script>
 

@@ -7,15 +7,11 @@
           v-for="(key, index) in Object.keys(statements)"
           :key="index"
         >
-          <td class="title">
-            <b>title: </b> "{{ statements[key].title }}":
-          </td>
+          <td class="title"><b>title: </b> "{{ statements[key].title }}":</td>
           <td class="relations">
             <b>relations: </b>
             {{
-              statements[key].relations
-                ? statements[key].relations.length
-                : 0
+              statements[key].relations ? statements[key].relations.length : 0
             }}
           </td>
         </tr>
@@ -26,16 +22,10 @@
           v-for="(key, index) in Object.keys(arguments)"
           :key="index"
         >
-          <td class="title">
-            <b>title: </b>"{{ arguments[key].title }}"
-          </td>
+          <td class="title"><b>title: </b>"{{ arguments[key].title }}"</td>
           <td class="relations">
             <b>relations:</b>
-            {{
-              arguments[key].relations
-                ? arguments[key].relations.length
-                : 0
-            }}
+            {{ arguments[key].relations ? arguments[key].relations.length : 0 }}
           </td>
         </tr>
       </table>
@@ -57,8 +47,8 @@
 </template>
 
 <script>
-import { computed } from 'vue';
-import { useArgdownStore } from '../store.js';
+import { computed } from "vue";
+import { useArgdownStore } from "../store.js";
 
 export default {
   name: "debug-model-output",
@@ -67,9 +57,9 @@ export default {
     const statements = computed(() => store.statements);
     const arguments_ = computed(() => store.arguments);
     const relations = computed(() => store.relations);
-    
+
     return { statements, arguments: arguments_, relations };
-  }
+  },
 };
 </script>
 

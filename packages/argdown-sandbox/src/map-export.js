@@ -60,9 +60,11 @@ function getSvgString(el, width, height, scale) {
 function svgString2Image(svgString, width, height, callback) {
   // Try using Blob and ObjectURL first (more reliable)
   try {
-    const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+    const svgBlob = new Blob([svgString], {
+      type: "image/svg+xml;charset=utf-8",
+    });
     const url = URL.createObjectURL(svgBlob);
-    
+
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
     canvas.width = width;
@@ -72,32 +74,34 @@ function svgString2Image(svgString, width, height, callback) {
     image.onload = function () {
       context.clearRect(0, 0, width, height);
       context.drawImage(image, 0, 0, width, height);
-      
+
       canvas.toBlob(function (blob) {
         URL.revokeObjectURL(url); // Clean up
         if (blob) {
           const filesize = Math.round(blob.length / 1024) + " KB";
           if (callback) callback(blob, filesize);
         } else {
-          console.warn('Canvas toBlob returned null, falling back to base64');
+          console.warn("Canvas toBlob returned null, falling back to base64");
           fallbackToBase64();
         }
       });
     };
-    image.onerror = function() {
+    image.onerror = function () {
       URL.revokeObjectURL(url);
-      console.warn('ObjectURL failed, falling back to base64');
+      console.warn("ObjectURL failed, falling back to base64");
       fallbackToBase64();
     };
     image.src = url;
   } catch (e) {
-    console.warn('Blob/ObjectURL failed, falling back to base64:', e);
+    console.warn("Blob/ObjectURL failed, falling back to base64:", e);
     fallbackToBase64();
   }
 
   function fallbackToBase64() {
-    const imgsrc = "data:image/svg+xml;base64," + btoa(unescape(encodeURIComponent(svgString)));
-    
+    const imgsrc =
+      "data:image/svg+xml;base64," +
+      btoa(unescape(encodeURIComponent(svgString)));
+
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
     canvas.width = width;
@@ -113,7 +117,7 @@ function svgString2Image(svgString, width, height, callback) {
           const filesize = Math.round(blob.length / 1024) + " KB";
           if (callback) callback(blob, filesize);
         } else {
-          console.error('Failed to create PNG blob');
+          console.error("Failed to create PNG blob");
           if (callback) callback(null);
         }
       });
@@ -131,14 +135,14 @@ export function saveAsSvg(el, isDagreSvg = false) {
     height = box.bottom - box.top;
   }
   var source = getSvgString(el, width, height, 1);
-  
+
   // Fix Dagre SVG styling and markers
   if (isDagreSvg) {
     source = source.replace(/width="100%"/g, 'width="100%"');
     source = source.replace(/height="100%"/g, 'height="100%"');
     // Add any Dagre-specific fixes here
   }
-  
+
   var blob = new Blob([source], { type: "image/svg+xml;charset=utf-8" });
   saveAs(blob, "map.svg");
 }
@@ -152,19 +156,19 @@ export function saveAsPng(el, scale, isDagreSvg = false) {
     height = box.bottom - box.top;
   }
   var source = getSvgString(el, width, height, scale);
-  
+
   // Fix Dagre SVG styling and markers
   if (isDagreSvg) {
     source = source.replace(/width="100%"/g, 'width="100%"');
     source = source.replace(/height="100%"/g, 'height="100%"');
     // Add any Dagre-specific fixes here
   }
-  
+
   width *= scale;
   height *= scale;
   svgString2Image(source, width, height, function (blob) {
     if (!blob) {
-      console.error('Failed to create PNG blob');
+      console.error("Failed to create PNG blob");
       return;
     }
     saveAs(blob, "map.png");

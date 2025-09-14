@@ -5,8 +5,15 @@
 </template>
 
 <script>
-import { ref, computed, watch, nextTick, onMounted, onBeforeUnmount } from 'vue';
-import { useArgdownStore } from '../store.js';
+import {
+  ref,
+  computed,
+  watch,
+  nextTick,
+  onMounted,
+  onBeforeUnmount,
+} from "vue";
+import { useArgdownStore } from "../store.js";
 import * as _ from "lodash";
 import CodeMirror from "codemirror";
 import "codemirror/lib/codemirror.css";
@@ -20,23 +27,23 @@ export default {
   setup(props, { emit }) {
     const store = useArgdownStore();
     const editorRef = ref(null);
-    const localValue = ref(String(props.value || ''));
+    const localValue = ref(String(props.value || ""));
     const editor = ref(null);
     const needsRefresh = ref(false);
-    
+
     const useArgVu = computed(() => store.useArgVu);
-    
+
     const debouncedChangeEmission = _.debounce((value) => {
       emit("change", value);
     }, 100);
-    
+
     function sizeEditorToContainer() {}
 
     function refreshEditor() {
       if (!editorRef.value) {
         return;
       }
-      
+
       if (editor.value) {
         editor.value.toTextArea();
       }
@@ -56,7 +63,7 @@ export default {
           },
         },
       });
-      editor.value.setValue(String(localValue.value || ''));
+      editor.value.setValue(String(localValue.value || ""));
       editor.value.on("change", (cm) => {
         localValue.value = cm.getValue();
         debouncedChangeEmission(cm.getValue());
@@ -64,7 +71,7 @@ export default {
       // Ensure sizing happens after DOM is painted
       requestAnimationFrame(() => sizeEditorToContainer());
     }
-    
+
     watch(useArgVu, (newVal, oldVal) => {
       if (newVal !== oldVal) {
         needsRefresh.value = true;
@@ -76,61 +83,66 @@ export default {
         });
       }
     });
-    
-    watch(() => store.argdownInput, (newVal) => {
-      if (typeof newVal === 'string' && newVal !== localValue.value) {
-        localValue.value = newVal;
-        if (editor.value) {
-          editor.value.setValue(newVal);
-          editor.value.refresh();
-        }
-      } else if (newVal && typeof newVal === 'object') {
-        let newValStr = null;
-        
-        if (newVal.content && typeof newVal.content === 'string') {
-          newValStr = newVal.content;
-        } else if (newVal.data && typeof newVal.data === 'string') {
-          newValStr = newVal.data;
-        } else if (newVal.text && typeof newVal.text === 'string') {
-          newValStr = newVal.text;
-        }
-        
-        if (newValStr && newValStr !== localValue.value) {
-          localValue.value = newValStr;
+
+    watch(
+      () => store.argdownInput,
+      (newVal) => {
+        if (typeof newVal === "string" && newVal !== localValue.value) {
+          localValue.value = newVal;
           if (editor.value) {
-            editor.value.setValue(newValStr);
+            editor.value.setValue(newVal);
             editor.value.refresh();
           }
-        } 
-      } 
-    });
-    
-    watch(() => props.value, (newVal) => {
-      if (typeof newVal === 'string' && newVal !== localValue.value) {
-        localValue.value = newVal;
-        if (editor.value) {
-          editor.value.setValue(newVal);
-        }
-      } else if (newVal && typeof newVal === 'object') {
-        // For objects, be conservative
-        let newValStr = null;
-        if (newVal.content && typeof newVal.content === 'string') {
-          newValStr = newVal.content;
-        } else if (newVal.data && typeof newVal.data === 'string') {
-          newValStr = newVal.data;
-        } else if (newVal.text && typeof newVal.text === 'string') {
-          newValStr = newVal.text;
-        }
-        
-        if (newValStr && newValStr !== localValue.value) {
-          localValue.value = newValStr;
-          if (editor.value) {
-            editor.value.setValue(newValStr);
+        } else if (newVal && typeof newVal === "object") {
+          let newValStr = null;
+
+          if (newVal.content && typeof newVal.content === "string") {
+            newValStr = newVal.content;
+          } else if (newVal.data && typeof newVal.data === "string") {
+            newValStr = newVal.data;
+          } else if (newVal.text && typeof newVal.text === "string") {
+            newValStr = newVal.text;
+          }
+
+          if (newValStr && newValStr !== localValue.value) {
+            localValue.value = newValStr;
+            if (editor.value) {
+              editor.value.setValue(newValStr);
+              editor.value.refresh();
+            }
           }
         }
-      }
-    });
-    
+      },
+    );
+
+    watch(
+      () => props.value,
+      (newVal) => {
+        if (typeof newVal === "string" && newVal !== localValue.value) {
+          localValue.value = newVal;
+          if (editor.value) {
+            editor.value.setValue(newVal);
+          }
+        } else if (newVal && typeof newVal === "object") {
+          // For objects, be conservative
+          let newValStr = null;
+          if (newVal.content && typeof newVal.content === "string") {
+            newValStr = newVal.content;
+          } else if (newVal.data && typeof newVal.data === "string") {
+            newValStr = newVal.data;
+          } else if (newVal.text && typeof newVal.text === "string") {
+            newValStr = newVal.text;
+          }
+
+          if (newValStr && newValStr !== localValue.value) {
+            localValue.value = newValStr;
+            if (editor.value) {
+              editor.value.setValue(newValStr);
+            }
+          }
+        }
+      },
+    );
 
     onMounted(() => {
       CodeMirror.defineSimpleMode("argdown", argdownMode);
@@ -149,37 +161,37 @@ export default {
           },
         },
       });
-      editor.value.setValue(String(localValue.value || ''));
+      editor.value.setValue(String(localValue.value || ""));
       editor.value.on("change", (cm) => {
         localValue.value = cm.getValue();
         debouncedChangeEmission(cm.getValue());
       });
     });
-    
+
     onBeforeUnmount(() => {
       if (editor.value) {
         editor.value.toTextArea();
       }
     });
-    
+
     return {
       editorRef,
       localValue,
       editor,
       needsRefresh,
       useArgVu,
-      refreshEditor
+      refreshEditor,
     };
-  }
+  },
 };
 </script>
 
 <style lang="scss">
 .argdown-input.use-argvu .argdown-editor,
 .argdown-input.use-argvu .CodeMirror {
-  font-family: 'ArgVu Sans Mono Regular', monospace !important;
+  font-family: "ArgVu Sans Mono Regular", monospace !important;
   font-size: 1em !important;
-  font-feature-settings: 'dlig' 1;
+  font-feature-settings: "dlig" 1;
 }
 
 .input-maximized {

@@ -1,5 +1,5 @@
-import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { defineStore } from "pinia";
+import { ref, computed } from "vue";
 import _ from "lodash";
 import { vizJsDefaultSettings, dagreDefaultSettings } from "@argdown/map-views";
 import {
@@ -102,7 +102,7 @@ var examples = {
   },
 };
 
-export const useArgdownStore = defineStore('argdown', () => {
+export const useArgdownStore = defineStore("argdown", () => {
   // State
   const argdownInput = ref(primer);
   const examplesData = ref(examples);
@@ -141,7 +141,8 @@ export const useArgdownStore = defineStore('argdown', () => {
 
   // Computed properties (getters)
   const argdownData = computed(() => {
-    const inputVal = typeof argdownInput.value === 'string' ? argdownInput.value : '';
+    const inputVal =
+      typeof argdownInput.value === "string" ? argdownInput.value : "";
     if (!inputVal || inputVal.trim().length === 0) {
       return {};
     }
@@ -173,7 +174,8 @@ export const useArgdownStore = defineStore('argdown', () => {
   });
 
   const html = computed(() => {
-    const input = typeof argdownInput.value === 'string' ? argdownInput.value : '';
+    const input =
+      typeof argdownInput.value === "string" ? argdownInput.value : "";
     if (!input || input.trim().length === 0) {
       return null;
     }
@@ -308,15 +310,15 @@ export const useArgdownStore = defineStore('argdown', () => {
 
   function setArgdownInput(value) {
     // Only update if we have a valid string value
-    if (typeof value === 'string') {
+    if (typeof value === "string") {
       argdownInput.value = value;
-    } else if (value && typeof value === 'object') {
+    } else if (value && typeof value === "object") {
       // For objects, be more conservative - only update if we can extract meaningful content
-      if (value.content && typeof value.content === 'string') {
+      if (value.content && typeof value.content === "string") {
         argdownInput.value = value.content;
-      } else if (value.data && typeof value.data === 'string') {
+      } else if (value.data && typeof value.data === "string") {
         argdownInput.value = value.data;
-      } else if (value.text && typeof value.text === 'string') {
+      } else if (value.text && typeof value.text === "string") {
         argdownInput.value = value.text;
       } else {
         return;
@@ -360,7 +362,10 @@ export const useArgdownStore = defineStore('argdown', () => {
     }
     const response = await axios.get(example.url);
     // Ensure we cache the string content
-    const content = typeof response.data === 'string' ? response.data : String(response.data || '');
+    const content =
+      typeof response.data === "string"
+        ? response.data
+        : String(response.data || "");
     cacheExample({ id: example.id, content: content });
     setArgdownInput(content);
   }
@@ -375,7 +380,7 @@ export const useArgdownStore = defineStore('argdown', () => {
     showSettings,
     showSaveAsPngDialog,
     pngScale,
-    
+
     // Computed properties
     argdownData,
     configData,
@@ -394,7 +399,7 @@ export const useArgdownStore = defineStore('argdown', () => {
     map,
     tags,
     useArgVuState,
-    
+
     // Actions
     setUseArgVu,
     setArgdownInput,

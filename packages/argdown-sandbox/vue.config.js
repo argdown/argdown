@@ -15,25 +15,25 @@ module.exports = defineConfig({
   configureWebpack: {
     resolve: {
       fallback: {
-        "path": require.resolve("path-browserify"),
-        "fs": false,
-        "crypto": false
+        path: require.resolve("path-browserify"),
+        fs: false,
+        crypto: false,
       },
     },
     plugins: [
       new webpack.DefinePlugin({
-        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: 'false'
-      })
-    ]
+        __VUE_PROD_HYDRATION_MISMATCH_DETAILS__: "false",
+      }),
+    ],
   },
   css: {
     loaderOptions: {
       sass: {
-        implementation: require('sass'),
+        implementation: require("sass"),
         sassOptions: {
-          api: 'modern-compiler'
-        }
-      }
-    }
-  }
+          api: "modern-compiler",
+        },
+      },
+    },
+  },
 });

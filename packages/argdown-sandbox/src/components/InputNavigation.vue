@@ -38,8 +38,8 @@
   </nav>
 </template>
 <script>
-import { ref, computed } from 'vue';
-import { useArgdownStore } from '../store.js';
+import { ref, computed } from "vue";
+import { useArgdownStore } from "../store.js";
 import appModal from "./modal.vue";
 
 export default {
@@ -51,11 +51,11 @@ export default {
     const store = useArgdownStore();
     const isModalVisible = ref(false);
     const link = ref("");
-    
+
     const useArgVu = computed(() => store.useArgVu);
     const examplesList = computed(() => store.examplesList);
     const argdownInput = computed(() => store.argdownInput);
-    
+
     async function loadExample(example) {
       try {
         await store.loadExample({ id: example });
@@ -64,7 +64,7 @@ export default {
         console.error("Failed to load example:", error);
       }
     }
-    
+
     function copyLink() {
       const input = encodeURIComponent(argdownInput.value);
       const linkText = `https://argdown.org/sandbox/map/?argdown=${input}`;
@@ -72,19 +72,19 @@ export default {
       link.value = linkText;
       showModal();
     }
-    
+
     function showModal() {
       isModalVisible.value = true;
     }
-    
+
     function closeModal() {
       isModalVisible.value = false;
     }
-    
+
     function toggleArgVu(event) {
       store.setUseArgVu(event.target.checked);
     }
-    
+
     return {
       isModalVisible,
       link,
@@ -95,8 +95,8 @@ export default {
       copyLink,
       showModal,
       closeModal,
-      toggleArgVu
+      toggleArgVu,
     };
-  }
+  },
 };
 </script>

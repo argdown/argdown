@@ -74,7 +74,7 @@ const router = createRouter({
     },
     {
       path: "/map",
-      redirect: { name: "map-viz-js" }
+      redirect: { name: "map-viz-js" },
     },
     {
       path: "/html",

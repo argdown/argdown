@@ -10,23 +10,23 @@
 </template>
 
 <script>
-import { computed } from 'vue';
-import { useArgdownStore } from '../store.js';
+import { computed } from "vue";
+import { useArgdownStore } from "../store.js";
 
 export default {
   name: "html-output",
   props: {
     source: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   setup() {
     const store = useArgdownStore();
     const html = computed(() => store.html);
-    
+
     return { html };
-  }
+  },
 };
 </script>
 

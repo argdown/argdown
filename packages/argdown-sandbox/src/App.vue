@@ -2,70 +2,67 @@
   <div id="app" v-bind:class="viewStateClass">
     <div
       id="top-slot"
-      v-if="
-        viewState != 'input-maximized' &&
-        viewState != 'output-maximized'
-      "
+      v-if="viewState != 'input-maximized' && viewState != 'output-maximized'"
     >
       <app-header></app-header>
       <app-navigation></app-navigation>
     </div>
     <div class="main-window">
-             <div id="left-slot" v-if="viewState != 'output-maximized'">
-         <div class="input-header">
-           <InputNavigation />
-           <button
-             v-if="viewState != 'input-maximized'"
-             class="button"
-                            v-on:click="setViewState('input-maximized')"
-           >
-             <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
-           </button>
-           <button
-             v-if="viewState == 'input-maximized'"
-             class="button"
-             v-on:click="setViewState('default')"
-           >
-             <img
-               class="expand icon"
-               src="./assets/compress.svg"
-               alt="Compress"
-             />
-           </button>
-         </div>
-                  <argdown-input
-            v-bind:value="argdownInput"
-                          v-on:change="
-                (value) => {
-                  setArgdownInput(value);
-                }
-              "
-          ></argdown-input>
-       </div>
-       <div id="right-slot" v-if="viewState != 'input-maximized'">
-         <div class="output-header">
-           <div class="output-sub-menu">
-             <router-view name="output-header"></router-view>
-           </div>
-           <div class="output-view-state-buttons">
-             <button
-               v-if="viewState != 'output-maximized'"
-               class="button"
-                                v-on:click="setViewState('output-maximized')"
-             >
-               <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
-             </button>
-             <button
-               v-if="viewState == 'output-maximized'"
-               class="button"
-               v-on:click="setViewState('default')"
-             >
-               <img
-                 class="expand icon"
-                 src="./assets/compress.svg"
-                 alt="Compress"
-               />
-             </button>
+      <div id="left-slot" v-if="viewState != 'output-maximized'">
+        <div class="input-header">
+          <InputNavigation />
+          <button
+            v-if="viewState != 'input-maximized'"
+            class="button"
+            v-on:click="setViewState('input-maximized')"
+          >
+            <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
+          </button>
+          <button
+            v-if="viewState == 'input-maximized'"
+            class="button"
+            v-on:click="setViewState('default')"
+          >
+            <img
+              class="expand icon"
+              src="./assets/compress.svg"
+              alt="Compress"
+            />
+          </button>
+        </div>
+        <argdown-input
+          v-bind:value="argdownInput"
+          v-on:change="
+            (value) => {
+              setArgdownInput(value);
+            }
+          "
+        ></argdown-input>
+      </div>
+      <div id="right-slot" v-if="viewState != 'input-maximized'">
+        <div class="output-header">
+          <div class="output-sub-menu">
+            <router-view name="output-header"></router-view>
+          </div>
+          <div class="output-view-state-buttons">
+            <button
+              v-if="viewState != 'output-maximized'"
+              class="button"
+              v-on:click="setViewState('output-maximized')"
+            >
+              <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
+            </button>
+            <button
+              v-if="viewState == 'output-maximized'"
+              class="button"
+              v-on:click="setViewState('default')"
+            >
+              <img
+                class="expand icon"
+                src="./assets/compress.svg"
+                alt="Compress"
+              />
+            </button>
             <!-- <button class="button" v-on:click="store.toggleSettings()">
             <img class="toggle-settings icon" src="./assets/cog.svg" alt="Settings">
             </button>-->
