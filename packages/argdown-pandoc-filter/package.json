@@ -63,17 +63,9 @@
     "lodash.defaultsdeep": "^4.6.1",
     "pandoc-filter": "^2.2.0"
   },
-  "peerDependencies": {
+  "systemDependencies": {
     "pandoc": ">=3.6",
-    "rsvg-convert": ">=2.60.0"
-  },
-  "peerDependenciesMeta": {
-    "pandoc": {
-      "optional": false
-    },
-    "rsvg-convert": {
-      "optional": true
-    }
+    "rsvg-convert": ">=2.60.0 (optional, required for PDF generation)"
   },
   "packageManager": "yarn@4.9.4"
 }

@@ -41,7 +41,7 @@ jobs:
     - name: Get pandoc version from package.json
       id: pandoc-version
       run: |
-        PANDOC_VERSION=$(jq -r '.peerDependencies.pandoc' packages/argdown-pandoc-filter/package.json | sed 's/>=//g')
+        PANDOC_VERSION=$(jq -r '.systemDependencies.pandoc' packages/argdown-pandoc-filter/package.json | sed 's/>=//g')
         echo "version=$PANDOC_VERSION" >> $GITHUB_OUTPUT
     - name: Install pandoc
       uses: pandoc/actions/setup@main
