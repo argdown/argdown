@@ -35,12 +35,13 @@ describe("Argdown Pandoc Filter", function() {
       const { stdout: pandocVersion } = await exec("pandoc --version");
       const versionMatch = pandocVersion.match(/pandoc (\d+\.\d+\.\d+)/);
       if (!versionMatch) {
+        console.error("Error executing pandoc --version. Output: ", pandocVersion);
         throw new Error("Could not detect pandoc version");
       }
       const version = versionMatch[1];
       console.log(`Using pandoc version: ${version}`);
       
-      // We're testing with pandoc 3.6.4 - warn if different
+      // We're testing against snapshots generated with pandoc 3.6.4 - warn if different
       if (version !== "3.6.4") {
         console.warn(`Warning: Tests were designed for pandoc 3.6.4, but found ${version}. Snapshots may not match.`);
       }
