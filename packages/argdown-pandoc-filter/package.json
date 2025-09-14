@@ -64,8 +64,8 @@
     "pandoc-filter": "^2.2.0"
   },
   "systemDependencies": {
-    "pandoc": ">=3.6",
-    "rsvg-convert": ">=2.60.0 (optional, required for PDF generation)"
+    "pandoc": "3.6.4",
+    "rsvg-convert": ">=2.60.0"
   },
   "packageManager": "yarn@4.9.4"
 }
