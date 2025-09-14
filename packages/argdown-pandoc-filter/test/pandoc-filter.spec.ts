@@ -52,7 +52,7 @@ describe("Argdown Pandoc Filter", function() {
     // Check rsvg-convert version (required for PDF tests)
     try {
       const { stdout: rsvgVersion } = await exec("rsvg-convert --version");
-      const versionMatch = rsvgVersion.match(/rsvg-convert version (\d+\.\d+\.\d+)/);
+      const versionMatch = rsvgVersion.match(/rsvg-convert version (\d+\.\d+(?:\.\d+)?)/);
       if (!versionMatch) {
         throw new Error("Could not detect rsvg-convert version");
       }
