@@ -411,7 +411,7 @@ __metadata:
     ts-node: "npm:^10.9.2"
     typescript: "npm:5.8.3"
   peerDependencies:
-    pandoc: ">=3.6.0"
+    pandoc: ">=3.6"
     rsvg-convert: ">=2.60.0"
   peerDependenciesMeta:
     pandoc:
