@@ -34,8 +34,10 @@ For further information about the code, consult the [API section](https://argdow
 
 To install this Monorepo
 
-- install requirements (`node>=22.11.0`, `yarn>=4.9.4` via `corepack`)
 - clone this repository and cd into project dir
+- install requirements
+    - `node>=22.11.0` (e.g. via [`nvm`](https://github.com/nvm-sh/nvm)),
+    - `yarn>=4.9.4` (via [`corepack`](https://yarnpkg.com/corepack))
 - activate yarn with `yarn set version berry`
 - run `yarn install` in the main folder to install the dependencies of all packages. This will install all the libraries for all the argdown packages.
 - run `yarn build`.
