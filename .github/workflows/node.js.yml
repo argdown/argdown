@@ -27,10 +27,18 @@ jobs:
       with:
         ref: yarn-berry
         fetch-depth: 1
-    - name: Install rsvg-convert
+    - name: Install rsvg-convert and tex
       run: |
         sudo apt-get update
         sudo apt-get install -y librsvg2-bin
+        sudo apt install -y \
+            texlive-base \
+            texlive-latex-base \
+            texlive-latex-recommended \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            latexmk \
+            lmodern    
     - name: Enable Corepack
       run: corepack enable
     - name: Use Node.js ${{ matrix.node-version }}
