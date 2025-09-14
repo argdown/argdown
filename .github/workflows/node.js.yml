@@ -22,10 +22,13 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
-    # Check out a specific branch
+    # Perform a shallow clone of a specific branch
     - uses: actions/checkout@v4
       with:
         ref: yarn-berry
+        fetch-depth: 1
+    - name: Install rsvg-convert
+      run: apt-get install librsvg2-bin
     - name: Enable Corepack
       run: corepack enable
     - name: Use Node.js ${{ matrix.node-version }}
