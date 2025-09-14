@@ -15,6 +15,15 @@ function normalizeLineEndings(text: string): string {
   return text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
 }
 
+// Normalize file paths in HTML output for cross-platform compatibility
+function normalizeFilePaths(text: string): string {
+  // Replace absolute file paths in img src attributes with a normalized placeholder
+  return text.replace(
+    /src="[^"]*\/test\/images\/([^"]+)"/g,
+    'src="./test/images/$1"'
+  );
+}
+
 // const tis = this;
 async function execPandocOnFile(
   fileName: string,
@@ -23,7 +32,8 @@ async function execPandocOnFile(
   const { stdout } = await exec(
     `pandoc -s -f markdown test/${fileName} --filter dist/index.js -t ${format}`
   );
-  return normalizeLineEndings(String(stdout));
+  const normalized = normalizeLineEndings(String(stdout));
+  return normalizeFilePaths(normalized);
 }
 
 describe("Argdown Pandoc Filter", function() {
