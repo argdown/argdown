@@ -2,9 +2,11 @@
 typings/**
 node_modules/**
 .vscode-test.cjs
+.vscode-test/**
 tsconfig.test.json
 src/**
 test/**
+dist/test/**
 **/*.map
 .gitignore
 tsconfig.json
