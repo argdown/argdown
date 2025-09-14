@@ -8,12 +8,13 @@
     "packages/*"
   ],
   "scripts": {
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":false}' yarn workspaces foreach -A --exclude . run test",
-    "test:full_log": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":true}' yarn workspaces foreach -A --exclude . run test",
-    "test:coverage": "nyc yarn workspaces foreach -A --exclude . run test",
+    "install:clean": "rm -rf node_modules && rm -rf packages/*/node_modules",
     "build": "yarn workspaces foreach -A --topological-dev --exclude . run build",
     "install-package": "yarn workspace @argdown/node add @types/pdfkit",
     "yarn:upgrade": "yarn workspaces foreach --all upgrade",
+    "test": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":false}' yarn workspaces foreach -A --exclude . run test",
+    "test:full_log": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":true}' yarn workspaces foreach -A --exclude . run test",
+    "test:coverage": "nyc yarn workspaces foreach -A --exclude . run test",
     "docs:dev": "yarn workspace @argdown/docs run docs:dev"
   },
   "nyc": {
