@@ -74,5 +74,6 @@
     "rsvg-convert": {
       "optional": true
     }
-  }
+  },
+  "packageManager": "yarn@4.9.4"
 }

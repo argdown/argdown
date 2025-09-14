@@ -101,5 +101,6 @@
   },
   "browserslist": [
     "last 1 Chrome versions"
-  ]
+  ],
+  "packageManager": "yarn@4.9.4"
 }

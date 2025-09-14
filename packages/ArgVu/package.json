@@ -26,5 +26,6 @@
   "homepage": "https://github.com/argdown/argdown#readme",
   "engines": {
     "node": ">= 22.11.0"
-  }
+  },
+  "packageManager": "yarn@4.9.4"
 }

@@ -36,5 +36,6 @@
   },
   "browserslist": [
     "last 2 Chrome versions"
-  ]
+  ],
+  "packageManager": "yarn@4.9.4"
 }

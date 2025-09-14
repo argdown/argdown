@@ -60,5 +60,6 @@
   "browserslist": "> 0.2%",
   "engines": {
     "node": ">= 22.11.0"
-  }
+  },
+  "packageManager": "yarn@4.9.4"
 }

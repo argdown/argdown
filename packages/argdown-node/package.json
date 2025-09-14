@@ -97,5 +97,6 @@
     ],
     "sourceMap": true,
     "instrument": true
-  }
+  },
+  "packageManager": "yarn@4.9.4"
 }

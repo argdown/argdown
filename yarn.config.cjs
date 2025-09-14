@@ -147,5 +147,13 @@ module.exports = defineConfig({
         workspace.set('engines.node', '>= 22.11.0');
       }
     }
+
+    // Enforce consistent package manager requirement across all packages
+    for (const workspace of Yarn.workspaces()) {
+      workspace.set('packageManager', 'yarn@4.9.4');
+    }    
+
+    // Add more constraints as necessary
+
   },
 });

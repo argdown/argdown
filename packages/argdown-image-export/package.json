@@ -40,5 +40,6 @@
     "@argdown/node": "workspace:^",
     "lodash.defaultsdeep": "^4.6.1",
     "svg-to-img": "^2.0.9"
-  }
+  },
+  "packageManager": "yarn@4.9.4"
 }
