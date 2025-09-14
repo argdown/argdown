@@ -22,7 +22,10 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
+    # Check out a specific branch
     - uses: actions/checkout@v4
+      with:
+        ref: yarn-berry
     - name: Enable Corepack
       run: corepack enable
     - name: Use Node.js ${{ matrix.node-version }}
