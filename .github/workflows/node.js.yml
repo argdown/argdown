@@ -28,7 +28,9 @@ jobs:
         ref: yarn-berry
         fetch-depth: 1
     - name: Install rsvg-convert
-      run: apt-get install librsvg2-bin
+      run: |
+        apt-get update
+        apt-get install -y librsvg2-bin
     - name: Enable Corepack
       run: corepack enable
     - name: Use Node.js ${{ matrix.node-version }}
