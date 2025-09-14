@@ -33,7 +33,7 @@ describe("Argdown Pandoc Filter", function() {
     // Check pandoc version
     try {
       const { stdout: pandocVersion } = await exec("pandoc --version");
-      const versionMatch = pandocVersion.match(/pandoc (\d+\.\d+\.\d+)/);
+      const versionMatch = pandocVersion.match(/pandoc (\d+\.\d+(?:\.\d+)?)/);
       if (!versionMatch) {
         console.error("Error executing pandoc --version. Output: ", pandocVersion);
         throw new Error("Could not detect pandoc version");
