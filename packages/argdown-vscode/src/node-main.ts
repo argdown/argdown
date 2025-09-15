@@ -25,33 +25,56 @@ import { nodeConfigLoader } from "./nodeConfigLoader";
 import { getArgdownExtensionContributions } from "./preview/ArgdownExtensions";
 // import { ForkOptions } from "vscode-languageclient/lib/client";
 
-let client: LanguageClient;
+let client: LanguageClient | undefined;
 
 export function activate(context: vscode.ExtensionContext) {
+
+  // ========================================
+  // CORE FUNCTIONALITY
+  // ========================================
+  
+  console.log('Argdown extension: Starting core functionality initialization');
+  
   // -- PREVIEW --
+  console.log('Argdown extension: Creating logger');
   const logger = new Logger();
+  
+  console.log('Argdown extension: Creating argdown engine');
   const argdownEngine = new ArgdownEngine(logger, nodeConfigLoader);
+  
+  console.log('Argdown extension: Creating CSP arbiter');
   const cspArbiter = new ExtensionContentSecurityPolicyArbiter(
     context.globalState,
     context.workspaceState
   );
+  
+  console.log('Argdown extension: Getting contributions');
   const contributions = getArgdownExtensionContributions(context);
+  
+  console.log('Argdown extension: Creating content provider');
   const contentProvider = new ArgdownContentProvider(
     argdownEngine,
     context,
     cspArbiter,
     contributions
   );
+  
+  console.log('Argdown extension: Creating preview manager');
   const previewManager = new ArgdownPreviewManager(
     contentProvider,
     logger,
     contributions,
     argdownEngine
   );
+  
+  console.log('Argdown extension: Creating preview security selector');
   const previewSecuritySelector = new PreviewSecuritySelector(
     cspArbiter,
     previewManager
   );
+
+  // -- COMMANDS --
+  console.log('Argdown extension: Starting command registration');
   const commandManager = new CommandManager();
   context.subscriptions.push(commandManager);
   commandManager.register(new commands.ShowPreviewCommand(previewManager));
@@ -84,6 +107,15 @@ export function activate(context: vscode.ExtensionContext) {
   commandManager.register(new commands.ExportContentToDagreSvgCommand());
   commandManager.register(new commands.ExportContentToDagrePngCommand());
   commandManager.register(new commands.ExportContentToDagrePdfCommand());
+  
+  console.log('Argdown extension: Command registration completed');
+
+  // ========================================
+  // CONFIGURATION WATCHERS (Always Initialize)
+  // ========================================
+  
+  console.log('Argdown extension: Setting up configuration watchers');
+  
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration(e => {
       logger.updateConfiguration();
@@ -93,6 +125,11 @@ export function activate(context: vscode.ExtensionContext) {
       }
     })
   );
+
+  // ========================================
+  // LANGUAGE SERVER (Always Initialize)
+  // ========================================
+  
   // --- LANGUGAGE SERVER ---
   // The debug options for the server
   let debugOptions: ForkOptions = { execArgv: ["--nolazy", "--inspect=6009"] };
@@ -130,6 +167,12 @@ export function activate(context: vscode.ExtensionContext) {
   client.registerProposedFeatures();
   // Start the client. This will also launch the server
   client.start();
+  console.log('Argdown extension: Language server started successfully');
+
+  // ========================================
+  // RETURN EXTENSION API
+  // ========================================
+  
   return {
     extendMarkdownIt(md: any) {
       const webComponentConfig = vscode.workspace.getConfiguration(
@@ -174,7 +217,10 @@ export function activate(context: vscode.ExtensionContext) {
 
 export function deactivate(): Thenable<void> {
   if (!client) {
+    console.log('Argdown extension: No language server client to deactivate (test mode or initialization failed)');
     return Promise.resolve();
   }
+  
+  console.log('Argdown extension: Stopping language server client');
   return client.stop();
 }
