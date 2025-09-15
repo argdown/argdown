@@ -62,4 +62,9 @@ jobs:
 #   - name: Run lint
 #     run: yarn lint
     - name: Run tests
+      run: xvfb-run -a npm test
+      if: runner.os == 'Linux'
+    - name: Run tests
       run: yarn test
+      if: runner.os != 'Linux'
+
