@@ -6,7 +6,7 @@ module.exports = defineConfig({
   extensionDevelopmentPath: '.',
   // Remove specific workspace folder to avoid node_modules issues
   workspaceFolder: 'test/fixtures/workspace_a',
-  version: 'stable',
+  version: 'stable', // 'stable' '1.95.3'
   skipExtensionDependencies: true,
   mocha: {
     ui: 'tdd',

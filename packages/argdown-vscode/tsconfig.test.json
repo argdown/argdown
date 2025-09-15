@@ -2,7 +2,8 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./dist/test",
-    "rootDir": "./test"
+    "rootDir": "./test",
+    "module": "commonjs",  // Force CommonJS for tests
   },
   "include": [
     "test/**/*.ts"
