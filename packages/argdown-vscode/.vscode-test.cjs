@@ -4,11 +4,13 @@ const { defineConfig } = require('@vscode/test-cli');
 module.exports = defineConfig({
   files: 'dist/test/**/*.test.js',
   extensionDevelopmentPath: '.',
+  // Remove specific workspace folder to avoid node_modules issues
   workspaceFolder: 'test/fixtures/workspace_a',
   version: 'stable',
+  skipExtensionDependencies: true,
   mocha: {
     ui: 'tdd',
-    timeout: 60000, // Increase timeout
+    timeout: 10000, // Shorter timeout to fail fast
     color: true,
     reporter: 'spec'
   },
@@ -17,6 +19,7 @@ module.exports = defineConfig({
   },
   // Add launch arguments to help with stability
   launchArgs: [
-    '--verbose',
+    '--disable-extensions', // Disable other extensions during testing
+    // '--verbose', // Enable verbose logging
   ]
 });
