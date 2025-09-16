@@ -68,7 +68,14 @@
     "vuepress-plugin-sitemap": "2.3.1"
   },
   "resolutions": {
-    "@types/markdown-it": "^14.1.2"
+    "@types/markdown-it": "^14.1.2",
+    "axios": "1.12.0",
+    "braces": "3.0.3",
+    "esbuild": "0.25.0",
+    "http-proxy-middleware": "2.0.9"
   },
-  "packageManager": "yarn@4.9.4"
+  "packageManager": "yarn@4.9.4",
+  "engines": {
+    "node": ">= 22.11.0"
+  }
 }
