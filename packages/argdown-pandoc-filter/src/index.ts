@@ -186,7 +186,7 @@ const getInlineImage = (
   format: "svg" | "png" | "jpg" | "webp"
 ) => {
   const inlineFormat = format == "svg" ? "svg+xml" : format;
-  let result = response[format]!;
+  let result = (response as any)[format]!;
   if (typeof result === "string" || result instanceof String) {
     result = Buffer.from(result);
   }

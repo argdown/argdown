@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noImplicitReturns": true,
+    "newLine": "LF",
+    "declaration": true,
+    "sourceMap": true,
+    "removeComments": true,
+    "noFallthroughCasesInSwitch": true
+  }
+}

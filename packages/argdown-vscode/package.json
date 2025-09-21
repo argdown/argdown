@@ -536,8 +536,8 @@
     "test": "npm run pretest && vscode-test",
     "dev-build-preview": "webpack --config preview.webpack.config.js --mode development",
     "copy-changelog": "node ./copy-changelog.js",
-    "copy-web-components": "mkdir -p dist/assets/ && cp ../argdown-web-components/dist/argdown-map.* dist/assets/",
-    "copy-language-server": "mkdir -p dist/server/ && cp ../argdown-language-server/dist/node/server-node.js dist/server/server-node.js"
+    "copy-web-components": "node ./copy-web-components.js",
+    "copy-language-server": "node ./copy-language-server.js"
   },
   "dependencies": {
     "@aduh95/viz.js": "3.4.0",
