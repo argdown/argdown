@@ -2,7 +2,6 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "module": "ES6",
-    "target": "ES2022",
     "outDir": "dist-esm"
   }
 }

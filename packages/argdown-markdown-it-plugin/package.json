@@ -3,6 +3,8 @@
   "version": "1.7.7",
   "description": "Turns Argdown code fences into svg argument maps",
   "main": "dist/argdown-markdown-it-plugin.js",
+  "module": "./dist-esm/argdown-markdown-it-plugin.js",
+  "types": "./dist/argdown-markdown-it-plugin.d.ts",
   "scripts": {
     "deploy": "npm run test && npm run build && npm version patch && npm run push",
     "sandbox": "parcel serve ./test/sandbox.html",

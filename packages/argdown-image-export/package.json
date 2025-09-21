@@ -3,6 +3,7 @@
   "version": "1.7.5",
   "description": "PNG, JPG and WEBP export for Argdown",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "module": "dist-esm/index.js",
   "scripts": {
     "build": "npm run clean && npm run build:src && npm run build:esm",

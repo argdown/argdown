@@ -1,6 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "target": "ES2022",
     "rootDir": "./src",
     "plugins": [{ "name": "typescript-workspace-plugin" }],
     "moduleResolution": "node",

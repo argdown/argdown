@@ -3,6 +3,7 @@
   "version": "1.7.5",
   "description": "Argdown language definition for highlightjs",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "module": "dist-esm/index.js",
   "files": [
     "dist/",

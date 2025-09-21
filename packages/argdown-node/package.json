@@ -4,7 +4,7 @@
   "description": "Async Argdown application for node.js",
   "main": "./dist/index.js",
   "module": "./dist-esm/index.js",
-  "types": "./dist-esm/index.d.ts",
+  "types": "./dist/index.d.ts",
   "engines": {
     "node": ">= 22.11.0"
   },
