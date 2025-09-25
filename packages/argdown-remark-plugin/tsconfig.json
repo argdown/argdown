@@ -3,12 +3,11 @@
   "compilerOptions": {
     "target": "ES2022",
     "rootDir": "./src",
-    "moduleResolution": "node" ,
-    "typeRoots": [
-      "types",  
-      "node_modules/@types"
-    ] ,
-    "allowSyntheticDefaultImports": true ,
+    "moduleResolution": "node",
+    "typeRoots": ["types", "node_modules/@types"],
+
+    /* Extra */
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
   "exclude": ["node_modules", "types", "dist", "test"]

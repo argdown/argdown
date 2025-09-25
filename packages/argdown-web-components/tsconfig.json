@@ -1,18 +1,20 @@
 {
+  "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "target": "ES2022",
-    "module": "esnext",
-    "lib": ["es2022", "es2019", "es2017", "dom"],
-    "typeRoots": ["node_modules/@types"],
-    "sourceMap": true,
-    "allowJs": true,
+    "module": "ESNext",
     "rootDir": "./src",
     "outDir": "./dist",
     "moduleResolution": "node",
+    "typeRoots": ["node_modules/@types"],
+
+    /* Extra */
+    "allowJs": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-    "strictFunctionTypes": true
+    "strictFunctionTypes": true,
+    "lib": ["es2022", "es2019", "es2017", "dom"]
   },
   "exclude": ["types", "node_modules", "dist", "dist-esm", "test"]
 }

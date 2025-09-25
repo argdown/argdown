@@ -3,8 +3,10 @@
   "compilerOptions": {
     "target": "ES2022",
     "rootDir": "./src",
-    "plugins": [{ "name": "typescript-workspace-plugin" }],
     "moduleResolution": "node",
+    "plugins": [{ "name": "typescript-workspace-plugin" }],
+
+    /* Extra */
     "types": ["node", "highlight.js"],
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true

@@ -3,13 +3,12 @@
   "compilerOptions": {
     "target": "ES2022",
     "rootDir": "./src",
+    "moduleResolution": "node",
+
+    /* Extra */
     "plugins": [{ "name": "typescript-workspace-plugin" }],
-    "moduleResolution": "node" ,
-    "types": [
-      "mocha",
-      "node"
-    ],
-    "allowSyntheticDefaultImports": true ,
+    "types": ["mocha", "node"],
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true
   },
   "exclude": ["node_modules", "types", "dist", "test"]
