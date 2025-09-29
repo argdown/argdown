@@ -4,7 +4,7 @@ import {
   IWebComponentExportSettings,
   ArgdownApplication
 } from "@argdown/core";
-import { argdown as defaultArgdownApplication } from "@argdown/core/dist/argdown";
+import { argdown as defaultArgdownApplication } from "@argdown/core/dist/argdown.js";
 import type MarkdownIt from "markdown-it"; 
 import defaultsDeep from "lodash.defaultsdeep";
 import { Token } from "markdown-it";

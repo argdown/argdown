@@ -6,11 +6,11 @@
   "types": "dist/index.d.ts",
   "module": "dist-esm/index.js",
   "scripts": {
-    "build": "npm run clean && npm run build:src && npm run build:esm",
+    "build": "npm run clean && npm run build:cjs && npm run build:esm",
     "build:esm": "tsc --project tsconfig.esm.json",
     "build:cjs": "tsc --project tsconfig.cjs.json",
     "build:src": "tsc",
-    "test": "mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
+    "test": "mocha",
     "clean": "rimraf \"dist/*\" --glob && rimraf \"dist-esm/*\" --glob"
   },
   "repository": {
@@ -27,14 +27,13 @@
   "author": "Christian Voigt",
   "license": "MIT",
   "devDependencies": {
-    "@types/chai": "^5.2.2",
+    "@types/chai": "^4.3.10",
     "@types/lodash.defaultsdeep": "^4.6.9",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.24",
     "chai": "^4.3.10",
     "mocha": "11.1.0",
     "rimraf": "^6.0.1",
-    "ts-node": "10.9.2",
     "typescript": "5.8.3"
   },
   "dependencies": {

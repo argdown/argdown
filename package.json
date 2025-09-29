@@ -10,7 +10,8 @@
   "scripts": {
     "clean-modules": "rm -rf node_modules && rm -rf packages/*/node_modules && rm -rf .parcel-cache",
     "build": "yarn workspaces foreach -A --topological-dev --exclude . run build",
-    "install-package": "yarn workspace @argdown/node add @types/pdfkit",
+    "install-package": "yarn workspaces foreach --all --no-private exec yarn remove",
+    "ws-remove-pkg": "yarn workspaces foreach -A --no-private --exec \"bash ../../remove-package.sh\"",
     "yarn:upgrade": "yarn workspaces foreach --all upgrade",
     "test": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":false}' yarn workspaces foreach -A --exclude . run test",
     "test:full_log": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":true}' yarn workspaces foreach -A --exclude . run test",
@@ -48,6 +49,7 @@
     "esm": "^3.2.25",
     "nyc": "^17.1.0",
     "stream-browserify": "^3.0.0",
+    "tsx": "^4.20.6",
     "typescript": "5.8.3",
     "typescript-eslint": "^8.18.0",
     "vm-browserify": "^1.1.2",

@@ -8,6 +8,7 @@
     "declaration": true,
     "sourceMap": true,
     "removeComments": true,
+    "target": "ES2023",
     "noFallthroughCasesInSwitch": true
   }
 }

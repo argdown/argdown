@@ -1,8 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
+    "module": "nodenext",
     "rootDir": "./src",
     "outDir": "./dist",
     "moduleResolution": "node",
@@ -14,7 +13,7 @@
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
     "strictFunctionTypes": true,
-    "lib": ["es2022", "es2019", "es2017", "dom"]
+    "lib": ["es2023", "es2019", "es2017", "dom"]
   },
   "exclude": ["types", "node_modules", "dist", "dist-esm", "test"]
 }
