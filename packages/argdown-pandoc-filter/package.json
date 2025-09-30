@@ -13,7 +13,7 @@
     "deploy": "npm run test && npm run build && npm version patch && npm run push",
     "type-check": "tsc --noEmit",
     "build": "tsc",
-    "test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
+    "test": "mocha",
     "overwrite-snapshots": "cross-env CHAI_SNAPSHOT_UPDATE=true npm run test",
     "coverage": "nyc mocha -r ts-node/register --full-trace --bail --require source-map-support/register ./test/**/*.spec.ts",
     "report": "nyc report",

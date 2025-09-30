@@ -1,0 +1,9 @@
+{
+  "extension": ["ts"],
+  "spec": "./test/**/*.spec.ts",
+  "full-trace": true,
+  "bail": true,
+  "node-option": [
+    "import=tsx" 
+  ]
+}
