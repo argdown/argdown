@@ -633,7 +633,6 @@ __metadata:
     rimraf: "npm:^6.0.1"
     sass: "npm:^1.72.0"
     vite: "npm:^7.2.4"
-    vite-raw-plugin: "npm:^1.0.2"
     vue: "npm:^3.4.28"
     vue-router: "npm:^4.3.2"
   languageName: unknown
@@ -30019,13 +30018,6 @@ __metadata:
     "@vite-pwa/assets-generator":
       optional: true
   checksum: 10c0/dc199ccbb3cd0a9f740edcbbc8efa7820f67481ae80a15340ca769c21d4f7452d9a9c1d184eac4f6e3fd1ecd9f7fdfd31cc8f9520e43e6795860fe187c77103a
-  languageName: node
-  linkType: hard
-
-"vite-raw-plugin@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "vite-raw-plugin@npm:1.0.2"
-  checksum: 10c0/ce39694dac94b2fcd0e9b4508b4297d7f05b8b1e60716d68bbe31b1a1396d6f6f9fcde716c9bdb8a8471a27a99e2f2a3adfa89460bb765d00fd71672ccc93a10
   languageName: node
   linkType: hard
 

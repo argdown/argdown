@@ -45,7 +45,7 @@ const mapPlugin = new MapPlugin();
 const groupPlugin = new GroupPlugin();
 const dotExport = new DotExportPlugin();
 const graphMLExport = new GraphMLExportPlugin();
-import primer from "../public/examples/argdown-primer.argdown";
+import primer from "../public/examples/argdown-primer.argdown?raw";
 
 app.addPlugin(parserPlugin, "parse-input");
 app.addPlugin(dataPlugin, "build-model");
