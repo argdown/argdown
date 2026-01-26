@@ -77,7 +77,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 import { computed, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useArgdownStore } from "./store.js";
@@ -267,7 +266,7 @@ ul.nav-list {
     a {
       border-radius: 0.2em;
       text-decoration: none;
-      &.router-link-active,
+      &.router-link-exact-active,
       &:hover {
         background-color: $accent-color;
         color: #fff;
@@ -275,7 +274,7 @@ ul.nav-list {
     }
   }
 }
-a.router-link-active {
+a.router-link-exact-active {
   font-weight: 500;
   background-color: $accent-color;
   color: #fff;
