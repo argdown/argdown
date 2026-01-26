@@ -619,6 +619,7 @@ __metadata:
     "@argdown/core": "workspace:^"
     "@argdown/docs": "workspace:^"
     "@argdown/map-views": "workspace:^"
+    "@vitejs/plugin-vue": "npm:^6.0.1"
     axios: "npm:^1.7.9"
     codemirror: "npm:^5.65.19"
     copyfiles: "npm:^2.4.1"
@@ -631,9 +632,10 @@ __metadata:
     path-browserify: "npm:^1.0.1"
     pinia: "npm:^2.2.1"
     prettier: "npm:^3.3.3"
-    raw-loader: "npm:^4.0.2"
     rimraf: "npm:^6.0.1"
     sass: "npm:^1.72.0"
+    vite: "npm:^7.2.4"
+    vite-raw-plugin: "npm:^1.0.2"
     vue: "npm:^3.4.28"
     vue-router: "npm:^4.3.2"
   languageName: unknown
@@ -6397,6 +6399,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@rolldown/pluginutils@npm:1.0.0-beta.53":
+  version: 1.0.0-beta.53
+  resolution: "@rolldown/pluginutils@npm:1.0.0-beta.53"
+  checksum: 10c0/e8b0a7eb76be22f6f103171f28072de821525a4e400454850516da91a7381957932ff0ce495f227bcb168e86815788b0c1d249ca9e34dca366a82c8825b714ce
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-babel@npm:^5.2.0":
   version: 5.3.1
   resolution: "@rollup/plugin-babel@npm:5.3.1"
@@ -8777,6 +8786,18 @@ __metadata:
     vite: ^5.0.0 || ^6.0.0
     vue: ^3.2.25
   checksum: 10c0/9559224f178daf35e3a665410d09089b0ce7c0402981f8757481c24c22f29df377f96cc6161d92f74d16c37c6e32ac19fea99086f75338ad6ceb9b5ee8375509
+  languageName: node
+  linkType: hard
+
+"@vitejs/plugin-vue@npm:^6.0.1":
+  version: 6.0.3
+  resolution: "@vitejs/plugin-vue@npm:6.0.3"
+  dependencies:
+    "@rolldown/pluginutils": "npm:1.0.0-beta.53"
+  peerDependencies:
+    vite: ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0
+    vue: ^3.2.25
+  checksum: 10c0/53fb6e4bbeab8703b05c7bb8ee80206eba19f7edfa4672c4ff577d3021af4bed492ca70faf7985e3f7c5a7938f43e4232d63af0905b67bade997a81d7b1d09bd
   languageName: node
   linkType: hard
 
@@ -30000,6 +30021,13 @@ __metadata:
     "@vite-pwa/assets-generator":
       optional: true
   checksum: 10c0/dc199ccbb3cd0a9f740edcbbc8efa7820f67481ae80a15340ca769c21d4f7452d9a9c1d184eac4f6e3fd1ecd9f7fdfd31cc8f9520e43e6795860fe187c77103a
+  languageName: node
+  linkType: hard
+
+"vite-raw-plugin@npm:^1.0.2":
+  version: 1.0.2
+  resolution: "vite-raw-plugin@npm:1.0.2"
+  checksum: 10c0/ce39694dac94b2fcd0e9b4508b4297d7f05b8b1e60716d68bbe31b1a1396d6f6f9fcde716c9bdb8a8471a27a99e2f2a3adfa89460bb765d00fd71672ccc93a10
   languageName: node
   linkType: hard
 
