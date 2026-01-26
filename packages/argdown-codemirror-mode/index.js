@@ -1,4 +1,4 @@
-var mode = {
+const mode = {
   start: [
     { regex: /\\./, token: "escaped-char" },
     { regex: /\{/, token: "data", push: "dataState" },
@@ -63,4 +63,4 @@ var mode = {
     dontIndentStates: ["comment"]
   }
 };
-module.exports = mode;
+export default mode;
