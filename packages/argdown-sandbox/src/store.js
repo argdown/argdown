@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import _ from "lodash";
+import { defaultsDeep } from "lodash";
 import { vizJsDefaultSettings, dagreDefaultSettings } from "@argdown/map-views";
 import {
   ArgdownApplication,
@@ -25,7 +25,6 @@ import {
   GraphMLExportPlugin,
   ExplodeArgumentsPlugin
 } from "@argdown/core";
-import axios from "axios";
 
 const app = new ArgdownApplication();
 const parserPlugin = new ParserPlugin();
@@ -46,7 +45,7 @@ const mapPlugin = new MapPlugin();
 const groupPlugin = new GroupPlugin();
 const dotExport = new DotExportPlugin();
 const graphMLExport = new GraphMLExportPlugin();
-import primer from "!!raw-loader!../public/examples/argdown-primer.argdown";
+import primer from "../public/examples/argdown-primer.argdown";
 
 app.addPlugin(parserPlugin, "parse-input");
 app.addPlugin(dataPlugin, "build-model");
@@ -65,40 +64,40 @@ app.addPlugin(dotExport, "export-dot");
 app.addPlugin(graphMLExport, "export-graphml");
 app.addPlugin(jsonExport, "export-json");
 
-var examples = {
+const examples = {
   "argdown-primer": {
     id: "argdown-primer",
     title: "Argdown Primer",
-    url: "/sandbox/examples/argdown-primer.argdown",
+    url: "/examples/argdown-primer.argdown",
     cachedContent: primer
   },
   greenspan: {
     id: "greenspan",
     title:
       "Why the Fed didn't Intervene to Prevent the 2008 Financial Crisis -- An Analysis of Alan Greenspan's Arguments",
-    url: "/sandbox/examples/greenspan-schefczyk_hardwrap.argdown"
+    url: "/examples/greenspan-schefczyk_hardwrap.argdown"
   },
   softdrugs: {
     id: "softdrugs",
     title: "Pros and Cons Legalisation of Soft Drugs -- A Simple Analysis",
-    url: "/sandbox/examples/legalisation-softdrugs.argdown"
+    url: "/examples/legalisation-softdrugs.argdown"
   },
   semmelweis: {
     id: "semmelweis",
     title:
       "A Stylized Reconstruction of the Scientific Debate That led Ignaz Semmelweis to Understand Childbed Fever",
-    url: "/sandbox/examples/semmelweis_betz.argdown"
+    url: "/examples/semmelweis_betz.argdown"
   },
   "state-censorship": {
     id: "state-censorship",
     title:
       "Censorship from the State -- Some Pros and Cons Reconstructed in Detail",
-    url: "/sandbox/examples/state-censorship.argdown"
+    url: "/examples/state-censorship.argdown"
   },
   populism: {
     id: "populism",
     title: "The Core Argument of Populism",
-    url: "/sandbox/examples/Populism-Core-Argument-Argdown-Example.argdown"
+    url: "/examples/Populism-Core-Argument-Argdown-Example.argdown"
   }
 };
 
@@ -127,8 +126,8 @@ export const useArgdownStore = defineStore("argdown", () => {
         size: "10,10"
       }
     },
-    vizJs: _.defaultsDeep({}, vizJsDefaultSettings),
-    dagre: _.defaultsDeep({}, dagreDefaultSettings),
+    vizJs: defaultsDeep({}, vizJsDefaultSettings),
+    dagre: defaultsDeep({}, dagreDefaultSettings),
     model: {
       removeTagsFromText: false
     },
@@ -146,7 +145,7 @@ export const useArgdownStore = defineStore("argdown", () => {
     if (!inputVal || inputVal.trim().length === 0) {
       return {};
     }
-    const request = _.defaultsDeep(
+    const request = defaultsDeep(
       {
         input: inputVal,
         process: ["parse-input", "build-model"]
@@ -166,7 +165,7 @@ export const useArgdownStore = defineStore("argdown", () => {
 
   const configData = computed(() => {
     const data = argdownData.value;
-    return _.defaultsDeep({}, data.frontMatter, config.value);
+    return defaultsDeep({}, data.frontMatter, config.value);
   });
 
   const examplesList = computed(() => {
@@ -179,7 +178,7 @@ export const useArgdownStore = defineStore("argdown", () => {
     if (!input || input.trim().length === 0) {
       return null;
     }
-    const request = _.defaultsDeep(
+    const request = defaultsDeep(
       {
         input: input,
         process: ["parse-input", "build-model", "colorize", "export-html"]
@@ -202,7 +201,7 @@ export const useArgdownStore = defineStore("argdown", () => {
     if (!data?.ast) {
       return null;
     }
-    const request = _.defaultsDeep(
+    const request = defaultsDeep(
       {
         process: [
           "build-map",
@@ -223,7 +222,7 @@ export const useArgdownStore = defineStore("argdown", () => {
     if (!data?.ast) {
       return null;
     }
-    const request = _.defaultsDeep(
+    const request = defaultsDeep(
       {
         process: ["build-map", "colorize", "export-graphml"]
       },
@@ -239,7 +238,7 @@ export const useArgdownStore = defineStore("argdown", () => {
     if (!data?.ast) {
       return null;
     }
-    const request = _.defaultsDeep(
+    const request = defaultsDeep(
       {
         process: ["build-map", "colorize", "export-json"]
       },
@@ -284,7 +283,7 @@ export const useArgdownStore = defineStore("argdown", () => {
     if (!data?.ast) {
       return null;
     }
-    const request = _.defaultsDeep(
+    const request = defaultsDeep(
       {
         process: ["build-map", "colorize", "transform-closed-groups"]
       },
@@ -309,23 +308,18 @@ export const useArgdownStore = defineStore("argdown", () => {
   }
 
   function setArgdownInput(value) {
-    // Only update if we have a valid string value
-    if (typeof value === "string") {
-      argdownInput.value = value;
-    } else if (value && typeof value === "object") {
-      // For objects, be more conservative - only update if we can extract meaningful content
-      if (value.content && typeof value.content === "string") {
-        argdownInput.value = value.content;
-      } else if (value.data && typeof value.data === "string") {
-        argdownInput.value = value.data;
-      } else if (value.text && typeof value.text === "string") {
-        argdownInput.value = value.text;
-      } else {
-        return;
-      }
-    } else {
-      return;
+    if (!value) return;
+
+    if (typeof value == "object") {
+      if (value.content) return setArgdownInput(value.content);
+      if (value.data) return setArgdownInput(value.data);
+      if (value.text) return setArgdownInput(value.text);
     }
+
+    if (typeof value !== "string") return;
+
+    argdownInput.value = value;
+    return;
   }
 
   function setViewState(value) {
@@ -333,7 +327,7 @@ export const useArgdownStore = defineStore("argdown", () => {
   }
 
   function cacheExample({ id, content }) {
-    var example = examplesData.value[id];
+    const example = examplesData.value[id];
     if (example) {
       example.cachedContent = content;
     }
@@ -352,22 +346,23 @@ export const useArgdownStore = defineStore("argdown", () => {
   }
 
   async function loadExample(payload) {
-    var example = examplesData.value[payload.id];
-    if (!example) {
-      throw new Error("Could not find example");
-    }
-    if (example.cachedContent) {
-      setArgdownInput(example.cachedContent);
-      return;
-    }
-    const response = await axios.get(example.url);
+    const example = examplesData.value[payload.id];
+    if (!example) throw new Error("Could not find example");
+
+    const content = example.cachedContent
+      ? example.cachedContent
+      : await loadExampleFromPublic(example.url);
+
     // Ensure we cache the string content
-    const content =
-      typeof response.data === "string"
-        ? response.data
-        : String(response.data || "");
-    cacheExample({ id: example.id, content: content });
+    cacheExample({ id: example.id, content });
     setArgdownInput(content);
+  }
+
+  async function loadExampleFromPublic(url) {
+    const response = await fetch(url);
+    if (!response.ok) throw new Error("Could not load example from " + url);
+
+    return await response.text();
   }
 
   return {

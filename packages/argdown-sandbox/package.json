@@ -17,11 +17,9 @@
     "@argdown/core": "workspace:^",
     "@argdown/docs": "workspace:^",
     "@argdown/map-views": "workspace:^",
-    "axios": "^1.7.9",
     "codemirror": "^5.65.19",
     "file-saver": "^2.0.5",
     "lodash": "^4.17.21",
-    "path-browserify": "^1.0.1",
     "pinia": "^2.2.1",
     "vue": "^3.4.28",
     "vue-router": "^4.3.2"
