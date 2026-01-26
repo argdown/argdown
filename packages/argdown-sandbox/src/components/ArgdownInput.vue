@@ -14,7 +14,7 @@ import {
   onBeforeUnmount
 } from "vue";
 import { useArgdownStore } from "../store.js";
-import * as _ from "lodash";
+import { debounce } from "lodash";
 import CodeMirror from "codemirror";
 import "codemirror/lib/codemirror.css";
 import "codemirror/addon/mode/simple";
@@ -33,7 +33,7 @@ export default {
 
     const useArgVu = computed(() => store.useArgVu);
 
-    const debouncedChangeEmission = _.debounce((value) => {
+    const debouncedChangeEmission = debounce((value) => {
       emit("change", value);
     }, 100);
 
