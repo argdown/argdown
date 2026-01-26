@@ -28,9 +28,6 @@ import { EventBus } from "../event-bus.js";
 import { saveAsSvg, saveAsPng } from "../map-export.js";
 import { VizJsMap } from "@argdown/map-views";
 
-// eslint-disable-next-line no-undef
-var basePath = process.env.BASE_URL || "/";
-
 export default {
   name: "viz-js-output",
   setup() {
@@ -112,10 +109,7 @@ export default {
           return;
         }
 
-        const workerURL = basePath + "render.browser.js";
-        vizJsMap.value = new VizJsMap(svgElement.value, null, {
-          workerURL: workerURL
-        });
+        vizJsMap.value = new VizJsMap(svgElement.value);
 
         // Initial render
         renderMap();
