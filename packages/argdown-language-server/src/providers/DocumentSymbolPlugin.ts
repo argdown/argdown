@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import { DocumentSymbol, Range, SymbolKind } from "vscode-languageserver";
 // import Uri from "vscode-uri";
 import {

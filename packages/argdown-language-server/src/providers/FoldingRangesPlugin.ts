@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+
 import { FoldingRange } from "vscode-languageserver";
 import {
   IArgdownPlugin,
