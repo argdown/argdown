@@ -407,7 +407,6 @@ button .icon {
   }
 
   pre {
-    background-color: #eee;
     padding: 1em 2em;
     overflow: auto;
   }

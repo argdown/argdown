@@ -15,7 +15,6 @@
   "dependencies": {
     "@argdown/codemirror-mode": "workspace:^",
     "@argdown/core": "workspace:^",
-    "@argdown/docs": "workspace:^",
     "@argdown/map-views": "workspace:^",
     "codemirror": "^5.65.19",
     "file-saver": "^2.0.5",

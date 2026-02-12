@@ -30,14 +30,16 @@
     </ul>
     <div class="save-as-png-dialog" v-if="showSaveAsPngDialog">
       <h3>PNG Export</h3>
-      <label for="save-as-png-scale">Scale</label>
-      <input
-        v-model="pngScale"
-        type="number"
-        min="0"
-        max="100"
-        id="save-as-png-scale"
-      />
+      <label for="save-as-png-scale"
+        >Scale
+        <input
+          v-model="pngScale"
+          type="number"
+          min="0"
+          max="100"
+          id="save-as-png-scale"
+      /></label>
+
       <div class="submit-cancel">
         <button type="button" v-on:click.prevent.stop="saveAsPng">
           Create PNG
@@ -113,27 +115,35 @@ export default {
   background-color: #fff;
   border: 2px solid #264260;
   border-radius: 5px;
-  padding: 0.5em 2em 0.5em 2em;
+  padding: 1rem 2rem 1rem 2rem;
   font-size: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
   h3 {
-    padding-bottom: 1.5em;
+    font-weight: bold;
   }
   label {
-    margin-right: 0 1em;
+    /* margin-right: 0 1em; */
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
   input {
-    margin: 0 1em;
     font-size: 1em;
     padding: 0.25em;
   }
   .submit-cancel {
     display: flex;
     justify-content: space-between;
+    width: 100%;
   }
   button {
     font-size: 1em;
-    margin-top: 1em;
     padding: 0.5em 1em;
+    text-wrap: nowrap;
+    margin: 0;
   }
 }
 </style>
