@@ -624,6 +624,7 @@ __metadata:
     copyfiles: "npm:^2.4.1"
     css-loader: "npm:^7.1.2"
     eslint: "npm:^10.0.0"
+    eslint-config-prettier: "npm:^10.1.8"
     eslint-plugin-prettier: "npm:^5.5.5"
     eslint-plugin-vue: "npm:^10.7.0"
     file-saver: "npm:^2.0.5"
