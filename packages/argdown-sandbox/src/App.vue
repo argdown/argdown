@@ -1,27 +1,27 @@
 <template>
-  <div id="app" v-bind:class="viewStateClass">
+  <div id="app" :class="viewStateClass">
     <div
-      id="top-slot"
       v-if="viewState != 'input-maximized' && viewState != 'output-maximized'"
+      id="top-slot"
     >
       <app-header></app-header>
       <app-navigation></app-navigation>
     </div>
     <div class="main-window">
-      <div id="left-slot" v-if="viewState != 'output-maximized'">
+      <div v-if="viewState != 'output-maximized'" id="left-slot">
         <div class="input-header">
           <InputNavigation />
           <button
             v-if="viewState != 'input-maximized'"
             class="button"
-            v-on:click="setViewState('input-maximized')"
+            @click="setViewState('input-maximized')"
           >
             <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
           </button>
           <button
             v-if="viewState == 'input-maximized'"
             class="button"
-            v-on:click="setViewState('default')"
+            @click="setViewState('default')"
           >
             <img
               class="expand icon"
@@ -31,15 +31,15 @@
           </button>
         </div>
         <argdown-input
-          v-bind:value="argdownInput"
-          v-on:change="
+          :value="argdownInput"
+          @change="
             (value) => {
               setArgdownInput(value);
             }
           "
         ></argdown-input>
       </div>
-      <div id="right-slot" v-if="viewState != 'input-maximized'">
+      <div v-if="viewState != 'input-maximized'" id="right-slot">
         <div class="output-header">
           <div class="output-sub-menu">
             <router-view name="output-header"></router-view>
@@ -48,14 +48,14 @@
             <button
               v-if="viewState != 'output-maximized'"
               class="button"
-              v-on:click="setViewState('output-maximized')"
+              @click="setViewState('output-maximized')"
             >
               <img class="expand icon" src="./assets/expand.svg" alt="Expand" />
             </button>
             <button
               v-if="viewState == 'output-maximized'"
               class="button"
-              v-on:click="setViewState('default')"
+              @click="setViewState('default')"
             >
               <img
                 class="expand icon"
@@ -89,7 +89,7 @@ import InputNavigation from "@/components/InputNavigation";
 import "@argdown/core/dist/plugins/argdown.css";
 
 export default {
-  name: "app",
+  name: "App",
   components: {
     AppHeader,
     ArgdownInput,

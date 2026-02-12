@@ -9,7 +9,7 @@ import { computed } from "vue";
 import { useArgdownStore } from "../store.js";
 
 export default {
-  name: "graphml-output",
+  name: "GraphmlOutput",
   setup() {
     const store = useArgdownStore();
     const graphml = computed(() => store.graphml);

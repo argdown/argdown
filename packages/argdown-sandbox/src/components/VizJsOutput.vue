@@ -29,7 +29,7 @@ import { saveAsSvg, saveAsPng } from "../map-export.js";
 import { VizJsMap } from "@argdown/map-views";
 
 export default {
-  name: "viz-js-output",
+  name: "VizJsOutput",
   setup() {
     const store = useArgdownStore();
     const container = ref(null);

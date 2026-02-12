@@ -14,7 +14,7 @@ import { computed } from "vue";
 import { useArgdownStore } from "../store.js";
 
 export default {
-  name: "html-output",
+  name: "HtmlOutput",
   props: {
     source: {
       type: Boolean,

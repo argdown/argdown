@@ -9,7 +9,7 @@ import { computed } from "vue";
 import { useArgdownStore } from "../store.js";
 
 export default {
-  name: "dot-output",
+  name: "DotOutput",
   setup() {
     const store = useArgdownStore();
     const dot = computed(() => store.dot);

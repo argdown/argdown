@@ -13,7 +13,7 @@
 
 <script>
 export default {
-  name: "app-header",
+  name: "AppHeader",
   data() {
     return {
       title: "Argdown Editor"

@@ -6,7 +6,7 @@
           <button class="text-button dropdown-button">Examples</button>
           <ul class="dropdown-content">
             <li v-for="example in examplesList" :key="example.id">
-              <a href="#" v-on:click.prevent="loadExample(example.id)">{{
+              <a href="#" @click.prevent="loadExample(example.id)">{{
                 example.title
               }}</a>
             </li>
@@ -14,15 +14,15 @@
         </div>
       </li>
       <li>
-        <button class="text-button" v-on:click="copyLink">Copy link</button>
+        <button class="text-button" @click="copyLink">Copy link</button>
       </li>
       <li>
         <div class="input-container argvu-font">
           <input
-            :checked="useArgVu"
-            @change="toggleArgVu"
-            type="checkbox"
             id="use-argvu"
+            :checked="useArgVu"
+            type="checkbox"
+            @change="toggleArgVu"
           />
           <label for="use-argvu">Use ArgVu font</label>
         </div>
@@ -31,7 +31,7 @@
     <app-modal v-show="isModalVisible" @close="closeModal">
       <template #header>Successfully copied shareable link</template>
       <template #body>
-        <input type="text" v-bind:value="link" style="width: 100%" /><br />
+        <input type="text" :value="link" style="width: 100%" /><br />
         <p>Show other people your Argdown code directly in the Sandbox!</p>
       </template>
     </app-modal>
@@ -43,7 +43,7 @@ import { useArgdownStore } from "../store.js";
 import appModal from "./modal.vue";
 
 export default {
-  name: "input-navigation",
+  name: "InputNavigation",
   components: {
     appModal: appModal
   },

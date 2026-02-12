@@ -4,18 +4,18 @@
     <div class="setting">
       <label for="removeTagsFromText">Remove tags from text</label>
       <input
-        type="checkbox"
         id="removeTagsFromText"
         v-model="config.model.removeTagsFromText"
+        type="checkbox"
       />
     </div>
     <h3>Selection Settings</h3>
     <div class="setting">
       <label for="excludeDisconnected">Exclude disconnected statements</label>
       <input
-        type="checkbox"
         id="excludeDisconnected"
         v-model="config.selection.excludeDisconnected"
+        type="checkbox"
       />
     </div>
     <div class="setting">
@@ -48,7 +48,7 @@
     </div>
     <div class="setting">
       <label for="groupDepth">Group depth</label>
-      <input id="groupDepth" type="number" v-model="config.map.groupDepth" />
+      <input id="groupDepth" v-model="config.map.groupDepth" type="number" />
     </div>
     <h3>GraphViz Settings</h3>
     <div class="setting">
@@ -66,25 +66,25 @@
     <div class="setting">
       <label for="graphVizConcentrate">Concentrate edges</label>
       <input
-        type="checkbox"
         id="graphVizConcentrate"
         v-model="config.dot.graphVizSettings.concentrate"
+        type="checkbox"
       />
     </div>
     <div class="setting">
       <label for="graphVizRatio">Ratio</label>
       <input
         id="graphVizRatio"
-        type="text"
         v-model="config.dot.graphVizSettings.ratio"
+        type="text"
       />
     </div>
     <div class="setting">
       <label for="graphVizSize">Size</label>
       <input
         id="graphVizSize"
-        type="text"
         v-model="config.dot.graphVizSettings.size"
+        type="text"
       />
     </div>
   </div>

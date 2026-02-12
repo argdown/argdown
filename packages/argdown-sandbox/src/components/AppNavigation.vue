@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  name: "app-navigation",
+  name: "AppNavigation",
   data() {
     return {
       title: "Argdown Test Environment"

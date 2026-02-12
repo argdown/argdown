@@ -22,7 +22,7 @@ import argdownMode from "@argdown/codemirror-mode";
 import "@argdown/codemirror-mode/codemirror-argdown.css";
 
 export default {
-  name: "argdown-input",
+  name: "ArgdownInput",
   props: ["value"],
   setup(props, { emit }) {
     const store = useArgdownStore();

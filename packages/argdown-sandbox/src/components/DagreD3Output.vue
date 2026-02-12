@@ -29,7 +29,7 @@ import { DagreMap } from "@argdown/map-views";
 import "../scss/dagre.css";
 
 export default {
-  name: "dagre-d3-output",
+  name: "DagreD3Output",
   setup() {
     const store = useArgdownStore();
     const container = ref(null);

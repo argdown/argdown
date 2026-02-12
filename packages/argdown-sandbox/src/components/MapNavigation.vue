@@ -15,36 +15,33 @@
       </li>
       <!-- <li><router-link to="/map/graphml">GraphML Source</router-link></li> -->
       <li
-        class="save-map"
         v-if="$route.name == 'map-viz-js' || $route.name == 'map-dagre-d3'"
+        class="save-map"
       >
         save map as
-        <a class="save-as-svg" v-on:click.stop.prevent="saveAsSvg" href>svg</a>
-        <a
-          class="save as png"
-          v-on:click.stop.prevent="openSaveAsPngDialog"
-          href
+        <a class="save-as-svg" href @click.stop.prevent="saveAsSvg">svg</a>
+        <a class="save as png" href @click.stop.prevent="openSaveAsPngDialog"
           >png</a
         >
       </li>
     </ul>
-    <div class="save-as-png-dialog" v-if="showSaveAsPngDialog">
+    <div v-if="showSaveAsPngDialog" class="save-as-png-dialog">
       <h3>PNG Export</h3>
       <label for="save-as-png-scale"
         >Scale
         <input
+          id="save-as-png-scale"
           v-model="pngScale"
           type="number"
           min="0"
           max="100"
-          id="save-as-png-scale"
       /></label>
 
       <div class="submit-cancel">
-        <button type="button" v-on:click.prevent.stop="saveAsPng">
+        <button type="button" @click.prevent.stop="saveAsPng">
           Create PNG
         </button>
-        <button type="button" v-on:click.prevent.stop="closeSaveAsPngDialog">
+        <button type="button" @click.prevent.stop="closeSaveAsPngDialog">
           Cancel
         </button>
       </div>

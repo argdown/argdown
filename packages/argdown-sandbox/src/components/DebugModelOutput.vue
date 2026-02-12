@@ -3,9 +3,9 @@
     <div class="content">
       <table v-if="statements">
         <tr
-          class="statement"
           v-for="(key, index) in Object.keys(statements)"
           :key="index"
+          class="statement"
         >
           <td class="title"><b>title: </b> "{{ statements[key].title }}":</td>
           <td class="relations">
@@ -18,9 +18,9 @@
       </table>
       <table v-if="arguments">
         <tr
-          class="argument"
           v-for="(key, index) in Object.keys(arguments)"
           :key="index"
+          class="argument"
         >
           <td class="title"><b>title: </b>"{{ arguments[key].title }}"</td>
           <td class="relations">
@@ -31,9 +31,9 @@
       </table>
       <table v-if="relations">
         <tr
-          class="relation"
           v-for="(relation, index) in relations"
           :key="index"
+          class="relation"
         >
           <td class="relation-type">
             <b>type: </b>{{ relation.relationType }}
@@ -51,7 +51,7 @@ import { computed } from "vue";
 import { useArgdownStore } from "../store.js";
 
 export default {
-  name: "debug-model-output",
+  name: "DebugModelOutput",
   setup() {
     const store = useArgdownStore();
     const statements = computed(() => store.statements);

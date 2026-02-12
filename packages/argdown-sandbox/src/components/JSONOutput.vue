@@ -9,7 +9,7 @@ import { computed } from "vue";
 import { useArgdownStore } from "../store.js";
 
 export default {
-  name: "json-output",
+  name: "JsonOutput",
   setup() {
     const store = useArgdownStore();
     const json = computed(() => store.json);
