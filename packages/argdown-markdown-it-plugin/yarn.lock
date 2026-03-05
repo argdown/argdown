@@ -51,11 +51,12 @@
   resolved "https://registry.yarnpkg.com/@argdown/highlightjs/-/highlightjs-1.7.4.tgz#a5bac84e4e391a4a6c2fb66c291f5883e798805e"
   integrity sha512-xSQkvcvCg0PKxXqto8KW6ldQCb1NIGITvZinUK3rGQYLGgFgLviJ5OmFAT45GFppFCTkySUahc5st5VDXTzNFg==
 
-"@argdown/web-components@^1.7.4":
-  version "1.7.4"
-  resolved "https://registry.yarnpkg.com/@argdown/web-components/-/web-components-1.7.4.tgz#d0a990e294e053b78cea65a427e082910f09e3f1"
-  integrity sha512-bQXDkmIjrInoLWwl7fLYu4gqyJIYllIXYJzj3IBj7N1FTLdXhiDRDyKuF8FNiSjPULofyFxANlplHXxwFgSWXw==
+"@argdown/web-components@^1.7.11":
+  version "1.7.12"
+  resolved "https://registry.yarnpkg.com/@argdown/web-components/-/web-components-1.7.12.tgz#1586514f8538f7a3bb4a159d963537ca01460d90"
+  integrity sha512-9fjnqZGm3TVkq6x/c+GgCMD0maYKMu1RuBESM5xJvcVhp7zZRGpLyWhGeo0ipAuuaxBZBLmbyfACbLePJrdbRA==
   dependencies:
+    "@swc/helpers" "^0.2.13"
     d3-selection "3.0.0"
     d3-zoom "3.0.0"
     haunted "^4.7.1"
@@ -1029,22 +1030,17 @@
   resolved "https://registry.yarnpkg.com/@swc/helpers/-/helpers-0.2.13.tgz#95d69aaed0998040d455832efbe1342ed79d0809"
   integrity sha512-HxfZHtTgDlME7fH+KIwBrm1B1+2iB3UpbcSbPCZzDAHxZ3z+qfjflHverm33sXrdyQYx4s3J7r6ot76433mwEg==
 
+"@swc/helpers@^0.2.13":
+  version "0.2.14"
+  resolved "https://registry.yarnpkg.com/@swc/helpers/-/helpers-0.2.14.tgz#20288c3627442339dd3d743c944f7043ee3590f0"
+  integrity sha512-wpCQMhf5p5GhNg2MmGKXzUNwxe7zRiCsmqYsamez2beP7mKPCSiu+BjZcdN95yYSzO857kr0VfQewmGpS77nqA==
+
 "@szmarczak/http-timer@^4.0.5":
   version "4.0.6"
   resolved "https://registry.yarnpkg.com/@szmarczak/http-timer/-/http-timer-4.0.6.tgz#b4a914bb62e7c272d4e5989fe4440f812ab1d807"
   integrity sha512-4BAffykYOgO+5nzBWYwE3W90sBgLJoUPRWWcL8wlyiM8IB8ipJz3UMJ9KXQd1RKQXpKp8Tutn80HZtWsu2u76w==
   dependencies:
     defer-to-connect "^2.0.0"
-
-"@trysound/sax@0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.1.1.tgz#3348564048e7a2d7398c935d466c0414ebb6a669"
-  integrity sha512-Z6DoceYb/1xSg5+e+ZlPZ9v0N16ZvZ+wYMraFue4HYrE4ttONKtsvruIRf6t9TBR0YvSOfi1hUU0fJfBLCDYow==
-
-"@trysound/sax@0.2.0":
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/@trysound/sax/-/sax-0.2.0.tgz#cccaab758af56761eb7bf37af6f03f326dd798ad"
-  integrity sha512-L7z9BgrNEcYyUYtF+HaEfiS5ebkh9jXqbszz7pC0hRBPaatV0XjSD3+eHrpqFemQfgwiFF0QPIarnIihIDn7OA==
 
 "@tsconfig/node10@^1.0.7":
   version "1.0.8"
@@ -4601,11 +4597,6 @@ nan@^2.14.2:
   resolved "https://registry.yarnpkg.com/nan/-/nan-2.15.0.tgz#3f34a473ff18e15c1b5626b62903b5ad6e665fee"
   integrity sha512-8ZtvEnA2c5aYCZYd1cvgdnU6cqwixRoYg70xPLWUws5ORTa/lnw+u4amixRS/Ac5U5mQVgp9pnlSUnbNWFaWZQ==
 
-nanocolors@^0.1.12:
-  version "0.1.12"
-  resolved "https://registry.yarnpkg.com/nanocolors/-/nanocolors-0.1.12.tgz#8577482c58cbd7b5bb1681db4cf48f11a87fd5f6"
-  integrity sha512-2nMHqg1x5PU+unxX7PGY7AuYxl2qDx7PSrTRjizr8sxdd3l/3hBuWWaki62qmtYm2U5i4Z5E7GbjlyDFhs9/EQ==
-
 nanocolors@^0.2.2:
   version "0.2.10"
   resolved "https://registry.yarnpkg.com/nanocolors/-/nanocolors-0.2.10.tgz#a712df4d3c1bf12d9b4fb8b5aa61b5ba31337503"
@@ -5060,6 +5051,11 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
+
+picocolors@^1.0.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/picocolors/-/picocolors-1.1.1.tgz#3d321af3eab939b083c8f929a1d12cda81c26b6b"
+  integrity sha512-xceH2snhtb5M9liqDsmEw56le376mTZkEX/jEb/RxNFyegNul7eNslCXP9FDj/Lcu0X8KEyMceP2ntpaHrDEVA==
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3:
   version "2.3.0"
@@ -5833,6 +5829,11 @@ safe-regex@^1.1.0:
   resolved "https://registry.yarnpkg.com/safer-buffer/-/safer-buffer-2.1.2.tgz#44fa161b0187b9549dd84bb91802f9bd8385cd6a"
   integrity sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
 
+sax@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/sax/-/sax-1.5.0.tgz#b5549b671069b7aa392df55ec7574cf411179eb8"
+  integrity sha512-21IYA3Q5cQf089Z6tgaUTr7lDAyzoTPx5HRtbhsME8Udispad8dC/+sziTNugOEx54ilvatQ9YCzl4KQLPcRHA==
+
 saxes@^3.1.9:
   version "3.1.11"
   resolved "https://registry.yarnpkg.com/saxes/-/saxes-3.1.11.tgz#d59d1fd332ec92ad98a2e0b2ee644702384b1c5b"
@@ -6299,30 +6300,17 @@ supports-hyperlinks@^2.0.0:
     has-flag "^4.0.0"
     supports-color "^7.0.0"
 
-svgo@^2.3.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/svgo/-/svgo-2.5.0.tgz#3c9051b606d85a02fcb59f459b19970d2cc2c9bf"
-  integrity sha512-FSdBOOo271VyF/qZnOn1PgwCdt1v4Dx0Sey+U1jgqm1vqRYjPGdip0RGrFW6ItwtkBB8rHgHk26dlVr0uCs82Q==
+svgo@^2.3.0, svgo@^2.4.0, svgo@^2.6.1:
+  version "2.8.2"
+  resolved "https://registry.yarnpkg.com/svgo/-/svgo-2.8.2.tgz#8e99b7ba5ac9ed7e3a446063865f61e03223fe6b"
+  integrity sha512-TyzE4NVGLUFy+H/Uy4N6c3G0HEeprsVfge6Lmq+0FdQQ/zqoVYB62IsBZORsiL+o96s6ff/V6/3UQo/C0cgCAA==
   dependencies:
-    "@trysound/sax" "0.1.1"
-    colorette "^1.3.0"
     commander "^7.2.0"
     css-select "^4.1.3"
     css-tree "^1.1.3"
     csso "^4.2.0"
-    stable "^0.1.8"
-
-svgo@^2.4.0, svgo@^2.6.1:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/svgo/-/svgo-2.7.0.tgz#e164cded22f4408fe4978f082be80159caea1e2d"
-  integrity sha512-aDLsGkre4fTDCWvolyW+fs8ZJFABpzLXbtdK1y71CKnHzAnpDxKXPj2mNKj+pyOXUCzFHzuxRJ94XOFygOWV3w==
-  dependencies:
-    "@trysound/sax" "0.2.0"
-    commander "^7.2.0"
-    css-select "^4.1.3"
-    css-tree "^1.1.3"
-    csso "^4.2.0"
-    nanocolors "^0.1.12"
+    picocolors "^1.0.0"
+    sax "^1.5.0"
     stable "^0.1.8"
 
 symbol-tree@^3.2.2:
