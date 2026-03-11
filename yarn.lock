@@ -391,18 +391,13 @@ __metadata:
     "@types/dagre-d3": "npm:0.6.6"
     "@types/lodash": "npm:^4.14.172"
     "@types/lodash.defaultsdeep": "npm:^4.6.9"
-    "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^22.15.24"
     "@types/string-pixel-width": "npm:^1.10.3"
-    chai: "npm:^4.3.10"
-    copyfiles: "npm:^2.1.1"
     d3-selection: "npm:3.0.0"
     d3-transition: "npm:3.0.1"
     d3-zoom: "npm:3.0.0"
     dagre-d3: "npm:^0.6.4"
     lodash.defaultsdeep: "npm:^4.6.1"
-    mocha: "npm:11.1.0"
-    rimraf: "npm:^6.0.1"
     string-pixel-width: "npm:^1.10.0"
     typescript: "npm:5.9.3"
     vite: "npm:^7.3.1"
@@ -12251,7 +12246,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"copyfiles@npm:^2.1.1, copyfiles@npm:^2.2.0, copyfiles@npm:^2.4.1":
+"copyfiles@npm:^2.2.0, copyfiles@npm:^2.4.1":
   version: 2.4.1
   resolution: "copyfiles@npm:2.4.1"
   dependencies:

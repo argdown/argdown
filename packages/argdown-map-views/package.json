@@ -18,19 +18,19 @@
   "files": [
     "dist"
   ],
-  "main": "./dist/index.umd.cjs",
-  "module": "./dist/index.js",
+  "main": "./dist/argdown-map.umd.cjs",
+  "module": "./dist/argdown-map.js",
   "types": "./dist/index.d.ts",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.js",
-      "require": "./dist/index.umd.cjs"
+      "import": "./dist/argdown-map.js",
+      "require": "./dist/argdown-map.umd.cjs"
     },
-    "./style.css": "./dist/index.css"
+    "./style.css": "./dist/argdown-map.css"
   },
   "engines": {
-    "node": ">= 22.11.0"
+    "node": ">= 20.0.0"
   },
   "dependencies": {
     "@argdown/core": "workspace:^",
@@ -47,27 +47,18 @@
     "@types/dagre-d3": "0.6.6",
     "@types/lodash": "^4.14.172",
     "@types/lodash.defaultsdeep": "^4.6.9",
-    "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.24",
     "@types/string-pixel-width": "^1.10.3",
-    "chai": "^4.3.10",
-    "copyfiles": "^2.1.1",
-    "mocha": "11.1.0",
-    "rimraf": "^6.0.1",
     "typescript": "5.9.3",
     "vite": "^7.3.1",
     "vite-plugin-dts": "^4.5.4"
   },
   "scripts": {
     "deploy": "npm run test && npm run build && npm version patch && npm run push",
+    "dev": "vite --open",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "vite --open",
-    "type-check": "tsc --noEmit",
-    "copy:css": "copyfiles \"src/**/*.css\" dist -u 1",
     "test": "echo \"No tests to run here\"",
-    "coverage": "echo \"No tests to run here\"",
-    "clean": "rimraf \"dist/*\" --glob",
     "prepublishOnly": "npm run-script build"
   },
   "packageManager": "yarn@4.9.4"
