@@ -23,8 +23,6 @@
     "build": "tsc",
     "test": "tsc --noEmit && mocha",
     "overwrite-snapshots": "cross-env CHAI_SNAPSHOT_UPDATE=true mocha",
-    "coverage": "nyc mocha",
-    "report": "nyc report",
     "clean": "rimraf \"dist/*\"",
     "prepublishOnly": "npm run-script build",
     "push": "git push --tags origin HEAD:master"
@@ -58,9 +56,7 @@
     "cross-env": "^7.0.3",
     "mocha": "^11.5.0",
     "mocha-chai-snapshot": "^1.0.0",
-    "nyc": "^17.1.0",
     "rimraf": "^6.0.1",
-    "source-map-support": "0.5.21",
     "typescript": "5.9.3"
   },
   "dependencies": {
