@@ -30,6 +30,7 @@
     "eslint": "^9.15.0",
     "lerna": "^9.0.1",
     "prettier": "^3.7.4",
+    "tsx": "^4.21.0",
     "typescript": "5.9.3",
     "typescript-eslint": "^8.18.0"
   },
