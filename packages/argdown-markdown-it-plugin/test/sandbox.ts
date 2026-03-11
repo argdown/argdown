@@ -50,12 +50,12 @@ And a link to [Argdown](https://argdown.org).
 \`\`\`
 `;
 const updateOutput = () => {
-  const input = document.querySelector("textarea").value;
-  const output = document.querySelector("#output");
+  const input = document.querySelector("textarea")!.value;
+  const output = document.querySelector("#output")!;
   output.innerHTML = mdi.render(input);
 };
-document.querySelector("textarea").innerHTML = initialInput;
+document.querySelector("textarea")!.value = initialInput;
 updateOutput();
-document.querySelector("#submit").addEventListener("click", () => {
+document.querySelector("#submit")!.addEventListener("click", () => {
   updateOutput();
 });
