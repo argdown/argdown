@@ -13,14 +13,10 @@
   },
   "scripts": {
     "deploy": "npm run test && npm run build && npm version patch && npm run push",
-    "sandbox": "parcel ./test/sandbox.html",
+    "dev": "vite serve test",
     "type-check": "tsc --noEmit",
-    "build": "npm run clean && tsc",
-    "docs:build": "node ./node_modules/typedoc/bin/typedoc",
+    "build": "tsc",
     "test": "tsc --noEmit && mocha",
-    "coverage": "nyc mocha",
-    "report": "nyc report",
-    "clean": "rimraf dist",
     "prepublishOnly": "npm run-script build",
     "push": "git push --tags origin HEAD:master"
   },
@@ -43,8 +39,6 @@
   "license": "MIT",
   "devDependencies": {
     "@argdown/web-components": "workspace:^",
-    "@parcel/core": "^2.16.0",
-    "@parcel/transformer-typescript-tsc": "^2.13.3",
     "@types/chai": "^5.2.2",
     "@types/lodash.defaultsdeep": "^4.6.9",
     "@types/marked": "^6.0.0",
@@ -52,13 +46,8 @@
     "@types/node": "^22.15.24",
     "chai": "^4.3.10",
     "mocha": "^11.1.0",
-    "nyc": "^17.1.0",
-    "parcel": "^2.13.3",
-    "postcss": "^8.2.1",
-    "rimraf": "^6.0.1",
-    "source-map-support": "^0.5.16",
-    "typedoc": "0.28.14",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vite": "^7.3.1"
   },
   "dependencies": {
     "@argdown/core": "workspace:^",
@@ -69,7 +58,7 @@
     "last 2 Chrome versions"
   ],
   "engines": {
-    "node": ">= 22.11.0"
+    "node": ">= 20.0.0"
   },
   "packageManager": "yarn@4.9.4"
 }

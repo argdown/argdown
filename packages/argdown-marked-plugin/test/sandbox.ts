@@ -1,11 +1,11 @@
-import "../node_modules/@argdown/web-components/dist/argdown-map.css";
+import "@argdown/web-components/style.css";
 import "@argdown/web-components";
-import marked from "marked";
+import { marked, MarkedOptions } from "marked";
 import { addArgdownSupportToMarked } from "../src/argdown-marked-plugin";
 const markedWithArgdown = addArgdownSupportToMarked(
-  marked,
-  new marked.Renderer(),
-  {}
+  async (src: string, options?: MarkedOptions) =>
+    await marked.parse(src, { ...(options || {}), async: true }),
+  new marked.Renderer()
 );
 const initialInput = `
 # Try out the new Markdown-Argdown Workflow!
@@ -43,12 +43,12 @@ And a link to [Argdown](https://argdown.org).
       - <a3>
 \`\`\`
 `;
-const updateOutput = () => {
+const updateOutput = async () => {
   const input = document.querySelector("textarea")!.value;
   const output = document.querySelector("#output")!;
-  output.innerHTML = markedWithArgdown(input);
+  output.innerHTML = await markedWithArgdown(input);
 };
-document.querySelector("textarea")!.innerHTML = initialInput;
+document.querySelector("textarea")!.value = initialInput;
 updateOutput();
 document.querySelector("#submit")!.addEventListener("click", () => {
   updateOutput();
