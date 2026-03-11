@@ -56,7 +56,7 @@
     "deploy": "yarn run test && yarn run build && npm version patch && yarn run push",
     "type-check": "tsc --noEmit",
     "build": "yarn run clean && tsc && yarn run copy:css",
-    "docs:build": "node ./node_modules/typedoc/bin/typedoc ./src/",
+    "docs:build": "typedoc ./src/",
     "copy:argdown": "copyfiles \"test/**/*.{ad,argdown}\" dist/",
     "copy:css": "copyfiles -u 1 \"src/**/*.css\" dist",
     "test": "tsc --noEmit && mocha",
