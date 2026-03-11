@@ -7,85 +7,34 @@
   "workspaces": [
     "packages/*"
   ],
-  "scripts": {
-    "clean-modules": "rm -rf node_modules && rm -rf packages/*/node_modules && rm -rf .parcel-cache",
-    "build": "lerna run build",
-    "build:yarn": "yarn workspaces foreach -A --topological-dev --exclude . run build",
-    "install-package": "yarn workspace @argdown/node add @types/pdfkit",
-    "yarn:upgrade": "yarn workspaces foreach --all upgrade",
-    "test": "lerna run test",
-    "test:yarn": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":false}' yarn workspaces foreach -A --exclude . run test",
-    "test:full_log": "TS_NODE_COMPILER_OPTIONS='{\"traceResolution\":true}' yarn workspaces foreach -A --topological-dev --exclude . run test",
-    "test:coverage": "nyc yarn workspaces foreach -A --exclude . run test",
-    "docs:dev": "yarn workspace @argdown/docs run docs:dev",
-    "prettier:check": "lerna run prettier:check && prettier . --check",
-    "prettier:fix": "prettier . --write",
-    "prettier": "yarn run prettier:fix",
-    "lint": "eslint",
-    "lint:all": "eslint packages/argdown-cli/src packages/argdown-core/src packages/argdown-image-export/src packages/argdown-language-server/src packages/argdown-map-views/src packages/argdown-markdown-it-plugin/src packages/argdown-marked-plugin/src packages/argdown-node/src packages/argdown-vscode/src packages/argdown-web-components/src && yarn workspaces foreach -A --include @argdown/sandbox run lint",
-    "lint:fix": "eslint --fix",
-    "lint:all:fix": "eslint --fix packages/argdown-cli/src packages/argdown-core/src packages/argdown-image-export/src packages/argdown-language-server/src packages/argdown-map-views/src packages/argdown-markdown-it-plugin/src packages/argdown-marked-plugin/src packages/argdown-node/src packages/argdown-vscode/src packages/argdown-web-components/src"
-  },
-  "nyc": {
-    "all": true,
-    "include": [
-      "packages/*/src/**/*.ts"
-    ],
-    "extension": [
-      ".ts"
-    ],
-    "reporter": [
-      "text",
-      "html"
-    ],
-    "sourceMap": true,
-    "instrument": true
-  },
-  "readmeFilename": "Readme.md",
-  "preferGlobal": true,
-  "devDependencies": {
-    "@changesets/cli": "^2.29.7",
-    "@eslint/js": "^9.15.0",
-    "@typescript-eslint/eslint-plugin": "^8.18.0",
-    "@typescript-eslint/parser": "^8.18.0",
-    "@vue/component-compiler-utils": "^3.0.0",
-    "@vuepress/plugin-pwa": "1.9.10",
-    "eslint": "^9.15.0",
-    "esm": "^3.2.25",
-    "lerna": "^9.0.1",
-    "nyc": "^17.1.0",
-    "prettier": "^3.7.4",
-    "stream-browserify": "^3.0.0",
-    "tsx": "4.20.6",
-    "typescript": "5.9.3",
-    "typescript-eslint": "^8.18.0",
-    "vm-browserify": "^1.1.2",
-    "vue": "^2.6.10",
-    "vuepress": "1.9.10",
-    "webpack": "5.99.9"
-  },
   "workspace-sources": {
     "*": [
       "packages/*/src"
     ]
   },
-  "dependencies": {
-    "@yarnpkg/types": "^4.0.1",
-    "chalk": "^2.4.2",
-    "commander": "^2.20.3",
-    "markdown-it-container": "4.0.0",
-    "vuepress-plugin-sitemap": "2.3.1"
+  "scripts": {
+    "build": "lerna run build",
+    "test": "lerna run test",
+    "docs:dev": "yarn workspace @argdown/docs run docs:dev",
+    "prettier:check": "lerna run prettier:check && prettier . --check",
+    "prettier:fix": "prettier . --write",
+    "prettier": "yarn run prettier:fix",
+    "lint": "eslint"
   },
-  "resolutions": {
-    "@types/markdown-it": "^14.1.2",
-    "axios": "1.12.0",
-    "braces": "3.0.3",
-    "esbuild": "0.25.0",
-    "http-proxy-middleware": "2.0.9",
-    "minimist": "1.2.6"
+  "readmeFilename": "Readme.md",
+  "devDependencies": {
+    "@changesets/cli": "^2.29.7",
+    "@eslint/js": "^9.15.0",
+    "@typescript-eslint/eslint-plugin": "^8.18.0",
+    "@typescript-eslint/parser": "^8.18.0",
+    "eslint": "^9.15.0",
+    "lerna": "^9.0.1",
+    "prettier": "^3.7.4",
+    "typescript": "5.9.3",
+    "typescript-eslint": "^8.18.0"
   },
   "packageManager": "yarn@4.9.4",
   "engines": {
-    "node": ">= 22.11.0"
+    "node": ">= 20.0.0"
   }
 }
