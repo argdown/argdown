@@ -8495,7 +8495,6 @@ __metadata:
     eslint: "npm:^9.15.0"
     lerna: "npm:^9.0.1"
     prettier: "npm:^3.7.4"
-    tsx: "npm:^4.21.0"
     typescript: "npm:5.9.3"
     typescript-eslint: "npm:^8.18.0"
   languageName: unknown
