@@ -1,23 +1,22 @@
-import "../node_modules/@argdown/web-components/dist/argdown-map.css";
 import "@argdown/web-components";
+import "@argdown/web-components/style.css";
+import rehypeRaw from "rehype-raw";
+import rehypeStringify from "rehype-stringify";
 import { remark } from "remark";
+import remarkRehype from "remark-rehype";
 import { remarkArgdownPlugin } from "../src/argdown-remark-plugin";
-// @ts-ignore
-import { html } from "remark-html";
 
-// const defaultSettings = {
-//     withoutMaximize: true,
-//     withoutZoom: true,
-//     views: { source: false, map: true }
-//   };
-const defaultSettings = {};
 const rm = remark()
   .use(remarkArgdownPlugin, {
-    argdownConfig: () => {
-      return defaultSettings;
+    argdownConfig: {
+      webComponent: {
+        // withoutHeader: true
+      }
     }
   })
-  .use(html as any);
+  .use(remarkRehype, { allowDangerousHtml: true })
+  .use(rehypeRaw)
+  .use(rehypeStringify);
 
 const initialInput = `
 # Try out the new Markdown-Argdown Workflow!
@@ -56,8 +55,8 @@ And a link to [Argdown](https://argdown.org).
 \`\`\`
 `;
 const updateOutput = async () => {
-  const input = document.querySelector("textarea").value;
-  const output = document.querySelector("#output");
+  const input = document.querySelector("textarea")!.value;
+  const output = document.querySelector("#output")!;
   rm.process(input, (e, f) => {
     if (e) {
       console.log(e);
@@ -66,8 +65,8 @@ const updateOutput = async () => {
     }
   });
 };
-document.querySelector("textarea").innerHTML = initialInput;
+document.querySelector("textarea")!.value = initialInput;
 updateOutput();
-document.querySelector("#submit").addEventListener("click", () => {
+document.querySelector("#submit")?.addEventListener("click", () => {
   updateOutput();
 });

@@ -553,8 +553,6 @@ __metadata:
   dependencies:
     "@argdown/core": "workspace:^"
     "@argdown/web-components": "workspace:^"
-    "@parcel/core": "npm:^2.16.0"
-    "@parcel/transformer-typescript-tsc": "npm:^2.14.4"
     "@types/chai": "npm:^5.2.2"
     "@types/lodash.defaultsdeep": "npm:^4.6.9"
     "@types/mdast": "npm:^4.0.4"
@@ -564,21 +562,18 @@ __metadata:
     chai: "npm:^4.3.10"
     lodash.defaultsdeep: "npm:^4.6.1"
     mocha: "npm:^11.5.0"
-    nyc: "npm:^17.1.0"
-    parcel: "npm:^2.14.4"
-    postcss: "npm:^8.2.1"
     rehype-raw: "npm:^7.0.0"
+    rehype-sanitize: "npm:^6.0.0"
     rehype-stringify: "npm:^10.0.1"
     remark: "npm:15.0.1"
     remark-html: "npm:16.0.1"
     remark-rehype: "npm:^11.1.2"
     rimraf: "npm:^6.0.1"
-    source-map-support: "npm:^0.5.16"
-    typedoc: "npm:0.28.14"
     typescript: "npm:5.9.3"
     unist-builder: "npm:4.0.0"
     unist-util-is: "npm:6.0.0"
     unist-util-visit: "npm:5.0.0"
+    vite: "npm:^7.3.1"
   languageName: unknown
   linkType: soft
 
@@ -6237,7 +6232,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@parcel/transformer-typescript-tsc@npm:^2.13.3, @parcel/transformer-typescript-tsc@npm:^2.14.4":
+"@parcel/transformer-typescript-tsc@npm:^2.13.3":
   version: 2.15.4
   resolution: "@parcel/transformer-typescript-tsc@npm:2.15.4"
   dependencies:
@@ -20703,7 +20698,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"parcel@npm:^2.13.3, parcel@npm:^2.14.4":
+"parcel@npm:^2.13.3":
   version: 2.15.4
   resolution: "parcel@npm:2.15.4"
   dependencies:
@@ -22025,6 +22020,16 @@ __metadata:
     hast-util-raw: "npm:^9.0.0"
     vfile: "npm:^6.0.0"
   checksum: 10c0/1435b4b6640a5bc3abe3b2133885c4dbff5ef2190ef9cfe09d6a63f74dd7d7ffd0cede70603278560ccf1acbfb9da9faae4b68065a28bc5aa88ad18e40f32d52
+  languageName: node
+  linkType: hard
+
+"rehype-sanitize@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "rehype-sanitize@npm:6.0.0"
+  dependencies:
+    "@types/hast": "npm:^3.0.0"
+    hast-util-sanitize: "npm:^5.0.0"
+  checksum: 10c0/43d6c056e63c994cf56e5ee0e157052d2030dc5ac160845ee494af9a26e5906bf5ec5af56c7d90c99f9c4dc0091e45a48a168618135fb6c64a76481ad3c449e9
   languageName: node
   linkType: hard
 

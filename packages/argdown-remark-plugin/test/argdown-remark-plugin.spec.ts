@@ -4,13 +4,9 @@ import { expect } from "chai";
 import { describe, it } from "mocha";
 import { remark } from "remark";
 import { remarkArgdownPlugin } from "../dist/argdown-remark-plugin.js";
-// @ts-ignore
 import html from "remark-html";
-// @ts-ignore
 import remarkRehype from "remark-rehype";
-// @ts-ignore
 import rehypeRaw from "rehype-raw";
-// @ts-ignore
 import rehypeStringify from "rehype-stringify";
 
 describe("Remark Argdown Plugin", function () {
@@ -24,9 +20,7 @@ describe("Remark Argdown Plugin", function () {
     });
 
     it("should process markdown without argdown blocks normally", async function () {
-      const rm = remark()
-        .use(remarkArgdownPlugin)
-        .use(html as any);
+      const rm = remark().use(remarkArgdownPlugin).use(html);
 
       const result = await rm.process("# Test\n\nSome text");
       const output = String(result);
