@@ -19,7 +19,8 @@
     "prettier:check": "lerna run prettier:check && prettier . --check",
     "prettier:fix": "prettier . --write",
     "prettier": "yarn run prettier:fix",
-    "lint": "eslint"
+    "lint": "eslint",
+    "lint:all": "eslint packages/argdown-cli/src packages/argdown-core/src packages/argdown-image-export/src packages/argdown-language-server/src packages/argdown-map-views/src packages/argdown-markdown-it-plugin/src packages/argdown-marked-plugin/src packages/argdown-node/src packages/argdown-vscode/src packages/argdown-web-components/src && yarn workspaces foreach -A --include @argdown/sandbox run lint"
   },
   "readmeFilename": "Readme.md",
   "devDependencies": {
