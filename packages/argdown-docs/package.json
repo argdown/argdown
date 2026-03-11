@@ -2,7 +2,6 @@
   "name": "@argdown/docs",
   "version": "1.0.0",
   "description": "The Argdown documentation website.",
-  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-docs"
@@ -36,7 +35,7 @@
     "vitepress": "^1.6.4"
   },
   "engines": {
-    "node": ">= 22.11.0"
+    "node": ">= 20.0.0"
   },
   "packageManager": "yarn@4.9.4"
 }
