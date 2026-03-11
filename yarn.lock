@@ -237,19 +237,13 @@ __metadata:
     "@types/markdown-it": "npm:^14.1.2"
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^22.15.24"
-    "@types/yargs": "npm:^17.0.33"
+    "@types/yargs": "npm:^17.0.35"
     chai: "npm:^4.3.10"
     chai-fs: "npm:^2.0.0"
-    copyfiles: "npm:^2.2.0"
-    glob: "npm:^11.0.1"
     import-global: "npm:^1.1.1"
-    intercept-stdout: "npm:^0.1.2"
     markdown-it: "npm:^14.1.0"
-    mkdirp: "npm:^3.0.1"
     mocha: "npm:^11.1.0"
     rimraf: "npm:^6.0.1"
-    source-map-support: "npm:^0.5.21"
-    typedoc: "npm:0.28.14"
     typescript: "npm:5.9.3"
     yargs: "npm:^18.0.0"
   bin:
@@ -8988,12 +8982,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/yargs@npm:^17.0.33":
-  version: 17.0.33
-  resolution: "@types/yargs@npm:17.0.33"
+"@types/yargs@npm:^17.0.35":
+  version: 17.0.35
+  resolution: "@types/yargs@npm:17.0.35"
   dependencies:
     "@types/yargs-parser": "npm:*"
-  checksum: 10c0/d16937d7ac30dff697801c3d6f235be2166df42e4a88bf730fa6dc09201de3727c0a9500c59a672122313341de5f24e45ee0ff579c08ce91928e519090b7906b
+  checksum: 10c0/609557826a6b85e73ccf587923f6429850d6dc70e420b455bab4601b670bfadf684b09ae288bccedab042c48ba65f1666133cf375814204b544009f57d6eef63
   languageName: node
   linkType: hard
 
@@ -23481,7 +23475,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.0.0, semver@npm:^7.1.1, semver@npm:^7.7.2, semver@npm:^7.7.3":
+"semver@npm:^7.0.0, semver@npm:^7.1.1, semver@npm:^7.7.2":
   version: 7.7.3
   resolution: "semver@npm:7.7.3"
   bin:
@@ -23490,7 +23484,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.5.2":
+"semver@npm:^7.5.2, semver@npm:^7.7.3":
   version: 7.7.4
   resolution: "semver@npm:7.7.4"
   bin:
