@@ -273,6 +273,7 @@ __metadata:
     "@types/lodash.merge": "npm:^4.6.6"
     "@types/lodash.partialright": "npm:^4.2.6"
     "@types/lodash.union": "npm:^4.6.6"
+    "@types/mdurl": "npm:^2.0.0"
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^22.15.24"
     "@types/punycode": "npm:^2"
@@ -6499,7 +6500,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/mdurl@npm:^2":
+"@types/mdurl@npm:^2, @types/mdurl@npm:^2.0.0":
   version: 2.0.0
   resolution: "@types/mdurl@npm:2.0.0"
   checksum: 10c0/cde7bb571630ed1ceb3b92a28f7b59890bb38b8f34cd35326e2df43eebfc74985e6aa6fd4184e307393bad8a9e0783a519a3f9d13c8e03788c0f98e5ec869c5e

@@ -92,6 +92,7 @@
     "@types/lodash.merge": "^4.6.6",
     "@types/lodash.partialright": "^4.2.6",
     "@types/lodash.union": "^4.6.6",
+    "@types/mdurl": "^2.0.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.24",
     "@types/punycode": "^2",
