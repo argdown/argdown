@@ -9,16 +9,16 @@
     ".": {
       "import": "./dist/index.js",
       "types": "./dist/index.d.ts"
-    }
+    },
+    "./snow-in-spring.css": "./dist/snow-in-spring.argdown-theme.css"
   },
   "files": [
     "dist/"
   ],
   "scripts": {
-    "sandbox": "parcel ./test/sandbox.html",
-    "build": "npm run clean && tsc && node copy-css.js",
-    "clean": "rimraf \"dist/*\" --glob",
-    "copy-css": "",
+    "dev": "vite serve sandbox",
+    "build": "tsc && yarn run copy:css",
+    "copy:css": "copyfiles -f ./src/*.css dist",
     "test": "echo \"No tests to run here\""
   },
   "repository": {
@@ -30,29 +30,17 @@
     "highlightjs"
   ],
   "engines": {
-    "node": ">= 22.11.0"
+    "node": ">= 20.0.0"
   },
   "author": "Christian Voigt",
   "license": "MIT",
   "devDependencies": {
-    "@parcel/config-default": "^2.14.4",
-    "@parcel/core": "^2.16.0",
-    "@parcel/optimizer-cssnano": "^2.14.4",
-    "@parcel/optimizer-htmlnano": "^2.14.4",
-    "@parcel/packager-css": "^2.14.4",
-    "@parcel/packager-html": "^2.14.4",
-    "@parcel/transformer-css": "^2.14.4",
-    "@parcel/transformer-html": "^2.14.4",
-    "@parcel/transformer-postcss": "^2.14.4",
-    "@parcel/transformer-posthtml": "^2.14.4",
-    "@parcel/transformer-typescript-tsc": "^2.14.4",
-    "@parcel/validator-typescript": "^2.14.4",
+    "@types/copyfiles": "^2",
     "@types/node": "^22.15.24",
+    "copyfiles": "^2.4.1",
     "highlight.js": "11.11.1",
-    "parcel": "^2.14.4",
-    "postcss": "8.5.3",
-    "rimraf": "^6.0.1",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vite": "^7.3.1"
   },
   "packageManager": "yarn@4.9.4"
 }

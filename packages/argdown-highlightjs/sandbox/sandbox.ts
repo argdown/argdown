@@ -5,7 +5,7 @@ hljs.registerLanguage("argdown", argdown);
 
 const initialInput = `
 ===
-some: 
+some:
     frontmatter:
         - data
         - data
