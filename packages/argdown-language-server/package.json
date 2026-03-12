@@ -5,17 +5,12 @@
   "author": "Christian Voigt",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/node/server-node.cjs",
-  "browser": "./dist/browser/server-browser.cjs",
-  "types": "./dist/node/server-node.d.ts",
+  "main": "./dist/server.js",
+  "types": "./dist/server.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/node/server-node.cjs",
-      "types": "./dist/node/server-node.d.ts"
-    },
-    "./browser": {
-      "require": "./dist/browser/server-browser.cjs",
-      "types": "./dist/browser/server-browser.d.ts"
+      "require": "./dist/server.js",
+      "types": "./dist/server.d.ts"
     }
   },
   "files": [
