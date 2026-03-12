@@ -1,55 +1,39 @@
-"use strict";
-
-// Declare Node.js-specific createConnection function that webpack will provide
-declare function createConnection(features: any): any;
-
+import { IArgdownResponse } from "@argdown/core";
+import { argdown, IArgdownRequest } from "@argdown/node";
 import * as path from "path";
 import {
-  TextDocuments,
-  TextDocumentPositionParams,
-  TextDocumentSyncKind,
   Diagnostic,
   DiagnosticSeverity,
+  DidChangeConfigurationNotification,
   DocumentHighlight,
-  Range,
+  DocumentSymbolParams,
+  FoldingRangeParams,
   InitializeParams,
   InitializeResult,
   Location,
   ProposedFeatures,
-  RenameParams,
+  Range,
   ReferenceParams,
+  RenameParams,
   TextDocumentIdentifier,
+  TextDocumentPositionParams,
+  TextDocuments,
+  TextDocumentSyncKind,
   WorkspaceFolder,
-  DocumentSymbolParams,
-  FoldingRangeParams,
-  DidChangeConfigurationNotification
-} from "vscode-languageserver";
+  createConnection
+} from "vscode-languageserver/node.js";
 import { TextDocument } from "vscode-languageserver-textdocument";
 import { URI } from "vscode-uri";
 import { IArgdownSettings } from "./IArgdownSettings.js";
-import {
-  exportDocument,
-  exportContent,
-  ExportContentArgs,
-  ExportDocumentArgs,
-  returnDocument
-} from "./commands/Export.js";
 import { DocumentSymbolPlugin } from "./providers/DocumentSymbolPlugin.js";
+import { FoldingRangesPlugin } from "./providers/FoldingRangesPlugin.js";
 import {
-  provideDefinitions,
-  provideReferences,
-  provideHover,
   provideCompletion,
+  provideDefinitions,
+  provideHover,
+  provideReferences,
   provideRenameWorkspaceEdit
 } from "./providers/index.js";
-import { argdown, IArgdownRequest } from "@argdown/node";
-import { IArgdownResponse } from "@argdown/core";
-import { FoldingRangesPlugin } from "./providers/FoldingRangesPlugin.js";
-
-const RETURN_DOCUMENT_COMMAND = "argdown.server.returnDocument";
-const EXPORT_CONTENT_COMMAND = "argdown.server.exportContent";
-const EXPORT_DOCUMENT_COMMAND = "argdown.server.exportDocument";
-const RUN_COMMAND = "argdown.run";
 
 // Create a connection for the server. The connection uses Node's IPC as a transport
 const connection = createConnection(ProposedFeatures.all);
@@ -116,14 +100,6 @@ connection.onInitialize((params: InitializeParams): InitializeResult => {
       renameProvider: true,
       completionProvider: {
         triggerCharacters: ["[", "<", ":", "#"]
-      },
-      executeCommandProvider: {
-        commands: [
-          EXPORT_DOCUMENT_COMMAND,
-          EXPORT_CONTENT_COMMAND,
-          RETURN_DOCUMENT_COMMAND,
-          RUN_COMMAND
-        ]
       }
     }
   };
@@ -133,7 +109,7 @@ connection.onInitialized(() => {
   connection.console.log("Argdown language server initialized.");
   if (hasConfigurationCapability) {
     // Register for all configuration changes.
-    connection.client.register(
+    void connection.client.register(
       DidChangeConfigurationNotification.type,
       undefined
     );
@@ -203,22 +179,6 @@ connection.onDidChangeConfiguration((change: any) => {
   // Revalidate all open text documents
   documents.all().forEach(validateTextDocument);
 });
-
-function getDocumentSettings(resource: string): Thenable<IArgdownSettings> {
-  if (!hasConfigurationCapability) {
-    return Promise.resolve(globalSettings);
-  }
-  let result = documentSettings.get(resource);
-  if (!result) {
-    const config = connection.workspace.getConfiguration({
-      scopeUri: resource,
-      section: "argdown"
-    });
-    result = config ? config : Promise.resolve(globalSettings);
-    documentSettings.set(resource, result!);
-  }
-  return result!; // We know result is defined at this point
-}
 
 // Only keep settings for open documents
 documents.onDidClose((e) => {
@@ -428,95 +388,6 @@ connection.onFoldingRanges(async (params: FoldingRangeParams) => {
     }
   }
   return null;
-});
-// connection.onWorkspaceSymbol(async (params: WorkspaceSymbolParams) => {
-//   const workspaceSymbols: SymbolInformation[] = <SymbolInformation[]>[];
-//   const query = params.query;
-//   for (var workspaceFolder of workspaceFolders) {
-//     const rootPath = URI.parse(workspaceFolder.uri).fsPath;
-//     const inputPath = rootPath + "/**/*.{ad,argdown}";
-//     const request = {
-//       inputPath,
-//       process: ["parse-input", "build-model", "add-document-symbols"]
-//     };
-//     const responses: any[] = await argdown.load(request);
-//     const folderSymbols = responses
-//       .map<SymbolInformation[]>(r => <SymbolInformation[]>r.documentSymbols)
-//       .reduce((acc, val) => acc.concat(val), []);
-//     workspaceSymbols.push(...folderSymbols);
-//   }
-//   return workspaceSymbols.filter(s => s && s.name.indexOf(query) !== -1);
-// });
-const getConfigPath = async (doc: TextDocument | undefined) => {
-  if (doc) {
-    let configPath: string | undefined = undefined;
-    const settings = await getDocumentSettings(doc.uri);
-    const docPath = URI.parse(doc.uri).fsPath;
-    if (workspaceFolders && workspaceFolders.length > 0 && settings) {
-      const workspaceFolder = workspaceFolders.find((f) =>
-        docPath.startsWith(URI.parse(f.uri).fsPath)
-      );
-      configPath = workspaceFolder
-        ? path.resolve(
-            URI.parse(workspaceFolder.uri).fsPath,
-            settings.configFile
-          )
-        : undefined;
-    }
-    if (!configPath) {
-      configPath = settings
-        ? path.resolve(path.dirname(docPath), settings.configFile)
-        : path.resolve(path.dirname(docPath), "argdown.config.json");
-    }
-    return configPath;
-  }
-  return undefined;
-};
-connection.onExecuteCommand(async (params: any) => {
-  if (params.command === EXPORT_CONTENT_COMMAND) {
-    if (!params.arguments) {
-      return;
-    }
-    const args = params.arguments[0] as ExportContentArgs;
-    const doc = documents.get(args.source.toString());
-    const configPath: string | undefined = await getConfigPath(doc);
-    await exportContent(argdown, args, configPath);
-  } else if (params.command === EXPORT_DOCUMENT_COMMAND) {
-    if (!params.arguments) {
-      return;
-    }
-    const args = params.arguments[0] as ExportDocumentArgs;
-    const doc = documents.get(args.source.toString());
-    const configPath: string | undefined = await getConfigPath(doc);
-    await exportDocument(argdown, args, doc, configPath);
-  } else if (params.command === RETURN_DOCUMENT_COMMAND) {
-    if (!params.arguments) {
-      return;
-    }
-    const args = params.arguments[0] as ExportDocumentArgs;
-    const doc = documents.get(args.source.toString());
-    const configPath: string | undefined = await getConfigPath(doc);
-    return await returnDocument(argdown, args, doc, configPath);
-  } else if (params.command === RUN_COMMAND) {
-    if (!workspaceFolders || workspaceFolders.length == 0) {
-      connection.console.log("No workspace folder found.");
-    }
-    for (const workspaceFolder of workspaceFolders) {
-      const settings = await getDocumentSettings(workspaceFolder.uri);
-      const rootPath = URI.parse(workspaceFolder.uri).fsPath;
-      if (!settings.configFile || settings.configFile === "") {
-        return;
-      }
-      const configPath = path.resolve(rootPath, settings.configFile);
-      const config = await argdown.loadConfig(configPath);
-      if (config !== null) {
-        if (!config.rootPath) {
-          config.rootPath = rootPath;
-        }
-        await argdown.load(config);
-      }
-    }
-  }
 });
 
 // Make the text document manager listen on the connection

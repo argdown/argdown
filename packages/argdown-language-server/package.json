@@ -29,41 +29,23 @@
     "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-language-server"
   },
   "scripts": {
-    "build": "npm run clean && npm run build-node && npm run build-browser",
-    "build-ts": "tsc -p .",
-    "build-node": "webpack --config node.webpack.config.cjs --mode production",
-    "build-browser": "webpack --config browser.webpack.config.cjs --mode production",
+    "build": "npm run clean && tsc -p .",
     "clean": "rimraf \"dist/*\" --glob",
     "watch": "tsc -w -p .",
     "prepublishOnly": "npm run build",
-    "test": "tsc --noEmit && mocha"
+    "test": "vitest run"
   },
   "devDependencies": {
     "@argdown/core": "workspace:^",
     "@argdown/node": "workspace:^",
-    "@types/chai": "^5.2.2",
-    "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.24",
-    "@types/webpack": "^5.28.5",
-    "brfs": "^2.0.2",
-    "chai": "^4.3.10",
-    "crypto-browserify": "^3.12.1",
-    "css-loader": "^7.1.2",
-    "mocha": "^11.5.0",
-    "path-browserify": "^1.0.1",
-    "process": "git+https://github.com/argdown/node-process",
-    "raw-loader": "^4.0.2",
+    "@vitest/expect": "^4.1.0",
     "rimraf": "^6.0.1",
-    "string-replace-loader": "3.1.0",
-    "style-loader": "^4.0.0",
-    "transform-loader": "^0.2.4",
-    "ts-loader": "^9.5.2",
-    "typescript": "5.9.3",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0",
     "vscode-languageserver": "^9.0.1",
     "vscode-languageserver-textdocument": "1.0.12",
-    "vscode-uri": "3.1.0",
-    "webpack": "5.99.9",
-    "webpack-cli": "^6.0.1"
+    "vscode-uri": "3.1.0"
   },
   "packageManager": "yarn@4.9.4"
 }

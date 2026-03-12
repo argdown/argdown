@@ -1,8 +1,8 @@
-import { expect } from "chai";
+import { expect, describe, beforeEach, it, afterEach } from "vitest";
 import { LanguageServerTestHelper } from "./LanguageServerTestHelper.js";
 
 describe("LSP Integration", function () {
-  this.timeout(20000); // Extended timeout for integration tests
+  // this.timeout(20000); // Extended timeout for integration tests
 
   let helper: LanguageServerTestHelper;
 

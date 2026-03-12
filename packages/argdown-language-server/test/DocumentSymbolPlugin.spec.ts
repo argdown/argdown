@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { describe, it, expect } from "vitest";
 import { ArgdownApplication, ParserPlugin, ModelPlugin } from "@argdown/core";
 import { DocumentSymbolPlugin } from "../src/providers/DocumentSymbolPlugin";
 
@@ -46,14 +46,14 @@ A
     [S1]: Hello _World_!
 
     ## Heading 1.2
-    
+
     <A1>: Just because.
       - <A2>: Basta.
 
     # Heading 2
-      
+
     <A1>
-    
+
     (1) A
     (2) B
     ----

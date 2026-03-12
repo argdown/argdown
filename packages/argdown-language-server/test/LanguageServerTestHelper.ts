@@ -1,5 +1,5 @@
 import { ChildProcess, spawn } from "child_process";
-import * as path from "path";
+import path from "path";
 
 export interface LSPRequest {
   id: number;
@@ -28,7 +28,7 @@ export class LanguageServerTestHelper {
   private initializeCompleted = false;
 
   async startServer(): Promise<void> {
-    const serverPath = path.join(__dirname, "../dist/node/server-node.cjs");
+    const serverPath = path.join(__dirname, "../dist/server.js");
 
     this.serverProcess = spawn("node", [serverPath, "--stdio"], {
       stdio: ["pipe", "pipe", "pipe"]
