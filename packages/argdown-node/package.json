@@ -17,8 +17,8 @@
   "scripts": {
     "deploy": "npm run test && npm run build && npm version patch && npm run push",
     "type-check": "tsc --noEmit",
-    "build": "yarn run clean && tsc",
-    "docs:build": "node ./node_modules/typedoc/bin/typedoc ./src/",
+    "build": "tsc",
+    "docs:build": "typedoc ./src/",
     "test": "tsc --noEmit && mocha",
     "coverage": "nyc mocha",
     "report": "nyc report",
