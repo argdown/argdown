@@ -464,13 +464,11 @@ __metadata:
     "@types/mocha": "npm:^10.0.10"
     "@types/node": "npm:^22.15.24"
     "@types/pdfkit": "npm:^0.13.9"
+    "@types/svg-to-pdfkit": "npm:^0.1.4"
     axios: "npm:^1.8.2"
-    brfs: "npm:^2.0.2"
     chai: "npm:^4.3.10"
     chai-fs: "npm:^2.0.0"
-    chokidar: "npm:^4.0.3"
     copyfiles: "npm:^2.2.0"
-    glob: "npm:^11.0.1"
     image-size: "npm:^2.0.0"
     image-type: "npm:^5.2.0"
     import-fresh: "npm:^3.3.1"
@@ -6775,6 +6773,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/pdfkit@npm:*":
+  version: 0.17.5
+  resolution: "@types/pdfkit@npm:0.17.5"
+  dependencies:
+    "@types/node": "npm:*"
+  checksum: 10c0/4b854f5172f899684d231d45feb4018fee5806e639859b55bbdc93c0abe185c83194ac82da5f82d7e7716eb042079df4e21806d2ab628b955bb407be8dfbe2ea
+  languageName: node
+  linkType: hard
+
 "@types/pdfkit@npm:^0.13.9":
   version: 0.13.9
   resolution: "@types/pdfkit@npm:0.13.9"
@@ -6825,6 +6832,15 @@ __metadata:
   version: 1.10.3
   resolution: "@types/string-pixel-width@npm:1.10.3"
   checksum: 10c0/8024d876a1ec9a4d5311fc57c8ef0a3e2f30efc102b02f88495cfd045325de28dc61e18ce5f126f27482632cc061d0136551e3e875d237cd5bd33dd56a265ae8
+  languageName: node
+  linkType: hard
+
+"@types/svg-to-pdfkit@npm:^0.1.4":
+  version: 0.1.4
+  resolution: "@types/svg-to-pdfkit@npm:0.1.4"
+  dependencies:
+    "@types/pdfkit": "npm:*"
+  checksum: 10c0/11d553db0b29390b990fd63d2e919f8b0503ae18538d0cc5386cc47d97c0c670aab89396dc63caebfc9b62069a9d03d64849690dbbcd5123f6fb0801304b199e
   languageName: node
   linkType: hard
 
@@ -9671,7 +9687,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chokidar@npm:^4.0.0, chokidar@npm:^4.0.1, chokidar@npm:^4.0.3":
+"chokidar@npm:^4.0.0, chokidar@npm:^4.0.1":
   version: 4.0.3
   resolution: "chokidar@npm:4.0.3"
   dependencies:

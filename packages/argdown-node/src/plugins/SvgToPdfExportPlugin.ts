@@ -1,16 +1,11 @@
 import PDFDocument from "pdfkit";
-// var fs = require("fs");
 import { promises as fs, createWriteStream } from "fs";
 import * as path from "path";
-import { createRequire } from "module";
 import mkdirp from "mkdirp";
 import defaultsDeep from "lodash.defaultsdeep";
 import isFunction from "lodash.isfunction";
 import isString from "lodash.isstring";
-
-// Import CommonJS-only package using createRequire
-const require = createRequire(import.meta.url);
-const SVGtoPDF = require("svg-to-pdfkit");
+import SVGtoPDF from "svg-to-pdfkit";
 import {
   IAsyncArgdownPlugin,
   IAsyncRequestHandler
@@ -155,7 +150,7 @@ export class SvgToPdfExportPlugin implements IAsyncArgdownPlugin {
             );
           }
         }
-      : null;
+      : undefined;
 
     SVGtoPDF(doc, response.svg, settings.padding, settings.padding, {
       width: settings.width! - settings.padding! * 2,
