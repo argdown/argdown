@@ -100,11 +100,11 @@
     ],
     "markdown.markdownItPlugins": true,
     "markdown.previewStyles": [
-      "./dist/assets/argdown-map.css",
+      "node_modules/@argdown/web-components/dist/argdown-map.css",
       "./media/argdown-map.vscode.css"
     ],
     "markdown.previewScripts": [
-      "./dist/assets/argdown-map.umd.cjs"
+      "node_modules/@argdown/web-components/dist/argdown-map.umd.cjs"
     ],
     "jsonValidation": [
       {
@@ -522,7 +522,7 @@
   "scripts": {
     "vscode:prepublish": "npm run build",
     "vscode:package": "npx @vscode/vsce package",
-    "build": "npm run clean && npm run build-node-extension && npm run build-web-extension && npm run build-preview && npm run copy-changelog && npm run copy-web-components && npm run copy-language-server",
+    "build": "npm run clean && npm run build-node-extension && npm run build-web-extension && npm run build-preview && npm run copy-changelog",
     "watch-web": "webpack --config web-extension.webpack.config.cjs --mode development --watch",
     "package-web": "webpack --mode production --devtool hidden-source-map",
     "watch": "tsc -w -p ./",
@@ -539,9 +539,7 @@
     "test-web": "npm run pretest && vscode-test-web --extensionDevelopmentPath . --extensionTestsPath ./dist/test/web/web-extension.test.js --browser chromium --headless",
     "watch-tests": "tsc -p ./tsconfig.test.json --watch",
     "dev-build-preview": "webpack --config preview.webpack.config.cjs --mode development",
-    "copy-changelog": "node ./copy-changelog.js",
-    "copy-web-components": "mkdir -p dist/assets/ && cp ../argdown-web-components/dist/argdown-map.* dist/assets/",
-    "copy-language-server": "mkdir -p dist/server/ && cp ../argdown-language-server/dist/node/server-node.cjs dist/server/server-node.cjs"
+    "copy-changelog": "node ./copy-changelog.js"
   },
   "dependencies": {
     "@argdown/core": "workspace:^",
