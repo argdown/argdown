@@ -21,7 +21,7 @@ import {
   TextDocumentSyncKind,
   WorkspaceFolder,
   createConnection
-} from "vscode-languageserver/node.js";
+} from "vscode-languageserver/node";
 import { TextDocument } from "vscode-languageserver-textdocument";
 import { URI } from "vscode-uri";
 import { IArgdownSettings } from "./IArgdownSettings.js";

@@ -5,14 +5,8 @@
   "author": "Christian Voigt",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/server.js",
-  "types": "./dist/server.d.ts",
-  "exports": {
-    ".": {
-      "require": "./dist/server.js",
-      "types": "./dist/server.d.ts"
-    }
-  },
+  "main": "./dist/server.node.js",
+  "bin": "./dist/server.brower.js",
   "files": [
     "dist/"
   ],
@@ -24,18 +18,28 @@
     "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-language-server"
   },
   "scripts": {
-    "build": "npm run clean && tsc -p .",
-    "clean": "rimraf \"dist/*\" --glob",
-    "watch": "tsc -w -p .",
+    "dev": "concurrently 'yarn run dev:browser' 'yarn run dev:node'",
+    "dev:browser": "tsx esbuild.browser.ts --watch",
+    "dev:node": "tsx esbuild.node.ts --watch",
+    "build:browser": "tsx esbuild.browser.ts --production",
+    "build:node": "tsx esbuild.node.ts --production",
+    "build": "concurrently 'yarn run build:browser' 'yarn run build:node'",
+    "clean": "rimraf dist",
     "prepublishOnly": "npm run build",
     "test": "vitest run"
   },
   "devDependencies": {
     "@argdown/core": "workspace:^",
     "@argdown/node": "workspace:^",
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@types/node": "^22.15.24",
+    "@types/path-browserify": "^1",
     "@vitest/expect": "^4.1.0",
+    "concurrently": "^9.2.1",
+    "esbuild": "^0.27.4",
+    "path-browserify": "^1.0.1",
     "rimraf": "^6.0.1",
+    "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^4.1.0",
     "vscode-languageserver": "^9.0.1",
