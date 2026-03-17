@@ -399,7 +399,7 @@ __metadata:
     vscode-languageserver-textdocument: "npm:1.0.12"
     vscode-uri: "npm:3.1.0"
   bin:
-    language-server: ./dist/server.brower.js
+    language-server: ./dist/server.brower.cjs
   languageName: unknown
   linkType: soft
 
