@@ -28,7 +28,7 @@ export class LanguageServerTestHelper {
   private initializeCompleted = false;
 
   async startServer(): Promise<void> {
-    const serverPath = path.join(__dirname, "../dist/server.js");
+    const serverPath = path.join(__dirname, "../dist/server.node.cjs");
 
     this.serverProcess = spawn("node", [serverPath, "--stdio"], {
       stdio: ["pipe", "pipe", "pipe"]
