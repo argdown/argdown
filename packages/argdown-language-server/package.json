@@ -5,8 +5,8 @@
   "author": "Christian Voigt",
   "license": "MIT",
   "type": "module",
-  "main": "./dist/server.node.js",
-  "bin": "./dist/server.brower.js",
+  "main": "./dist/server.node.cjs",
+  "bin": "./dist/server.brower.cjs",
   "files": [
     "dist/"
   ],
@@ -23,7 +23,7 @@
     "dev:node": "tsx esbuild.node.ts --watch",
     "build:browser": "tsx esbuild.browser.ts --production",
     "build:node": "tsx esbuild.node.ts --production",
-    "build": "concurrently 'yarn run build:browser' 'yarn run build:node'",
+    "build": "yarn run clean && concurrently 'yarn run build:browser' 'yarn run build:node'",
     "clean": "rimraf dist",
     "prepublishOnly": "npm run build",
     "test": "vitest run"

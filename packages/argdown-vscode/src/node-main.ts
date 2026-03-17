@@ -138,7 +138,12 @@ export async function activate(context: vscode.ExtensionContext) {
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
   const serverPath = context.asAbsolutePath(
-    path.join("node_modules", "@argdown/language-server", "dist", "server.js")
+    path.join(
+      "node_modules",
+      "@argdown/language-server",
+      "dist",
+      "server.node.cjs"
+    )
   );
 
   const serverOptions: ServerOptions = {
