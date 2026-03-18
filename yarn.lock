@@ -383,7 +383,6 @@ __metadata:
   resolution: "@argdown/language-server@workspace:packages/argdown-language-server"
   dependencies:
     "@argdown/core": "workspace:^"
-    "@argdown/node": "workspace:^"
     "@esbuild-plugins/node-globals-polyfill": "npm:^0.2.3"
     "@types/node": "npm:^22.15.24"
     "@types/path-browserify": "npm:^1"
@@ -397,8 +396,6 @@ __metadata:
     vitest: "npm:^4.1.0"
     vscode-languageserver: "npm:^9.0.1"
     vscode-languageserver-textdocument: "npm:1.0.12"
-  bin:
-    language-server: ./dist/server.brower.cjs
   languageName: unknown
   linkType: soft
 
