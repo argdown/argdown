@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "module",
   "main": "./dist/server.node.cjs",
-  "bin": "./dist/server.brower.cjs",
+  "browser": "./dist/server.brower.cjs",
   "files": [
     "dist/"
   ],
