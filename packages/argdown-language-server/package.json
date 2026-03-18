@@ -30,7 +30,6 @@
   },
   "devDependencies": {
     "@argdown/core": "workspace:^",
-    "@argdown/node": "workspace:^",
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@types/node": "^22.15.24",
     "@types/path-browserify": "^1",
