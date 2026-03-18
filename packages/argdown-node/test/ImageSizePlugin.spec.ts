@@ -26,7 +26,7 @@ describe("ImageSizePlugin", function () {
   // prettier-ignore: Mocha requires regular function for this.skip() context
   it("can set image size from url", async function () {
     const url =
-      "https://github.com/argdown/argdown/blob/main/argdown-arrow.png?raw=true";
+      "https://raw.githubusercontent.com/argdown/argdown/refs/heads/main/argdown-arrow.png";
 
     const input = `
         <A>: test {images: ["${url}"]}
