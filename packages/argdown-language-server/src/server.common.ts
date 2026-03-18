@@ -45,7 +45,6 @@ export abstract class Server {
   );
   private documentSettings: Map<string, Thenable<IArgdownSettings>> = new Map();
 
-  abstract getPath(uri: string): string;
   abstract pathSeperator: string;
 
   constructor(private connection: Connection) {}
@@ -138,7 +137,6 @@ export abstract class Server {
     );
     this.connection.onCompletion(
       ({ textDocument, position }: TextDocumentPositionParams) => {
-        const path = this.getPath(textDocument.uri);
         const doc = this.documents.get(textDocument.uri);
         if (!doc) return null;
         const txt = doc.getText();
@@ -157,7 +155,7 @@ export abstract class Server {
             input = txt.slice(0, offset - 1) + txtAfter;
           }
         }
-        const response = this.processTextForProviders(input, path);
+        const response = this.processTextForProviders(input);
         if (!response) return null;
         return provideCompletion(response, char, position, txt, offset);
       }
@@ -186,11 +184,9 @@ export abstract class Server {
       }
     );
     this.connection.onDocumentSymbol((params: DocumentSymbolParams) => {
-      const path = this.getPath(params.textDocument.uri);
       const doc = this.documents.get(params.textDocument.uri);
       if (!doc) return null;
       const request: IArgdownRequest & { inputUri: string } = {
-        inputPath: path,
         input: doc.getText(),
         process: ["parse-input", "build-model", "add-document-symbols"],
         inputUri: params.textDocument.uri,
@@ -309,10 +305,9 @@ export abstract class Server {
       diagnostics
     });
   }
-  private processTextForProviders(text: string, path: string) {
+  private processTextForProviders(text: string) {
     const request: IArgdownRequest = {
       input: text,
-      inputPath: path,
       process: ["parse-input", "build-model"],
       throwExceptions: true,
       parser: {
@@ -329,8 +324,7 @@ export abstract class Server {
     const doc = this.documents.get(textDocument.uri);
     if (doc) {
       const text = doc.getText();
-      const path = this.getPath(textDocument.uri);
-      return this.processTextForProviders(text, path);
+      return this.processTextForProviders(text);
     }
     return null;
   }

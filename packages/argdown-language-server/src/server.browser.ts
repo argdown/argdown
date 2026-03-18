@@ -6,9 +6,6 @@ import {
 } from "vscode-languageserver/browser";
 import { Server } from "./server.common";
 class ServerBrowser extends Server {
-  getPath(uri: string): string {
-    return uri;
-  }
   pathSeperator: string = path.sep;
 }
 

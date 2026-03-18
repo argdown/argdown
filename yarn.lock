@@ -397,7 +397,6 @@ __metadata:
     vitest: "npm:^4.1.0"
     vscode-languageserver: "npm:^9.0.1"
     vscode-languageserver-textdocument: "npm:1.0.12"
-    vscode-uri: "npm:3.1.0"
   bin:
     language-server: ./dist/server.brower.cjs
   languageName: unknown
@@ -30914,7 +30913,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vscode-uri@npm:3.1.0, vscode-uri@npm:^3.0.7, vscode-uri@npm:^3.0.8, vscode-uri@npm:^3.1.0":
+"vscode-uri@npm:^3.0.7, vscode-uri@npm:^3.0.8, vscode-uri@npm:^3.1.0":
   version: 3.1.0
   resolution: "vscode-uri@npm:3.1.0"
   checksum: 10c0/5f6c9c10fd9b1664d71fab4e9fbbae6be93c7f75bb3a1d9d74399a88ab8649e99691223fd7cef4644376cac6e94fa2c086d802521b9a8e31c5af3e60f0f35624
