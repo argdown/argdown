@@ -7,6 +7,6 @@ class ServerNode extends Server {
 }
 
 const connection = createConnection(ProposedFeatures.all);
-const serverBrowser = new ServerNode(connection);
+const serverNode = new ServerNode(connection);
 
-serverBrowser.init();
+serverNode.init();
