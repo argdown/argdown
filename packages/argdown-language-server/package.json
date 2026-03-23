@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "module",
   "main": "./dist/server.node.cjs",
-  "browser": "./dist/server.brower.cjs",
+  "browser": "./dist/server.browser.cjs",
   "files": [
     "dist/"
   ],
@@ -18,12 +18,12 @@
     "url": "https://github.com/argdown/argdown/tree/master/packages/argdown-language-server"
   },
   "scripts": {
-    "dev": "concurrently 'yarn run dev:browser' 'yarn run dev:node'",
+    "dev": "concurrently \"yarn run dev:browser\" \"yarn run dev:node\"",
     "dev:browser": "tsx esbuild.browser.ts --watch",
     "dev:node": "tsx esbuild.node.ts --watch",
     "build:browser": "tsx esbuild.browser.ts --production",
     "build:node": "tsx esbuild.node.ts --production",
-    "build": "yarn run clean && concurrently 'yarn run build:browser' 'yarn run build:node'",
+    "build": "yarn run clean && concurrently \"yarn run build:browser\" \"yarn run build:node\"",
     "clean": "rimraf dist",
     "prepublishOnly": "npm run build",
     "test": "vitest run"

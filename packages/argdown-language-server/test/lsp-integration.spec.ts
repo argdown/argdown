@@ -1,9 +1,7 @@
 import { expect, describe, beforeEach, it, afterEach } from "vitest";
-import { LanguageServerTestHelper } from "./LanguageServerTestHelper.js";
+import { LanguageServerTestHelper } from "./LanguageServerTestHelper";
 
-describe("LSP Integration", function () {
-  // this.timeout(20000); // Extended timeout for integration tests
-
+describe("LSP Integration", { timeout: 20000 }, function () {
   let helper: LanguageServerTestHelper;
 
   beforeEach(async function () {

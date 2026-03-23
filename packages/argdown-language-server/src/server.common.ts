@@ -276,28 +276,28 @@ export abstract class Server {
       input: text
     });
 
-    if (!result.parserErrors) return;
-    const diagnostics: Diagnostic[] = result.parserErrors
-      .map(
-        ({
-          message,
-          token: { startLine, startColumn, endLine, endColumn }
-        }) => {
-          if (!startLine || !startColumn || !endLine || !endColumn) return; // Should never happen
-          const start = {
-            line: startLine - 1,
-            character: startColumn - 1
-          };
-          const end = {
-            line: endLine - 1,
-            character: endColumn
-          }; //end character is zero based, exclusive
-          const range = Range.create(start, end);
-          const severity = DiagnosticSeverity.Error;
-          return Diagnostic.create(range, message, severity, "argdown");
-        }
-      )
-      .filter((x) => !!x);
+    const diagnostics: Diagnostic[] =
+      result.parserErrors
+        ?.map(
+          ({
+            message,
+            token: { startLine, startColumn, endLine, endColumn }
+          }) => {
+            if (!startLine || !startColumn || !endLine || !endColumn) return; // Should never happen
+            const start = {
+              line: startLine - 1,
+              character: startColumn - 1
+            };
+            const end = {
+              line: endLine - 1,
+              character: endColumn
+            }; //end character is zero based, exclusive
+            const range = Range.create(start, end);
+            const severity = DiagnosticSeverity.Error;
+            return Diagnostic.create(range, message, severity, "argdown");
+          }
+        )
+        .filter((x): x is Diagnostic => !!x) ?? [];
 
     // Send the computed diagnostics to VSCode.
     void this.connection.sendDiagnostics({
