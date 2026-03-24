@@ -34,7 +34,7 @@ export const buildOptions: BuildOptions = {
   sourcemap: !production,
   sourcesContent: false,
   outdir: "dist",
-  outExtension: { ".js": ".cjs" },
+  // outExtension: { ".js": ".cjs" },
   external: ["vscode"],
   logLevel: "info",
   plugins: [esbuildProblemMatcherPlugin]
