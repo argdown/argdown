@@ -513,7 +513,8 @@
     "pretest": "tsc -p tsconfig.test.json",
     "test:browser": "vscode-test-web --extensionDevelopmentPath . --extensionTestsPath ./out/test/web/web-extension.test.js --browser chromium --headless",
     "test:node": "vscode-test",
-    "test": "yarn run pretest && run-p \"test:*\""
+    "test": "yarn run pretest && run-p \"test:*\"",
+    "sandbox": "yarn run build && vscode-test-web --extensionDevelopmentPath . . --headless"
   },
   "dependencies": {
     "@argdown/core": "workspace:^",
