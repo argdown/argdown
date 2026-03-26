@@ -30,7 +30,7 @@ export const esbuildProblemMatcherPlugin: Plugin = {
 export const buildOptions: BuildOptions = {
   bundle: true,
   format: "cjs",
-  minify: production,
+  // minify: production, // minification does not work. Probably because we use functions.prototype.name somewhere: https://code.visualstudio.com/api/working-with-extensions/bundling-extension#minification
   sourcemap: !production,
   sourcesContent: false,
   outdir: "dist",

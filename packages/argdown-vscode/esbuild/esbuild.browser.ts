@@ -33,15 +33,12 @@ async function main() {
       },
       esbuildProblemMatcherPlugin
     ]
-
     // inject: ["process/browser"]
     // fallback: {
     //   assert: require.resolve("assert"),
     //   fs: false,
     //   stream: false,
-    //   crypto: require.resolve("crypto-browserify"),
     //   path: require.resolve("path-browserify"),
-    //   vm: require.resolve("vm-browserify")
     // }
   });
 
