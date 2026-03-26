@@ -30,28 +30,12 @@
     "Markdown"
   ],
   "activationEvents": [
-    "onLanguage:argdown",
-    "onCommand:argdown.exportDocumentToHtml",
-    "onCommand:argdown.exportDocumentToDot",
-    "onCommand:argdown.exportDocumentToGraphML",
-    "onCommand:argdown.exportDocumentToJson",
-    "onCommand:argdown.copyWebComponentToClipboard",
-    "onCommand:argdown.exportDocumentToVizjsSvg",
-    "onCommand:argdown.exportDocumentToVizjsPdf",
-    "onCommand:argdown.run",
-    "onCommand:argdown.preview.toggleLock",
-    "onCommand:argdown.preview.refresh",
-    "onCommand:argdown.showPreview",
-    "onCommand:argdown.showPreviewToSide",
-    "onCommand:argdown.showLockedPreviewToSide",
-    "onCommand:argdown.showSource",
-    "onCommand:argdown.showPreviewSecuritySelector",
     "onView:argdown.preview",
     "onWebviewPanel:argdown.preview",
     "workspaceContains:**/*.{argdown,ad,argdn,adown}"
   ],
-  "main": "./dist/node/node-main.cjs",
-  "browser": "./dist/web/browser-main.cjs",
+  "main": "./dist/node-main.js",
+  "browser": "./dist/browser-main.js",
   "contributes": {
     "languages": [
       {
@@ -113,10 +97,6 @@
       }
     ],
     "commands": [
-      {
-        "command": "argdown.helloWorld",
-        "title": "Hello World"
-      },
       {
         "command": "argdown.exportDocumentToHtml",
         "title": "Export to HTML",
@@ -474,7 +454,7 @@
             "verbose"
           ],
           "default": "off",
-          "description": "Log debug and error messsages.",
+          "description": "Log debug and error messages.",
           "scope": "window"
         },
         "argdown.preview.doubleClickToSwitchToEditor": {
@@ -520,28 +500,16 @@
     "useYarn": true
   },
   "scripts": {
-    "vscode:prepublish": "npm run build",
-    "vscode:package": "npx @vscode/vsce package",
-    "build": "npm run clean && npm run build-node-extension && npm run build-web-extension && npm run build-preview && npm run copy-changelog && npm run copy-web-components && npm run copy-language-server",
-    "watch-web": "webpack --config web-extension.webpack.config.cjs --mode development --watch",
-    "package-web": "webpack --mode production --devtool hidden-source-map",
-    "watch": "tsc -w -p ./",
-    "build-extension-tsc": "npm run clean && tsc -p ./",
-    "build-node-extension": "webpack --config node-extension.webpack.config.cjs",
-    "build-web-extension": "webpack --config web-extension.webpack.config.cjs",
-    "build-preview": "webpack --config preview.webpack.config.cjs",
-    "dev-build": "npm run dev-build-extension && npm run dev-build-preview && npm run copy-changelog",
-    "dev-build-extension": "tsc -p ./",
+    "vscode:prepublish": "yarn run build",
+    "package": "vsce package",
+    "build:node": "tsx esbuild/esbuild.node.ts",
+    "build:browser": "tsx esbuild/esbuild.browser.ts",
+    "build:webview": "tsx esbuild/esbuild.preview.ts",
+    "build": "yarn run clean && run-p \"build:*\" && run-p \"copy:*\"",
     "clean": "rimraf \"dist/\"",
-    "pretest": "tsc -p ./tsconfig.test.json",
-    "test": "npm run test-node && npm run test-web",
-    "test-node": "npm run pretest && vscode-test --config .vscode-test-node.cjs",
-    "test-web": "npm run pretest && vscode-test-web --extensionDevelopmentPath . --extensionTestsPath ./dist/test/web/web-extension.test.js --browser chromium --headless",
-    "watch-tests": "tsc -p ./tsconfig.test.json --watch",
-    "dev-build-preview": "webpack --config preview.webpack.config.cjs --mode development",
-    "copy-changelog": "node ./copy-changelog.js",
-    "copy-web-components": "mkdir -p dist/assets/ && cp ../argdown-web-components/dist/argdown-map.* dist/assets/",
-    "copy-language-server": "mkdir -p dist/server/ && cp ../argdown-language-server/dist/server.*.cjs dist/server/"
+    "copy:changelog": "cp ../../packages/argdown-docs/docs/changes/index.md CHANGELOG.md",
+    "copy:web-components": "mkdir -p dist/assets/ && cp ../argdown-web-components/dist/argdown-map.* dist/assets/",
+    "copy:language-server": "mkdir -p dist/server/ && cp ../argdown-language-server/dist/server.* dist/server/"
   },
   "dependencies": {
     "@argdown/core": "workspace:^",
@@ -563,6 +531,7 @@
   "devDependencies": {
     "@babel/core": "^7.24.1",
     "@babel/preset-env": "^7.26.9",
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@types/d3": "7.4.3",
     "@types/dagre-d3": "0.6.6",
     "@types/lodash.defaultsdeep": "^4.6.9",
@@ -574,24 +543,21 @@
     "@vscode/test-electron": "^2.5.2",
     "@vscode/test-web": "^0.0.78",
     "@vscode/vsce": "^3.7.1",
-    "babel-loader": "10.0.0",
-    "brfs": "^2.0.2",
     "crypto-browserify": "^3.12.1",
     "css-loader": "^7.1.2",
+    "esbuild": "^0.19.0",
     "glob": "^11.0.1",
-    "node-polyfill-webpack-plugin": "4.1.0",
+    "npm-run-all": "^4.1.5",
     "path-browserify": "^1.0.1",
     "process": "git+https://github.com/argdown/node-process",
     "raw-loader": "^4.0.1",
     "rimraf": "^6.0.1",
     "style-loader": "4.0.0",
-    "terser-webpack-plugin": "^5.3.14",
     "transform-loader": "^0.2.4",
     "ts-loader": "^9.5.2",
+    "tsx": "^4.21.0",
     "typescript": "5.9.3",
-    "vm-browserify": "^1.1.2",
-    "webpack": "5.99.9",
-    "webpack-cli": "^6.0.1"
+    "vm-browserify": "^1.1.2"
   },
   "packageManager": "yarn@4.9.4"
 }

@@ -153,10 +153,9 @@ function createWorkerLanguageClient(
     context.extensionUri,
     "dist",
     "server",
-    "server.browser.cjs"
+    "server.browser.js"
   );
-
-  const worker = new Worker(serverMain.toString());
+  const worker = new Worker(serverMain.toString(true));
 
   // create the language server client to communicate with the server running in the worker
   return new LanguageClient(

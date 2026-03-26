@@ -11,7 +11,7 @@ export default [
   // TypeScript configuration for all TypeScript files in src directories
   ...tseslint.configs.recommendedTypeChecked.map((config) => ({
     ...config,
-    files: ["**/src/**/*.ts", "**/src/**/*.tsx"],
+    files: ["**/src/**/*.ts", "**/src/**/*.tsx", "**/esbuild/*.ts"],
     languageOptions: {
       ...config.languageOptions,
       ecmaVersion: 2023,

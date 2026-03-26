@@ -13,7 +13,7 @@
       ],
       "stopOnEntry": false,
       "sourceMaps": true,
-      "outFiles": ["${cwd}/packages/argdown-vscode/dist/node/**/*.js"]
+      "outFiles": ["${cwd}/packages/argdown-vscode/dist/**/*.js"]
     },
     {
       "name": "Run Web Extension in VS Code",
@@ -24,7 +24,7 @@
         "--extensionDevelopmentPath=${cwd}/packages/argdown-vscode",
         "--extensionDevelopmentKind=web"
       ],
-      "outFiles": ["${cwd}/packages/argdown-vscode/dist/node/**/*.js"],
+      "outFiles": ["${cwd}/packages/argdown-vscode/dist/**/*.js"],
       "preLaunchTask": "watch:argdown-vscode-web"
     },
     {

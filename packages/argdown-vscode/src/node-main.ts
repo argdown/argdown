@@ -137,17 +137,17 @@ export async function activate(context: vscode.ExtensionContext) {
   };
   // If the extension is launched in debug mode then the debug server options are used
   // Otherwise the run options are used
-  const serverPath = context.asAbsolutePath(
-    path.join("dist", "server", "server.node.cjs")
+  const modulePath = context.asAbsolutePath(
+    path.join("dist", "server", "server.node.js")
   );
 
   const serverOptions: ServerOptions = {
     run: {
-      module: serverPath,
+      module: modulePath,
       transport: TransportKind.ipc
     },
     debug: {
-      module: serverPath,
+      module: modulePath,
       transport: TransportKind.ipc,
       options: debugOptions
     }
