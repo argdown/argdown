@@ -1,4 +1,5 @@
 import { argdown, IArgdownRequest, IArgdownResponse } from "@argdown/core";
+import path from "path";
 import type {
   Connection,
   DocumentSymbolParams,
@@ -32,7 +33,7 @@ import {
 import { DocumentSymbolPlugin } from "./providers/DocumentSymbolPlugin";
 import { FoldingRangesPlugin } from "./providers/FoldingRangesPlugin";
 
-export abstract class Server {
+export class Server {
   private static ONLY_WHITESPACE_PATTERN = /^\s*$/;
 
   private argdown = argdown;
@@ -45,7 +46,7 @@ export abstract class Server {
   );
   private documentSettings: Map<string, Thenable<IArgdownSettings>> = new Map();
 
-  abstract pathSeperator: string;
+  private pathSeperator = path.sep;
 
   constructor(private connection: Connection) {}
 

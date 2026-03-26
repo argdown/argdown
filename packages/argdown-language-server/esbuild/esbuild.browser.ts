@@ -19,6 +19,14 @@ async function main() {
         process: true,
         buffer: true
       }),
+      {
+        name: "path-alias",
+        setup(build) {
+          build.onResolve({ filter: /^path$/ }, () => {
+            return { path: require.resolve("path-browserify") };
+          });
+        }
+      },
       esbuildProblemMatcherPlugin
     ]
   });
