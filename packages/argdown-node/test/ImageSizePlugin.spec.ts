@@ -40,7 +40,7 @@ describe("ImageSizePlugin", function () {
 
     try {
       const res = await argdown.runAsync(request);
-      expect(res.exceptions?.length).to.equal(0);
+      expect(res.exceptions?.length ?? []).to.equal(0);
       expect(request.images).to.exist;
       expect(request.images!.files).to.exist;
       expect(request.images!.files![url]).to.exist;

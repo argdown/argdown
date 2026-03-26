@@ -59,7 +59,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "echo \"No tests to run here\"",
-    "prepublishOnly": "npm run-script build"
+    "prepublishOnly": "npm run-script build",
+    "push": "git push --tags origin HEAD:master"
   },
   "packageManager": "yarn@4.9.4"
 }

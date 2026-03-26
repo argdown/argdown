@@ -10,7 +10,8 @@
     "build": "tsc",
     "type-check": "tsc --noEmit",
     "test": "mocha",
-    "prepublishOnly": "npm run-script build"
+    "prepublishOnly": "npm run-script build",
+    "push": "git push --tags origin HEAD:master"
   },
   "keywords": [
     "remark-plugin",
