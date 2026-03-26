@@ -2,7 +2,7 @@
 const { defineConfig } = require("@vscode/test-cli");
 
 module.exports = defineConfig({
-  files: "dist/test/node/**/*.test.js",
+  files: "out/test/node/**/*.test.js",
   extensionDevelopmentPath: ".",
   // Remove specific workspace folder to avoid node_modules issues
   workspaceFolder: "test/fixtures/workspace_a",

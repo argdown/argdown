@@ -1,11 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./dist/test",
+    "outDir": "./out/test", // Does not use dist, becuse "vsce package" packages the whole dist folder
     "rootDir": "./test",
-    "module": "Node16", // Use Node16 to match moduleResolution
     "types": ["mocha", "vscode", "node"]
   },
-  "include": ["test/**/*.ts"],
-  "exclude": ["test/**/*.js"]
+  "include": ["test/**/*.ts"]
 }
