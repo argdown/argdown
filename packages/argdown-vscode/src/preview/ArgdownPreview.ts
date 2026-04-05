@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import throttle from "lodash.throttle";
 
-import { Logger } from "./Logger";
+import { Logger } from "../Logger";
 import { ArgdownContentProvider } from "./ArgdownContentProvider";
 import { WebviewResourceProvider } from "./util/resources";
 import { Disposable } from "./util/dispose";
@@ -13,8 +13,8 @@ import {
 } from "./util/topmostLineMonitor";
 import { ArgdownPreviewConfigurationManager } from "./ArgdownPreviewConfiguration";
 import { isArgdownFile } from "./util/file";
-import { ArgdownEngine } from "./ArgdownEngine";
-import { IArgdownPreviewState } from "./IArgdownPreviewState";
+import type { ArgdownEngine } from "../ArgdownEngine";
+import type { IArgdownPreviewState } from "./IArgdownPreviewState";
 import { ArgdownContributionProvider } from "./ArgdownExtensions";
 
 export namespace PreviewViews {
@@ -892,7 +892,7 @@ export class DynamicArgdownPreview
         const resource = this._preview.resource;
         const config = this._previewConfigurations.getConfiguration(resource);
         const document = await vscode.workspace.openTextDocument(resource);
-        const id: string = await this._engine.getMapNodeId(
+        const id: string = this._engine.getMapNodeId(
           document,
           config,
           selection.active.line,

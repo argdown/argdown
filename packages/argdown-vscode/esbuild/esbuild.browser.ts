@@ -9,7 +9,7 @@ import {
 async function main() {
   const ctx = await context({
     ...buildOptions,
-    entryPoints: ["src/browser-main.ts"],
+    entryPoints: ["src/main.browser.ts"],
     platform: "browser",
     define: {
       "process.env.NODE_DEBUG": "false",

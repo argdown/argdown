@@ -4,7 +4,7 @@ import { buildOptions, watch } from "./esbuild.common";
 async function main() {
   const ctx = await context({
     ...buildOptions,
-    entryPoints: ["src/node-main.ts"],
+    entryPoints: ["src/main.node.ts"],
     platform: "node"
   });
 

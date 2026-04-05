@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { Logger } from "./Logger";
+import { Logger } from "../Logger";
 import { Disposable, disposeAll } from "./util/dispose";
 import { TopmostLineMonitor } from "./util/topmostLineMonitor";
 import {
@@ -11,7 +11,7 @@ import {
 } from "./ArgdownPreview";
 import { ArgdownPreviewConfigurationManager } from "./ArgdownPreviewConfiguration";
 import { ArgdownContentProvider } from "./ArgdownContentProvider";
-import { ArgdownEngine } from "./ArgdownEngine";
+import { ArgdownEngine } from "../ArgdownEngine";
 import { ArgdownContributionProvider } from "./ArgdownExtensions";
 import { isArgdownFile } from "./util/file";
 

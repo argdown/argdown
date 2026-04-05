@@ -34,8 +34,8 @@
     "onWebviewPanel:argdown.preview",
     "workspaceContains:**/*.{argdown,ad,argdn,adown}"
   ],
-  "main": "./dist/node-main.js",
-  "browser": "./dist/browser-main.js",
+  "main": "./dist/main.node.js",
+  "browser": "./dist/main.browser.js",
   "contributes": {
     "languages": [
       {
@@ -502,6 +502,10 @@
   "scripts": {
     "vscode:prepublish": "yarn run build",
     "package": "vsce package",
+    "dev:node": "tsx esbuild/esbuild.node.ts --watch",
+    "dev:browser": "tsx esbuild/esbuild.browser.ts --watch",
+    "dev:preview": "tsx esbuild/esbuild.preview.ts --watch",
+    "dev": "yarn run clean && run-p \"copy:*\" && run-p \"dev:*\" ",
     "build:node": "tsx esbuild/esbuild.node.ts --production",
     "build:browser": "tsx esbuild/esbuild.browser.ts --production",
     "build:preview": "tsx esbuild/esbuild.preview.ts --production",
@@ -514,14 +518,13 @@
     "test:browser": "vscode-test-web --extensionDevelopmentPath . --extensionTestsPath ./out/test/web/web-extension.test.js --browser chromium --headless",
     "test:node": "vscode-test",
     "test": "yarn run pretest && run-p \"test:*\"",
-    "sandbox": "yarn run build && vscode-test-web --extensionDevelopmentPath . . --headless"
+    "sandbox": "yarn run build && vscode-test-web --extensionDevelopmentPath . --headless"
   },
   "dependencies": {
     "@argdown/core": "workspace:^",
     "@argdown/language-server": "workspace:^",
     "@argdown/map-views": "workspace:^",
     "@argdown/markdown-it-plugin": "workspace:^",
-    "@argdown/node": "workspace:^",
     "@argdown/web-components": "workspace:^",
     "@babel/plugin-transform-modules-commonjs": "^7.26.3",
     "d3-selection": "^3.0.0",

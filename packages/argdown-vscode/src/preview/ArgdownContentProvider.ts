@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { ArgdownEngine } from "./ArgdownEngine";
+import type { ArgdownEngine } from "../ArgdownEngine";
 
 import {
   ContentSecurityPolicyArbiter,
@@ -157,7 +157,7 @@ export class ArgdownContentProvider {
       PreviewViews.VIZJS
     }" class="${
       activeView == PreviewViews.VIZJS ? "active" : "inactive"
-    }" href="#">Viz.Js Map</a></li>	
+    }" href="#">Viz.Js Map</a></li>
 	<li><a title="Show Dagre Map" data-message="didChangeView" data-view="${
     PreviewViews.DAGRE
   }" class="${

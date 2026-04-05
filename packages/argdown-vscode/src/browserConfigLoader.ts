@@ -1,6 +1,6 @@
 import { Utils } from "vscode-uri";
 import * as vscode from "vscode";
-import { ArgdownConfigLoader } from "./preview/ArgdownEngine";
+import { ArgdownConfigLoader } from "./ArgdownEngine";
 export const browserConfigLoader: ArgdownConfigLoader = async (
   configFile,
   resource,

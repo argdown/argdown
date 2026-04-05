@@ -5,8 +5,8 @@ import { LanguageClient } from "vscode-languageclient/browser";
 import * as vscode from "vscode";
 import createArgdownMarkdownItPlugin from "@argdown/markdown-it-plugin";
 import { browserConfigLoader } from "./browserConfigLoader";
-import { ArgdownEngine } from "./preview/ArgdownEngine";
-import { Logger } from "./preview/Logger";
+import { ArgdownEngine } from "./ArgdownEngine";
+import { Logger } from "./Logger";
 import {
   ExtensionContentSecurityPolicyArbiter,
   PreviewSecuritySelector

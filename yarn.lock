@@ -8409,7 +8409,6 @@ __metadata:
     "@argdown/language-server": "workspace:^"
     "@argdown/map-views": "workspace:^"
     "@argdown/markdown-it-plugin": "workspace:^"
-    "@argdown/node": "workspace:^"
     "@argdown/web-components": "workspace:^"
     "@babel/plugin-transform-modules-commonjs": "npm:^7.26.3"
     "@esbuild-plugins/node-globals-polyfill": "npm:^0.2.3"

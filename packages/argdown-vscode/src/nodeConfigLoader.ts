@@ -1,6 +1,6 @@
 import { Utils } from "vscode-uri";
 import * as vscode from "vscode";
-import { ArgdownConfigLoader } from "./preview/ArgdownEngine";
+import { ArgdownConfigLoader } from "./ArgdownEngine";
 import importFresh from "import-fresh";
 export const nodeConfigLoader: ArgdownConfigLoader = async (
   configFile,

@@ -1,15 +1,15 @@
-import { ArgdownEngine } from "./ArgdownEngine";
+import { ArgdownEngine } from "../ArgdownEngine";
 import * as vscode from "vscode";
 import { ArgdownPreviewConfiguration } from "./ArgdownPreviewConfiguration";
 import { IViewProvider } from "./IViewProvider";
 export const htmlViewProvider: IViewProvider = {
   scripts: ["htmlView.js"],
-  generateView: async (
+  generateView: (
     argdownEngine: ArgdownEngine,
     argdownDocument: vscode.TextDocument,
     config: ArgdownPreviewConfiguration
   ) => {
-    const html = await argdownEngine.exportHtml(argdownDocument, config);
+    const html = argdownEngine.exportHtml(argdownDocument, config);
     return `${html}<div class="has-line" data-line="${argdownDocument.lineCount}"></div>`;
   },
   generateSubMenu: () => {
@@ -17,18 +17,17 @@ export const htmlViewProvider: IViewProvider = {
 	Export as <a data-command="argdown.exportDocumentToJson" title="save as json" href="#">json</a> | <a data-command="argdown.exportDocumentToHtml" title="save as html" href="#">html</a> | <a data-command="argdown.exportDocumentToDot" title="save as dot" href="#">dot</a> | <a title="save as graphml" data-command="argdown.exportDocumentToGraphML" href="#">graphml</a>
 	</nav>`;
   },
-  generateOnDidChangeTextDocumentMessage: async (
+  generateOnDidChangeTextDocumentMessage: (
     argdownEngine: ArgdownEngine,
     argdownDocument: vscode.TextDocument,
     config: ArgdownPreviewConfiguration
   ) => {
-    const html = await argdownEngine.exportHtml(argdownDocument, config);
+    const html = argdownEngine.exportHtml(argdownDocument, config);
     return {
       html: `${html}<div class="has-line" data-line="${argdownDocument.lineCount}"></div>`
     };
   },
-  // eslint-disable-next-line @typescript-eslint/require-await
-  contributeToInitialState: async (s, _argdownEngine, argdownDocument) => {
+  contributeToInitialState: (s, _argdownEngine, argdownDocument) => {
     s.html.lineCount = argdownDocument.lineCount;
     return s;
   }

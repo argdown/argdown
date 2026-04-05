@@ -12,9 +12,9 @@ import {
 import { CommandManager } from "./commands/CommandManager";
 import * as commands from "./commands/index";
 
-import { ArgdownEngine } from "./preview/ArgdownEngine";
+import { ArgdownEngine } from "./ArgdownEngine";
 import { ArgdownPreviewManager } from "./preview/ArgdownPreviewManager";
-import { Logger } from "./preview/Logger";
+import { Logger } from "./Logger";
 import { ArgdownContentProvider } from "./preview/ArgdownContentProvider";
 import {
   ExtensionContentSecurityPolicyArbiter,

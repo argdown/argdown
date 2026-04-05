@@ -1,15 +1,17 @@
 import * as vscode from "vscode";
-import { ArgdownEngine } from "./ArgdownEngine";
-import { IArgdownRequest } from "@argdown/core";
+import type { ArgdownEngine } from "../ArgdownEngine";
+import { ArgdownConfiguration } from "../ArgdownConfiguration";
 
-export class ArgdownPreviewConfiguration {
+export class ArgdownPreviewConfiguration
+  extends ArgdownConfiguration
+  implements Record<string, unknown>
+{
   public static getForResource(
     resource: vscode.Uri,
     argdownEngine: ArgdownEngine
   ) {
     return new ArgdownPreviewConfiguration(resource, argdownEngine);
   }
-
   public readonly scrollBeyondLastLine: boolean;
   public readonly doubleClickToSwitchToEditor: boolean;
   public readonly scrollEditorWithPreview: boolean;
@@ -23,16 +25,18 @@ export class ArgdownPreviewConfiguration {
   public readonly fontFamily: string | undefined;
   public readonly lockMenu: boolean;
   public readonly styles: string[];
-  public readonly argdownConfigFile?: string;
   public readonly defaultView?: string;
-  public argdownConfig?: IArgdownRequest;
+  [key: string]: unknown;
 
   private constructor(resource: vscode.Uri, argdownEngine: ArgdownEngine) {
+    super(resource, argdownEngine);
+
     const editorConfig = vscode.workspace.getConfiguration("editor", resource);
     const argdownConfig = vscode.workspace.getConfiguration(
       "argdown",
       resource
     );
+
     this.minDelayBetweenUpdates = argdownConfig.get<number>(
       "preview.minDelayBetweenUpdates",
       300
@@ -66,11 +70,6 @@ export class ArgdownPreviewConfiguration {
       "vizjs"
     );
     this.lockMenu = !!argdownConfig.get<boolean>("preview.lockMenu", true);
-    this.argdownConfigFile = argdownConfig.get<string | undefined>(
-      "configFile",
-      undefined
-    );
-    void this.refreshArgdownConfig(resource, argdownEngine);
 
     this.fontFamily = argdownConfig.get<string | undefined>(
       "preview.fontFamily",
@@ -113,15 +112,6 @@ export class ArgdownPreviewConfiguration {
 
     return true;
   }
-  async refreshArgdownConfig(
-    resource: vscode.Uri,
-    argdownEngine: ArgdownEngine
-  ) {
-    this.argdownConfig =
-      (await argdownEngine.loadConfig(this.argdownConfigFile, resource)) || {};
-  }
-
-  [key: string]: any;
 }
 
 export class ArgdownPreviewConfigurationManager {

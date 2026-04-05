@@ -1,4 +1,4 @@
-import { ArgdownEngine } from "./ArgdownEngine";
+import { ArgdownEngine } from "../ArgdownEngine";
 import { ArgdownPreviewConfiguration } from "./ArgdownPreviewConfiguration";
 import { IArgdownPreviewState } from "./IArgdownPreviewState";
 import * as vscode from "vscode";
@@ -8,18 +8,18 @@ export interface IViewProvider {
     argdownDocument: vscode.TextDocument,
     config: ArgdownPreviewConfiguration,
     nonce: string
-  ): Promise<string>;
+  ): string;
   generateSubMenu(): string;
   generateOnDidChangeTextDocumentMessage(
     argdownEngine: ArgdownEngine,
     argdownDocument: vscode.TextDocument,
     config: ArgdownPreviewConfiguration
-  ): Promise<any>;
+  ): Promise<Record<string, unknown>> | Record<string, unknown>;
   contributeToInitialState(
     data: IArgdownPreviewState,
     argdownEngine: ArgdownEngine,
     argdownDocument: vscode.TextDocument,
     config: ArgdownPreviewConfiguration
-  ): Promise<IArgdownPreviewState>;
+  ): Promise<IArgdownPreviewState> | IArgdownPreviewState;
   scripts: string[];
 }

@@ -1,12 +1,12 @@
-import {
+import type {
   IAstNode,
   IRequestHandler,
   ITokenNodeHandler,
   IEquivalenceClass,
   IArgument,
-  IArgdownPlugin,
-  TokenNames
+  IArgdownPlugin
 } from "@argdown/core";
+import { TokenNames } from "@argdown/core";
 
 type IAstNodeExtension = IAstNode & {
   startLine?: number;

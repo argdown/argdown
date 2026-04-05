@@ -1,4 +1,4 @@
-import { ArgdownEngine } from "./ArgdownEngine";
+import { ArgdownEngine } from "../ArgdownEngine";
 import * as vscode from "vscode";
 import { ArgdownPreviewConfiguration } from "./ArgdownPreviewConfiguration";
 import { IArgdownPreviewState } from "./IArgdownPreviewState";
@@ -34,8 +34,7 @@ export const vizjsViewProvider: IViewProvider = {
   // full.render.js has to be loaded after vizJsView.js
   // scripts: ["vizjsView.js", "full.render.js"],
   scripts: ["vizjsView.js"],
-  // eslint-disable-next-line @typescript-eslint/require-await
-  generateView: async () => {
+  generateView: () => {
     return `<div id="svg-container"></div>`;
   },
   generateSubMenu: () => {

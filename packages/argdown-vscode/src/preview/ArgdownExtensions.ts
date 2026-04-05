@@ -1,5 +1,5 @@
 import * as vscode from "vscode";
-import { ArgdownEngine } from "./ArgdownEngine";
+import type { ArgdownEngine } from "../ArgdownEngine";
 import * as arrays from "./util/arrays";
 import { Disposable } from "./util/dispose";
 
