@@ -1,5 +1,5 @@
-import * as vscode from "vscode";
+import type { TextDocument } from "vscode";
 
-export function isArgdownFile(document: vscode.TextDocument) {
+export function isArgdownFile(document: TextDocument) {
   return document.languageId === "argdown";
 }

@@ -1,12 +1,13 @@
-import { ArgdownEngine } from "../ArgdownEngine";
-import * as vscode from "vscode";
-import { ArgdownPreviewConfiguration } from "./ArgdownPreviewConfiguration";
-import { IViewProvider } from "./IViewProvider";
+import type { TextDocument } from "vscode";
+import type { ArgdownEngine } from "../../ArgdownEngine";
+import type { ArgdownPreviewConfiguration } from "../ArgdownPreviewConfiguration";
+import type { IViewProvider } from "./IViewProvider";
+
 export const htmlViewProvider: IViewProvider = {
   scripts: ["htmlView.js"],
   generateView: (
     argdownEngine: ArgdownEngine,
-    argdownDocument: vscode.TextDocument,
+    argdownDocument: TextDocument,
     config: ArgdownPreviewConfiguration
   ) => {
     const html = argdownEngine.exportHtml(argdownDocument, config);
@@ -19,7 +20,7 @@ export const htmlViewProvider: IViewProvider = {
   },
   generateOnDidChangeTextDocumentMessage: (
     argdownEngine: ArgdownEngine,
-    argdownDocument: vscode.TextDocument,
+    argdownDocument: TextDocument,
     config: ArgdownPreviewConfiguration
   ) => {
     const html = argdownEngine.exportHtml(argdownDocument, config);

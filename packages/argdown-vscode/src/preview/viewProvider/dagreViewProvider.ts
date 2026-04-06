@@ -1,7 +1,14 @@
-import { ArgdownEngine } from "../ArgdownEngine";
-import * as vscode from "vscode";
-import { ArgdownPreviewConfiguration } from "./ArgdownPreviewConfiguration";
-import { IViewProvider } from "./IViewProvider";
+import type { TextDocument } from "vscode";
+import type { ArgdownEngine } from "../../ArgdownEngine";
+import type { ArgdownPreviewConfiguration } from "../ArgdownPreviewConfiguration";
+import type { IViewProvider } from "./IViewProvider";
+
+declare module "@argdown/core" {
+  interface IArgdownRequest {
+    dagre?: Record<string, unknown>;
+  }
+}
+
 export const dagreViewProvider: IViewProvider = {
   scripts: ["dagreView.js"],
   generateView: () => {
@@ -16,21 +23,21 @@ export const dagreViewProvider: IViewProvider = {
   },
   generateOnDidChangeTextDocumentMessage: (
     argdownEngine: ArgdownEngine,
-    argdownDocument: vscode.TextDocument,
+    argdownDocument: TextDocument,
     config: ArgdownPreviewConfiguration
   ) => {
     const map = argdownEngine.exportMapJson(argdownDocument, config);
     const settings =
-      config.argdownConfig && (<any>config.argdownConfig).dagre
-        ? JSON.stringify((<any>config.argdownConfig).dagre)
+      config.argdownConfig && config.argdownConfig.dagre
+        ? JSON.stringify(config.argdownConfig.dagre)
         : "{}";
     return { map, settings };
   },
   contributeToInitialState: (s, argdownEngine, argdownDocument, config) => {
     const map = argdownEngine.getMap(argdownDocument, config);
     const settings =
-      config.argdownConfig && (<any>config.argdownConfig).dagre
-        ? (<any>config.argdownConfig).dagre
+      config.argdownConfig && config.argdownConfig.dagre
+        ? config.argdownConfig.dagre
         : {};
     s.dagre.map = map;
     s.dagre.settings = settings;

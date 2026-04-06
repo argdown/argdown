@@ -1,7 +1,8 @@
+import { type Uri, workspace } from "vscode";
 import { Utils } from "vscode-uri";
-import * as vscode from "vscode";
-import { ArgdownConfigLoader } from "./ArgdownEngine";
-export const browserConfigLoader: ArgdownConfigLoader = async (
+import type { IArgdownConfigLoader } from "../IArgdownConfigLoader";
+
+export const browserConfigLoader: IArgdownConfigLoader = async (
   configFile,
   resource,
   logger
@@ -9,9 +10,9 @@ export const browserConfigLoader: ArgdownConfigLoader = async (
   if (!configFile) {
     return {};
   }
-  const workspaceFolder = vscode.workspace.getWorkspaceFolder(resource);
+  const workspaceFolder = workspace.getWorkspaceFolder(resource);
 
-  let configPath: vscode.Uri;
+  let configPath: Uri;
   if (workspaceFolder) {
     configPath = Utils.resolvePath(workspaceFolder.uri, configFile);
   } else {
@@ -20,7 +21,7 @@ export const browserConfigLoader: ArgdownConfigLoader = async (
   }
 
   try {
-    const data = await vscode.workspace.fs.readFile(configPath);
+    const data = await workspace.fs.readFile(configPath);
     const str = Buffer.from(data).toString("utf8");
     return JSON.parse(str);
   } catch (e) {

@@ -1,3 +1,1 @@
-export interface IDictionary<T> {
-  [Key: string]: T;
-}
+export type IDictionary<T> = Record<string, T>;

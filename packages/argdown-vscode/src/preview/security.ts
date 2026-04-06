@@ -1,6 +1,13 @@
-import * as vscode from "vscode";
+import {
+  commands,
+  Uri,
+  window,
+  workspace,
+  type Memento,
+  type QuickPickItem
+} from "vscode";
 
-import { ArgdownPreviewManager } from "./ArgdownPreviewManager";
+import type { ArgdownPreviewManager } from "./ArgdownPreviewManager";
 
 export enum ArgdownPreviewSecurityLevel {
   Strict = 0,
@@ -10,16 +17,14 @@ export enum ArgdownPreviewSecurityLevel {
 }
 
 export interface ContentSecurityPolicyArbiter {
-  getSecurityLevelForResource(
-    resource: vscode.Uri
-  ): ArgdownPreviewSecurityLevel;
+  getSecurityLevelForResource(resource: Uri): ArgdownPreviewSecurityLevel;
 
   setSecurityLevelForResource(
-    resource: vscode.Uri,
+    resource: Uri,
     level: ArgdownPreviewSecurityLevel
   ): Thenable<void>;
 
-  shouldAllowSvgsForResource(resource: vscode.Uri): void;
+  shouldAllowSvgsForResource(resource: Uri): void;
 
   shouldDisableSecurityWarnings(): boolean;
 
@@ -33,12 +38,12 @@ export class ExtensionContentSecurityPolicyArbiter implements ContentSecurityPol
     "preview_should_show_security_warning:";
 
   constructor(
-    private readonly globalState: vscode.Memento,
-    private readonly workspaceState: vscode.Memento
+    private readonly globalState: Memento,
+    private readonly workspaceState: Memento
   ) {}
 
   public getSecurityLevelForResource(
-    resource: vscode.Uri
+    resource: Uri
   ): ArgdownPreviewSecurityLevel {
     // Use new security level setting first
     const level = this.globalState.get<ArgdownPreviewSecurityLevel | undefined>(
@@ -62,7 +67,7 @@ export class ExtensionContentSecurityPolicyArbiter implements ContentSecurityPol
   }
 
   public setSecurityLevelForResource(
-    resource: vscode.Uri,
+    resource: Uri,
     level: ArgdownPreviewSecurityLevel
   ): Thenable<void> {
     return this.globalState.update(
@@ -71,7 +76,7 @@ export class ExtensionContentSecurityPolicyArbiter implements ContentSecurityPol
     );
   }
 
-  public shouldAllowSvgsForResource(resource: vscode.Uri) {
+  public shouldAllowSvgsForResource(resource: Uri) {
     const securityLevel = this.getSecurityLevelForResource(resource);
     return (
       securityLevel === ArgdownPreviewSecurityLevel.AllowInsecureContent ||
@@ -93,15 +98,15 @@ export class ExtensionContentSecurityPolicyArbiter implements ContentSecurityPol
     );
   }
 
-  private getRoot(resource: vscode.Uri): vscode.Uri {
-    if (vscode.workspace.workspaceFolders) {
-      const folderForResource = vscode.workspace.getWorkspaceFolder(resource);
+  private getRoot(resource: Uri): Uri {
+    if (workspace.workspaceFolders) {
+      const folderForResource = workspace.getWorkspaceFolder(resource);
       if (folderForResource) {
         return folderForResource.uri;
       }
 
-      if (vscode.workspace.workspaceFolders.length) {
-        return vscode.workspace.workspaceFolders[0].uri;
+      if (workspace.workspaceFolders.length) {
+        return workspace.workspaceFolders[0].uri;
       }
     }
 
@@ -115,10 +120,8 @@ export class PreviewSecuritySelector {
     private readonly webviewManager: ArgdownPreviewManager
   ) {}
 
-  public async showSecuritySelectorForResource(
-    resource: vscode.Uri
-  ): Promise<void> {
-    interface PreviewSecurityPickItem extends vscode.QuickPickItem {
+  public async showSecuritySelectorForResource(resource: Uri): Promise<void> {
+    interface PreviewSecurityPickItem extends QuickPickItem {
       readonly type: "moreinfo" | "toggle" | ArgdownPreviewSecurityLevel;
     }
 
@@ -128,72 +131,69 @@ export class PreviewSecuritySelector {
 
     const currentSecurityLevel =
       this.cspArbiter.getSecurityLevelForResource(resource);
-    const selection =
-      await vscode.window.showQuickPick<PreviewSecurityPickItem>(
-        [
-          {
-            type: ArgdownPreviewSecurityLevel.Strict,
-            label:
-              markActiveWhen(
-                currentSecurityLevel === ArgdownPreviewSecurityLevel.Strict
-              ) + "Strict",
-            description: "Only load secure content"
-          },
-          {
-            type: ArgdownPreviewSecurityLevel.AllowInsecureLocalContent,
-            label:
-              markActiveWhen(
-                currentSecurityLevel ===
-                  ArgdownPreviewSecurityLevel.AllowInsecureLocalContent
-              ) + "Allow insecure local content",
-            description:
-              "Enable loading content over http served from localhost"
-          },
-          {
-            type: ArgdownPreviewSecurityLevel.AllowInsecureContent,
-            label:
-              markActiveWhen(
-                currentSecurityLevel ===
-                  ArgdownPreviewSecurityLevel.AllowInsecureContent
-              ) + "Allow insecure content",
-            description: "Enable loading content over http"
-          },
-          {
-            type: ArgdownPreviewSecurityLevel.AllowScriptsAndAllContent,
-            label:
-              markActiveWhen(
-                currentSecurityLevel ===
-                  ArgdownPreviewSecurityLevel.AllowScriptsAndAllContent
-              ) + "Disable",
-            description:
-              "Allow all content and script execution. Not recommended"
-          },
-          {
-            type: "moreinfo",
-            label: "More Information",
-            description: ""
-          },
-          {
-            type: "toggle",
-            label: this.cspArbiter.shouldDisableSecurityWarnings()
-              ? "Enable preview security warnings in this workspace"
-              : "Disable preview security warning in this workspace",
-            description: "Does not affect the content security level"
-          }
-        ],
+    const selection = await window.showQuickPick<PreviewSecurityPickItem>(
+      [
         {
-          placeHolder:
-            "Select security settings for Argdown previews in this workspace"
+          type: ArgdownPreviewSecurityLevel.Strict,
+          label:
+            markActiveWhen(
+              currentSecurityLevel === ArgdownPreviewSecurityLevel.Strict
+            ) + "Strict",
+          description: "Only load secure content"
+        },
+        {
+          type: ArgdownPreviewSecurityLevel.AllowInsecureLocalContent,
+          label:
+            markActiveWhen(
+              currentSecurityLevel ===
+                ArgdownPreviewSecurityLevel.AllowInsecureLocalContent
+            ) + "Allow insecure local content",
+          description: "Enable loading content over http served from localhost"
+        },
+        {
+          type: ArgdownPreviewSecurityLevel.AllowInsecureContent,
+          label:
+            markActiveWhen(
+              currentSecurityLevel ===
+                ArgdownPreviewSecurityLevel.AllowInsecureContent
+            ) + "Allow insecure content",
+          description: "Enable loading content over http"
+        },
+        {
+          type: ArgdownPreviewSecurityLevel.AllowScriptsAndAllContent,
+          label:
+            markActiveWhen(
+              currentSecurityLevel ===
+                ArgdownPreviewSecurityLevel.AllowScriptsAndAllContent
+            ) + "Disable",
+          description: "Allow all content and script execution. Not recommended"
+        },
+        {
+          type: "moreinfo",
+          label: "More Information",
+          description: ""
+        },
+        {
+          type: "toggle",
+          label: this.cspArbiter.shouldDisableSecurityWarnings()
+            ? "Enable preview security warnings in this workspace"
+            : "Disable preview security warning in this workspace",
+          description: "Does not affect the content security level"
         }
-      );
+      ],
+      {
+        placeHolder:
+          "Select security settings for Argdown previews in this workspace"
+      }
+    );
     if (!selection) {
       return;
     }
 
     if (selection.type === "moreinfo") {
-      vscode.commands.executeCommand(
+      commands.executeCommand(
         "vscode.open",
-        vscode.Uri.parse("https://go.microsoft.com/fwlink/?linkid=854414")
+        Uri.parse("https://go.microsoft.com/fwlink/?linkid=854414")
       );
       return;
     }

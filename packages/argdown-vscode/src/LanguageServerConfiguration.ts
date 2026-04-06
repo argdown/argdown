@@ -1,4 +1,4 @@
-import { IArgdownSettings } from "./IArgdownSettings";
+import type { IArgdownSettings } from "./IArgdownSettings";
 import { workspace, WorkspaceConfiguration, Disposable } from "vscode";
 import {
   ConfigurationParams,

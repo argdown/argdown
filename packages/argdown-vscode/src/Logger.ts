@@ -19,7 +19,7 @@ namespace Trace {
   }
 }
 
-function isString(value: any): value is string {
+function isString(value: unknown): value is string {
   return Object.prototype.toString.call(value) === "[object String]";
 }
 
@@ -31,7 +31,7 @@ export class Logger {
     this.updateConfiguration();
   }
 
-  public log(message: string, data?: any): void {
+  public log(message: string, data?: unknown): void {
     if (this.trace === Trace.Verbose) {
       this.output.appendLine(
         `[Log - ${new Date().toLocaleTimeString()}] ${message}`
@@ -61,7 +61,7 @@ export class Logger {
     );
   }
 
-  private static data2String(data: any): string {
+  private static data2String(data: unknown): string {
     if (data instanceof Error) {
       if (isString(data.stack)) {
         return data.stack;

@@ -1,16 +1,13 @@
-import * as vscode from "vscode";
-import { ArgdownEngine } from "./ArgdownEngine";
-import { IArgdownRequest } from "@argdown/core";
+import type { IArgdownRequest } from "@argdown/core";
+import { type Uri, workspace } from "vscode";
+import type { ArgdownEngine } from "../ArgdownEngine";
 
 export class ArgdownConfiguration {
   public argdownConfig?: IArgdownRequest;
   public readonly argdownConfigFile?: string;
 
-  constructor(resource: vscode.Uri, argdownEngine: ArgdownEngine) {
-    const argdownConfig = vscode.workspace.getConfiguration(
-      "argdown",
-      resource
-    );
+  constructor(resource: Uri, argdownEngine: ArgdownEngine) {
+    const argdownConfig = workspace.getConfiguration("argdown", resource);
     this.argdownConfigFile = argdownConfig.get<string | undefined>(
       "configFile",
       undefined
@@ -18,10 +15,7 @@ export class ArgdownConfiguration {
     void this.refreshArgdownConfig(resource, argdownEngine);
   }
 
-  async refreshArgdownConfig(
-    resource: vscode.Uri,
-    argdownEngine: ArgdownEngine
-  ) {
+  async refreshArgdownConfig(resource: Uri, argdownEngine: ArgdownEngine) {
     this.argdownConfig =
       (await argdownEngine.loadConfig(this.argdownConfigFile, resource)) || {};
   }

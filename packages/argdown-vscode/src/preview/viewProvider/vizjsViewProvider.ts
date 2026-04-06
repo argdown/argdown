@@ -1,9 +1,9 @@
-import { ArgdownEngine } from "../ArgdownEngine";
-import * as vscode from "vscode";
-import { ArgdownPreviewConfiguration } from "./ArgdownPreviewConfiguration";
-import { IArgdownPreviewState } from "./IArgdownPreviewState";
-import { IViewProvider } from "./IViewProvider";
-import { IVizSettings } from "@argdown/core";
+import type { IArgdownRequest, IVizSettings } from "@argdown/core";
+import type { TextDocument } from "vscode";
+import type { ArgdownEngine } from "../../ArgdownEngine";
+import type { ArgdownPreviewConfiguration } from "../ArgdownPreviewConfiguration";
+import type { IArgdownPreviewState } from "../IArgdownPreviewState";
+import type { IViewProvider } from "./IViewProvider";
 
 type VizSettingsWithImages = IVizSettings & {
   images?: Array<{
@@ -17,7 +17,7 @@ type VizSettingsWithImages = IVizSettings & {
 
 const buildVizSettings = (
   config: ArgdownPreviewConfiguration,
-  request: any
+  request: IArgdownRequest
 ): VizSettingsWithImages => {
   const settings: VizSettingsWithImages =
     config.argdownConfig && config.argdownConfig.vizJs
@@ -44,7 +44,7 @@ export const vizjsViewProvider: IViewProvider = {
   },
   generateOnDidChangeTextDocumentMessage: async (
     argdownEngine: ArgdownEngine,
-    argdownDocument: vscode.TextDocument,
+    argdownDocument: TextDocument,
     config: ArgdownPreviewConfiguration
   ) => {
     const { svg, request } = await argdownEngine.exportSvg(
@@ -59,7 +59,7 @@ export const vizjsViewProvider: IViewProvider = {
   contributeToInitialState: async (
     data: IArgdownPreviewState,
     argdownEngine: ArgdownEngine,
-    argdownDocument: vscode.TextDocument,
+    argdownDocument: TextDocument,
     config: ArgdownPreviewConfiguration
   ) => {
     const { svg, dot, request } = await argdownEngine.exportSvg(

@@ -1,7 +1,7 @@
-import * as vscode from "vscode";
+import type { Uri } from "vscode";
 
 export interface WebviewResourceProvider {
-  asWebviewUri(resource: vscode.Uri): vscode.Uri;
+  asWebviewUri(resource: Uri): Uri;
 
   readonly cspSource: string;
 }

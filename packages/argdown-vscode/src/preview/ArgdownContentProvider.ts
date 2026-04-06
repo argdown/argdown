@@ -13,10 +13,10 @@ import { PreviewViews } from "./ArgdownPreview";
 import { IDictionary } from "./util/IDictionary";
 import { IArgdownPreviewState } from "./IArgdownPreviewState";
 import { jsonReplacer } from "@argdown/core";
-import { vizjsViewProvider } from "./vizjsViewProvider";
-import { dagreViewProvider } from "./dagreViewProvider";
-import { htmlViewProvider } from "./htmlViewProvider";
-import { IViewProvider } from "./IViewProvider";
+import { vizjsViewProvider } from "./viewProvider/vizjsViewProvider";
+import { dagreViewProvider } from "./viewProvider/dagreViewProvider";
+import { htmlViewProvider } from "./viewProvider/htmlViewProvider";
+import { IViewProvider } from "./viewProvider/IViewProvider";
 import { WebviewResourceProvider } from "./util/resources";
 import { basename, dirname, isAbsolute, join } from "./util/path";
 import { ArgdownContributionProvider } from "./ArgdownExtensions";
@@ -102,7 +102,7 @@ export class ArgdownContentProvider {
     const nonce = getNonce();
     const csp = this.getCsp(resourceProvider, sourceUri, nonce);
     let viewHtml = "";
-    viewHtml = await viewProvider.generateView(
+    viewHtml = viewProvider.generateView(
       this.engine,
       argdownDocument,
       config,

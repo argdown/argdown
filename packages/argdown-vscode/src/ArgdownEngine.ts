@@ -1,32 +1,28 @@
-import * as vscode from "vscode";
-import { argdown, init } from "@argdown/core";
-import { findElementAtPositionPlugin } from "./preview/FindElementAtPositionPlugin";
 import {
-  IArgdownRequest,
-  ISection,
-  IEquivalenceClass,
-  IArgument,
-  IMapNode,
-  isGroupMapNode,
+  argdown,
   ArgdownTypes,
-  IMap,
-  stringifyArgdownData
+  IArgument,
+  IEquivalenceClass,
+  init,
+  isGroupMapNode,
+  stringifyArgdownData,
+  type IArgdownRequest,
+  type IMap,
+  type IMapNode,
+  type ISection
 } from "@argdown/core";
-import { Logger } from "./Logger";
-import { ArgdownConfiguration } from "./ArgdownConfiguration";
+import { Range, type TextDocument, type Uri } from "vscode";
+import type { Logger } from "./Logger";
+import type { ArgdownConfiguration } from "./config/ArgdownConfiguration";
+import type { IArgdownConfigLoader } from "./config/IArgdownConfigLoader";
+import { findElementAtPositionPlugin } from "./preview/FindElementAtPositionPlugin";
+
 argdown.addPlugin(findElementAtPositionPlugin, "find-element-at-position");
 
-export interface ArgdownConfigLoader {
-  (
-    configFile: string | undefined,
-    resource: vscode.Uri,
-    logger: Logger
-  ): Promise<IArgdownRequest>;
-}
 export class ArgdownEngine {
   public constructor(
     private logger: Logger,
-    private configLoader: ArgdownConfigLoader
+    private configLoader: IArgdownConfigLoader
   ) {
     let logLevel = "verbose";
     argdown.logger = {
@@ -40,10 +36,7 @@ export class ArgdownEngine {
       }
     };
   }
-  public exportHtml(
-    doc: vscode.TextDocument,
-    config: ArgdownConfiguration
-  ): string {
+  public exportHtml(doc: TextDocument, config: ArgdownConfiguration): string {
     const argdownConfig = config.argdownConfig || {};
     const input = doc.getText();
     const request: IArgdownRequest = {
@@ -61,7 +54,7 @@ export class ArgdownEngine {
     return html;
   }
   public getMapNodeId(
-    doc: vscode.TextDocument,
+    doc: TextDocument,
     config: ArgdownConfiguration,
     line: number,
     character: number
@@ -104,10 +97,10 @@ export class ArgdownEngine {
     return node.id || "";
   }
   public getRangeOfHeading(
-    doc: vscode.TextDocument,
+    doc: TextDocument,
     config: ArgdownConfiguration,
     headingText: string
-  ): vscode.Range {
+  ): Range {
     const argdownConfig = config.argdownConfig;
     const input = doc.getText();
     const request: IArgdownRequest = {
@@ -118,18 +111,18 @@ export class ArgdownEngine {
     };
     const response = argdown.run(request);
     if (!response.sections || response.sections.length == 0) {
-      return new vscode.Range(0, 0, 0, 0);
+      return new Range(0, 0, 0, 0);
     }
     const section = this.findSection(response.sections, headingText);
     if (section) {
-      return new vscode.Range(
+      return new Range(
         (section.startLine || 1) - 1,
         (section.startColumn || 1) - 1,
         (section.startLine || 1) - 1,
         (section.startColumn || 1) - 1
       );
     }
-    return new vscode.Range(0, 0, 0, 0);
+    return new Range(0, 0, 0, 0);
   }
   private findSection(
     sections: ISection[],
@@ -149,10 +142,10 @@ export class ArgdownEngine {
     return null;
   }
   public getRangeOfMapNode(
-    doc: vscode.TextDocument,
+    doc: TextDocument,
     config: ArgdownConfiguration,
     id: string
-  ): vscode.Range {
+  ): Range {
     const argdownConfig = config.argdownConfig;
     const input = doc.getText();
     const request: IArgdownRequest = {
@@ -168,7 +161,7 @@ export class ArgdownEngine {
       response.map.nodes,
       (n) => n.id === id
     );
-    if (!node || !node.title) return new vscode.Range(0, 0, 0, 0);
+    if (!node || !node.title) return new Range(0, 0, 0, 0);
 
     switch (node.type) {
       case ArgdownTypes.ARGUMENT_MAP_NODE: {
@@ -176,7 +169,7 @@ export class ArgdownEngine {
         const argument = response.arguments[node.title];
         const desc = IArgument.getCanonicalMember(argument);
         if (!desc) break;
-        return new vscode.Range(
+        return new Range(
           (desc.startLine || 1) - 1,
           (desc.startColumn || 1) - 1,
           (desc.endLine || 1) - 1,
@@ -189,7 +182,7 @@ export class ArgdownEngine {
         const statement = IEquivalenceClass.getCanonicalMember(eqClass);
         if (!statement) break;
 
-        return new vscode.Range(
+        return new Range(
           (statement.startLine || 1) - 1,
           (statement.startColumn || 1) - 1,
           (statement.endLine || 1) - 1,
@@ -197,9 +190,9 @@ export class ArgdownEngine {
         );
       }
       default:
-        return new vscode.Range(0, 0, 0, 0);
+        return new Range(0, 0, 0, 0);
     }
-    return new vscode.Range(0, 0, 0, 0);
+    return new Range(0, 0, 0, 0);
   }
 
   private findNodeInMapNodeTree(
@@ -219,7 +212,7 @@ export class ArgdownEngine {
     }
     return null;
   }
-  public getMap(doc: vscode.TextDocument, config: ArgdownConfiguration): IMap {
+  public getMap(doc: TextDocument, config: ArgdownConfiguration): IMap {
     const argdownConfig = config.argdownConfig;
     const input = doc.getText();
     const request = {
@@ -241,16 +234,13 @@ export class ArgdownEngine {
     return map;
   }
   public exportMapJson(
-    doc: vscode.TextDocument,
+    doc: TextDocument,
     config: ArgdownConfiguration
   ): string {
     const map = this.getMap(doc, config);
     return stringifyArgdownData(map);
   }
-  public exportJson(
-    doc: vscode.TextDocument,
-    config: ArgdownConfiguration
-  ): string {
+  public exportJson(doc: TextDocument, config: ArgdownConfiguration): string {
     const argdownConfig = config.argdownConfig;
     const input = doc.getText();
     const request = {
@@ -272,7 +262,7 @@ export class ArgdownEngine {
     return json;
   }
   public exportDot(
-    doc: vscode.TextDocument,
+    doc: TextDocument,
     config: ArgdownConfiguration
   ): { dot: string; request: IArgdownRequest } {
     const argdownConfig = config.argdownConfig || {};
@@ -298,7 +288,7 @@ export class ArgdownEngine {
   }
 
   public async exportSvg(
-    doc: vscode.TextDocument,
+    doc: TextDocument,
     config: ArgdownConfiguration
   ): Promise<{ svg: string; dot: string; request: IArgdownRequest }> {
     const argdownConfig = config.argdownConfig || {};
@@ -331,7 +321,7 @@ export class ArgdownEngine {
     };
   }
   public exportGraphML(
-    doc: vscode.TextDocument,
+    doc: TextDocument,
     config: ArgdownConfiguration
   ): string {
     const argdownConfig = config.argdownConfig || {};
@@ -356,7 +346,7 @@ export class ArgdownEngine {
   }
   public async loadConfig(
     configFile: string | undefined,
-    resource: vscode.Uri
+    resource: Uri
   ): Promise<IArgdownRequest> {
     return await this.configLoader(configFile, resource, this.logger);
   }

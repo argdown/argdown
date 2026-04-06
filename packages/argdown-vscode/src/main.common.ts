@@ -21,7 +21,7 @@ import {
   PreviewSecuritySelector
 } from "./preview/security";
 import createArgdownMarkdownItPlugin from "@argdown/markdown-it-plugin";
-import { nodeConfigLoader } from "./nodeConfigLoader";
+import { nodeConfigLoader } from "./config/loader/configLoader.node";
 import { getArgdownExtensionContributions } from "./preview/ArgdownExtensions";
 import path from "path";
 // import { ForkOptions } from "vscode-languageclient/lib/client";
