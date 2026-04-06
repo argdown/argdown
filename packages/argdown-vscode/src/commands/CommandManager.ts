@@ -22,7 +22,7 @@ export class CommandManager {
 
   private registerCommand(
     id: string,
-    impl: (...args: unknown[]) => void,
+    impl: (...args: unknown[]) => void | Promise<void>,
     thisArg?: unknown
   ) {
     if (this.commands.has(id)) {
