@@ -1,148 +1,16 @@
-"use strict";
-
-// import * as vscode from "vscode";
-import * as vscode from "vscode";
+import path from "path";
+import type { ExtensionContext } from "vscode";
 import {
   LanguageClient,
-  LanguageClientOptions,
-  ServerOptions,
   TransportKind,
-  ForkOptions
+  type ForkOptions,
+  type LanguageClientOptions,
+  type ServerOptions
 } from "vscode-languageclient/node";
-import { CommandManager } from "./commands/CommandManager";
-import * as commands from "./commands/index";
-
-import { ArgdownEngine } from "./ArgdownEngine";
-import { ArgdownPreviewManager } from "./preview/ArgdownPreviewManager";
-import { Logger } from "./Logger";
-import { ArgdownContentProvider } from "./preview/ArgdownContentProvider";
-import {
-  ExtensionContentSecurityPolicyArbiter,
-  PreviewSecuritySelector
-} from "./preview/security";
-import createArgdownMarkdownItPlugin from "@argdown/markdown-it-plugin";
 import { nodeConfigLoader } from "./config/loader/configLoader.node";
-import { getArgdownExtensionContributions } from "./preview/ArgdownExtensions";
-import path from "path";
-// import { ForkOptions } from "vscode-languageclient/lib/client";
+import { ArgdownExtension } from "./main.common";
 
-let client: LanguageClient | undefined;
-
-export async function activate(context: vscode.ExtensionContext) {
-  // ========================================
-  // CORE FUNCTIONALITY
-  // ========================================
-
-  // -- PREVIEW --
-  const logger = new Logger();
-  logger.log("Argdown extension: Starting core functionality initialization");
-
-  logger.log("Argdown extension: Creating logger");
-
-  logger.log("Argdown extension: Creating argdown engine");
-  const argdownEngine = new ArgdownEngine(logger, nodeConfigLoader);
-
-  logger.log("Argdown extension: Creating CSP arbiter");
-  const cspArbiter = new ExtensionContentSecurityPolicyArbiter(
-    context.globalState,
-    context.workspaceState
-  );
-
-  logger.log("Argdown extension: Getting contributions");
-  const contributions = getArgdownExtensionContributions(context);
-
-  logger.log("Argdown extension: Creating content provider");
-  const contentProvider = new ArgdownContentProvider(
-    argdownEngine,
-    context,
-    cspArbiter,
-    contributions
-  );
-
-  logger.log("Argdown extension: Creating preview manager");
-  const previewManager = new ArgdownPreviewManager(
-    contentProvider,
-    logger,
-    contributions,
-    argdownEngine
-  );
-
-  logger.log("Argdown extension: Creating preview security selector");
-  const previewSecuritySelector = new PreviewSecuritySelector(
-    cspArbiter,
-    previewManager
-  );
-
-  // -- COMMANDS --
-  logger.log("Argdown extension: Starting command registration");
-  const commandManager = new CommandManager();
-  context.subscriptions.push(commandManager);
-  commandManager.register(new commands.ShowPreviewCommand(previewManager));
-  commandManager.register(
-    new commands.ShowPreviewToSideCommand(previewManager)
-  );
-  commandManager.register(
-    new commands.ShowLockedPreviewToSideCommand(previewManager)
-  );
-  commandManager.register(new commands.ShowSourceCommand(previewManager));
-  commandManager.register(new commands.RefreshPreviewCommand(previewManager));
-  commandManager.register(new commands.MoveCursorToPositionCommand());
-  commandManager.register(
-    new commands.ShowPreviewSecuritySelectorCommand(
-      previewSecuritySelector,
-      previewManager
-    )
-  );
-  commandManager.register(new commands.OnPreviewStyleLoadErrorCommand());
-  commandManager.register(new commands.OpenDocumentLinkCommand());
-  commandManager.register(new commands.ToggleLockCommand(previewManager));
-  commandManager.register(
-    new commands.ExportDocumentToHtmlCommand(argdownEngine)
-  );
-  commandManager.register(
-    new commands.ExportDocumentToJsonCommand(argdownEngine)
-  );
-  commandManager.register(
-    new commands.ExportDocumentToDotCommand(argdownEngine)
-  );
-  commandManager.register(
-    new commands.ExportDocumentToGraphMLCommand(argdownEngine)
-  );
-  commandManager.register(
-    new commands.ExportDocumentToVizjsSvgCommand(argdownEngine)
-  );
-  commandManager.register(
-    new commands.CopyWebComponentToClipboardCommand(argdownEngine)
-  );
-  commandManager.register(new commands.ExportDocumentToVizjsPdfCommand());
-  commandManager.register(new commands.ExportContentToVizjsPngCommand());
-  commandManager.register(new commands.ExportContentToDagreSvgCommand());
-  commandManager.register(new commands.ExportContentToDagrePngCommand());
-  commandManager.register(new commands.ExportContentToDagrePdfCommand());
-
-  logger.log("Argdown extension: Command registration completed");
-
-  // ========================================
-  // CONFIGURATION WATCHERS (Always Initialize)
-  // ========================================
-
-  logger.log("Argdown extension: Setting up configuration watchers");
-
-  context.subscriptions.push(
-    vscode.workspace.onDidChangeConfiguration((e) => {
-      logger.updateConfiguration();
-      previewManager.updateConfiguration();
-      if (e.affectsConfiguration("argdown.markdownWebComponent")) {
-        vscode.commands.executeCommand("markdown.preview.refresh");
-      }
-    })
-  );
-
-  // ========================================
-  // LANGUAGE SERVER (Always Initialize)
-  // ========================================
-
-  // --- LANGUGAGE SERVER ---
+function createClient(context: ExtensionContext): LanguageClient {
   // The debug options for the server
   const debugOptions: ForkOptions = {
     execArgv: ["--nolazy", "--inspect=6009"]
@@ -174,69 +42,20 @@ export async function activate(context: vscode.ExtensionContext) {
     outputChannelName: "Argdown Language Server"
   };
   // Create the language client and start the client.
-  client = new LanguageClient(
+  return new LanguageClient(
     "argdownLanguageServer",
     "Argdown Language Server",
     serverOptions,
     clientOptions
   );
-  // Register new proposed protocol if available.
-  client.registerProposedFeatures();
-  // Start the client. This will also launch the server
-  void client.start();
-  logger.log("Argdown extension: Language server started successfully");
+}
 
-  // ========================================
-  // RETURN EXTENSION API
-  // ========================================
-  const markdownItPlugin = await createArgdownMarkdownItPlugin(() => {
-    const webComponentConfig = vscode.workspace.getConfiguration(
-      "argdown.markdownWebComponent",
-      null
-    );
-    const withoutHeader = webComponentConfig.get<boolean>("withoutHeader");
-    const withoutLogo = webComponentConfig.get<boolean>("withoutLogo");
-    const withoutMaximize = webComponentConfig.get<boolean>("withoutMaximize");
-    // const withoutHeader = false;
-    // const withoutLogo = false;
-    // const withoutMaximize = false;
-    return {
-      webComponent: {
-        addWebComponentScript: false,
-        addWebComponentPolyfill: false,
-        addGlobalStyles: false,
-        withoutHeader,
-        withoutLogo,
-        withoutMaximize
-      }
-    };
-  });
+const extension = new ArgdownExtension(createClient, nodeConfigLoader);
 
-  return {
-    extendMarkdownIt(md: any) {
-      const webComponentConfig = vscode.workspace.getConfiguration(
-        "argdown.markdownWebComponent",
-        null
-      );
-      const enabled = webComponentConfig.get<boolean>("enabled");
-      if (enabled) {
-        return md.use(markdownItPlugin);
-      }
-      return md;
-    }
-  };
+export async function activate(context: ExtensionContext) {
+  await extension.activate(context);
 }
 
 export function deactivate(): Thenable<void> {
-  const logger = new Logger();
-
-  if (!client) {
-    logger.log(
-      "Argdown extension: No language server client to deactivate (test mode or initialization failed)"
-    );
-    return Promise.resolve();
-  }
-
-  logger.log("Argdown extension: Stopping language server client");
-  return client.stop();
+  return extension.deactivate();
 }
