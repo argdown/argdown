@@ -542,6 +542,7 @@
     "@types/dagre-d3": "0.6.6",
     "@types/lodash.defaultsdeep": "^4.6.9",
     "@types/lodash.throttle": "^4.1.9",
+    "@types/markdown-it": "^14.1.2",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.15.24",
     "@types/vscode": "^1.99.1",

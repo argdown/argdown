@@ -1,11 +1,15 @@
-import { ExtensionContext, commands as vsCommands, workspace } from "vscode";
+import type MarkdownIt from "markdown-it";
+import {
+  type ExtensionContext,
+  commands as vsCommands,
+  workspace
+} from "vscode";
 
 import createArgdownMarkdownItPlugin from "@argdown/markdown-it-plugin";
-import { BaseLanguageClient } from "vscode-languageclient";
+import type { BaseLanguageClient } from "vscode-languageclient";
 import { ArgdownEngine } from "./ArgdownEngine";
 import { CommandManager } from "./commands/CommandManager";
 import * as commands from "./commands/index";
-import { IArgdownConfigLoader } from "./config/IArgdownConfigLoader";
 import { Logger } from "./Logger";
 import { ArgdownContentProvider } from "./preview/ArgdownContentProvider";
 import { getArgdownExtensionContributions } from "./preview/ArgdownExtensions";
@@ -14,6 +18,7 @@ import {
   ExtensionContentSecurityPolicyArbiter,
   PreviewSecuritySelector
 } from "./preview/security";
+import type { IArgdownConfigLoader } from "./config/IArgdownConfigLoader";
 
 export class ArgdownExtension {
   private logger = new Logger();
@@ -164,7 +169,7 @@ export class ArgdownExtension {
       };
     });
     return {
-      extendMarkdownIt(md: any) {
+      extendMarkdownIt(md: MarkdownIt) {
         const webComponentConfig = workspace.getConfiguration(
           "argdown.markdownWebComponent",
           null
