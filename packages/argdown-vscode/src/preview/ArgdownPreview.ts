@@ -3,16 +3,16 @@ import throttle from "lodash.throttle";
 
 import { Logger } from "../Logger";
 import { ArgdownContentProvider } from "./ArgdownContentProvider";
-import { WebviewResourceProvider } from "./util/resources";
-import { Disposable } from "./util/dispose";
-import * as path from "./util/path";
+import { WebviewResourceProvider } from "../util/resources";
+import { Disposable } from "../util/dispose";
+import * as path from "../util/path";
 import {
   getVisibleLine,
   LastScrollLocation,
   TopmostLineMonitor
-} from "./util/topmostLineMonitor";
+} from "../util/topmostLineMonitor";
 import { ArgdownPreviewConfigurationManager } from "./ArgdownPreviewConfiguration";
-import { isArgdownFile } from "./util/file";
+import { isArgdownFile } from "../util/file";
 import type { ArgdownEngine } from "../ArgdownEngine";
 import type { IArgdownPreviewState } from "./IArgdownPreviewState";
 import { ArgdownContributionProvider } from "./ArgdownExtensions";

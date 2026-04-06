@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import { Logger } from "../Logger";
-import { Disposable, disposeAll } from "./util/dispose";
-import { TopmostLineMonitor } from "./util/topmostLineMonitor";
+import { Disposable, disposeAll } from "../util/dispose";
+import { TopmostLineMonitor } from "../util/topmostLineMonitor";
 import {
   DynamicArgdownPreview,
   ManagedArgdownPreview,
@@ -13,7 +13,7 @@ import { ArgdownPreviewConfigurationManager } from "./ArgdownPreviewConfiguratio
 import { ArgdownContentProvider } from "./ArgdownContentProvider";
 import { ArgdownEngine } from "../ArgdownEngine";
 import { ArgdownContributionProvider } from "./ArgdownExtensions";
-import { isArgdownFile } from "./util/file";
+import { isArgdownFile } from "../util/file";
 
 export interface DynamicPreviewSettings {
   readonly resourceColumn: vscode.ViewColumn;

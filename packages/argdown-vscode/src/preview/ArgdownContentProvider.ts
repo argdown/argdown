@@ -10,15 +10,15 @@ import {
   ArgdownPreviewConfiguration
 } from "./ArgdownPreviewConfiguration";
 import { PreviewViews } from "./ArgdownPreview";
-import { IDictionary } from "./util/IDictionary";
+import { IDictionary } from "../util/IDictionary";
 import { IArgdownPreviewState } from "./IArgdownPreviewState";
 import { jsonReplacer } from "@argdown/core";
 import { vizjsViewProvider } from "./viewProvider/vizjsViewProvider";
 import { dagreViewProvider } from "./viewProvider/dagreViewProvider";
 import { htmlViewProvider } from "./viewProvider/htmlViewProvider";
 import { IViewProvider } from "./viewProvider/IViewProvider";
-import { WebviewResourceProvider } from "./util/resources";
-import { basename, dirname, isAbsolute, join } from "./util/path";
+import { WebviewResourceProvider } from "../util/resources";
+import { basename, dirname, isAbsolute, join } from "../util/path";
 import { ArgdownContributionProvider } from "./ArgdownExtensions";
 /**
  * Strings used inside the argdown preview.

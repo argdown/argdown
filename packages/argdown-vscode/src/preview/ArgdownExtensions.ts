@@ -1,7 +1,7 @@
 import * as vscode from "vscode";
 import type { ArgdownEngine } from "../ArgdownEngine";
-import * as arrays from "./util/arrays";
-import { Disposable } from "./util/dispose";
+import * as arrays from "../util/arrays";
+import { Disposable } from "../util/dispose";
 
 const resolveExtensionResource = (
   extension: vscode.Extension<any>,
