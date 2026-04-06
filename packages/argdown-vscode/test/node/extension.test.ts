@@ -195,7 +195,12 @@ suite("Argdown Extension Test Suite", () => {
 
       // Test that export commands can be executed (they should not throw)
       try {
+        const fakeUri = vscode.Uri.parse("./test.json");
+
+        (vscode.window as any).showSaveDialog = async (_: any) => fakeUri;
+
         await vscode.commands.executeCommand("argdown.exportDocumentToJson");
+
         // If we get here without error, the command executed
         assert.ok(true, "Export to JSON command executed");
       } catch (error) {

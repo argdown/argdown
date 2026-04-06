@@ -1,8 +1,8 @@
-import { type TextDocument, Uri, workspace } from "vscode";
+import { type TextDocument, Uri, workspace, window } from "vscode";
 import type { ArgdownEngine } from "../../ArgdownEngine";
 import { ArgdownConfiguration } from "../../config/ArgdownConfiguration";
 import type { Command } from "../Command";
-import { saveExportedFile } from "./util";
+import { getUri, saveExportedFile } from "./util";
 
 export class ExportDocumentToJsonCommand implements Command {
   private static readonly id = "argdown.exportDocumentToJson";
@@ -18,9 +18,12 @@ export class ExportDocumentToJsonCommand implements Command {
     );
   }
   public async execute(resource: Uri) {
-    const config = new ArgdownConfiguration(resource, this.engine);
-    const doc: TextDocument = await workspace.openTextDocument(resource);
+    const uri = getUri(resource);
+    if (!uri) throw new Error("No file provided!");
+    const config = new ArgdownConfiguration(uri, this.engine);
+    const doc: TextDocument = await workspace.openTextDocument(uri);
+    window.showInformationMessage(uri.toString());
     const result = this.engine.exportJson(doc, config);
-    await saveExportedFile(resource, result, { JSON: ["json"] }, "json");
+    await saveExportedFile(uri, result, { JSON: ["json"] }, "json");
   }
 }

@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import type { Command } from "../Command";
-import { saveExportedFile, savePng } from "./util";
+import { getUri, saveExportedFile, savePng } from "./util";
 import { ArgdownEngine } from "../../ArgdownEngine";
 import { ArgdownConfiguration } from "../../config/ArgdownConfiguration";
 import { TextDocument, workspace } from "vscode";
@@ -34,10 +34,12 @@ export class ExportDocumentToVizjsSvgCommand implements Command {
     );
   }
   public async execute(resource: vscode.Uri) {
-    const config = new ArgdownConfiguration(resource, this.engine);
-    const doc: TextDocument = await workspace.openTextDocument(resource);
+    const uri = getUri(resource);
+    if (!uri) throw new Error("No file provided!");
+    const config = new ArgdownConfiguration(uri, this.engine);
+    const doc: TextDocument = await workspace.openTextDocument(uri);
     const { svg } = await this.engine.exportSvg(doc, config);
-    await saveExportedFile(resource, svg, { svg: ["svg"] }, "svg");
+    await saveExportedFile(uri, svg, { svg: ["svg"] }, "svg");
   }
 }
 export class ExportDocumentToWebComponentCommand implements Command {
@@ -54,10 +56,12 @@ export class ExportDocumentToWebComponentCommand implements Command {
     );
   }
   public async execute(resource: vscode.Uri) {
-    const config = new ArgdownConfiguration(resource, this.engine);
-    const doc: TextDocument = await workspace.openTextDocument(resource);
+    const uri = getUri(resource);
+    if (!uri) throw new Error("No file provided!");
+    const config = new ArgdownConfiguration(uri, this.engine);
+    const doc: TextDocument = await workspace.openTextDocument(uri);
     const result = await this.engine.exportWebComponent(doc, config);
-    await saveExportedFile(resource, result, { html: ["html"] }, "html");
+    await saveExportedFile(uri, result, { html: ["html"] }, "html");
   }
 }
 export class ExportDocumentToVizjsPdfCommand implements Command {

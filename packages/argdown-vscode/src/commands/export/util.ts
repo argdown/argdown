@@ -32,30 +32,31 @@ export const savePng = (resource: Uri, content: string) =>
       Buffer.from(content.replace(/^data:image\/\w+;base64,/, ""), "base64")
   );
 
+export const getUri = (resource: Uri | undefined | null): Uri | undefined => {
+  if (resource) return resource;
+  const doc = window.activeTextEditor?.document;
+  if (doc && isArgdownFile(doc)) return doc.uri;
+  return undefined;
+};
+
 export const getTargetFileUri = async (
   resource: Uri,
   filters: { [name: string]: string[] },
   defaultExtension: string
 ): Promise<Uri | undefined> => {
-  let uri = resource;
-  if (!uri && window.activeTextEditor) {
-    // If the command is not invoked with a resource argument (e.g. in the command palette), we try to use the uri of the active document
-    if (!window.activeTextEditor) {
-      return;
-    }
-    const doc = window.activeTextEditor.document;
-    if (!isArgdownFile(doc)) {
-      return;
-    }
-    uri = doc.uri;
-  }
-
+  const uri = getUri(resource);
   if (!uri) return;
 
-  const extension: string = Utils.extname(uri);
-  const defaultUri = URI.parse(
-    uri.toString().replace(extension, "." + defaultExtension)
-  );
+  // try to get the url of the provided argdown resource. If it fails default to undefined. Current file I think
+  let defaultUri: Uri | undefined;
+  try {
+    const extension: string = Utils.extname(uri);
+    defaultUri = URI.parse(
+      uri.toString().replace(extension, "." + defaultExtension)
+    );
+  } catch {
+    defaultUri = undefined;
+  }
 
   const option: SaveDialogOptions = {
     defaultUri,
