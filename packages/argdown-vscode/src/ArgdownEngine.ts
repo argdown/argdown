@@ -320,6 +320,36 @@ export class ArgdownEngine {
       request
     };
   }
+
+  public async exportWebComponent(
+    doc: TextDocument,
+    config: ArgdownConfiguration
+  ): Promise<string> {
+    const argdownConfig = config.argdownConfig || {};
+    const input = doc.getText();
+    const request = {
+      ...argdownConfig,
+      input: input,
+      inputPath: doc.uri.fsPath,
+      process: [
+        "parse-input",
+        "build-model",
+        "build-map",
+        "transform-closed-groups",
+        "colorize",
+        "add-images",
+        "export-dot",
+        "export-svg",
+        "highlight-source",
+        "export-web-component"
+      ],
+      throwExceptions: false
+    };
+    await init();
+    const { webComponent } = argdown.run(request);
+    if (!webComponent) throw new Error("No web component response");
+    return webComponent;
+  }
   public exportGraphML(
     doc: TextDocument,
     config: ArgdownConfiguration

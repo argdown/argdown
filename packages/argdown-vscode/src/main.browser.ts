@@ -66,12 +66,24 @@ export async function activate(context: ExtensionContext) {
   commandManager.register(new commands.OnPreviewStyleLoadErrorCommand());
   commandManager.register(new commands.OpenDocumentLinkCommand());
   commandManager.register(new commands.ToggleLockCommand(previewManager));
-  commandManager.register(new commands.ExportDocumentToHtmlCommand());
-  commandManager.register(new commands.ExportDocumentToJsonCommand());
-  commandManager.register(new commands.ExportDocumentToDotCommand());
-  commandManager.register(new commands.ExportDocumentToGraphMLCommand());
-  commandManager.register(new commands.ExportDocumentToVizjsSvgCommand());
-  commandManager.register(new commands.CopyWebComponentToClipboardCommand());
+  commandManager.register(
+    new commands.ExportDocumentToHtmlCommand(argdownEngine)
+  );
+  commandManager.register(
+    new commands.ExportDocumentToJsonCommand(argdownEngine)
+  );
+  commandManager.register(
+    new commands.ExportDocumentToDotCommand(argdownEngine)
+  );
+  commandManager.register(
+    new commands.ExportDocumentToGraphMLCommand(argdownEngine)
+  );
+  commandManager.register(
+    new commands.ExportDocumentToVizjsSvgCommand(argdownEngine)
+  );
+  commandManager.register(
+    new commands.CopyWebComponentToClipboardCommand(argdownEngine)
+  );
   commandManager.register(new commands.ExportDocumentToVizjsPdfCommand());
   commandManager.register(new commands.ExportContentToVizjsPngCommand());
   commandManager.register(new commands.ExportContentToDagreSvgCommand());

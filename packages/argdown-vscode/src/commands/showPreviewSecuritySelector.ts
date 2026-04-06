@@ -6,7 +6,7 @@
 import * as vscode from "vscode";
 import { Command } from "./Command";
 import { PreviewSecuritySelector } from "../preview/security";
-import { isArgdownFile } from "../preview/util/file";
+import { isArgdownFile } from "../util/file";
 import { ArgdownPreviewManager } from "../preview/ArgdownPreviewManager";
 
 export class ShowPreviewSecuritySelectorCommand implements Command {

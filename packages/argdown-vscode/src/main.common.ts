@@ -1,80 +1,50 @@
-"use strict";
+import { ExtensionContext, Uri } from "vscode";
+import { LanguageClientOptions } from "vscode-languageclient";
 
-// import * as vscode from "vscode";
+import { LanguageClient } from "vscode-languageclient/browser";
 import * as vscode from "vscode";
-import {
-  LanguageClient,
-  LanguageClientOptions,
-  ServerOptions,
-  TransportKind,
-  ForkOptions
-} from "vscode-languageclient/node";
-import { CommandManager } from "./commands/CommandManager";
-import * as commands from "./commands/index";
-
+import createArgdownMarkdownItPlugin from "@argdown/markdown-it-plugin";
+import { browserConfigLoader } from "./config/loader/configLoader.browser";
 import { ArgdownEngine } from "./ArgdownEngine";
-import { ArgdownPreviewManager } from "./preview/ArgdownPreviewManager";
 import { Logger } from "./Logger";
-import { ArgdownContentProvider } from "./preview/ArgdownContentProvider";
 import {
   ExtensionContentSecurityPolicyArbiter,
   PreviewSecuritySelector
 } from "./preview/security";
-import createArgdownMarkdownItPlugin from "@argdown/markdown-it-plugin";
-import { nodeConfigLoader } from "./config/loader/configLoader.node";
+import { ArgdownContentProvider } from "./preview/ArgdownContentProvider";
+import { ArgdownPreviewManager } from "./preview/ArgdownPreviewManager";
+import { CommandManager } from "./commands/CommandManager";
+import * as commands from "./commands/index";
 import { getArgdownExtensionContributions } from "./preview/ArgdownExtensions";
-import path from "path";
-// import { ForkOptions } from "vscode-languageclient/lib/client";
 
-let client: LanguageClient | undefined;
+let client: LanguageClient;
 
-export async function activate(context: vscode.ExtensionContext) {
-  // ========================================
-  // CORE FUNCTIONALITY
-  // ========================================
-
-  // -- PREVIEW --
+// this method is called when vs code is activated
+export async function activate(context: ExtensionContext) {
   const logger = new Logger();
-  logger.log("Argdown extension: Starting core functionality initialization");
-
-  logger.log("Argdown extension: Creating logger");
-
-  logger.log("Argdown extension: Creating argdown engine");
-  const argdownEngine = new ArgdownEngine(logger, nodeConfigLoader);
-
-  logger.log("Argdown extension: Creating CSP arbiter");
+  logger.log("Activating Argdown extension!");
+  const argdownEngine = new ArgdownEngine(logger, browserConfigLoader);
   const cspArbiter = new ExtensionContentSecurityPolicyArbiter(
     context.globalState,
     context.workspaceState
   );
-
-  logger.log("Argdown extension: Getting contributions");
   const contributions = getArgdownExtensionContributions(context);
-
-  logger.log("Argdown extension: Creating content provider");
   const contentProvider = new ArgdownContentProvider(
     argdownEngine,
     context,
     cspArbiter,
     contributions
   );
-
-  logger.log("Argdown extension: Creating preview manager");
   const previewManager = new ArgdownPreviewManager(
     contentProvider,
     logger,
     contributions,
     argdownEngine
   );
-
-  logger.log("Argdown extension: Creating preview security selector");
   const previewSecuritySelector = new PreviewSecuritySelector(
     cspArbiter,
     previewManager
   );
-
-  // -- COMMANDS --
-  logger.log("Argdown extension: Starting command registration");
   const commandManager = new CommandManager();
   context.subscriptions.push(commandManager);
   commandManager.register(new commands.ShowPreviewCommand(previewManager));
@@ -96,26 +66,29 @@ export async function activate(context: vscode.ExtensionContext) {
   commandManager.register(new commands.OnPreviewStyleLoadErrorCommand());
   commandManager.register(new commands.OpenDocumentLinkCommand());
   commandManager.register(new commands.ToggleLockCommand(previewManager));
-  commandManager.register(new commands.ExportDocumentToHtmlCommand());
-  commandManager.register(new commands.ExportDocumentToJsonCommand());
-  commandManager.register(new commands.ExportDocumentToDotCommand());
-  commandManager.register(new commands.ExportDocumentToGraphMLCommand());
-  commandManager.register(new commands.ExportDocumentToVizjsSvgCommand());
-  commandManager.register(new commands.CopyWebComponentToClipboardCommand());
+  commandManager.register(
+    new commands.ExportDocumentToHtmlCommand(argdownEngine)
+  );
+  commandManager.register(
+    new commands.ExportDocumentToJsonCommand(argdownEngine)
+  );
+  commandManager.register(
+    new commands.ExportDocumentToDotCommand(argdownEngine)
+  );
+  commandManager.register(
+    new commands.ExportDocumentToGraphMLCommand(argdownEngine)
+  );
+  commandManager.register(
+    new commands.ExportDocumentToVizjsSvgCommand(argdownEngine)
+  );
+  commandManager.register(
+    new commands.CopyWebComponentToClipboardCommand(argdownEngine)
+  );
   commandManager.register(new commands.ExportDocumentToVizjsPdfCommand());
   commandManager.register(new commands.ExportContentToVizjsPngCommand());
   commandManager.register(new commands.ExportContentToDagreSvgCommand());
   commandManager.register(new commands.ExportContentToDagrePngCommand());
   commandManager.register(new commands.ExportContentToDagrePdfCommand());
-
-  logger.log("Argdown extension: Command registration completed");
-
-  // ========================================
-  // CONFIGURATION WATCHERS (Always Initialize)
-  // ========================================
-
-  logger.log("Argdown extension: Setting up configuration watchers");
-
   context.subscriptions.push(
     vscode.workspace.onDidChangeConfiguration((e) => {
       logger.updateConfiguration();
@@ -125,33 +98,6 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     })
   );
-
-  // ========================================
-  // LANGUAGE SERVER (Always Initialize)
-  // ========================================
-
-  // --- LANGUGAGE SERVER ---
-  // The debug options for the server
-  const debugOptions: ForkOptions = {
-    execArgv: ["--nolazy", "--inspect=6009"]
-  };
-  // If the extension is launched in debug mode then the debug server options are used
-  // Otherwise the run options are used
-  const modulePath = context.asAbsolutePath(
-    path.join("dist", "server", "server.node.js")
-  );
-
-  const serverOptions: ServerOptions = {
-    run: {
-      module: modulePath,
-      transport: TransportKind.ipc
-    },
-    debug: {
-      module: modulePath,
-      transport: TransportKind.ipc,
-      options: debugOptions
-    }
-  };
   // Options to control the language client
   const clientOptions: LanguageClientOptions = {
     // Register the server for plain text documents
@@ -161,22 +107,13 @@ export async function activate(context: vscode.ExtensionContext) {
     ],
     outputChannelName: "Argdown Language Server"
   };
-  // Create the language client and start the client.
-  client = new LanguageClient(
-    "argdownLanguageServer",
-    "Argdown Language Server",
-    serverOptions,
-    clientOptions
-  );
-  // Register new proposed protocol if available.
-  client.registerProposedFeatures();
-  // Start the client. This will also launch the server
-  void client.start();
-  logger.log("Argdown extension: Language server started successfully");
+  logger.log("Starting language server");
+  client = createWorkerLanguageClient(context, clientOptions);
+  logger.log("language server started");
 
-  // ========================================
-  // RETURN EXTENSION API
-  // ========================================
+  context.subscriptions.push(client);
+  void client.start();
+
   const markdownItPlugin = await createArgdownMarkdownItPlugin(() => {
     const webComponentConfig = vscode.workspace.getConfiguration(
       "argdown.markdownWebComponent",
@@ -199,7 +136,6 @@ export async function activate(context: vscode.ExtensionContext) {
       }
     };
   });
-
   return {
     extendMarkdownIt(md: any) {
       const webComponentConfig = vscode.workspace.getConfiguration(
@@ -214,17 +150,65 @@ export async function activate(context: vscode.ExtensionContext) {
     }
   };
 }
-
 export function deactivate(): Thenable<void> {
-  const logger = new Logger();
-
   if (!client) {
-    logger.log(
-      "Argdown extension: No language server client to deactivate (test mode or initialization failed)"
-    );
     return Promise.resolve();
   }
-
-  logger.log("Argdown extension: Stopping language server client");
   return client.stop();
 }
+function createWorkerLanguageClient(
+  context: ExtensionContext,
+  clientOptions: LanguageClientOptions
+) {
+  // Create a worker. The worker main file implements the language server.
+  const serverMain = Uri.joinPath(
+    context.extensionUri,
+    "dist",
+    "server",
+    "server.browser.js"
+  );
+  const worker = new Worker(serverMain.toString(true));
+
+  // create the language server client to communicate with the server running in the worker
+  return new LanguageClient(
+    "argdown",
+    "Argdown Language Server Client",
+    clientOptions,
+    worker
+  );
+}
+// The module 'vscode' contains the VS Code extensibility API
+// Import the module and reference it with the alias vscode in your code below
+// The module 'vscode' contains the VS Code extensibility API
+// Import the module and reference it with the alias vscode in your code below
+// import * as vscode from "vscode";
+
+// // this method is called when your extension is activated
+// // your extension is activated the very first time the command is executed
+// export function activate(context: vscode.ExtensionContext) {
+//   // Use the console to output diagnostic information (console.log) and errors (console.error)
+//   // This line of code will only be executed once when your extension is activated
+//   console.log(
+//     'Congratulations, your extension "helloworld-web-sample" is now active in the web extension host!'
+//   );
+
+//   // The command has been defined in the package.json file
+//   // Now provide the implementation of the command with registerCommand
+//   // The commandId parameter must match the command field in package.json
+//   let disposable = vscode.commands.registerCommand(
+//     "helloworld-web-sample.helloWorld",
+//     () => {
+//       // The code you place here will be executed every time your command is executed
+
+//       // Display a message box to the user
+//       vscode.window.showInformationMessage(
+//         "Hello World from helloworld-web-sample in a web extension host!"
+//       );
+//     }
+//   );
+
+//   context.subscriptions.push(disposable);
+// }
+
+// // this method is called when your extension is deactivated
+// export function deactivate() {}

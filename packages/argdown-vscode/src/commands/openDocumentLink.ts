@@ -3,7 +3,7 @@ import * as vscode from "vscode";
 import { Command } from "./Command";
 //import { ArgdownEngine } from '../preview/ArgdownEngine';
 // import { TableOfContentsProvider } from '../tableOfContentsProvider';
-import { isArgdownFile } from "../preview/util/file";
+import { isArgdownFile } from "../util/file";
 import { Utils } from "vscode-uri";
 
 export interface OpenDocumentLinkArgs {

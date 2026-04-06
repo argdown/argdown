@@ -1,5 +1,5 @@
 export interface Command {
   readonly id: string;
 
-  execute(...args: any[]): void;
+  execute(...args: unknown[]): void | Promise<void>;
 }
