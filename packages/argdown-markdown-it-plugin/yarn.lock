@@ -51,11 +51,12 @@
   resolved "https://registry.yarnpkg.com/@argdown/highlightjs/-/highlightjs-1.7.4.tgz#a5bac84e4e391a4a6c2fb66c291f5883e798805e"
   integrity sha512-xSQkvcvCg0PKxXqto8KW6ldQCb1NIGITvZinUK3rGQYLGgFgLviJ5OmFAT45GFppFCTkySUahc5st5VDXTzNFg==
 
-"@argdown/web-components@^1.7.4":
-  version "1.7.4"
-  resolved "https://registry.yarnpkg.com/@argdown/web-components/-/web-components-1.7.4.tgz#d0a990e294e053b78cea65a427e082910f09e3f1"
-  integrity sha512-bQXDkmIjrInoLWwl7fLYu4gqyJIYllIXYJzj3IBj7N1FTLdXhiDRDyKuF8FNiSjPULofyFxANlplHXxwFgSWXw==
+"@argdown/web-components@^1.7.11":
+  version "1.7.12"
+  resolved "https://registry.yarnpkg.com/@argdown/web-components/-/web-components-1.7.12.tgz#1586514f8538f7a3bb4a159d963537ca01460d90"
+  integrity sha512-9fjnqZGm3TVkq6x/c+GgCMD0maYKMu1RuBESM5xJvcVhp7zZRGpLyWhGeo0ipAuuaxBZBLmbyfACbLePJrdbRA==
   dependencies:
+    "@swc/helpers" "^0.2.13"
     d3-selection "3.0.0"
     d3-zoom "3.0.0"
     haunted "^4.7.1"
@@ -1028,6 +1029,11 @@
   version "0.2.13"
   resolved "https://registry.yarnpkg.com/@swc/helpers/-/helpers-0.2.13.tgz#95d69aaed0998040d455832efbe1342ed79d0809"
   integrity sha512-HxfZHtTgDlME7fH+KIwBrm1B1+2iB3UpbcSbPCZzDAHxZ3z+qfjflHverm33sXrdyQYx4s3J7r6ot76433mwEg==
+
+"@swc/helpers@^0.2.13":
+  version "0.2.14"
+  resolved "https://registry.yarnpkg.com/@swc/helpers/-/helpers-0.2.14.tgz#20288c3627442339dd3d743c944f7043ee3590f0"
+  integrity sha512-wpCQMhf5p5GhNg2MmGKXzUNwxe7zRiCsmqYsamez2beP7mKPCSiu+BjZcdN95yYSzO857kr0VfQewmGpS77nqA==
 
 "@szmarczak/http-timer@^4.0.5":
   version "4.0.6"
@@ -5062,9 +5068,9 @@ performance-now@^2.1.0:
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
 
 picomatch@^2.0.4, picomatch@^2.2.1, picomatch@^2.2.3:
-  version "2.3.0"
-  resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.0.tgz#f1f061de8f6a4bf022892e2d128234fb98302972"
-  integrity sha512-lY1Q/PiJGC2zOv/z391WOTD+Z02bCgsFfvxoXXf6h7kv9o+WmsmzYqrAwY63sNgOxE4xEdq0WyUnXfKeBrSvYw==
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.3.2.tgz#5a942915e26b372dc0f0e6753149a16e6b1c5601"
+  integrity sha512-V7+vQEJ06Z+c5tSye8S+nHUfI51xoXIXjHQ99cQtKUkQqqO1kO/KCJUfZXuB47h/YBlDhah2H3hdUGXn8ie0oA==
 
 pkg-dir@^4.1.0:
   version "4.2.0"
