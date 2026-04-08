@@ -1463,7 +1463,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/plugin-transform-modules-commonjs@npm:^7.26.3, @babel/plugin-transform-modules-commonjs@npm:^7.27.1":
+"@babel/plugin-transform-modules-commonjs@npm:^7.27.1":
   version: 7.27.1
   resolution: "@babel/plugin-transform-modules-commonjs@npm:7.27.1"
   dependencies:
@@ -6640,7 +6640,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/json-schema@npm:^7.0.15, @types/json-schema@npm:^7.0.9":
+"@types/json-schema@npm:^7.0.15":
   version: 7.0.15
   resolution: "@types/json-schema@npm:7.0.15"
   checksum: 10c0/a996a745e6c5d60292f36731dd41341339d4eeed8180bb09226e5c8d23759067692b1d88e5d91d72ee83dfc00d3aca8e7bd43ea120516c17922cbcb7c3e252db
@@ -8152,20 +8152,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv-formats@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "ajv-formats@npm:2.1.1"
-  dependencies:
-    ajv: "npm:^8.0.0"
-  peerDependencies:
-    ajv: ^8.0.0
-  peerDependenciesMeta:
-    ajv:
-      optional: true
-  checksum: 10c0/e43ba22e91b6a48d96224b83d260d3a3a561b42d391f8d3c6d2c1559f9aa5b253bfb306bc94bbeca1d967c014e15a6efe9a207309e95b3eaae07fcbcdc2af662
-  languageName: node
-  linkType: hard
-
 "ajv-formats@npm:~3.0.1":
   version: 3.0.1
   resolution: "ajv-formats@npm:3.0.1"
@@ -8177,17 +8163,6 @@ __metadata:
     ajv:
       optional: true
   checksum: 10c0/168d6bca1ea9f163b41c8147bae537e67bd963357a5488a1eaf3abe8baa8eec806d4e45f15b10767e6020679315c7e1e5e6803088dfb84efa2b4e9353b83dd0a
-  languageName: node
-  linkType: hard
-
-"ajv-keywords@npm:^5.1.0":
-  version: 5.1.0
-  resolution: "ajv-keywords@npm:5.1.0"
-  dependencies:
-    fast-deep-equal: "npm:^3.1.3"
-  peerDependencies:
-    ajv: ^8.8.2
-  checksum: 10c0/18bec51f0171b83123ba1d8883c126e60c6f420cef885250898bf77a8d3e65e3bfb9e8564f497e30bdbe762a83e0d144a36931328616a973ee669dc74d4a9590
   languageName: node
   linkType: hard
 
@@ -8203,7 +8178,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^8.0.0, ajv@npm:^8.6.0, ajv@npm:^8.9.0":
+"ajv@npm:^8.0.0, ajv@npm:^8.6.0":
   version: 8.17.1
   resolution: "ajv@npm:8.17.1"
   dependencies:
@@ -8410,7 +8385,6 @@ __metadata:
     "@argdown/map-views": "workspace:^"
     "@argdown/markdown-it-plugin": "workspace:^"
     "@argdown/web-components": "workspace:^"
-    "@babel/plugin-transform-modules-commonjs": "npm:^7.26.3"
     "@esbuild-plugins/node-globals-polyfill": "npm:^0.2.3"
     "@types/d3": "npm:7.4.3"
     "@types/dagre-d3": "npm:0.6.6"
@@ -8427,6 +8401,7 @@ __metadata:
     d3-selection: "npm:^3.0.0"
     dagre-d3: "npm:^0.6.3"
     esbuild: "npm:^0.19.0"
+    esbuild-raw-plugin: "npm:^0.3.1"
     glob: "npm:^11.0.1"
     lodash.defaultsdeep: "npm:^4.6.1"
     lodash.throttle: "npm:^4.1.1"
@@ -8435,7 +8410,6 @@ __metadata:
     pdfkit: "npm:^0.17.2"
     process: "git+https://github.com/argdown/node-process"
     rimraf: "npm:^6.0.1"
-    string-replace-loader: "npm:^3.1.0"
     tsx: "npm:^4.21.0"
     typescript: "npm:5.9.3"
     vscode-languageclient: "npm:9.0.1"
@@ -11403,6 +11377,13 @@ __metadata:
   version: 4.2.8
   resolution: "es6-promise@npm:4.2.8"
   checksum: 10c0/2373d9c5e9a93bdd9f9ed32ff5cb6dd3dd785368d1c21e9bbbfd07d16345b3774ae260f2bd24c8f836a6903f432b4151e7816a7fa8891ccb4e1a55a028ec42c3
+  languageName: node
+  linkType: hard
+
+"esbuild-raw-plugin@npm:^0.3.1":
+  version: 0.3.1
+  resolution: "esbuild-raw-plugin@npm:0.3.1"
+  checksum: 10c0/25f8934cdddfc49bd1942a76d9d742e0abf50d85729ba506c1804475e318672143781039dc0614b47c7eb01aa1a797901245cc37fb1ce968974a038f8846b9d2
   languageName: node
   linkType: hard
 
@@ -19550,18 +19531,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"schema-utils@npm:^4":
-  version: 4.3.2
-  resolution: "schema-utils@npm:4.3.2"
-  dependencies:
-    "@types/json-schema": "npm:^7.0.9"
-    ajv: "npm:^8.9.0"
-    ajv-formats: "npm:^2.1.1"
-    ajv-keywords: "npm:^5.1.0"
-  checksum: 10c0/981632f9bf59f35b15a9bcdac671dd183f4946fe4b055ae71a301e66a9797b95e5dd450de581eb6cca56fb6583ce8f24d67b2d9f8e1b2936612209697f6c277e
-  languageName: node
-  linkType: hard
-
 "secretlint@npm:^10.1.2":
   version: 10.2.2
   resolution: "secretlint@npm:10.2.2"
@@ -20263,17 +20232,6 @@ __metadata:
   dependencies:
     lodash.deburr: "npm:^4.1.0"
   checksum: 10c0/07e34f83c8dae3ac8a0cdddbb815386b326204be64926e9554ad10d0c15784f8dee36039905f304207097a510fc6fc1eab4b0c821000d74e446a4966e3883094
-  languageName: node
-  linkType: hard
-
-"string-replace-loader@npm:^3.1.0":
-  version: 3.2.0
-  resolution: "string-replace-loader@npm:3.2.0"
-  dependencies:
-    schema-utils: "npm:^4"
-  peerDependencies:
-    webpack: ^5
-  checksum: 10c0/b1b35e9e52a124c0d7202ab8e2e4470fe17eac7fd9a31caf0417939a81e1b0cf6da70da58d522a27ffb9eca9b4e5da558bbabd263f77d235206558b8e00154a6
   languageName: node
   linkType: hard
 

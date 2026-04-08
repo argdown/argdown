@@ -12,8 +12,7 @@ import {
   OnSelectionChangedHandler
 } from "@argdown/map-views";
 import { ArgdownPreviewStore } from "./state";
-declare function require(path: string): string;
-// const dagreCss = require("!raw-loader!./dagre.css");
+import dagreCss from "./dagre.css?raw";
 
 declare var acquireVsCodeApi: any;
 const vscode = acquireVsCodeApi();
@@ -28,7 +27,7 @@ window.cspAlerter.setPoster(messagePoster);
 window.styleLoadingMonitor.setPoster(messagePoster);
 
 const previewSettings = getSettings();
-const dagreCssHtml = '<style type="text/css">' + "</style>";
+const dagreCssHtml = '<style type="text/css">' + dagreCss + "</style>";
 
 const getSvgEl = () => {
   return <SVGSVGElement>(<any>document.getElementById("dagre-svg")!);

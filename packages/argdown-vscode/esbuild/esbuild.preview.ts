@@ -5,6 +5,7 @@ import {
   watch
 } from "./esbuild.common";
 import { NodeGlobalsPolyfillPlugin } from "@esbuild-plugins/node-globals-polyfill";
+import { raw } from "esbuild-raw-plugin";
 
 async function main() {
   const ctx = await context({
@@ -18,6 +19,7 @@ async function main() {
     platform: "browser",
     outdir: "dist/preview",
     plugins: [
+      raw(),
       NodeGlobalsPolyfillPlugin({
         process: true,
         buffer: true
