@@ -106,11 +106,15 @@ export class ArgdownExtension {
     commandManager.register(
       new commands.CopyWebComponentToClipboardCommand(argdownEngine)
     );
-    commandManager.register(new commands.ExportDocumentToVizjsPdfCommand());
+    commandManager.register(
+      new commands.ExportDocumentToVizjsPdfCommand(argdownEngine)
+    );
     commandManager.register(new commands.ExportContentToVizjsPngCommand());
     commandManager.register(new commands.ExportContentToDagreSvgCommand());
     commandManager.register(new commands.ExportContentToDagrePngCommand());
-    commandManager.register(new commands.ExportContentToDagrePdfCommand());
+    commandManager.register(
+      new commands.ExportContentToDagrePdfCommand(argdownEngine)
+    );
 
     this.logger.log("Argdown extension: Command registration completed");
 

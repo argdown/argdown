@@ -1,6 +1,7 @@
 import * as vscode from "vscode";
 import { Command } from "../Command";
-import { saveExportedFile, savePng } from "../export/util";
+import { saveExportedFile, savePdf, savePng } from "../export/util";
+import { ArgdownEngine } from "../../ArgdownEngine";
 
 /**
  * Thoses commands can be invoked from the dagre view or via the command pallet.
@@ -39,10 +40,15 @@ export class ExportContentToDagrePngCommand implements Command {
   }
 }
 
+/**
+ * This command does not work, because svg-to-pdf does not apply css styles. Therefore the dagre svg output is not styled correctly.
+ *
+ */
 export class ExportContentToDagrePdfCommand implements Command {
   private static readonly id = "argdown.exportContentToDagrePdf";
   public readonly id = ExportContentToDagrePdfCommand.id;
 
+  constructor(private readonly engine: ArgdownEngine) {}
   public static createCommandUri(path: string, fragment: string): vscode.Uri {
     return vscode.Uri.parse(
       `command:${ExportContentToDagrePdfCommand.id}?${encodeURIComponent(
@@ -51,13 +57,6 @@ export class ExportContentToDagrePdfCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri, content: string) {
-    vscode.window.showInformationMessage("Not implemented yet");
-    // void sendToLanguageServer(
-    //   resource,
-    //   content,
-    //   { PDF: ["pdf"] },
-    //   "pdf",
-    //   "dagre-to-pdf"
-    // );
+    savePdf(resource, content);
   }
 }

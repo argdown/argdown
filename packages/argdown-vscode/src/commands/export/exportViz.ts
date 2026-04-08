@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import type { Command } from "../Command";
-import { getUri, saveExportedFile, savePng } from "./util";
+import { getUri, saveExportedFile, savePdf, savePng } from "./util";
 import { ArgdownEngine } from "../../ArgdownEngine";
 import { ArgdownConfiguration } from "../../config/ArgdownConfiguration";
 import { TextDocument, workspace } from "vscode";
@@ -68,6 +68,7 @@ export class ExportDocumentToVizjsPdfCommand implements Command {
   private static readonly id = "argdown.exportDocumentToVizjsPdf";
   public readonly id = ExportDocumentToVizjsPdfCommand.id;
 
+  constructor(private readonly engine: ArgdownEngine) {}
   public static createCommandUri(path: string, fragment: string): vscode.Uri {
     return vscode.Uri.parse(
       `command:${ExportDocumentToVizjsPdfCommand.id}?${encodeURIComponent(
@@ -75,7 +76,12 @@ export class ExportDocumentToVizjsPdfCommand implements Command {
       )}`
     );
   }
-  public execute(resource: vscode.Uri) {
-    vscode.window.showInformationMessage("Not implemented yet");
+  public async execute(resource: vscode.Uri) {
+    const uri = getUri(resource);
+    if (!uri) throw new Error("No file provided!");
+    const config = new ArgdownConfiguration(uri, this.engine);
+    const doc: TextDocument = await workspace.openTextDocument(uri);
+    const { svg } = await this.engine.exportSvg(doc, config);
+    savePdf(uri, svg);
   }
 }

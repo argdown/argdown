@@ -31,6 +31,14 @@ async function main() {
           });
         }
       },
+      {
+        name: "stream-alias",
+        setup(build) {
+          build.onResolve({ filter: /^stream/ }, () => {
+            return { path: require.resolve("stream-browserify") };
+          });
+        }
+      },
       esbuildProblemMatcherPlugin
     ]
     // inject: ["process/browser"]

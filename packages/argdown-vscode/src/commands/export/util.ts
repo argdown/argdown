@@ -1,6 +1,29 @@
 import { SaveDialogOptions, Uri, window, workspace } from "vscode";
 import { URI, Utils } from "vscode-uri";
 import { isArgdownFile } from "../../util/file";
+import PDFDocument from "pdfkit/js/pdfkit.standalone";
+import SVGtoPDF from "svg-to-pdfkit";
+import blobStream from "blob-stream";
+
+export const savePdf = (resource: Uri, content: string) => {
+  const doc = new PDFDocument();
+  SVGtoPDF(doc, content);
+
+  const stream = doc.pipe(blobStream());
+
+  doc.end();
+
+  stream.on("finish", () => {
+    const blob = stream.toBlob("application/pdf");
+    void blob
+      .arrayBuffer()
+      .then((x) =>
+        saveExportedFile(resource, content, { PDF: ["pdf"] }, "pdf", () =>
+          Buffer.from(x)
+        )
+      );
+  });
+};
 
 export const saveExportedFile = async (
   resource: Uri,
