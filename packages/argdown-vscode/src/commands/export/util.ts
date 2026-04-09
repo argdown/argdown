@@ -54,7 +54,7 @@ export const saveExportedFile = async (
   if (fileUri) {
     try {
       const buf = transformer(content);
-      workspace.fs.writeFile(fileUri, buf);
+      await workspace.fs.writeFile(fileUri, buf);
     } catch (e) {
       return console.log(e);
     }

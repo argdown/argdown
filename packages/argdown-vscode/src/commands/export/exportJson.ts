@@ -22,7 +22,6 @@ export class ExportDocumentToJsonCommand implements Command {
     if (!uri) throw new Error("No file provided!");
     const config = new ArgdownConfiguration(uri, this.engine);
     const doc: TextDocument = await workspace.openTextDocument(uri);
-    window.showInformationMessage(uri.toString());
     const result = this.engine.exportJson(doc, config);
     await saveExportedFile(uri, result, { JSON: ["json"] }, "json");
   }

@@ -1,7 +1,7 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "outDir": "./out/test", // Does not use dist, becuse "vsce package" packages the whole dist folder
+    "outDir": "./out/test", // Does not use dist, because "vsce package" packages the whole dist folder
     "rootDir": "./test",
     "types": ["mocha", "vscode", "node"]
   },

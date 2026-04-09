@@ -112,9 +112,9 @@ export class ArgdownExtension {
     commandManager.register(new commands.ExportContentToVizjsPngCommand());
     commandManager.register(new commands.ExportContentToDagreSvgCommand());
     commandManager.register(new commands.ExportContentToDagrePngCommand());
-    commandManager.register(
-      new commands.ExportContentToDagrePdfCommand(argdownEngine)
-    );
+    // commandManager.register(
+    //   new commands.ExportContentToDagrePdfCommand(argdownEngine)
+    // );
 
     this.logger.log("Argdown extension: Command registration completed");
 

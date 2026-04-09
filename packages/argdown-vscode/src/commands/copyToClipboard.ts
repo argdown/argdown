@@ -5,7 +5,7 @@ import { ArgdownConfiguration } from "../config/ArgdownConfiguration";
 import { Command } from "./Command";
 import { getUri } from "./export/util";
 
-const successMessage = `Web component html copied to the clipbard. Paste your component into any html file. For more information on how to use the web component visit the [component's documentation](https://argdown.org/guide/embed-your-map-in-html.html).`;
+const successMessage = `Web component html copied to the clipboard. Paste your component into any html file. For more information on how to use the web component visit the [component's documentation](https://argdown.org/guide/embed-your-map-in-html.html).`;
 
 export class CopyWebComponentToClipboardCommand implements Command {
   private static readonly id = "argdown.copyWebComponentToClipboard";
