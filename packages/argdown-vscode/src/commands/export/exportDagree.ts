@@ -57,6 +57,6 @@ export class ExportContentToDagrePdfCommand implements Command {
     );
   }
   public execute(resource: vscode.Uri, content: string) {
-    savePdf(resource, content);
+    savePdf(resource, content, {});
   }
 }

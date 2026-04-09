@@ -81,7 +81,7 @@ export class ExportDocumentToVizjsPdfCommand implements Command {
     if (!uri) throw new Error("No file provided!");
     const config = new ArgdownConfiguration(uri, this.engine);
     const doc: TextDocument = await workspace.openTextDocument(uri);
-    const { svg } = await this.engine.exportSvg(doc, config);
-    savePdf(uri, svg);
+    const { svg, request } = await this.engine.exportSvg(doc, config);
+    savePdf(uri, svg, request);
   }
 }

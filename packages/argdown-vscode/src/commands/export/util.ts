@@ -1,13 +1,30 @@
+import { IArgdownRequest } from "@argdown/core";
+import blobStream from "blob-stream";
+import merge from "lodash.merge";
+import PDFDocument from "pdfkit/js/pdfkit.standalone";
+import SVGtoPDF from "svg-to-pdfkit";
 import { SaveDialogOptions, Uri, window, workspace } from "vscode";
 import { URI, Utils } from "vscode-uri";
 import { isArgdownFile } from "../../util/file";
-import PDFDocument from "pdfkit/js/pdfkit.standalone";
-import SVGtoPDF from "svg-to-pdfkit";
-import blobStream from "blob-stream";
+import { defaultSvgToPdfSettings } from "./svg.util";
 
-export const savePdf = (resource: Uri, content: string) => {
-  const doc = new PDFDocument();
-  SVGtoPDF(doc, content);
+export const savePdf = (
+  resource: Uri,
+  content: string,
+  request: IArgdownRequest
+) => {
+  // Override default settings with user-provided settings. User can provide settings with "svgToPdf" property in the request.
+  const settings = merge({}, defaultSvgToPdfSettings, request.svgToPdf);
+
+  const doc = new PDFDocument({
+    size: [settings.width || 0, settings.height || 0],
+    ...settings.pdf
+  });
+  SVGtoPDF(doc, content, settings.padding, settings.padding, {
+    width: settings.width - settings.padding * 2,
+    height: settings.height - settings.padding * 2,
+    ...settings.svg
+  });
 
   const stream = doc.pipe(blobStream());
 
@@ -18,7 +35,7 @@ export const savePdf = (resource: Uri, content: string) => {
     void blob
       .arrayBuffer()
       .then((x) =>
-        saveExportedFile(resource, content, { PDF: ["pdf"] }, "pdf", () =>
+        saveExportedFile(resource, "", { PDF: ["pdf"] }, "pdf", () =>
           Buffer.from(x)
         )
       );
