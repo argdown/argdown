@@ -38,9 +38,7 @@ To install this Monorepo
 - install requirements
     - `node>=22.11.0` (e.g. via [`nvm`](https://github.com/nvm-sh/nvm)),
     - `yarn>=4.9.4` (via [`corepack`](https://yarnpkg.com/corepack))
-- activate yarn with `yarn set version berry`
 - run `yarn install` in the main folder to install the dependencies of all packages. This will install all the libraries for all the argdown packages.
 - run `yarn build`.
-- run `yarn test` / `yarn test:coverage` for tests
+- run `yarn test` for tests
 - run `yarn workspace @argdown/docs run docs:dev` to deploy website locally.
-

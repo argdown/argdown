@@ -36,5 +36,6 @@ lerna-debug.log*
 .vscode
 .parcel-cache
 .cache
+codebook.toml
 
 .nx/cache
