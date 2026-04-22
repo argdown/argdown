@@ -1,13 +1,4 @@
 {
-  "compilerOptions": {
-    "module": "CommonJS",
-    "target": "ESNext",
-    "outDir": "dist",
-    "moduleResolution": "node",
-    "rootDir": ".",
-    "strict": true,
-    "esModuleInterop": true,
-    "sourceMap": true
-  },
-  "exclude": ["node_modules", "dist"]
+  // Handled by esbuild. Only needed for editor language services
+  "include": ["src", "esbuild"]
 }
