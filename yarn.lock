@@ -251,9 +251,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@argdown/codemirror-mode@workspace:^, @argdown/codemirror-mode@workspace:packages/argdown-codemirror-mode":
+"@argdown/codemirror-mode@workspace:^, @argdown/codemirror-mode@workspace:packages/code-highligher/argdown-codemirror-mode":
   version: 0.0.0-use.local
-  resolution: "@argdown/codemirror-mode@workspace:packages/argdown-codemirror-mode"
+  resolution: "@argdown/codemirror-mode@workspace:packages/code-highligher/argdown-codemirror-mode"
   dependencies:
     codemirror: "npm:^5.25.0"
   languageName: unknown
@@ -320,18 +320,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@argdown/gatsby-remark-plugin@workspace:packages/argdown-gatsby-remark-plugin":
+"@argdown/gatsby-remark-plugin@workspace:packages/markdown-plugins/argdown-gatsby-remark-plugin":
   version: 0.0.0-use.local
-  resolution: "@argdown/gatsby-remark-plugin@workspace:packages/argdown-gatsby-remark-plugin"
+  resolution: "@argdown/gatsby-remark-plugin@workspace:packages/markdown-plugins/argdown-gatsby-remark-plugin"
   dependencies:
     "@argdown/remark-plugin": "workspace:^"
     to-vfile: "npm:^8.0.0"
   languageName: unknown
   linkType: soft
 
-"@argdown/highlightjs@workspace:^, @argdown/highlightjs@workspace:packages/argdown-highlightjs":
+"@argdown/highlightjs@workspace:^, @argdown/highlightjs@workspace:packages/code-highligher/argdown-highlightjs":
   version: 0.0.0-use.local
-  resolution: "@argdown/highlightjs@workspace:packages/argdown-highlightjs"
+  resolution: "@argdown/highlightjs@workspace:packages/code-highligher/argdown-highlightjs"
   dependencies:
     "@types/copyfiles": "npm:^2"
     "@types/node": "npm:^22.15.24"
@@ -406,9 +406,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@argdown/markdown-it-plugin@workspace:^, @argdown/markdown-it-plugin@workspace:packages/argdown-markdown-it-plugin":
+"@argdown/markdown-it-plugin@workspace:^, @argdown/markdown-it-plugin@workspace:packages/markdown-plugins/argdown-markdown-it-plugin":
   version: 0.0.0-use.local
-  resolution: "@argdown/markdown-it-plugin@workspace:packages/argdown-markdown-it-plugin"
+  resolution: "@argdown/markdown-it-plugin@workspace:packages/markdown-plugins/argdown-markdown-it-plugin"
   dependencies:
     "@argdown/core": "workspace:^"
     "@argdown/web-components": "workspace:^"
@@ -426,9 +426,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@argdown/marked-plugin@workspace:packages/argdown-marked-plugin":
+"@argdown/marked-plugin@workspace:packages/markdown-plugins/argdown-marked-plugin":
   version: 0.0.0-use.local
-  resolution: "@argdown/marked-plugin@workspace:packages/argdown-marked-plugin"
+  resolution: "@argdown/marked-plugin@workspace:packages/markdown-plugins/argdown-marked-plugin"
   dependencies:
     "@argdown/core": "workspace:^"
     "@argdown/web-components": "workspace:^"
@@ -520,15 +520,15 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@argdown/prism@workspace:packages/argdown-prism":
+"@argdown/prism@workspace:packages/code-highligher/argdown-prism":
   version: 0.0.0-use.local
-  resolution: "@argdown/prism@workspace:packages/argdown-prism"
+  resolution: "@argdown/prism@workspace:packages/code-highligher/argdown-prism"
   languageName: unknown
   linkType: soft
 
-"@argdown/remark-plugin@workspace:^, @argdown/remark-plugin@workspace:packages/argdown-remark-plugin":
+"@argdown/remark-plugin@workspace:^, @argdown/remark-plugin@workspace:packages/markdown-plugins/argdown-remark-plugin":
   version: 0.0.0-use.local
-  resolution: "@argdown/remark-plugin@workspace:packages/argdown-remark-plugin"
+  resolution: "@argdown/remark-plugin@workspace:packages/markdown-plugins/argdown-remark-plugin"
   dependencies:
     "@argdown/core": "workspace:^"
     "@argdown/web-components": "workspace:^"
