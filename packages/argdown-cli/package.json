@@ -41,6 +41,7 @@
   },
   "scripts": {
     "deploy": "yarn run version:patch && git push --tags origin HEAD:master",
+    "dev": "tsc --watch",
     "build": "yarn run clean && tsc",
     "test": "tsc --noEmit && mocha",
     "test:build": "yarn build && mocha",

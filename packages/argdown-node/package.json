@@ -17,6 +17,7 @@
   "scripts": {
     "deploy": "npm run test && npm run build && npm version patch && npm run push",
     "type-check": "tsc --noEmit",
+    "dev": "tsc --watch",
     "build": "tsc",
     "docs:build": "typedoc ./src/",
     "test": "tsc --noEmit && mocha",
