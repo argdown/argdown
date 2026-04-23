@@ -15,7 +15,7 @@
   "scripts": {
     "build": "lerna run build",
     "test": "lerna run test",
-    "docs:dev": "yarn workspace @argdown/docs run docs:dev",
+    "docs:dev": "yarn workspace @argdown/docs run dev",
     "prettier:check": "lerna run prettier:check && prettier . --check",
     "prettier:fix": "prettier . --write",
     "prettier": "yarn run prettier:fix",
