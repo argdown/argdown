@@ -30,7 +30,7 @@ export const findNodeAtPosition = (
   if (!response || !response.ast || !(<IRuleNode>response.ast).children) {
     return null;
   }
-  const children = (<IRuleNode>response.ast).children!;
+  const children = (<IRuleNode>response.ast).children;
   const containingNodes: any[] = findNodesContainingPosition(
     children,
     line,

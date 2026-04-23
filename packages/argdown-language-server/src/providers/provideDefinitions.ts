@@ -16,7 +16,7 @@ export const provideDefinitions = (
     const tokenName = nodeAtPosition.tokenType.name;
     if (tokenName.startsWith("Statement")) {
       // collect locations of all equivalenceClass members
-      const equivalenceClass = response.statements![nodeAtPosition.title!];
+      const equivalenceClass = response.statements[nodeAtPosition.title];
       const definitions: Location[] = equivalenceClass.members
         .filter((m) => !m.isReference)
         .map((m) => {
@@ -25,7 +25,7 @@ export const provideDefinitions = (
       return definitions;
     } else if (tokenName.startsWith("Argument")) {
       // collect locations of pcs and all descriptions
-      const argument = response.arguments![nodeAtPosition.title!];
+      const argument = response.arguments[nodeAtPosition.title];
       const definitions: Location[] = argument.members
         .filter((m) => !m.isReference)
         .map((m) => {

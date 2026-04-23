@@ -26,7 +26,7 @@ export const provideCompletion = (
   }
   if (char === "[") {
     return Object.keys(response.statements).map((k: any) => {
-      const eqClass = response.statements![k];
+      const eqClass = response.statements[k];
       const title = eqClass.title;
       const item = CompletionItem.create(`[${title}]`);
       item.textEdit = TextEdit.replace(range, `[${title}]`);
@@ -36,7 +36,7 @@ export const provideCompletion = (
     });
   } else if (char === "<") {
     return Object.keys(response.arguments).map((k: any) => {
-      const argument = response.arguments![k];
+      const argument = response.arguments[k];
       const title = argument.title;
       const item = CompletionItem.create(`<${title}>`);
       item.textEdit = TextEdit.replace(range, `<${title}>`);
@@ -59,7 +59,7 @@ export const provideCompletion = (
       return eqClass.members
         .filter((member) => !member.isReference)
         .map((member) => {
-          const item = CompletionItem.create(member.text!);
+          const item = CompletionItem.create(member.text);
           item.kind = CompletionItemKind.Value;
           item.detail = `[${title}]: ${member.text}`;
           item.insertText = ` ${member.text}
@@ -75,7 +75,7 @@ export const provideCompletion = (
           return argument.members
             .filter((member) => !member.isReference)
             .map((member) => {
-              const item = CompletionItem.create(member.text!);
+              const item = CompletionItem.create(member.text);
               item.kind = CompletionItemKind.Value;
               item.detail = `<${title}>: ${member.text}`;
               item.insertText = ` ${member.text}

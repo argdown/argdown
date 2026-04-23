@@ -53,7 +53,7 @@ export const provideRenameWorkspaceEdit = (
       }
       return acc;
     }, []);
-    wsEdit.changes![textDocument.uri] = edits;
+    wsEdit.changes[textDocument.uri] = edits;
     return wsEdit;
   }
   return {};

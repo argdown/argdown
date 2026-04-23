@@ -30,8 +30,8 @@ export interface ArgdownSymbol extends DocumentSymbol {
 
 const getRange = (node: IAstNode): Range => {
   return {
-    start: { line: node.startLine! - 1, character: node.startColumn! - 1 },
-    end: { line: node.endLine! - 1, character: node.endColumn! }
+    start: { line: node.startLine - 1, character: node.startColumn - 1 },
+    end: { line: node.endLine - 1, character: node.endColumn }
   };
 };
 
@@ -41,7 +41,7 @@ const addSymbol = (
   parentsStack: ArgdownSymbol[]
 ) => {
   if (parentsStack.length === 0) {
-    response.documentSymbols!.push(symbol);
+    response.documentSymbols.push(symbol);
   } else {
     const parent = parentsStack[parentsStack.length - 1];
     let children = parent.children;
@@ -90,7 +90,7 @@ const onRelationExit = (
   parentsStack: ArgdownSymbol[]
 ) => {
   const symbol = parentsStack.pop();
-  addSymbol(response, symbol!, parentsStack);
+  addSymbol(response, symbol, parentsStack);
 };
 
 export class DocumentSymbolPlugin implements IArgdownPlugin {
@@ -110,7 +110,7 @@ export class DocumentSymbolPlugin implements IArgdownPlugin {
       [RuleNames.ARGDOWN + "Exit"]: (_request, response) => {
         while (parentsStack.length > 0) {
           const symbol = parentsStack.pop();
-          addSymbol(response, symbol!, parentsStack);
+          addSymbol(response, symbol, parentsStack);
         }
       },
       [RuleNames.RELATIONS + "Entry"]: () => {
@@ -124,11 +124,11 @@ export class DocumentSymbolPlugin implements IArgdownPlugin {
           parentsStack.length > 0
             ? parentsStack[parentsStack.length - 1]
             : null;
-        const level = node.section!.level;
+        const level = node.section.level;
         while (
           parent &&
           parent.argdownType === ArgdownTypes.SECTION &&
-          parent.level! >= level
+          parent.level >= level
         ) {
           parentsStack.pop();
           addSymbol(response, parent, parentsStack);
@@ -146,10 +146,10 @@ export class DocumentSymbolPlugin implements IArgdownPlugin {
         symbol.argdownType = ArgdownTypes.SECTION;
         symbol.level = level;
         symbol.range = Range.create(
-          node.section!.startLine! - 1,
-          node.section!.startColumn! - 1,
-          node.section!.endLine! - 1,
-          node.section!.endColumn!
+          node.section.startLine - 1,
+          node.section.startColumn - 1,
+          node.section.endLine - 1,
+          node.section.endColumn
         );
         symbol.selectionRange = getRange(node);
         symbol.kind = SymbolKind.Variable;
@@ -160,7 +160,7 @@ export class DocumentSymbolPlugin implements IArgdownPlugin {
           return;
         }
         const symbol = {} as ArgdownSymbol;
-        symbol.name = `[${node.statement!.title}]`;
+        symbol.name = `[${node.statement.title}]`;
         symbol.range = getRange(node);
         const firstChild =
           node.children && node.children.length > 0 ? node.children[0] : null;
@@ -182,14 +182,14 @@ export class DocumentSymbolPlugin implements IArgdownPlugin {
           return;
         }
         const symbol = parentsStack.pop();
-        addSymbol(response, symbol!, parentsStack);
+        addSymbol(response, symbol, parentsStack);
       },
       [RuleNames.ARGUMENT + "Entry"]: (_request, _response, node) => {
         if (inRelations > 0 || inPcs) {
           return;
         }
         const symbol = {} as ArgdownSymbol;
-        symbol.name = `<${node.argument!.title}>`;
+        symbol.name = `<${node.argument.title}>`;
         symbol.range = getRange(node);
         const firstChild =
           node.children && node.children.length > 0 ? node.children[0] : null;
@@ -211,12 +211,12 @@ export class DocumentSymbolPlugin implements IArgdownPlugin {
           return;
         }
         const symbol = parentsStack.pop();
-        addSymbol(response, symbol!, parentsStack);
+        addSymbol(response, symbol, parentsStack);
       },
       [RuleNames.PCS + "Entry"]: (_request, _response, node) => {
         inPcs = true;
         const symbol = {} as ArgdownSymbol;
-        symbol.name = `PCS <${node.argument!.title}>`;
+        symbol.name = `PCS <${node.argument.title}>`;
         symbol.range = getRange(node);
         const firstChild =
           node.children && node.children.length > 0 ? node.children[0] : null;
@@ -236,11 +236,11 @@ export class DocumentSymbolPlugin implements IArgdownPlugin {
       [RuleNames.PCS + "Exit"]: (_request, response) => {
         inPcs = false;
         const symbol = parentsStack.pop();
-        addSymbol(response, symbol!, parentsStack);
+        addSymbol(response, symbol, parentsStack);
       },
       [RuleNames.PCS_STATEMENT + "Entry"]: (_request, _response, node) => {
         const symbol = {} as ArgdownSymbol;
-        symbol.name = `(${node.statementNr}) [${node.statement!.title}]`;
+        symbol.name = `(${node.statementNr}) [${node.statement.title}]`;
         symbol.range = getRange(node);
         const firstChild =
           node.children && node.children.length > 0 ? node.children[0] : null;
@@ -259,7 +259,7 @@ export class DocumentSymbolPlugin implements IArgdownPlugin {
       },
       [RuleNames.PCS_STATEMENT + "Exit"]: (_request, response) => {
         const symbol = parentsStack.pop();
-        addSymbol(response, symbol!, parentsStack);
+        addSymbol(response, symbol, parentsStack);
       },
       [RuleNames.INFERENCE + "Entry"]: (_request, _response, node) => {
         const symbol = {} as ArgdownSymbol;
@@ -282,7 +282,7 @@ export class DocumentSymbolPlugin implements IArgdownPlugin {
       },
       [RuleNames.INFERENCE + "Exit"]: (_request, response) => {
         const symbol = parentsStack.pop();
-        addSymbol(response, symbol!, parentsStack);
+        addSymbol(response, symbol, parentsStack);
       },
       [RuleNames.INCOMING_ATTACK + "Entry"]: (_req, _resp, node) => {
         onRelationEntry(parentsStack, node, "->");

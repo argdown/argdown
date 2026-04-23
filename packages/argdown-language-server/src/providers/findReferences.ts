@@ -37,7 +37,7 @@ export const findReferences = (
       tokenStart = "Tag";
       nodeId = nodeAtPosition.tag!;
     }
-    walkTree(response.ast!, null, 0, (node: IAstNode) => {
+    walkTree(response.ast, null, 0, (node: IAstNode) => {
       if (
         isTokenNode(node) &&
         node.tokenType &&
