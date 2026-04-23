@@ -41,4 +41,4 @@ To install this Monorepo
 - run `yarn install` in the main folder to install the dependencies of all packages. This will install all the libraries for all the argdown packages.
 - run `yarn build`.
 - run `yarn test` for tests
-- run `yarn workspace @argdown/docs run docs:dev` to deploy website locally.
+- run `yarn workspace @argdown/docs run dev` to deploy the docs website locally.
