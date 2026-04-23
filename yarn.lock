@@ -251,9 +251,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@argdown/codemirror-mode@workspace:^, @argdown/codemirror-mode@workspace:packages/code-highligher/argdown-codemirror-mode":
+"@argdown/codemirror-mode@workspace:^, @argdown/codemirror-mode@workspace:packages/code-highlighter/argdown-codemirror-mode":
   version: 0.0.0-use.local
-  resolution: "@argdown/codemirror-mode@workspace:packages/code-highligher/argdown-codemirror-mode"
+  resolution: "@argdown/codemirror-mode@workspace:packages/code-highlighter/argdown-codemirror-mode"
   dependencies:
     codemirror: "npm:^5.25.0"
   languageName: unknown
@@ -329,9 +329,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@argdown/highlightjs@workspace:^, @argdown/highlightjs@workspace:packages/code-highligher/argdown-highlightjs":
+"@argdown/highlightjs@workspace:^, @argdown/highlightjs@workspace:packages/code-highlighter/argdown-highlightjs":
   version: 0.0.0-use.local
-  resolution: "@argdown/highlightjs@workspace:packages/code-highligher/argdown-highlightjs"
+  resolution: "@argdown/highlightjs@workspace:packages/code-highlighter/argdown-highlightjs"
   dependencies:
     "@types/copyfiles": "npm:^2"
     "@types/node": "npm:^22.15.24"
@@ -520,9 +520,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@argdown/prism@workspace:packages/code-highligher/argdown-prism":
+"@argdown/prism@workspace:packages/code-highlighter/argdown-prism":
   version: 0.0.0-use.local
-  resolution: "@argdown/prism@workspace:packages/code-highligher/argdown-prism"
+  resolution: "@argdown/prism@workspace:packages/code-highlighter/argdown-prism"
   languageName: unknown
   linkType: soft
 
