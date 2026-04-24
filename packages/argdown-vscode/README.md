@@ -45,7 +45,7 @@ If you are looking for the perfect font for your Argdown code, check out our fre
 ```json
     "[argdown]": {
         "editor.fontLigatures": "'dlig'",
-        "editor.fontFamily": "ArgVu Sans Mono Regular"
+        "editor.fontFamily": "ArgVu Sans Mono"
     },
 ```
 
