@@ -1,0 +1,845 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.com/schemas/argdown-json.schema.json",
+  "title": "Argdown JSON (JSONExportPlugin)",
+  "description": "Schema for JSON produced by JSONExportPlugin in @argdown/core. This is intentionally close to the TypeScript model interfaces and JSONExportPlugin layout. Fields such as statements, relations, map, sections, and tags are present or omitted depending on json.* export settings; downstream tools may also prune parts of the structure. The schema is intended for documentation and validation of Argdown JSON exports.",
+  "type": "object",
+  "properties": {
+    "arguments": {
+      "type": "object",
+      "description": "Map from argument title to Argument. Arguments are always present before export; downstream tools may remove some entries, but the keys are the argument titles as produced by JSONExportPlugin.",
+      "additionalProperties": {
+        "$ref": "#/$defs/Argument"
+      }
+    },
+    "statements": {
+      "type": "object",
+      "description": "Map from statement title to an equivalence class node. Optional in the exported JSON: the model plugin computes these equivalence classes, but downstream tools may prune or drop this map.",
+      "additionalProperties": {
+        "$ref": "#/$defs/EquivalenceClass"
+      }
+    },
+    "relations": {
+      "type": "array",
+      "description": "Logical/dialectical relations between arguments, statement equivalence classes, and inferences. Present before export; may be removed or filtered by downstream tools.",
+      "items": {
+        "$ref": "#/$defs/Relation"
+      }
+    },
+    "map": {
+      "$ref": "#/$defs/Map",
+      "description": "Optional argument map (IMap JSON representation). Only present if json.exportMap is true and the map plugin has produced map data."
+    },
+    "sections": {
+      "type": "array",
+      "description": "Optional list of sections (ISection in JSON form after prepareSectionForJSON). Only present if json.exportSections is true.",
+      "items": {
+        "$ref": "#/$defs/Section"
+      }
+    },
+    "tags": {
+      "type": "object",
+      "description": "Optional tag metadata, emitted as-is from response.tags. Shape is implementation-defined; JSONExportPlugin does not normalize it and the TypeScript model currently has no TagInfo interface.",
+      "additionalProperties": {
+        "$ref": "#/$defs/TagInfo"
+      }
+    }
+  },
+  "required": [
+    "arguments"
+  ],
+  "$defs": {
+    "ArgdownType": {
+      "type": "string",
+      "enum": [
+        "equivalence-class",
+        "statement",
+        "statement-reference",
+        "argument",
+        "relation",
+        "inference",
+        "statement-map-node",
+        "argument-map-node",
+        "group-map-node",
+        "map-edge",
+        "section",
+        "rule-node",
+        "token-node"
+      ]
+    },
+    "RelationType": {
+      "type": "string",
+      "enum": [
+        "attack",
+        "support",
+        "entails",
+        "contrary",
+        "contradictory",
+        "undercut"
+      ]
+    },
+    "StatementRole": {
+      "type": "string",
+      "enum": [
+        "premise",
+        "intermediary-conclusion",
+        "main-conclusion",
+        "argument-description",
+        "top-level-statement",
+        "relation-statement"
+      ]
+    },
+    "RangeType": {
+      "type": "string",
+      "enum": [
+        "bold",
+        "italic",
+        "link",
+        "tag",
+        "statement-mention",
+        "argument-mention",
+        "special-char"
+      ]
+    },
+    "MapNodeType": {
+      "type": "string",
+      "enum": [
+        "statement-map-node",
+        "argument-map-node",
+        "group-map-node"
+      ]
+    },
+    "HasTitle": {
+      "type": "object",
+      "description": "Mixin providing an optional title field.",
+      "properties": {
+        "title": {
+          "type": "string"
+        }
+      }
+    },
+    "HasText": {
+      "type": "object",
+      "description": "Mixin providing optional text and formatting ranges.",
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "ranges": {
+          "type": "array",
+          "description": "Ranges for formatting, mentions, tags, etc.",
+          "items": {
+            "$ref": "#/$defs/Range"
+          }
+        }
+      }
+    },
+    "HasTags": {
+      "type": "object",
+      "description": "Mixin providing optional tags array.",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "HasLocation": {
+      "type": "object",
+      "description": "Mixin providing optional source location information.",
+      "properties": {
+        "startLine": {
+          "type": "integer"
+        },
+        "endLine": {
+          "type": "integer"
+        },
+        "startColumn": {
+          "type": "integer"
+        },
+        "endColumn": {
+          "type": "integer"
+        },
+        "startOffset": {
+          "type": "integer"
+        },
+        "endOffset": {
+          "type": "integer"
+        }
+      }
+    },
+    "HasColor": {
+      "type": "object",
+      "description": "Mixin providing an optional color field.",
+      "properties": {
+        "color": {
+          "type": "string"
+        }
+      }
+    },
+    "HasFontColor": {
+      "type": "object",
+      "description": "Mixin providing an optional fontColor field.",
+      "properties": {
+        "fontColor": {
+          "type": "string"
+        }
+      }
+    },
+    "HasData": {
+      "type": "object",
+      "properties": {
+        "data": {}
+      },
+      "description": "Arbitrary plugin data; unconstrained."
+    },
+    "Range": {
+      "type": "object",
+      "description": "A formatted text range (mirrors IRange).",
+      "properties": {
+        "type": {
+          "$ref": "#/$defs/RangeType"
+        },
+        "start": {
+          "type": "integer"
+        },
+        "stop": {
+          "type": "integer"
+        },
+        "title": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "tag": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "start",
+        "stop"
+      ]
+    },
+    "Statement": {
+      "type": "object",
+      "description": "Base statement occurrence in the document (IStatement / IPCSStatement). In JSON, section is always a section id string (never an embedded section object). For arguments and equivalence classes, section may be removed entirely if json.exportSections is false.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/HasTitle"
+        },
+        {
+          "$ref": "#/$defs/HasText"
+        },
+        {
+          "$ref": "#/$defs/HasTags"
+        },
+        {
+          "$ref": "#/$defs/HasLocation"
+        },
+        {
+          "$ref": "#/$defs/HasData"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "statement"
+            },
+            "role": {
+              "$ref": "#/$defs/StatementRole"
+            },
+            "isReference": {
+              "type": "boolean",
+              "description": "True if this is a reference to a canonical definition."
+            },
+            "isTopLevel": {
+              "type": "boolean",
+              "description": "True if this is a standalone top-level paragraph."
+            },
+            "section": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Section id (string) as produced by toJSON (section object replaced by its id)."
+            }
+          },
+          "required": [
+            "type"
+          ]
+        }
+      ]
+    },
+    "Inference": {
+      "type": "object",
+      "description": "Inference attached to a conclusion in a pcs (IInference). In JSON, section is a full Section object (not normalized to a section id) and is not removed by json.exportSections.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/HasTitle"
+        },
+        {
+          "$ref": "#/$defs/HasData"
+        },
+        {
+          "$ref": "#/$defs/HasLocation"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "inference"
+            },
+            "inferenceRules": {
+              "type": "array",
+              "description": "Inference rules, if any (e.g. 'Modus Ponens').",
+              "items": {
+                "type": "string"
+              }
+            },
+            "argumentTitle": {
+              "type": "string",
+              "description": "Argument title whose pcs this inference belongs to."
+            },
+            "conclusionIndex": {
+              "type": "integer",
+              "description": "Index of the conclusion in the argument's pcs."
+            },
+            "section": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Section"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Optional embedded section object."
+            }
+          },
+          "required": [
+            "type"
+          ]
+        }
+      ]
+    },
+    "PCSStatement": {
+      "type": "object",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Statement"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "role": {
+              "type": "string",
+              "description": "Role is restricted inside pcs.",
+              "enum": [
+                "premise",
+                "intermediary-conclusion",
+                "main-conclusion"
+              ]
+            },
+            "argumentTitle": {
+              "type": "string",
+              "description": "Title of the argument whose pcs this belongs to."
+            },
+            "inference": {
+              "$ref": "#/$defs/Inference",
+              "description": "Present only on conclusion statements in the pcs (main or intermediary conclusions)."
+            }
+          },
+          "required": [
+            "role"
+          ]
+        }
+      ],
+      "description": "Statement used in a pcs (premise–conclusion structure)."
+    },
+    "ArgumentDescription": {
+      "type": "object",
+      "description": "Statement used as an argument description (IArgumentDescription).",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Statement"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "role": {
+              "const": "argument-description"
+            },
+            "pcs": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/PCSStatement"
+              }
+            }
+          },
+          "required": [
+            "role"
+          ]
+        }
+      ]
+    },
+    "Relation": {
+      "type": "object",
+      "description": "Logical/dialectical relation between Argdown elements, in JSON form. This corresponds to prepareRelationForJSON in toJSON.ts.",
+      "properties": {
+        "type": {
+          "const": "relation"
+        },
+        "relationType": {
+          "$ref": "#/$defs/RelationType"
+        },
+        "from": {
+          "type": "string",
+          "description": "Source serialized by title (or argumentTitle for inferences)."
+        },
+        "fromType": {
+          "$ref": "#/$defs/ArgdownType"
+        },
+        "to": {
+          "type": "string",
+          "description": "Target serialized by title or argumentTitle."
+        },
+        "toType": {
+          "$ref": "#/$defs/ArgdownType"
+        },
+        "conclusionIndex": {
+          "type": "integer",
+          "description": "Present if the target is an inference; then 'to' is the argumentTitle."
+        }
+      },
+      "required": [
+        "type",
+        "relationType"
+      ]
+    },
+    "Argument": {
+      "type": "object",
+      "description": "An argument with pcs and descriptions (IArgument). Section is serialized as a section id string if json.exportSections is true; otherwise it may be omitted entirely. Embedded relations can be removed via json.removeEmbeddedRelations.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/HasTitle"
+        },
+        {
+          "$ref": "#/$defs/HasTags"
+        },
+        {
+          "$ref": "#/$defs/HasLocation"
+        },
+        {
+          "$ref": "#/$defs/HasColor"
+        },
+        {
+          "$ref": "#/$defs/HasFontColor"
+        },
+        {
+          "$ref": "#/$defs/HasData"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "argument"
+            },
+            "pcs": {
+              "type": "array",
+              "description": "Premise–conclusion structure.",
+              "items": {
+                "$ref": "#/$defs/PCSStatement"
+              }
+            },
+            "members": {
+              "type": "array",
+              "description": "All descriptions and references with this argument's title.",
+              "items": {
+                "$ref": "#/$defs/ArgumentDescription"
+              }
+            },
+            "relations": {
+              "type": "array",
+              "description": "Relations involving this argument’s main conclusion, unless removed via json.removeEmbeddedRelations.",
+              "items": {
+                "$ref": "#/$defs/Relation"
+              }
+            },
+            "section": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Section id (if sections were exported)."
+            }
+          },
+          "required": [
+            "type",
+            "pcs",
+            "members"
+          ]
+        }
+      ]
+    },
+    "EquivalenceClass": {
+      "type": "object",
+      "description": "An equivalence class of logically equivalent statements (IEquivalenceClass). Section is serialized as a section id string if json.exportSections is true; otherwise it may be omitted entirely. Embedded relations can be removed via json.removeEmbeddedRelations.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/HasTitle"
+        },
+        {
+          "$ref": "#/$defs/HasTags"
+        },
+        {
+          "$ref": "#/$defs/HasLocation"
+        },
+        {
+          "$ref": "#/$defs/HasColor"
+        },
+        {
+          "$ref": "#/$defs/HasFontColor"
+        },
+        {
+          "$ref": "#/$defs/HasData"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "equivalence-class"
+            },
+            "members": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Statement"
+              }
+            },
+            "relations": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Relation"
+              }
+            },
+            "isUsedAsPremise": {
+              "type": "boolean",
+              "description": "Usage flag as computed by the model plugin: used as premise."
+            },
+            "isUsedAsMainConclusion": {
+              "type": "boolean",
+              "description": "Usage flag as computed by the model plugin: used as main conclusion."
+            },
+            "isUsedAsIntermediaryConclusion": {
+              "type": "boolean",
+              "description": "Usage flag as computed by the model plugin: used as intermediary conclusion."
+            },
+            "isUsedAsTopLevelStatement": {
+              "type": "boolean",
+              "description": "Usage flag as computed by the model plugin: used as top-level statement."
+            },
+            "isUsedAsRelationStatement": {
+              "type": "boolean",
+              "description": "Usage flag as computed by the model plugin: used as relation statement."
+            },
+            "section": {
+              "type": [
+                "string",
+                "null"
+              ],
+              "description": "Section id (if sections were exported)."
+            }
+          },
+          "required": [
+            "type",
+            "members"
+          ]
+        }
+      ]
+    },
+    "Section": {
+      "type": "object",
+      "description": "Section in the document hierarchy (ISection, in JSON form after prepareSectionForJSON).",
+      "allOf": [
+        {
+          "$ref": "#/$defs/HasTitle"
+        },
+        {
+          "$ref": "#/$defs/HasTags"
+        },
+        {
+          "$ref": "#/$defs/HasText"
+        },
+        {
+          "$ref": "#/$defs/HasLocation"
+        },
+        {
+          "$ref": "#/$defs/HasColor"
+        },
+        {
+          "$ref": "#/$defs/HasFontColor"
+        },
+        {
+          "$ref": "#/$defs/HasData"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "section"
+            },
+            "id": {
+              "type": "string",
+              "description": "Automatically generated id, unique among sections in a document."
+            },
+            "level": {
+              "type": "integer",
+              "description": "Heading level (1 for H1, 2 for H2, ...)."
+            },
+            "children": {
+              "type": "array",
+              "description": "Children sections (with parent rewritten to ids).",
+              "items": {
+                "$ref": "#/$defs/Section"
+              }
+            },
+            "parent": {
+              "type": "string",
+              "description": "Parent section id, if any."
+            },
+            "isGroup": {
+              "type": "boolean",
+              "description": "If true, this section is used as a group node in the map."
+            },
+            "isClosed": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "type",
+            "id",
+            "level",
+            "children"
+          ]
+        }
+      ]
+    },
+    "StatementMapNode": {
+      "type": "object",
+      "description": "Statement map node, after prepareMapNodeForJSON.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/HasTitle"
+        },
+        {
+          "$ref": "#/$defs/HasTags"
+        },
+        {
+          "$ref": "#/$defs/HasColor"
+        },
+        {
+          "$ref": "#/$defs/HasFontColor"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "statement-map-node"
+            },
+            "id": {
+              "type": "string"
+            },
+            "labelTitle": {
+              "type": "string",
+              "description": "Label used in the visualization (title)."
+            },
+            "labelText": {
+              "type": "string",
+              "description": "Label used in the visualization (text)."
+            }
+          },
+          "required": [
+            "type",
+            "id"
+          ]
+        }
+      ]
+    },
+    "ArgumentMapNode": {
+      "type": "object",
+      "description": "Argument map node, after prepareMapNodeForJSON.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/HasTitle"
+        },
+        {
+          "$ref": "#/$defs/HasTags"
+        },
+        {
+          "$ref": "#/$defs/HasColor"
+        },
+        {
+          "$ref": "#/$defs/HasFontColor"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "argument-map-node"
+            },
+            "id": {
+              "type": "string"
+            },
+            "labelTitle": {
+              "type": "string",
+              "description": "Label used in the visualization (title)."
+            },
+            "labelText": {
+              "type": "string",
+              "description": "Label used in the visualization (text)."
+            }
+          },
+          "required": [
+            "type",
+            "id"
+          ]
+        }
+      ]
+    },
+    "GroupMapNode": {
+      "type": "object",
+      "description": "Group map node, after prepareGroupMapNodeForJSON.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/HasTitle"
+        },
+        {
+          "$ref": "#/$defs/HasColor"
+        },
+        {
+          "$ref": "#/$defs/HasFontColor"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "const": "group-map-node"
+            },
+            "id": {
+              "type": "string"
+            },
+            "children": {
+              "type": "array",
+              "description": "Hierarchy of child nodes (group or non-group).",
+              "items": {
+                "$ref": "#/$defs/MapNode"
+              }
+            },
+            "parent": {
+              "type": "string",
+              "description": "Parent group id, if any."
+            },
+            "level": {
+              "type": "integer"
+            },
+            "isClosed": {
+              "type": "boolean"
+            },
+            "labelTitle": {
+              "type": "string"
+            },
+            "labelText": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "type",
+            "id"
+          ]
+        }
+      ]
+    },
+    "MapNode": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/StatementMapNode"
+        },
+        {
+          "$ref": "#/$defs/ArgumentMapNode"
+        },
+        {
+          "$ref": "#/$defs/GroupMapNode"
+        }
+      ],
+      "description": "Base map node, after prepareMapNodeForJSON / prepareGroupMapNodeForJSON. Label ranges and images are not part of the exported JSON, only simple label strings and basic styling information."
+    },
+    "MapEdge": {
+      "type": "object",
+      "description": "Map edge, as produced by prepareMapEdgeForJSON.",
+      "properties": {
+        "type": {
+          "const": "map-edge"
+        },
+        "id": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string",
+          "description": "Map node id."
+        },
+        "to": {
+          "type": "string",
+          "description": "Map node id."
+        },
+        "relationType": {
+          "$ref": "#/$defs/RelationType",
+          "description": "Relation type that this edge visualizes."
+        },
+        "fromEquivalenceClass": {
+          "type": "string",
+          "description": "Optional equivalence class title if edge is derived from a relation whose source is a statement equivalence class."
+        },
+        "toEquivalenceClass": {
+          "type": "string",
+          "description": "Optional equivalence class title if edge is derived from a relation whose target is a statement equivalence class."
+        }
+      },
+      "required": [
+        "type",
+        "id",
+        "from",
+        "to",
+        "relationType"
+      ]
+    },
+    "Map": {
+      "type": "object",
+      "description": "The map itself (IMap JSON representation).",
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MapNode"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MapEdge"
+          }
+        }
+      },
+      "required": [
+        "nodes",
+        "edges"
+      ]
+    },
+    "TagInfo": {
+      "description": "Unconstrained tag metadata. The TypeScript model does not currently define a dedicated TagInfo interface and JSONExportPlugin does not normalize tag data; response.tags is emitted as-is.",
+      "default": {}
+    }
+  }
+}
