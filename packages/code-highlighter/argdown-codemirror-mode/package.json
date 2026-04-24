@@ -1,6 +1,6 @@
 {
   "name": "@argdown/codemirror-mode",
-  "version": "1.7.4",
+  "version": "2.0.0",
   "description": "A simple Argdown syntax highlighting mode",
   "main": "index.js",
   "repository": {
