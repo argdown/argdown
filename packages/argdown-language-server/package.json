@@ -1,7 +1,7 @@
 {
   "name": "@argdown/language-server",
   "description": "Language Server for the Argdown argumentation syntax.",
-  "version": "1.8.0",
+  "version": "2.0.0",
   "author": "Christian Voigt",
   "license": "MIT",
   "main": "./dist/server.node.js",

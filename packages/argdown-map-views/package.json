@@ -1,6 +1,6 @@
 {
   "name": "@argdown/map-views",
-  "version": "1.7.11",
+  "version": "2.0.0",
   "description": "Browser-based map views for Argdown data using dagre-d3 and viz.js",
   "repository": {
     "type": "git",

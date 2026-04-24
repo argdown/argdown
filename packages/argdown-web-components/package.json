@@ -1,6 +1,6 @@
 {
 	"name": "@argdown/web-components",
-	"version": "1.8.0",
+	"version": "2.0.0",
 	"description": "Components that help to embed Argdown in the browser",
 	"repository": {
 		"type": "git",
