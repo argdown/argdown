@@ -13,8 +13,9 @@ We will add our toy plugin from the [previous sections](/guide/writing-custom-pl
 
 ```typescript
 import {argdown} from "@argdown/node";
-import {SaysWhoPlugin, IArgdownRequest} from "@argdown/core";
+import {SaysWhoPlugin, IArgdownRequest, init} from "@argdown/core";
 
+await init();
 argdown.addPlugin(new SaysWhoPlugin(), "add-proponents");
 argdown.defaultProcesses["say-who-map"]: [
   "parse-input", // parses them (response.ast)

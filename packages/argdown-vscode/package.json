@@ -511,7 +511,6 @@
     "build:preview": "tsx esbuild/esbuild.preview.ts --production",
     "build": "yarn run clean && run-p \"build:*\" && run-p \"copy:*\"",
     "clean": "rimraf \"dist/\"",
-    "copy:changelog": "cp ../../packages/argdown-docs/docs/changes/index.md CHANGELOG.md",
     "copy:web-components": "mkdir -p dist/assets/ && cp ../argdown-web-components/dist/argdown-map.* dist/assets/",
     "copy:language-server": "mkdir -p dist/server/ && cp ../argdown-language-server/dist/server.* dist/server/",
     "pretest": "tsc -p tsconfig.test.json",

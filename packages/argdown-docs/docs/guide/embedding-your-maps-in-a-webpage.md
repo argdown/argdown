@@ -338,7 +338,7 @@ Currently the web component export will always use the Viz.js (Graphviz) map exp
 The "source" and "map" views of the Argdown web component are child html elements of it, assigned to the "source" and "map" slots of the component. You have complete control over these elements. The component does not care what kind of source code or svg you put into these slots, as long as the following HTML structure of the component is maintained:
 
 ```html
-<argdown-map initial-view="map">
+<argdown-map initialView="map">
   <div slot="source">
     <pre class="language-argdown">
       <code class="language-argdown">
