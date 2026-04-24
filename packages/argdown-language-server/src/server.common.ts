@@ -1,5 +1,5 @@
 import { argdown, IArgdownRequest, IArgdownResponse } from "@argdown/core";
-import path from "path";
+import { sep } from "path";
 import type {
   Connection,
   DocumentSymbolParams,
@@ -46,7 +46,7 @@ export class Server {
   );
   private documentSettings: Map<string, Thenable<IArgdownSettings>> = new Map();
 
-  private pathSeperator = path.sep;
+  private pathSeperator = sep;
 
   constructor(private connection: Connection) {}
 
