@@ -94,7 +94,7 @@ export default withPwa(
             text: "Changes",
             items: [
               {
-                text: "Release Notes 2025",
+                text: "Release Notes 2026",
                 link: "/changes/"
               },
               {
