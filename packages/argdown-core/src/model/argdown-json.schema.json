@@ -45,9 +45,7 @@
       }
     }
   },
-  "required": [
-    "arguments"
-  ],
+  "required": ["arguments"],
   "$defs": {
     "ArgdownType": {
       "type": "string",
@@ -103,11 +101,7 @@
     },
     "MapNodeType": {
       "type": "string",
-      "enum": [
-        "statement-map-node",
-        "argument-map-node",
-        "group-map-node"
-      ]
+      "enum": ["statement-map-node", "argument-map-node", "group-map-node"]
     },
     "HasTitle": {
       "type": "object",
@@ -218,11 +212,7 @@
           "type": "string"
         }
       },
-      "required": [
-        "type",
-        "start",
-        "stop"
-      ]
+      "required": ["type", "start", "stop"]
     },
     "Statement": {
       "type": "object",
@@ -261,16 +251,11 @@
               "description": "True if this is a standalone top-level paragraph."
             },
             "section": {
-              "type": [
-                "string",
-                "null"
-              ],
+              "type": ["string", "null"],
               "description": "Section id (string) as produced by toJSON (section object replaced by its id)."
             }
           },
-          "required": [
-            "type"
-          ]
+          "required": ["type"]
         }
       ]
     },
@@ -320,9 +305,7 @@
               "description": "Optional embedded section object."
             }
           },
-          "required": [
-            "type"
-          ]
+          "required": ["type"]
         }
       ]
     },
@@ -338,11 +321,7 @@
             "role": {
               "type": "string",
               "description": "Role is restricted inside pcs.",
-              "enum": [
-                "premise",
-                "intermediary-conclusion",
-                "main-conclusion"
-              ]
+              "enum": ["premise", "intermediary-conclusion", "main-conclusion"]
             },
             "argumentTitle": {
               "type": "string",
@@ -353,9 +332,7 @@
               "description": "Present only on conclusion statements in the pcs (main or intermediary conclusions)."
             }
           },
-          "required": [
-            "role"
-          ]
+          "required": ["role"]
         }
       ],
       "description": "Statement used in a pcs (premise–conclusion structure)."
@@ -380,9 +357,7 @@
               }
             }
           },
-          "required": [
-            "role"
-          ]
+          "required": ["role"]
         }
       ]
     },
@@ -415,10 +390,7 @@
           "description": "Present if the target is an inference; then 'to' is the argumentTitle."
         }
       },
-      "required": [
-        "type",
-        "relationType"
-      ]
+      "required": ["type", "relationType"]
     },
     "Argument": {
       "type": "object",
@@ -470,18 +442,11 @@
               }
             },
             "section": {
-              "type": [
-                "string",
-                "null"
-              ],
+              "type": ["string", "null"],
               "description": "Section id (if sections were exported)."
             }
           },
-          "required": [
-            "type",
-            "pcs",
-            "members"
-          ]
+          "required": ["type", "pcs", "members"]
         }
       ]
     },
@@ -546,17 +511,11 @@
               "description": "Usage flag as computed by the model plugin: used as relation statement."
             },
             "section": {
-              "type": [
-                "string",
-                "null"
-              ],
+              "type": ["string", "null"],
               "description": "Section id (if sections were exported)."
             }
           },
-          "required": [
-            "type",
-            "members"
-          ]
+          "required": ["type", "members"]
         }
       ]
     },
@@ -618,12 +577,7 @@
               "type": "boolean"
             }
           },
-          "required": [
-            "type",
-            "id",
-            "level",
-            "children"
-          ]
+          "required": ["type", "id", "level", "children"]
         }
       ]
     },
@@ -661,10 +615,7 @@
               "description": "Label used in the visualization (text)."
             }
           },
-          "required": [
-            "type",
-            "id"
-          ]
+          "required": ["type", "id"]
         }
       ]
     },
@@ -702,10 +653,7 @@
               "description": "Label used in the visualization (text)."
             }
           },
-          "required": [
-            "type",
-            "id"
-          ]
+          "required": ["type", "id"]
         }
       ]
     },
@@ -755,10 +703,7 @@
               "type": "string"
             }
           },
-          "required": [
-            "type",
-            "id"
-          ]
+          "required": ["type", "id"]
         }
       ]
     },
@@ -807,13 +752,7 @@
           "description": "Optional equivalence class title if edge is derived from a relation whose target is a statement equivalence class."
         }
       },
-      "required": [
-        "type",
-        "id",
-        "from",
-        "to",
-        "relationType"
-      ]
+      "required": ["type", "id", "from", "to", "relationType"]
     },
     "Map": {
       "type": "object",
@@ -832,10 +771,7 @@
           }
         }
       },
-      "required": [
-        "nodes",
-        "edges"
-      ]
+      "required": ["nodes", "edges"]
     },
     "TagInfo": {
       "description": "Unconstrained tag metadata. The TypeScript model does not currently define a dedicated TagInfo interface and JSONExportPlugin does not normalize tag data; response.tags is emitted as-is.",
