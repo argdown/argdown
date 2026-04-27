@@ -1,6 +1,6 @@
 {
   "name": "@argdown/node",
-  "version": "2.0.0",
+  "version": "2.0.3",
   "description": "Async Argdown application for node.js",
   "type": "module",
   "main": "./dist/index.js",
@@ -41,6 +41,8 @@
     "@argdown/core": "workspace:^",
     "@hpcc-js/wasm-graphviz": "^1.18.0",
     "axios": "^1.8.2",
+    "chokidar": "^5.0.0",
+    "glob": "^13.0.6",
     "image-size": "^2.0.0",
     "image-type": "^5.2.0",
     "import-fresh": "^3.3.1",

@@ -1,5 +1,11 @@
 # @argdown/pandoc-filter
 
+## 2.0.1
+
+### Patch Changes
+
+- remove workspace dependencies
+
 ## 2.0.0
 
 ### Major Changes

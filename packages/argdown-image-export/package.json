@@ -1,6 +1,6 @@
 {
   "name": "@argdown/image-export",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "PNG, JPG and WEBP export for Argdown",
   "type": "module",
   "main": "./dist/index.js",
