@@ -23,7 +23,15 @@ export default withPwa(
     ignoreDeadLinks: true,
     description:
       "Argdown is a simple syntax for complex argumentation. Writing lists of pros & cons in Argdown is as simple as writing a twitter message, but you can also use it to logically reconstruct whole debates and visualize them as argument maps.",
-    pwa: {},
+    pwa: {
+      workbox: {
+        navigateFallbackDenylist: [
+          /^\/sandbox\//,
+          /^\/argdown-core\//,
+          /^\/argdown-node\//
+        ]
+      }
+    },
     head: [
       [
         "link",
@@ -285,7 +293,7 @@ export default withPwa(
           ]
         },
         { text: "Changes", link: "/changes/" },
-        { text: "Sandbox", link: "/sandbox/" },
+        { text: "Sandbox", link: domain + "/sandbox/html" },
         { text: "Discord", link: discord }
       ]
     }
