@@ -42,3 +42,32 @@ All packages inside of the code-highlighter folder, are plugins for some code hi
 
 # Development
 Run `yarn run dev` inside of the packages that you want to edit to compile typescript in watch mode or run the bundler in watch mode. Most of the packages use vite and provide a sandbox for better iteration. Refer to the script definition inside of the corresponding package.json
+
+# Manuel Deployment
+While a CICD pipeline is not setup, manuel deployment has to do.
+
+## To NPM Registry
+Notes: We can not deploy with changeset, because of https://github.com/changesets/changesets/issues/1454
+
+1. login to npm: `npm login`
+2. Add your token to an .yarnrc.yml file (if you add it to this local .yarnrc.yml file, **DONT FORGET TO REMOVE IT**, before commit):
+  ```yaml
+  npmAuthToken: <your token (starts with "npm_")>
+  ```
+3. Version the packages with changeset: `yarn changeset` + `yarn changeset version`
+4. Publish each package with `yarn npm publish --access public`
+
+## The docs website
+Move to the docs package (cd package/argdown-docs)
+1. Init the github pages branch inside of the dist folder
+2. build the docs with `yarn run build:all`
+3. force push to gh-pages branch
+
+```bash
+cd docs/.vitepress/dist
+git clone -b gh-pages https://github.com/argdown/argdown.git .
+yarn run build:all
+git add -A
+git commit -m "update docs"
+git push --force-with-lease
+```

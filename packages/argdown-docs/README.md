@@ -23,4 +23,22 @@
 
 ## Building
 
+Only the vitepress site:
 `yarn run build`
+
+Everything for deployment: 
+`yarn run build:all`
+
+## Deployment
+1. Init the github pages branch inside of the dist folder
+2. build the docs with `yarn run build:all`
+3. force push to gh-pages branch
+
+```bash
+cd docs/.vitepress/dist
+git clone -b gh-pages https://github.com/argdown/argdown.git .
+yarn run build:all
+git add -A
+git commit -m "update docs"
+git push --force-with-lease
+```

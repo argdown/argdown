@@ -314,6 +314,7 @@ __metadata:
     "@argdown/web-components": "workspace:^"
     "@types/markdown-it-container": "npm:^2.0.10"
     "@vite-pwa/vitepress": "npm:^1.0.1"
+    copyfiles: "npm:^2.4.1"
     markdown-it-container: "npm:^4.0.0"
     vite-plugin-pwa: "npm:^1.1.0"
     vitepress: "npm:^1.6.4"

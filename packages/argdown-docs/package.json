@@ -15,7 +15,9 @@
     "build": "vitepress build docs",
     "deploy": "./deploy-docs.sh",
     "test": "echo \"No tests to run here\"",
-    "preview": "vitepress preview docs"
+    "preview": "vitepress preview docs",
+    "patch404": "node patch404/index.js",
+    "build:all": "yarn run build && yarn workspace @argdown/core run docs:build && yarn workspace @argdown/node run docs:build && yarn workspace @argdown/sandbox run build && copyfiles -a -u 3 ../argdown-sandbox/dist/**/** docs/.vitepress/dist/sandbox && yarn run patch404"
   },
   "author": "Christian Voigt",
   "license": "MIT",
@@ -29,6 +31,7 @@
     "@argdown/web-components": "workspace:^",
     "@types/markdown-it-container": "^2.0.10",
     "@vite-pwa/vitepress": "^1.0.1",
+    "copyfiles": "^2.4.1",
     "markdown-it-container": "^4.0.0",
     "vite-plugin-pwa": "^1.1.0",
     "vitepress": "^1.6.4"
