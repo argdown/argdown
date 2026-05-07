@@ -20,9 +20,9 @@ npm install remark remark-html @argdown/remark-plugin
 Configure remark:
 
 ```javascript
-const remark = require("remark");
-const remarkArgdownPlugin = require("@argdown/remark-plugin").default;
-const html = require("remark-html");
+import remark from "remark";
+import remarkArgdownPlugin from "@argdown/remark-plugin";
+import html from "remark-html";
 
 const defaultSettings = {};
 const rm = remark()
@@ -52,13 +52,6 @@ rm.process(markdownInput, (error, file)=>{
 });
 ```
 
-Note that this example uses `import` instead of `require`. If you want to use `require` the following should work:
-
-```javascript
-const argdownPlugin = require("@argdown/remark-plugin").default;
-```
-
-
 ## How to add Argdown support to Markdown-It
 
 Install `markdown-it` and `@argdown/markdown-it-plugin` in your package:
@@ -70,10 +63,11 @@ npm install markdown-it @argdown/markdown-it-plugin
 Configure the markdown-it instance:
 
 ```javascript
-const MarkdownIt = require("markdown-it");
-const createArgdownPlugin = require("@argdown/markdown-it-plugin").default;
+import MarkdownIt from "markdown-it";
+import createArgdownPlugin from "@argdown/markdown-it-plugin";
 
-const markdownItPlugin = createArgdownPlugin(env => {
+
+const markdownItPlugin = await createArgdownPlugin(env => {
     return env.argdownConfig;
 });
 mdi.use(markdownItPlugin);
@@ -103,10 +97,11 @@ npm install markdown-it @argdown/markdown-it-plugin
 Configure eleventy in `.eleventy.js`:
 
 ```js
-const mdi = require("markdown-it");
+import mdi from "markdown-it"
+import createArgdownPlugin from "@argdown/markdown-it-plugin";
+
 const argdownConfig = {logLevel: "verbose"};
-const createArgdownPlugin = require("@argdown/markdown-it-plugin").default;
-const markdownItArgdown = createArgdownPlugin(argdownConfig);
+const markdownItArgdown = await createArgdownPlugin(argdownConfig);
 const mdiInstance = mdi().use(markdownItArgdown);
 export default function(eleventyConfig) {
 	eleventyConfig.setTemplateFormats([
@@ -129,8 +124,8 @@ npm install marked @argdown/marked-plugin
 Configure the marked instance:
 
 ```javascript
-const marked = require("marked");
-const { addArgdownSupportToMarked } = require("@argdown/marked-plugin");
+import marked from "marked";
+import { addArgdownSupportToMarked } from "@argdown/marked-plugin";
 
 const markedWithArgdown = addArgdownSupportToMarked(
   marked,
