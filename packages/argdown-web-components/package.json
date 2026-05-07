@@ -17,12 +17,17 @@
 	],
 	"main": "./dist/argdown-map.umd.cjs",
 	"module": "./dist/argdown-map.module.js",
+	"types": "./dist/argdown-map.d.ts",
 	"exports": {
 		".": {
+			"types": "./dist/argdown-map.d.ts",
 			"import": "./dist/argdown-map.module.js",
 			"require": "./dist/argdown-map.umd.cjs"
 		},
-		"./style.css": "./dist/argdown-map.css"
+		"./style.css": {
+			"types": "./dist/argdown-map.d.ts",
+			"default": "./dist/argdown-map.css"
+		}
 	},
 	"scripts": {
 		"dev": "vite",
@@ -33,6 +38,7 @@
 		"prettier": "prettier --write ."
 	},
 	"devDependencies": {
+		"@microsoft/api-extractor": "^7.58.7",
 		"@sveltejs/vite-plugin-svelte": "^6.2.1",
 		"@tsconfig/svelte": "^5.0.6",
 		"@types/node": "^24.10.1",
@@ -43,6 +49,7 @@
 		"svelte": "^5.43.8",
 		"svelte-check": "^4.3.4",
 		"typescript": "~5.9.3",
+		"unplugin-dts": "^1.0.0",
 		"vite": "^7.2.4"
 	}
 }
