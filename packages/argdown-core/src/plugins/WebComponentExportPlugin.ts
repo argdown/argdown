@@ -52,6 +52,8 @@ declare module "../index.js" {
     webComponent?: string;
   }
 }
+
+const webcomponentVersion = "2.0.1";
 const defaultSettings: DefaultSettings<IWebComponentExportSettings> = {
   initialView: "map",
   views: ensure.object({
@@ -63,10 +65,8 @@ const defaultSettings: DefaultSettings<IWebComponentExportSettings> = {
   addGlobalStyles: true,
   addWebComponentScript: true,
   addWebComponentPolyfill: true,
-  globalStylesUrl:
-    "https://cdn.jsdelivr.net/npm/@argdown/web-components@latest/dist/argdown-map.css",
-  webComponentScriptUrl:
-    "https://cdn.jsdelivr.net/npm/@argdown/web-components@latest/dist/argdown-map.js",
+  globalStylesUrl: `https://cdn.jsdelivr.net/npm/@argdown/web-components@${webcomponentVersion}/dist/argdown-map.css`,
+  webComponentScriptUrl: `https://cdn.jsdelivr.net/npm/@argdown/web-components@${webcomponentVersion}/dist/argdown-map.js`,
   webComponentPolyfillUrl:
     "https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs/webcomponents-bundle.js"
 };
@@ -149,7 +149,7 @@ export class WebComponentExportPlugin implements IArgdownPlugin {
       response.webComponent = `<figure ${style} role="group" class="argdown-figure">${response.webComponent}${figureCaption}</figure>`;
     }
     if (settings.addWebComponentScript) {
-      response.webComponent = `<script type="text/javascript" src="${settings.webComponentScriptUrl}"></script>${response.webComponent}`;
+      response.webComponent = `<script type="module" src="${settings.webComponentScriptUrl}"></script>${response.webComponent}`;
     }
     if (settings.addWebComponentPolyfill) {
       response.webComponent = `<script src="${settings.webComponentPolyfillUrl}" type="module"></script>${response.webComponent}`;

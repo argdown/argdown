@@ -1,6 +1,6 @@
 {
 	"name": "@argdown/web-components",
-	"version": "2.0.1",
+	"version": "2.0.2",
 	"description": "Components that help to embed Argdown in the browser",
 	"repository": {
 		"type": "git",
@@ -16,17 +16,17 @@
 		"dist"
 	],
 	"main": "./dist/argdown-map.umd.cjs",
-	"module": "./dist/argdown-map.js",
+	"module": "./dist/argdown-map.module.js",
 	"exports": {
 		".": {
-			"import": "./dist/argdown-map.js",
+			"import": "./dist/argdown-map.module.js",
 			"require": "./dist/argdown-map.umd.cjs"
 		},
 		"./style.css": "./dist/argdown-map.css"
 	},
 	"scripts": {
 		"dev": "vite",
-		"build": "vite build",
+		"build": "vite build && node ./backwardsComp.js",
 		"preview": "vite preview",
 		"check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
 		"prettier:check": "prettier . --check",
