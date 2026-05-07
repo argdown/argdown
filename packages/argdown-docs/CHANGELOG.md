@@ -1,5 +1,11 @@
 # @argdown/docs
 
+## 2.0.1
+
+### Patch Changes
+
+- updated guide: integrationg argdown markdown into your applications to reflect 2.0 changes (await createMarkdownItPlugin)
+
 ## 2.0.0
 
 ### Major Changes

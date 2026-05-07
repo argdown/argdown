@@ -1,5 +1,11 @@
 ## 2.0.0
 
+## 2.0.2
+
+### Patch Changes
+
+- update the WebcomponentExport Plugin to load webcomponent scripts with type="module"
+
 ## 2.0.1
 
 ### Patch Changes
