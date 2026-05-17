@@ -6,6 +6,7 @@ import { withPwa } from "@vite-pwa/vitepress";
 
 const domain = "https://argdown.org";
 const discord = "https://discord.gg/rFe7nuDbzs";
+const github = "https://github.com/argdown/argdown";
 
 // Don't include webcomponent scripts, because vitepress does not allow <script> tags inside of markdown plugins. We add the scripts in the theme.
 const MarkdownItPlugin = createArgdownPlugin({
@@ -294,7 +295,8 @@ export default withPwa(
         },
         { text: "Changes", link: "/changes/" },
         { text: "Sandbox", link: domain + "/sandbox/html" },
-        { text: "Discord", link: discord }
+        { text: "Discord", link: discord },
+        { text: "GitHub", link: github }
       ]
     }
   })
