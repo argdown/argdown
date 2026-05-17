@@ -9,6 +9,7 @@ import DebugLexerParserOutput from "@/components/DebugLexerParserOutput";
 import DebugModelOutput from "@/components/DebugModelOutput";
 import DebugNavigation from "@/components/DebugNavigation";
 import MapNavigation from "@/components/MapNavigation";
+import { useArgdownStore } from "../store";
 
 const VizJsOutput = () => import("@/components/VizJsOutput.vue");
 const DagreD3Output = () => import("@/components/DagreD3Output.vue");
@@ -107,8 +108,9 @@ const router = createRouter({
 let currentArgdownQuery = "";
 router.beforeEach((to, from, next) => {
   if (to.query.argdown && to.query.argdown != currentArgdownQuery) {
-    // We'll handle this in the component that needs it
+    const store = useArgdownStore();
     currentArgdownQuery = to.query.argdown;
+    store.setArgdownInput(decodeURIComponent(currentArgdownQuery));
     delete to.query.argdown;
     next(to);
     return;
