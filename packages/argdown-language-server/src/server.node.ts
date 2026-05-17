@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { createConnection, ProposedFeatures } from "vscode-languageserver/node";
 import { Server } from "./server.common";
 

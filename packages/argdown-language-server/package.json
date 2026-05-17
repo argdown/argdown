@@ -4,6 +4,7 @@
   "version": "2.0.0",
   "author": "Christian Voigt",
   "license": "MIT",
+  "bin": "./dist/server.node.js",
   "main": "./dist/server.node.js",
   "browser": "./dist/server.browser.js",
   "files": [
