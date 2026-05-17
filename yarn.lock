@@ -380,6 +380,8 @@ __metadata:
     vitest: "npm:^4.1.0"
     vscode-languageserver: "npm:^9.0.1"
     vscode-languageserver-textdocument: "npm:1.0.12"
+  bin:
+    language-server: ./dist/server.node.js
   languageName: unknown
   linkType: soft
 
