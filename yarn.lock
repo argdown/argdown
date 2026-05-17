@@ -7223,7 +7223,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/trusted-types@npm:^2.0.2":
+"@types/trusted-types@npm:^2.0.2, @types/trusted-types@npm:^2.0.7":
   version: 2.0.7
   resolution: "@types/trusted-types@npm:2.0.7"
   checksum: 10c0/4c4855f10de7c6c135e0d32ce462419d8abbbc33713b31d294596c0cc34ae1fa6112a2f9da729c8f7a20707782b0d69da3b1f8df6645b0366d08825ca1522e0c
@@ -8714,10 +8714,10 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"aria-query@npm:^5.3.1":
-  version: 5.3.2
-  resolution: "aria-query@npm:5.3.2"
-  checksum: 10c0/003c7e3e2cff5540bf7a7893775fc614de82b0c5dde8ae823d47b7a28a9d4da1f7ed85f340bdb93d5649caa927755f0e31ecc7ab63edfdfc00c8ef07e505e03e
+"aria-query@npm:5.3.1":
+  version: 5.3.1
+  resolution: "aria-query@npm:5.3.1"
+  checksum: 10c0/2e9aca7d92d20b8539ee58fa1d29ba07e2269a68da8d27e9830d3cb816d49bb01648610ac3f2e365a8dedbf00168ac18c017ea49c512fbe2537a0b17184a458b
   languageName: node
   linkType: hard
 
@@ -11138,7 +11138,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"devalue@npm:^5.6.2":
+"devalue@npm:^5.8.1":
   version: 5.8.1
   resolution: "devalue@npm:5.8.1"
   checksum: 10c0/fad0c5aeb615e0ddea3385923389991652b285cd2adcd84e10f07a930f735127d94621751f7ef5249a7fe2c7c666ec7c02bb95c3901da337c91f45ef4da18dea
@@ -12319,12 +12319,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"esrap@npm:^2.2.2":
-  version: 2.2.2
-  resolution: "esrap@npm:2.2.2"
+"esrap@npm:^2.2.4":
+  version: 2.2.9
+  resolution: "esrap@npm:2.2.9"
   dependencies:
     "@jridgewell/sourcemap-codec": "npm:^1.4.15"
-  checksum: 10c0/859675c5cc529a7260b1a9c1fc308eacd9090c1b615adfe2bfc706dada1381daaf5c293fae25da9b28f0ec134cac9e70dc7fb6559fc1d973fe808c7e19cf6e9b
+  peerDependencies:
+    "@typescript-eslint/types": ^8.2.0
+  peerDependenciesMeta:
+    "@typescript-eslint/types":
+      optional: true
+  checksum: 10c0/d1ea8dc29468cbbb8e8c855f9c1b807a51fcb827b7412350753709736dda43ea27097f83e5b86b31abd7669edb5e36a23209817ddca5434b1718561153b6a1b1
   languageName: node
   linkType: hard
 
@@ -20985,25 +20990,26 @@ __metadata:
   linkType: hard
 
 "svelte@npm:^5.43.8":
-  version: 5.49.2
-  resolution: "svelte@npm:5.49.2"
+  version: 5.55.7
+  resolution: "svelte@npm:5.55.7"
   dependencies:
     "@jridgewell/remapping": "npm:^2.3.4"
     "@jridgewell/sourcemap-codec": "npm:^1.5.0"
     "@sveltejs/acorn-typescript": "npm:^1.0.5"
     "@types/estree": "npm:^1.0.5"
+    "@types/trusted-types": "npm:^2.0.7"
     acorn: "npm:^8.12.1"
-    aria-query: "npm:^5.3.1"
+    aria-query: "npm:5.3.1"
     axobject-query: "npm:^4.1.0"
     clsx: "npm:^2.1.1"
-    devalue: "npm:^5.6.2"
+    devalue: "npm:^5.8.1"
     esm-env: "npm:^1.2.1"
-    esrap: "npm:^2.2.2"
+    esrap: "npm:^2.2.4"
     is-reference: "npm:^3.0.3"
     locate-character: "npm:^3.0.0"
     magic-string: "npm:^0.30.11"
     zimmerframe: "npm:^1.1.2"
-  checksum: 10c0/f0698452adca08809597cbefc42c5073933c210b3d77fb485de61401068d34da8fd9e20d754925e90b216336cb004510fc1ef132a537ff8f318975fe16060e9f
+  checksum: 10c0/7d9c6170f4bd31fee134c5f8d3c4e1a46763dba7c14804a46a38ccb021b2accc72d44019b5d0ccdcf20a7e2f49ccd5c44a3aa112ba580a81df1f3463eced8f69
   languageName: node
   linkType: hard
 
