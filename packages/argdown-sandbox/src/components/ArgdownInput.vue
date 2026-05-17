@@ -152,7 +152,7 @@ export default {
         theme: "default",
         tabSize: 4,
         indentUnit: 4,
-        lineWrapping: false,
+        lineWrapping: true,
         styleActiveLine: true,
         extraKeys: {
           Tab: (cm) => {
