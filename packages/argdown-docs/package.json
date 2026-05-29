@@ -33,6 +33,7 @@
     "@vite-pwa/vitepress": "^1.0.1",
     "copyfiles": "^2.4.1",
     "markdown-it-container": "^4.0.0",
+    "vite": "^7.0.0",
     "vite-plugin-pwa": "^1.1.0",
     "vitepress": "^1.6.4"
   },
