@@ -23,7 +23,7 @@ However, if you depend on @argdown/core indirectly this change should not affect
 
 **Using the argdown application from package**
 ```ts
-  import { argdown, init } from "@hpcc-js/wasm-graphviz";
+  import { argdown, init } from "@argdown/core";
   
   await init();
   argdown.run(...);
@@ -32,7 +32,8 @@ However, if you depend on @argdown/core indirectly this change should not affect
 **Own argdown application**
 ```ts
   import { Graphviz } from "@hpcc-js/wasm-graphviz";
-
+  import { ArgdownApplication, SyncDotToSvgExportPlugin } from "@argdown/core";
+  
   export const argdown = new ArgdownApplication();
   const graphviz = await Graphviz.load();
   argdown.addPlugin(new SyncDotToSvgExportPlugin(graphviz), "export-svg");
