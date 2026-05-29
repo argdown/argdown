@@ -30,7 +30,7 @@
     "@typescript-eslint/eslint-plugin": "^8.18.0",
     "@typescript-eslint/parser": "^8.18.0",
     "eslint": "^9.15.0",
-    "lerna": "^9.0.1",
+    "lerna": "^9.0.7",
     "prettier": "^3.7.4",
     "tsx": "^4.21.0",
     "typescript": "5.9.3",

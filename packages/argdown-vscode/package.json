@@ -552,7 +552,7 @@
     "@types/vscode": "^1.99.1",
     "@vscode/test-cli": "^0.0.11",
     "@vscode/test-electron": "^2.5.2",
-    "@vscode/test-web": "^0.0.78",
+    "@vscode/test-web": "^0.0.80",
     "@vscode/vsce": "^3.7.1",
     "esbuild": "^0.19.0",
     "esbuild-raw-plugin": "^0.3.1",
