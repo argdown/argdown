@@ -1,6 +1,6 @@
 {
-  "name": "argdown-vscode",
-  "displayName": "Argdown",
+  "name": "argdown-vce",
+  "displayName": "Argdown 2",
   "description": "Live preview and full language support for the Argdown argumentation syntax",
   "icon": "media/argdown-mark-blue-256x256.png",
   "author": "Christian Voigt",
@@ -553,7 +553,7 @@
     "@vscode/test-cli": "^0.0.11",
     "@vscode/test-electron": "^2.5.2",
     "@vscode/test-web": "^0.0.80",
-    "@vscode/vsce": "^3.9.1",
+    "@vscode/vsce": "^3.9.2",
     "esbuild": "^0.19.0",
     "esbuild-raw-plugin": "^0.3.1",
     "events": "^3.3.0",

@@ -2,7 +2,7 @@ import * as assert from "assert";
 import * as vscode from "vscode";
 
 suite("Argdown Extension Test Suite", () => {
-  const EXTENSION_ID = "argdown.argdown-vscode";
+  const EXTENSION_ID = "argdown.argdown-vce";
   let extension: vscode.Extension<any> | undefined;
 
   suiteSetup(async function () {

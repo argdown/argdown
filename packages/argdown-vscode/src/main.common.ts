@@ -172,6 +172,7 @@ export class ArgdownExtension {
         }
       };
     });
+    this.logger.log("Created MarkdownIt Plugin");
     return {
       extendMarkdownIt(md: MarkdownIt) {
         const webComponentConfig = workspace.getConfiguration(

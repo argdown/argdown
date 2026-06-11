@@ -4,7 +4,7 @@ import * as vscode from "vscode";
 export async function run(): Promise<void> {
   console.log("Starting Argdown Web Extension Tests...");
 
-  const EXTENSION_ID = "argdown.argdown-vscode";
+  const EXTENSION_ID = "argdown.argdown-vce";
 
   try {
     // Test 1: Extension should be loaded

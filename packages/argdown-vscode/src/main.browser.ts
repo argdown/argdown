@@ -35,8 +35,8 @@ function createClient(context: ExtensionContext) {
 
 const extension = new ArgdownExtension(createClient, browserConfigLoader);
 
-export async function activate(context: ExtensionContext) {
-  await extension.activate(context);
+export function activate(context: ExtensionContext) {
+  return extension.activate(context);
 }
 
 export function deactivate(): Thenable<void> {
