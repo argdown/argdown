@@ -1,6 +1,6 @@
 {
-  "name": "argdown-vscode",
-  "displayName": "Argdown",
+  "name": "argdown-vce",
+  "displayName": "Argdown 2",
   "description": "Live preview and full language support for the Argdown argumentation syntax",
   "icon": "media/argdown-mark-blue-256x256.png",
   "author": "Christian Voigt",
