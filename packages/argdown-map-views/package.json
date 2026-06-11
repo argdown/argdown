@@ -34,7 +34,7 @@
   },
   "dependencies": {
     "@argdown/core": "workspace:^",
-    "@hpcc-js/wasm-graphviz": "^1.18.0",
+    "@hpcc-js/wasm-graphviz": "^1.21.7",
     "d3-selection": "3.0.0",
     "d3-transition": "3.0.1",
     "d3-zoom": "3.0.0",
@@ -50,7 +50,7 @@
     "@types/node": "^22.15.24",
     "@types/string-pixel-width": "^1.10.3",
     "typescript": "5.9.3",
-    "vite": "^7.3.1",
+    "vite": "^7.3.3",
     "vite-plugin-dts": "^4.5.4"
   },
   "scripts": {

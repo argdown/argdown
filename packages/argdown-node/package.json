@@ -39,8 +39,8 @@
   "license": "MIT",
   "dependencies": {
     "@argdown/core": "workspace:^",
-    "@hpcc-js/wasm-graphviz": "^1.18.0",
-    "axios": "^1.8.2",
+    "@hpcc-js/wasm-graphviz": "^1.21.7",
+    "axios": "^1.16.1",
     "chokidar": "^5.0.0",
     "glob": "^13.0.6",
     "image-size": "^2.0.0",
