@@ -7757,9 +7757,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@vscode/vsce@npm:^3.9.1":
-  version: 3.9.1
-  resolution: "@vscode/vsce@npm:3.9.1"
+"@vscode/vsce@npm:^3.9.2":
+  version: 3.9.2
+  resolution: "@vscode/vsce@npm:3.9.2"
   dependencies:
     "@azure/identity": "npm:^4.1.0"
     "@secretlint/node": "npm:^10.1.2"
@@ -7773,14 +7773,14 @@ __metadata:
     cockatiel: "npm:^3.1.2"
     commander: "npm:^12.1.0"
     form-data: "npm:^4.0.0"
-    glob: "npm:^11.0.0"
+    glob: "npm:^13.0.6"
     hosted-git-info: "npm:^4.0.2"
     jsonc-parser: "npm:^3.2.0"
     keytar: "npm:^7.7.0"
     leven: "npm:^3.1.0"
     markdown-it: "npm:^14.1.0"
     mime: "npm:^1.3.4"
-    minimatch: "npm:^3.0.3"
+    minimatch: "npm:^10.2.2"
     parse-semver: "npm:^1.1.1"
     read: "npm:^1.0.7"
     secretlint: "npm:^10.1.2"
@@ -7796,7 +7796,7 @@ __metadata:
       optional: true
   bin:
     vsce: vsce
-  checksum: 10c0/7854d667c30a7be5190105f39b5df25ed7387f9d36d6be2d3040531afcd4479b93009be14b91d7fd9fe35306ba390f02fa90813d99ae0a82cb22101233b661cb
+  checksum: 10c0/1658818d22f83efe3d06cc803d4f5d8fb833b10a71e07e4bd4839e1099f77f2f309bf38958e5d9e8466d31e385e673dd2a73c627eb03c52afe2c2d8230adf1b2
   languageName: node
   linkType: hard
 
@@ -8704,7 +8704,7 @@ __metadata:
     "@vscode/test-cli": "npm:^0.0.11"
     "@vscode/test-electron": "npm:^2.5.2"
     "@vscode/test-web": "npm:^0.0.80"
-    "@vscode/vsce": "npm:^3.9.1"
+    "@vscode/vsce": "npm:^3.9.2"
     blob-stream: "npm:^0.1.3"
     d3-selection: "npm:^3.0.0"
     dagre-d3: "npm:^0.6.3"
