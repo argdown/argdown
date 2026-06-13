@@ -26,6 +26,7 @@ export interface IArgdownPreviewState {
     settings?: IVizSettings;
   };
   html: {
+    html?: string;
     line: number;
     lineCount?: number;
   };

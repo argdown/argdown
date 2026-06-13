@@ -22,7 +22,7 @@ export class ExportDocumentToHtmlCommand implements Command {
     if (!uri) throw new Error("No file provided!");
     const config = new ArgdownConfiguration(uri, this.engine);
     const doc: TextDocument = await workspace.openTextDocument(uri);
-    const result = this.engine.exportHtml(doc, config);
+    const result = await this.engine.exportHtml(doc, config);
     await saveExportedFile(uri, result, { HTML: ["html"] }, "html");
   }
 }

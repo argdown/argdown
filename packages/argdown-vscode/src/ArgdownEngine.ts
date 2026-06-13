@@ -16,10 +16,13 @@ import type { Logger } from "./Logger";
 import type { ArgdownConfiguration } from "./config/ArgdownConfiguration";
 import type { IArgdownConfigLoader } from "./config/IArgdownConfigLoader";
 import { findElementAtPositionPlugin } from "./preview/FindElementAtPositionPlugin";
+import { CompileArgdown } from "./compileArgdown";
+import { loadFile } from "./loadfile";
 
 argdown.addPlugin(findElementAtPositionPlugin, "find-element-at-position");
+// argdown.addPlugin(plugin)
 
-export class ArgdownEngine {
+export class ArgdownEngine extends CompileArgdown {
   public constructor(
     private logger: Logger,
     private configLoader: IArgdownConfigLoader
@@ -35,10 +38,14 @@ export class ArgdownEngine {
         }
       }
     };
+    super(loadFile);
   }
-  public exportHtml(doc: TextDocument, config: ArgdownConfiguration): string {
+  public async exportHtml(
+    doc: TextDocument,
+    config: ArgdownConfiguration
+  ): Promise<string> {
     const argdownConfig = config.argdownConfig || {};
-    const input = doc.getText();
+    const input = await this.compile(doc.getText(), doc.uri.fsPath);
     const request: IArgdownRequest = {
       ...argdownConfig,
       input: input,
@@ -292,7 +299,8 @@ export class ArgdownEngine {
     config: ArgdownConfiguration
   ): Promise<{ svg: string; dot: string; request: IArgdownRequest }> {
     const argdownConfig = config.argdownConfig || {};
-    const input = doc.getText();
+    const input = await this.compile(doc.getText(), doc.uri.fsPath);
+    this.logger.log("export svg compiled", input);
     const request = {
       ...argdownConfig,
       input: input,
