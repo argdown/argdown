@@ -219,9 +219,12 @@ export class ArgdownEngine extends CompileArgdown {
     }
     return null;
   }
-  public getMap(doc: TextDocument, config: ArgdownConfiguration): IMap {
+  public async getMap(
+    doc: TextDocument,
+    config: ArgdownConfiguration
+  ): Promise<IMap> {
     const argdownConfig = config.argdownConfig;
-    const input = doc.getText();
+    const input = await this.compile(doc.getText(), doc.uri.fsPath);
     const request = {
       ...argdownConfig,
       input: input,
@@ -240,16 +243,19 @@ export class ArgdownEngine extends CompileArgdown {
     if (!map) throw new Error("No map in response");
     return map;
   }
-  public exportMapJson(
+  public async exportMapJson(
     doc: TextDocument,
     config: ArgdownConfiguration
-  ): string {
-    const map = this.getMap(doc, config);
+  ): Promise<string> {
+    const map = await this.getMap(doc, config);
     return stringifyArgdownData(map);
   }
-  public exportJson(doc: TextDocument, config: ArgdownConfiguration): string {
+  public async exportJson(
+    doc: TextDocument,
+    config: ArgdownConfiguration
+  ): Promise<string> {
     const argdownConfig = config.argdownConfig;
-    const input = doc.getText();
+    const input = await this.compile(doc.getText(), doc.uri.fsPath);
     const request = {
       ...argdownConfig,
       input: input,
@@ -268,12 +274,12 @@ export class ArgdownEngine extends CompileArgdown {
     if (!json) throw new Error("No JSON response");
     return json;
   }
-  public exportDot(
+  public async exportDot(
     doc: TextDocument,
     config: ArgdownConfiguration
-  ): { dot: string; request: IArgdownRequest } {
+  ): Promise<{ dot: string; request: IArgdownRequest }> {
     const argdownConfig = config.argdownConfig || {};
-    const input = doc.getText();
+    const input = await this.compile(doc.getText(), doc.uri.fsPath);
     const request = {
       ...argdownConfig,
       input: input,
@@ -334,7 +340,7 @@ export class ArgdownEngine extends CompileArgdown {
     config: ArgdownConfiguration
   ): Promise<string> {
     const argdownConfig = config.argdownConfig || {};
-    const input = doc.getText();
+    const input = await this.compile(doc.getText(), doc.uri.fsPath);
     const request = {
       ...argdownConfig,
       input: input,
@@ -358,12 +364,12 @@ export class ArgdownEngine extends CompileArgdown {
     if (!webComponent) throw new Error("No web component response");
     return webComponent;
   }
-  public exportGraphML(
+  public async exportGraphML(
     doc: TextDocument,
     config: ArgdownConfiguration
-  ): string {
+  ): Promise<string> {
     const argdownConfig = config.argdownConfig || {};
-    const input = doc.getText();
+    const input = await this.compile(doc.getText(), doc.uri.fsPath);
     const request = {
       ...argdownConfig,
       input: input,

@@ -21,20 +21,25 @@ export const dagreViewProvider: IViewProvider = {
     return `<nav class="submenu">Export as <a data-command="argdown.exportContentToDagreSvg" title="save as svg" href="#">svg</a> | <a data-command="argdown.exportContentToDagrePng" title="save as png" href="#">png</a>
 	</nav>`;
   },
-  generateOnDidChangeTextDocumentMessage: (
+  generateOnDidChangeTextDocumentMessage: async (
     argdownEngine: ArgdownEngine,
     argdownDocument: TextDocument,
     config: ArgdownPreviewConfiguration
   ) => {
-    const map = argdownEngine.exportMapJson(argdownDocument, config);
+    const map = await argdownEngine.exportMapJson(argdownDocument, config);
     const settings =
       config.argdownConfig && config.argdownConfig.dagre
         ? JSON.stringify(config.argdownConfig.dagre)
         : "{}";
     return { map, settings };
   },
-  contributeToInitialState: (s, argdownEngine, argdownDocument, config) => {
-    const map = argdownEngine.getMap(argdownDocument, config);
+  contributeToInitialState: async (
+    s,
+    argdownEngine,
+    argdownDocument,
+    config
+  ) => {
+    const map = await argdownEngine.getMap(argdownDocument, config);
     const settings =
       config.argdownConfig && config.argdownConfig.dagre
         ? config.argdownConfig.dagre

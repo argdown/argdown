@@ -22,7 +22,7 @@ export class ExportDocumentToDotCommand implements Command {
     if (!uri) throw new Error("No file provided!");
     const config = new ArgdownConfiguration(uri, this.engine);
     const doc: TextDocument = await workspace.openTextDocument(uri);
-    const { dot } = this.engine.exportDot(doc, config);
+    const { dot } = await this.engine.exportDot(doc, config);
     await saveExportedFile(uri, dot, { Dot: ["dot"] }, "dot");
   }
 }
