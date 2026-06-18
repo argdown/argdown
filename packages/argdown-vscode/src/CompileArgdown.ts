@@ -34,9 +34,11 @@ export class CompileArgdown {
         } catch {
           const lineNumber =
             input.split("\n").findIndex((line) => line.includes(name)) + 1;
-          throw new Error(
-            `File ${name} not found. Is included by ${from}:${lineNumber}.`
-          );
+
+          return `<!-- File ${name} not found. Is included by ${from}:${lineNumber} -->`;
+          // throw new Error(
+          //   `File ${name} not found. Is included by ${from}:${lineNumber}.`
+          // );
         }
         if (!id || !content) return `<!-- Empty content: ${name} -->`;
         if (alreadyIncluded.has(id)) {

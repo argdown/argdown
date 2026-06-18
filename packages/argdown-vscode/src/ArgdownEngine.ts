@@ -16,7 +16,7 @@ import type { Logger } from "./Logger";
 import type { ArgdownConfiguration } from "./config/ArgdownConfiguration";
 import type { IArgdownConfigLoader } from "./config/IArgdownConfigLoader";
 import { findElementAtPositionPlugin } from "./preview/FindElementAtPositionPlugin";
-import { CompileArgdown } from "./compileArgdown";
+import { CompileArgdown } from "./CompileArgdown";
 import { loadFile } from "./loadfile";
 
 argdown.addPlugin(findElementAtPositionPlugin, "find-element-at-position");

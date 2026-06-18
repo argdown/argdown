@@ -112,6 +112,22 @@
       "settings": {
         "foreground": "#777777"
       }
+    },
+    {
+      "name": "Include Keyword",
+      "scope": "keyword.control.include.argdown",
+      "settings": {
+        "foreground": "#0362FF",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "Include Filename",
+      "scope": "entity.name.filename.argdown",
+      "settings": {
+        "foreground": "#7E0E7F",
+        "fontStyle": "italic"
+      }
     }
   ]
 }

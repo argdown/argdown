@@ -537,6 +537,26 @@
     },
     {
       "include": "#data"
+    },
+    {
+      "begin": "@include\\(",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword.control.include.argdown"
+        }
+      },
+      "end": "\\)",
+      "endCaptures": {
+        "0": {
+          "name": "keyword.control.include.argdown"
+        }
+      },
+      "patterns": [
+        {
+          "match": "[^)]+",
+          "name": "entity.name.filename.argdown"
+        }
+      ]
     }
   ],
   "scopeName": "text.html.argdown"
