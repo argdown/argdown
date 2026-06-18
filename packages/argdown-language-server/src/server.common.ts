@@ -73,7 +73,7 @@ export class Server {
           hoverProvider: true,
           renameProvider: true,
           completionProvider: {
-            triggerCharacters: ["[", "<", ":", "#"]
+            triggerCharacters: ["[", "<", ":", "#", "@"]
           }
         }
       };
