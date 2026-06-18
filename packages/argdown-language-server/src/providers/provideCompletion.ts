@@ -26,6 +26,16 @@ export const provideCompletion = (
   );
 
   switch (char) {
+    case "@":
+      return [
+        {
+          ...CompletionItem.create("@include()"),
+          kind: CompletionItemKind.Keyword,
+          detail: "Include an external Argdown file",
+          insertText: "include($1)",
+          insertTextFormat: 2
+        }
+      ];
     case "[":
       return Object.keys(response.statements).map((k: string) => {
         const eqClass = response.statements[k];
