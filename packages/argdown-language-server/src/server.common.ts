@@ -13,6 +13,7 @@ export class Server extends ConnectionHandlers {
     super();
   }
   public init() {
+    this.initializeDocumentSettings();
     this.initializeConnection();
     this.documents.listen(this.connection);
     this.connection.listen();

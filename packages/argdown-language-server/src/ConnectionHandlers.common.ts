@@ -38,7 +38,6 @@ export abstract class ConnectionHandlers extends ArgdownEngine {
 
   constructor() {
     super();
-    this.initializeDocumentSettings();
   }
 
   protected onInitialize(params: InitializeParams): InitializeResult {
@@ -212,7 +211,7 @@ export abstract class ConnectionHandlers extends ArgdownEngine {
       return uri1.length - uri2.length;
     });
   }
-  private initializeDocumentSettings() {
+  protected initializeDocumentSettings() {
     this.documents.onDidClose((e) => {
       this.documentSettings.delete(e.document.uri);
     });
