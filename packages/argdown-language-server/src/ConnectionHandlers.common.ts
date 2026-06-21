@@ -53,7 +53,7 @@ export abstract class ConnectionHandlers extends ArgdownEngine {
         hoverProvider: true,
         renameProvider: true,
         completionProvider: {
-          triggerCharacters: ["[", "<", ":", "#", "@", "."]
+          triggerCharacters: ["[", "<", ":", "#", "@"]
         }
       }
     };
@@ -120,7 +120,7 @@ export abstract class ConnectionHandlers extends ArgdownEngine {
   protected onCompletion({
     textDocument,
     position
-  }: TextDocumentPositionParams): CompletionItem[] {
+  }: TextDocumentPositionParams): CompletionItem[] | Promise<CompletionItem[]> {
     const doc = this.getDocument(textDocument.uri);
     if (!doc) return null;
     const txt = doc.getText();

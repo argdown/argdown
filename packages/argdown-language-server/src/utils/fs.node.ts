@@ -29,7 +29,7 @@ export async function getFilePaths({
 
   const stream = fastGlob.stream([globPattern], {
     absolute: true,
-    onlyFiles: true,
+    onlyFiles: false,
     cwd: rootPath,
     followSymbolicLinks: true,
     suppressErrors: true
