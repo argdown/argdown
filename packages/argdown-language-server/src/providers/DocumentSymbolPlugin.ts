@@ -18,7 +18,6 @@ import {
 declare module "@argdown/core" {
   interface IArgdownResponse {
     documentSymbols?: DocumentSymbol[];
-    inputUri?: string;
   }
 }
 
