@@ -80,7 +80,7 @@ export abstract class ArgdownEngine {
       diagnostics
     });
   }
-  protected processTextForProviders(text: string) {
+  private processTextForProviders(text: string) {
     const request: IArgdownRequest = {
       input: text,
       process: ["parse-input", "build-model"],
@@ -95,18 +95,20 @@ export abstract class ArgdownEngine {
       return null;
     }
   }
-  protected processDocForProviders(textDocument: TextDocumentIdentifier) {
+  protected doc2String(
+    textDocument: TextDocumentIdentifier
+  ): string | Promise<string> {
     const doc = this.getDocument(textDocument.uri);
-    if (doc) {
-      const text = doc.getText();
-      return this.processTextForProviders(text);
-    }
-    return null;
+    if (!doc) return null;
+    return doc.getText();
+  }
+  protected async processDocForProviders(textDocument: TextDocumentIdentifier) {
+    return this.processTextForProviders(await this.doc2String(textDocument));
   }
 
-  protected getDocumentSymbols(text: string): DocumentSymbol[] | null {
+  protected async getDocumentSymbols(textDocument: TextDocumentIdentifier) {
     const request: IArgdownRequest = {
-      input: text,
+      input: await this.doc2String(textDocument),
       process: ["parse-input", "build-model", "add-document-symbols"],
       parser: { throwExceptions: true },
       throwExceptions: true
@@ -118,9 +120,9 @@ export abstract class ArgdownEngine {
     }
   }
 
-  protected getFoldingRanges(text: string): FoldingRange[] | null {
+  protected async getFoldingRanges(textDocument: TextDocumentIdentifier) {
     const request: IArgdownRequest = {
-      input: text,
+      input: await this.doc2String(textDocument),
       process: ["parse-input", "build-model", "add-folding-ranges"],
       parser: { throwExceptions: true },
       throwExceptions: true

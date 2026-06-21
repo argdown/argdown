@@ -96,10 +96,14 @@ export abstract class ConnectionHandlers extends ArgdownEngine {
     this.documents.all().forEach((x) => this.validateTextDocument(x));
   }
 
-  protected onRenameRequest({ newName, position, textDocument }: RenameParams) {
+  protected async onRenameRequest({
+    newName,
+    position,
+    textDocument
+  }: RenameParams) {
     const doc = this.getDocument(textDocument.uri);
     if (!doc) return null;
-    const response = this.processDocForProviders(doc);
+    const response = await this.processDocForProviders(doc);
     if (!response) return null;
     return provideRenameWorkspaceEdit(
       response,
@@ -109,18 +113,18 @@ export abstract class ConnectionHandlers extends ArgdownEngine {
     );
   }
 
-  protected handleHover({
+  protected async handleHover({
     textDocument,
     position
   }: TextDocumentPositionParams) {
-    const response = this.processDocForProviders(textDocument);
+    const response = await this.processDocForProviders(textDocument);
     if (!response) return null;
     return provideHover(response, position);
   }
-  protected onCompletion({
+  protected async onCompletion({
     textDocument,
     position
-  }: TextDocumentPositionParams): CompletionItem[] | Promise<CompletionItem[]> {
+  }: TextDocumentPositionParams): Promise<CompletionItem[]> {
     const doc = this.getDocument(textDocument.uri);
     if (!doc) return null;
     const txt = doc.getText();
@@ -140,47 +144,47 @@ export abstract class ConnectionHandlers extends ArgdownEngine {
         input = txt.slice(0, offset - 1) + txtAfter;
       }
     }
-    const response = this.processTextForProviders(input);
+    const response = await this.processDocForProviders(textDocument);
     if (!response) return null;
     return provideCompletion(response, char, position, txt, offset);
   }
 
-  protected onDocumentHighlight({
+  protected async onDocumentHighlight({
     textDocument,
     position
   }: TextDocumentPositionParams) {
-    const response = this.processDocForProviders(textDocument);
+    const response = await this.processDocForProviders(textDocument);
     if (!response) return null;
     return provideReferences(response, textDocument.uri, position).map(
       (l: Location) => DocumentHighlight.create(l.range, 1)
     );
   }
 
-  protected onReferences({ context, position, textDocument }: ReferenceParams) {
-    const response = this.processDocForProviders(textDocument);
+  protected async onReferences({
+    context,
+    position,
+    textDocument
+  }: ReferenceParams) {
+    const response = await this.processDocForProviders(textDocument);
     if (!response) return null;
     return provideReferences(response, textDocument.uri, position, context);
   }
 
-  protected onDefinition({
+  protected async onDefinition({
     textDocument,
     position
   }: TextDocumentPositionParams) {
-    const response = this.processDocForProviders(textDocument);
+    const response = await this.processDocForProviders(textDocument);
     if (!response) return null;
     return provideDefinitions(response, textDocument.uri, position);
   }
 
-  protected onDocumentSymbol(params: DocumentSymbolParams) {
-    const doc = this.getDocument(params.textDocument.uri);
-    if (!doc) return null;
-    return this.getDocumentSymbols(doc.getText());
+  protected onDocumentSymbol({ textDocument }: DocumentSymbolParams) {
+    return this.getDocumentSymbols(textDocument);
   }
 
-  protected onFoldingRanges(params: FoldingRangeParams) {
-    const doc = this.getDocument(params.textDocument.uri);
-    if (!doc) return null;
-    return this.getFoldingRanges(doc.getText());
+  protected onFoldingRanges({ textDocument }: FoldingRangeParams) {
+    return this.getFoldingRanges(textDocument);
   }
 
   private addCapabilities({

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-import { dirname, join } from "node:path";
+import { readFile } from "node:fs/promises";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   CompletionItem,
@@ -7,17 +8,26 @@ import {
   createConnection,
   Position,
   ProposedFeatures,
-  TextDocumentPositionParams
+  TextDocumentIdentifier
 } from "vscode-languageserver/node";
+import { CompileArgdown } from "./CompileArgdown";
 import { Server } from "./server.common";
 import { getFilePaths } from "./utils/fs.node";
 
 const incl: RegExp = /@include\(([^)]+)\)/g;
 class ServerNode extends Server {
+  private argdownCompiler = new CompileArgdown(
+    async (path: string, from: string) => {
+      const dir = dirname(from);
+      const resolved = resolve(dir, path);
+      const content = await readFile(resolved, "utf8");
+      return [resolved, content];
+    }
+  );
   protected async onCompletion({
     textDocument,
     position
-  }: TextDocumentPositionParams): Promise<CompletionItem[]> {
+  }): Promise<CompletionItem[]> {
     const doc = this.documents.get(textDocument.uri);
     if (!doc) return null;
     const line = doc.getText({
@@ -53,6 +63,15 @@ class ServerNode extends Server {
       }));
     }
     return super.onCompletion({ textDocument, position });
+  }
+  protected async doc2String(textDocument: TextDocumentIdentifier) {
+    const input = await super.doc2String(textDocument);
+    const compiled = await this.argdownCompiler.compile(
+      input,
+      fileURLToPath(textDocument.uri)
+    );
+    this.connection.console.log(compiled);
+    return compiled;
   }
 }
 
