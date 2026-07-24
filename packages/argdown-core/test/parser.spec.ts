@@ -62,7 +62,6 @@ describe("Parser", function () {
     // console.log(astToString(ast));
     // console.log(astToJsonString(ast));
     expect(lexResult.errors).to.be.empty;
-    console.log(parser.errors);
     expect(parser.errors).to.be.empty;
   });
   it("can parse relation with subsequent comment", function () {
@@ -418,12 +417,10 @@ B: asdasdds
     let ast = parser.argdown();
     const childs = ast.children;
     expect(lexResult.errors).to.be.empty;
-    console.log(parser.errors)
     expect(parser.errors).to.be.empty;
     expect(childs).to.be.an("array");
     expect(childs?.length).to.equal(1);
     const node = childs?.at(0) as IRuleNode;
-    console.log(node)
     expect(node.name).to.equal("include");
     expect(node.children?.length).to.equal(1);
     const child = node.children?.at(0) as ITokenNode;
@@ -439,7 +436,6 @@ B: asdasdds
     let lexResult = tokenize(source);
     parser.input = lexResult.tokens;
     let ast = parser.argdown();
-    console.log(lexResult.errors, parser.errors)
     expect(lexResult.errors).to.be.empty;
     expect(parser.errors).to.be.empty;
     expect(ast.children!.length).to.equal(2);

@@ -822,7 +822,6 @@ p:->:q
     const result = lexer.tokenize(source);
     expect(result.errors).to.be.empty;
     expect(result.tokens.length).to.equal(1);
-    console.log(result.tokens[0].payload)
     expect(result.tokens[0].tokenType.name).to.equal("Include");
     expect(result.tokens[0].payload.path).to.equal("../path/to/");
     expect(result.tokens[0].payload.name).to.equal("file");
