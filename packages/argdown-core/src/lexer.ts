@@ -763,6 +763,22 @@ export const UnusedControlChar = createToken({
 });
 tokenList.push(UnusedControlChar);
 
+
+const includePattern = /@include\(\s*(?<path>(?:[^/)\s]*\/)*)(?<name>[^)\s]*?)(?<extension>\.(ad|argdown|adown|argdn))?\s*\)/y;
+const matchInclude: chevrotain.CustomPatternMatcherFunc = (text: string, startOffset: number) => {
+  includePattern.lastIndex = startOffset;
+  const res = includePattern.exec(text);
+  if (!res) return null;
+  return {...res, payload: res.groups};
+}
+export const Include = createToken({
+  name: TokenNames.INCLUDE,
+  pattern: matchInclude,
+  label: "@include(<filePath><fileName><fileExtension>)",
+  line_breaks: true,
+});
+tokenList.push(Include);
+
 export const EOF = chevrotain.EOF;
 
 const lexerConfig: chevrotain.IMultiModeLexerDefinition = {
@@ -804,6 +820,7 @@ const lexerConfig: chevrotain.IMultiModeLexerDefinition = {
       UnderscoreItalicStart,
       Link, //needs to be lexed before StatementReference
       Tag,
+      Include,
       // $.StatementDefinitionByNumber, // needs to be lexed before ArgumentReference
       // $.StatementReferenceByNumber, // needs to be lexed before ArgumentReference
       // $.StatementMentionByNumber, // needs to be lexed before ArgumentReference

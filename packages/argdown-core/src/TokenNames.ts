@@ -45,5 +45,6 @@ export enum TokenNames {
   ESCAPED_CHAR = "EscapedChar",
   SPECIAL_CHAR = "SpecialChar",
   SPACES = "Spaces",
-  EOF = "EOF"
+  EOF = "EOF",
+  INCLUDE = "Include",
 }
