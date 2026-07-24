@@ -168,3 +168,4 @@ export * from "./model/model.js";
 export * from "./model/toJSON.js";
 export * from "./utils.js";
 export * from "./deriveImplicitRelations.js";
+export * from "./plugins/IncludePositionsPlugin.js"
