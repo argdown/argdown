@@ -764,7 +764,7 @@ export const UnusedControlChar = createToken({
 tokenList.push(UnusedControlChar);
 
 
-const includePattern = /@include\(\s*(?<path>(?:[^/)\s]*\/)*)(?<name>[^)\s]*?)(?<extension>\.(ad|argdown|adown|argdn))?\s*\)/y;
+const includePattern = /@include\(\s*(?<filePath>(?<path>(?:[^/)\s]*\/)*)(?<name>[^)\s]*?)(?<extension>\.(ad|argdown|adown|argdn))?)\s*\)/y;
 const matchInclude: chevrotain.CustomPatternMatcherFunc = (text: string, startOffset: number) => {
   includePattern.lastIndex = startOffset;
   const res = includePattern.exec(text);

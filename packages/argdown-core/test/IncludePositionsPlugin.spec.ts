@@ -37,6 +37,6 @@ describe("IncludePositionsPlugin", function () {
     expect(result.lexerErrors!.length).to.equal(0);
 
     expect(result.includes!.length).to.equal(2);
-    expect(result.includes!.every((node) => node.name === RuleNames.INCLUDE)).to.be.true;
+    expect(result.includes!.every((node) => node.tokenType.name === "Include")).to.be.true;
   });
 });
