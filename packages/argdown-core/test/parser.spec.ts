@@ -410,6 +410,73 @@ B: asdasdds
     expect(lexResult.errors).to.be.empty;
     expect(parser.errors).to.be.empty;
   });
+
+  it("can parse include directive", function () {
+    let source = `@include(test.argdown)`;
+    let lexResult = tokenize(source);
+    parser.input = lexResult.tokens;
+    let ast = parser.argdown();
+    const childs = ast.children;
+    expect(lexResult.errors).to.be.empty;
+    console.log(parser.errors)
+    expect(parser.errors).to.be.empty;
+    expect(childs).to.be.an("array");
+    expect(childs?.length).to.equal(1);
+    const node = childs?.at(0) as IRuleNode;
+    console.log(node)
+    expect(node.name).to.equal("include");
+    expect(node.children?.length).to.equal(1);
+    const child = node.children?.at(0) as ITokenNode;
+    expect(child.image).to.equal("@include(test.argdown)");
+  });
+
+  it("can parse multiple includes", function () {
+    let source = `
+  @include(file1.argdown)
+
+  @include(file2.argdown)
+  `;
+    let lexResult = tokenize(source);
+    parser.input = lexResult.tokens;
+    let ast = parser.argdown();
+    console.log(lexResult.errors, parser.errors)
+    expect(lexResult.errors).to.be.empty;
+    expect(parser.errors).to.be.empty;
+    expect(ast.children!.length).to.equal(2);
+    expect((ast.children![0] as IRuleNode).name).to.equal("include");
+    expect((ast.children![1] as IRuleNode).name).to.equal("include");
+  });
+
+  it("can parse include mixed with statements", function () {
+    let source = `
+  Statement A
+
+  @include(related.argdown)
+
+  <B>: Statement B
+  `;
+    let lexResult = tokenize(source);
+    parser.input = lexResult.tokens;
+    let ast = parser.argdown();
+    expect(lexResult.errors).to.be.empty;
+    expect(parser.errors).to.be.empty;
+    expect(ast.children!.length).to.equal(3);
+    expect((ast.children![0] as IRuleNode).name).to.equal("statement");
+    expect((ast.children![1] as IRuleNode).name).to.equal("include");
+    expect((ast.children![2] as IRuleNode).name).to.equal("argument");
+  });
+
+  it("can parse include with complex path", function () {
+    let source = `@include(../complex/path-with-dash/file_name.argdown)`;
+    let lexResult = tokenize(source);
+    parser.input = lexResult.tokens;
+    let ast = parser.argdown();
+    expect(lexResult.errors).to.be.empty;
+    expect(parser.errors).to.be.empty;
+    expect(ast.children!.length).to.equal(1);
+    expect((ast.children![0] as IRuleNode).name).to.equal("include");
+    expect(((ast.children![0] as IRuleNode).children![0] as ITokenNode).tokenType.name).to.equal("Include");
+  });
   //   it("can parse nested lists", () => {
   //     const input = `
   // # The central statements of the debate
