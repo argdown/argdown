@@ -5,16 +5,17 @@ import { fileURLToPath } from "node:url";
 import {
   CompletionItem,
   CompletionItemKind,
+  CompletionParams,
   createConnection,
-  Position,
   ProposedFeatures,
-  TextDocumentIdentifier
+  TextDocumentIdentifier,
+  Range,
+  TextEdit
 } from "vscode-languageserver/node";
 import { CompileArgdown } from "./CompileArgdown";
 import { Server } from "./server.common";
 import { getFilePaths } from "./utils/fs.node";
 
-const incl: RegExp = /@include\(([^)]+)\)/g;
 class ServerNode extends Server {
   private argdownCompiler = new CompileArgdown(
     async (path: string, from: string) => {
@@ -27,42 +28,50 @@ class ServerNode extends Server {
   protected async onCompletion({
     textDocument,
     position
-  }): Promise<CompletionItem[]> {
+  }: CompletionParams): Promise<CompletionItem[]> {
     const doc = this.documents.get(textDocument.uri);
     if (!doc) return null;
-    const line = doc.getText({
-      start: Position.create(position.line, 0),
-      end: Position.create(position.line, Number.MAX_SAFE_INTEGER)
+    const { includes } = this.argdown.run({
+      process: ["parse-input", "include-positions"],
+      input: doc.getText()
     });
-    const matches = Array.from(line.matchAll(incl));
-    const inclUnderCurser = matches
-      .filter((match) => {
-        const startPos = match.index + match[0].indexOf(match[1]);
-        const endPos = match.index + match[0].length - 1;
-        return startPos <= position.character && position.character <= endPos;
-      })
-      .pop();
+    const currentLine = position.line + 1;
 
-    if (inclUnderCurser) {
-      const [_, fileName] = inclUnderCurser;
-      const thisFile = fileURLToPath(textDocument.uri);
-      const base = join(dirname(thisFile), dirname(fileName));
+    const candidate = includes.filter(({ startLine, endLine, startColumn, endColumn }) => {
+      const inLine = startLine <= currentLine && currentLine <= endLine
+      const inParentesis = startColumn + "@include(".length - 1 <= position.character && position.character <= endColumn - 1;
+      return inLine && inParentesis
+    })
+    if (candidate.length !== 1) return super.onCompletion({ textDocument, position });
 
-      const norm = (s: string) => s.replace(base + "/", "");
+    console.log("We are in a position: ", candidate)
+    const { payload: { filePath }, startLine, endLine, startColumn, endColumn } = candidate[0];
+    if(typeof filePath !== "string") return super.onCompletion({ textDocument, position });
+    const thisFile = fileURLToPath(textDocument.uri);
 
-      const x = await getFilePaths({
-        globPattern: "**/*.argdown",
-        rootPath: base,
-        maxItems: 20
-      });
+    const base = join(dirname(thisFile), dirname(filePath));
 
-      return x.map((file) => ({
-        ...CompletionItem.create(norm(file)),
-        kind: CompletionItemKind.File,
-        insertText: norm(file)
-      }));
-    }
-    return super.onCompletion({ textDocument, position });
+    const norm = (s: string) => s.replace(base + "/", "");
+
+    const x = await getFilePaths({
+      globPattern: "**/*.argdown",
+      rootPath: base,
+      maxItems: 20
+    });
+
+    const range = Range.create(
+      startLine - 1,
+      startColumn + "@include(".length - 1,
+      endLine - 1,
+      endColumn - 1
+    );
+    const repl =  x.map((file) => ({
+      ...CompletionItem.create(norm(file)),
+      kind: CompletionItemKind.File,
+      textEdit: TextEdit.replace(range, norm(file)),
+    }));
+    console.log(range, position, repl)
+    return repl;
   }
   protected async doc2String(textDocument: TextDocumentIdentifier) {
     const input = await super.doc2String(textDocument);
@@ -70,7 +79,6 @@ class ServerNode extends Server {
       input,
       fileURLToPath(textDocument.uri)
     );
-    this.connection.console.log(compiled);
     return compiled;
   }
 }

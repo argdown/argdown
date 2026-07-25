@@ -380,7 +380,7 @@ __metadata:
     tsx: "npm:^4.21.0"
     typescript: "npm:^5.9.3"
     vitest: "npm:^4.1.7"
-    vscode-languageserver: "npm:^9.0.1"
+    vscode-languageserver: "npm:^10.1.0"
     vscode-languageserver-textdocument: "npm:1.0.12"
     vscode-uri: "npm:^3.1.0"
   bin:
@@ -22547,6 +22547,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vscode-jsonrpc@npm:9.0.1":
+  version: 9.0.1
+  resolution: "vscode-jsonrpc@npm:9.0.1"
+  checksum: 10c0/6ca63393dd78675ed33b5537c147e673865557ff93915cd5189ceae039ca7fe01808ffd9a14016732d4789f2102a037d68d4216f557c3380d1c7f3ea50fd85b4
+  languageName: node
+  linkType: hard
+
 "vscode-languageclient@npm:9.0.1":
   version: 9.0.1
   resolution: "vscode-languageclient@npm:9.0.1"
@@ -22568,6 +22575,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"vscode-languageserver-protocol@npm:3.18.2":
+  version: 3.18.2
+  resolution: "vscode-languageserver-protocol@npm:3.18.2"
+  dependencies:
+    vscode-jsonrpc: "npm:9.0.1"
+    vscode-languageserver-types: "npm:3.18.0"
+  checksum: 10c0/c77862958063b2d6edcdbab7da1abece58b251051338083296c468d5caafc2c249aba63f1a15011d8b8354e145937252520fe6a9632c146606a833bdeae9784c
+  languageName: node
+  linkType: hard
+
 "vscode-languageserver-textdocument@npm:1.0.12":
   version: 1.0.12
   resolution: "vscode-languageserver-textdocument@npm:1.0.12"
@@ -22582,14 +22599,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vscode-languageserver@npm:^9.0.1":
-  version: 9.0.1
-  resolution: "vscode-languageserver@npm:9.0.1"
+"vscode-languageserver-types@npm:3.18.0":
+  version: 3.18.0
+  resolution: "vscode-languageserver-types@npm:3.18.0"
+  checksum: 10c0/d8c51cd286cc55b4c1f333e87fa3cefc66d2aae8c65f6209e7ecf88032d3326308b333d62b05243c194be8a3304760445b87630b298116c6c612607f011b4de0
+  languageName: node
+  linkType: hard
+
+"vscode-languageserver@npm:^10.1.0":
+  version: 10.1.0
+  resolution: "vscode-languageserver@npm:10.1.0"
   dependencies:
-    vscode-languageserver-protocol: "npm:3.17.5"
+    vscode-languageserver-protocol: "npm:3.18.2"
   bin:
     installServerIntoExtension: bin/installServerIntoExtension
-  checksum: 10c0/8a0838d77c98a211c76e54bd3a6249fc877e4e1a73322673fb0e921168d8e91de4f170f1d4ff7e8b6289d0698207afc6aba6662d4c1cd8e4bd7cae96afd6b0c2
+  checksum: 10c0/5c3d903be4aab4828e1abd9ea5be938489f6f6a850ae0929618a131ef985ad0c77bd233a4045ac559d805201f8fddf83316f4967386102fa409a4addae77a652
   languageName: node
   linkType: hard
 

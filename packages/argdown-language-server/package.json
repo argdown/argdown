@@ -41,7 +41,7 @@
     "tsx": "^4.21.0",
     "typescript": "^5.9.3",
     "vitest": "^4.1.7",
-    "vscode-languageserver": "^9.0.1",
+    "vscode-languageserver": "^10.1.0",
     "vscode-languageserver-textdocument": "1.0.12"
   },
   "packageManager": "yarn@4.9.4",

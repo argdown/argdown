@@ -1,4 +1,8 @@
 {
   // Handled by esbuild. Only needed for editor language services
-  "include": ["src", "esbuild"]
+  "include": ["src", "esbuild"],
+  "compilerOptions": {
+    "moduleResolution": "bundler",
+    "module": "preserve"
+  }
 }
