@@ -28,6 +28,7 @@ export interface IArgdownPreviewState {
     ];
   };
   html: {
+    html?: string;
     line: number;
     lineCount?: number;
   };

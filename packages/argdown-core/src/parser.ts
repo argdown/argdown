@@ -46,26 +46,29 @@ class ArgdownParser extends EmbeddedActionsParser {
         atLeastOne.push(
           this.OR2(
             this.c1 ||
-              (this.c1 = [
-                {
-                  ALT: () => this.SUBRULE(this.heading)
-                },
-                {
-                  ALT: () => this.SUBRULE(this.statement)
-                },
-                {
-                  ALT: () => this.SUBRULE(this.pcs)
-                },
-                {
-                  ALT: () => this.SUBRULE(this.argument)
-                },
-                {
-                  ALT: () => this.SUBRULE(this.orderedList)
-                },
-                {
-                  ALT: () => this.SUBRULE(this.unorderedList)
-                }
-              ])
+            (this.c1 = [
+              {
+                ALT: () => this.SUBRULE(this.heading)
+              },
+              {
+                ALT: () => this.SUBRULE(this.statement)
+              },
+              {
+                ALT: () => this.SUBRULE(this.pcs)
+              },
+              {
+                ALT: () => this.SUBRULE(this.argument)
+              },
+              {
+                ALT: () => this.SUBRULE(this.orderedList)
+              },
+              {
+                ALT: () => this.SUBRULE(this.unorderedList)
+              },
+              {
+                ALT: () => this.SUBRULE(this.include)
+              }
+            ])
           )
         );
       }
@@ -288,29 +291,29 @@ class ArgdownParser extends EmbeddedActionsParser {
       children.push(
         this.OR(
           this.c2 ||
-            (this.c2 = [
-              {
-                ALT: () => this.SUBRULE(this.incomingSupport)
-              },
-              {
-                ALT: () => this.SUBRULE(this.incomingAttack)
-              },
-              {
-                ALT: () => this.SUBRULE(this.outgoingSupport)
-              },
-              {
-                ALT: () => this.SUBRULE(this.outgoingAttack)
-              },
-              {
-                ALT: () => this.SUBRULE(this.contradiction)
-              },
-              {
-                ALT: () => this.SUBRULE(this.incomingUndercut)
-              },
-              {
-                ALT: () => this.SUBRULE(this.outgoingUndercut)
-              }
-            ])
+          (this.c2 = [
+            {
+              ALT: () => this.SUBRULE(this.incomingSupport)
+            },
+            {
+              ALT: () => this.SUBRULE(this.incomingAttack)
+            },
+            {
+              ALT: () => this.SUBRULE(this.outgoingSupport)
+            },
+            {
+              ALT: () => this.SUBRULE(this.outgoingAttack)
+            },
+            {
+              ALT: () => this.SUBRULE(this.contradiction)
+            },
+            {
+              ALT: () => this.SUBRULE(this.incomingUndercut)
+            },
+            {
+              ALT: () => this.SUBRULE(this.outgoingUndercut)
+            }
+          ])
         )
       );
     });
@@ -448,36 +451,36 @@ class ArgdownParser extends EmbeddedActionsParser {
       children.push(
         this.OR(
           this.c3 ||
-            (this.c3 = [
-              {
-                ALT: () => this.SUBRULE(this.freestyleText)
-              },
-              {
-                ALT: () => this.CONSUME(lexer.Link)
-              },
-              {
-                ALT: () => this.SUBRULE(this.bold)
-              },
-              {
-                ALT: () => this.SUBRULE(this.italic)
-              },
-              {
-                ALT: () => this.CONSUME(lexer.Tag)
-              },
-              {
-                ALT: () => this.CONSUME(lexer.ArgumentMention)
-              },
-              {
-                ALT: () => this.CONSUME(lexer.StatementMention)
-              },
-              {
-                ALT: () => this.CONSUME(lexer.Newline)
-              }
+          (this.c3 = [
+            {
+              ALT: () => this.SUBRULE(this.freestyleText)
+            },
+            {
+              ALT: () => this.CONSUME(lexer.Link)
+            },
+            {
+              ALT: () => this.SUBRULE(this.bold)
+            },
+            {
+              ALT: () => this.SUBRULE(this.italic)
+            },
+            {
+              ALT: () => this.CONSUME(lexer.Tag)
+            },
+            {
+              ALT: () => this.CONSUME(lexer.ArgumentMention)
+            },
+            {
+              ALT: () => this.CONSUME(lexer.StatementMention)
+            },
+            {
+              ALT: () => this.CONSUME(lexer.Newline)
+            }
 
-              // , {
-              //     ALT: () => children.push(this.CONSUME(lexer.StatementMentionByNumber))
-              // }
-            ])
+            // , {
+            //     ALT: () => children.push(this.CONSUME(lexer.StatementMentionByNumber))
+            // }
+          ])
         )
       );
       // this.OPTION1(() => {
@@ -507,5 +510,17 @@ class ArgdownParser extends EmbeddedActionsParser {
     );
     return IRuleNode.create(RuleNames.FREESTYLE_TEXT, children);
   });
+
+  private include = this.RULE(RuleNames.INCLUDE, () => {
+    const children: IAstNode[] = [];
+    const includeToken = this.CONSUME1(lexer.Include);
+    children.push(includeToken);
+    this.OPTION1(() => {
+      children.push(this.CONSUME1(lexer.Newline));
+    });
+    return IRuleNode.create(RuleNames.INCLUDE, children);
+  });
 }
+
+
 export const parser = new ArgdownParser();

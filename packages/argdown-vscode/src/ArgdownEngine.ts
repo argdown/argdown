@@ -16,10 +16,13 @@ import type { Logger } from "./Logger";
 import type { ArgdownConfiguration } from "./config/ArgdownConfiguration";
 import type { IArgdownConfigLoader } from "./config/IArgdownConfigLoader";
 import { findElementAtPositionPlugin } from "./preview/FindElementAtPositionPlugin";
+import { CompileArgdown } from "./CompileArgdown";
+import { loadFile } from "./loadfile";
 
 argdown.addPlugin(findElementAtPositionPlugin, "find-element-at-position");
+// argdown.addPlugin(plugin)
 
-export class ArgdownEngine {
+export class ArgdownEngine extends CompileArgdown {
   public constructor(
     private logger: Logger,
     private configLoader: IArgdownConfigLoader
@@ -35,10 +38,14 @@ export class ArgdownEngine {
         }
       }
     };
+    super(loadFile);
   }
-  public exportHtml(doc: TextDocument, config: ArgdownConfiguration): string {
+  public async exportHtml(
+    doc: TextDocument,
+    config: ArgdownConfiguration
+  ): Promise<string> {
     const argdownConfig = config.argdownConfig || {};
-    const input = doc.getText();
+    const input = await this.compile(doc.getText(), doc.uri.fsPath);
     const request: IArgdownRequest = {
       ...argdownConfig,
       input: input,
@@ -212,9 +219,12 @@ export class ArgdownEngine {
     }
     return null;
   }
-  public getMap(doc: TextDocument, config: ArgdownConfiguration): IMap {
+  public async getMap(
+    doc: TextDocument,
+    config: ArgdownConfiguration
+  ): Promise<IMap> {
     const argdownConfig = config.argdownConfig;
-    const input = doc.getText();
+    const input = await this.compile(doc.getText(), doc.uri.fsPath);
     const request = {
       ...argdownConfig,
       input: input,
@@ -233,16 +243,19 @@ export class ArgdownEngine {
     if (!map) throw new Error("No map in response");
     return map;
   }
-  public exportMapJson(
+  public async exportMapJson(
     doc: TextDocument,
     config: ArgdownConfiguration
-  ): string {
-    const map = this.getMap(doc, config);
+  ): Promise<string> {
+    const map = await this.getMap(doc, config);
     return stringifyArgdownData(map);
   }
-  public exportJson(doc: TextDocument, config: ArgdownConfiguration): string {
+  public async exportJson(
+    doc: TextDocument,
+    config: ArgdownConfiguration
+  ): Promise<string> {
     const argdownConfig = config.argdownConfig;
-    const input = doc.getText();
+    const input = await this.compile(doc.getText(), doc.uri.fsPath);
     const request = {
       ...argdownConfig,
       input: input,
@@ -261,12 +274,12 @@ export class ArgdownEngine {
     if (!json) throw new Error("No JSON response");
     return json;
   }
-  public exportDot(
+  public async exportDot(
     doc: TextDocument,
     config: ArgdownConfiguration
-  ): { dot: string; request: IArgdownRequest } {
+  ): Promise<{ dot: string; request: IArgdownRequest }> {
     const argdownConfig = config.argdownConfig || {};
-    const input = doc.getText();
+    const input = await this.compile(doc.getText(), doc.uri.fsPath);
     const request = {
       ...argdownConfig,
       input: input,
@@ -292,7 +305,8 @@ export class ArgdownEngine {
     config: ArgdownConfiguration
   ): Promise<{ svg: string; dot: string; request: IArgdownRequest }> {
     const argdownConfig = config.argdownConfig || {};
-    const input = doc.getText();
+    const input = await this.compile(doc.getText(), doc.uri.fsPath);
+    this.logger.log("export svg compiled", input);
     const request = {
       ...argdownConfig,
       input: input,
@@ -326,7 +340,7 @@ export class ArgdownEngine {
     config: ArgdownConfiguration
   ): Promise<string> {
     const argdownConfig = config.argdownConfig || {};
-    const input = doc.getText();
+    const input = await this.compile(doc.getText(), doc.uri.fsPath);
     const request = {
       ...argdownConfig,
       input: input,
@@ -350,12 +364,12 @@ export class ArgdownEngine {
     if (!webComponent) throw new Error("No web component response");
     return webComponent;
   }
-  public exportGraphML(
+  public async exportGraphML(
     doc: TextDocument,
     config: ArgdownConfiguration
-  ): string {
+  ): Promise<string> {
     const argdownConfig = config.argdownConfig || {};
-    const input = doc.getText();
+    const input = await this.compile(doc.getText(), doc.uri.fsPath);
     const request = {
       ...argdownConfig,
       input: input,

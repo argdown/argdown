@@ -21,6 +21,7 @@ import { ExplodeArgumentsPlugin } from "./plugins/ExplodeArgumentsPlugin.js";
 import { MapNodeImagesPlugin } from "./plugins/MapNodeImagesPlugin.js";
 
 import { Graphviz } from "@hpcc-js/wasm-graphviz";
+import { IncludePositionsPlugin } from "./plugins/IncludePositionsPlugin.js";
 /***
  * Default instance of a sync ArgdownApplication with all plugins of @argdown/core loaded and default processes defined.
  *
@@ -46,6 +47,7 @@ argdown.addPlugin(new DotExportPlugin(), "export-dot");
 argdown.addPlugin(new GraphMLExportPlugin(), "export-graphml");
 argdown.addPlugin(new HighlightSourcePlugin(), "highlight-source");
 argdown.addPlugin(new WebComponentExportPlugin(), "export-web-component");
+argdown.addPlugin(new IncludePositionsPlugin(), "include-positions");
 
 /**
  * Initializes the argdown application by loading Graphviz and adding the SyncDotToSvgExportPlugin.

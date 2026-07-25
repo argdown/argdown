@@ -12,6 +12,8 @@ import { ArgdownPreviewStore } from "./state";
 
 declare var acquireVsCodeApi: any;
 
+const htmlContainer = document.getElementById("html-container")!;
+
 var scrollDisabled = true;
 const marker = new ActiveLineMarker();
 const settings = getSettings();
@@ -30,6 +32,8 @@ onceDocumentLoaded(() => {
   if (settings.scrollPreviewWithEditor) {
     setTimeout(() => {
       const initialLine = +store.getState().html.line;
+      const htmlContent = store.getState().html.html;
+      if (htmlContent) htmlContainer.innerHTML = htmlContent;
       if (!isNaN(initialLine)) {
         scrollDisabled = true;
         scrollToRevealSourceLine(initialLine);
@@ -74,6 +78,10 @@ window.addEventListener(
     }
 
     switch (event.data.type) {
+      case "didChangeTextDocument":
+        const htmlContent = event.data.html;
+        if (htmlContent) htmlContainer.innerHTML = htmlContent;
+        break;
       case "onDidChangeTextEditorSelection":
         marker.onDidChangeTextEditorSelection(event.data.line);
         break;

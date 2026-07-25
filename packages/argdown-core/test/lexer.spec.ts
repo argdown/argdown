@@ -778,6 +778,56 @@ p:->:q
     expect(result.tokens.length).to.equal(1);
     expectToken(lexer.ArgumentReference);
   });
+
+  it("can recognize include tokens", function () {
+    let source = fs.readFileSync("./test/lexer-parser-include.argdown", "utf8");
+    const result = lexer.tokenize(source);
+    startTest(result.tokens);
+    expectToken(lexer.Freestyle); // "Some text here"
+    expectToken(lexer.Emptyline);
+    expectToken(lexer.Include); // @include(file.argdown)
+    expectToken(lexer.Emptyline);
+    expectToken(lexer.Freestyle); // "Another statement"
+    expectToken(lexer.Include); // @include(path/to/file.argdown)
+    expectToken(lexer.Emptyline);
+    expectToken(lexer.ArgumentDefinition); // <A>:
+    expectToken(lexer.Freestyle);
+    expectToken(lexer.Newline);
+    expectToken(lexer.Include); // @include(../relative/path.argdown)
+  });
+
+  it("can lex single include token", function () {
+    let source = `@include(test.argdown)`;
+    const result = lexer.tokenize(source);
+    expect(result.errors).to.be.empty;
+    expect(result.tokens.length).to.equal(1);
+    expect(result.tokens[0].payload.path).to.equal("");
+    expect(result.tokens[0].payload.name).to.equal("test");
+    expect(result.tokens[0].payload.extension).to.equal(".argdown");
+    expect(result.tokens[0].tokenType.name).to.equal("Include");
+    expect(result.tokens[0].image).to.equal("@include(test.argdown)");
+  });
+
+  it("can lex single empty include token", function () {
+    let source = `@include()`;
+    const result = lexer.tokenize(source);
+    expect(result.errors).to.be.empty;
+    expect(result.tokens.length).to.equal(1);
+    expect(result.tokens[0].tokenType.name).to.equal("Include");
+    expect(result.tokens[0].image).to.equal("@include()");
+  });
+
+  it("can lex include with path", function () {
+    let source = `@include(../path/to/file.argdown)`;
+    const result = lexer.tokenize(source);
+    expect(result.errors).to.be.empty;
+    expect(result.tokens.length).to.equal(1);
+    expect(result.tokens[0].tokenType.name).to.equal("Include");
+    expect(result.tokens[0].payload.path).to.equal("../path/to/");
+    expect(result.tokens[0].payload.name).to.equal("file");
+    expect(result.tokens[0].payload.extension).to.equal(".argdown");
+    expect(result.tokens[0].image).to.equal("@include(../path/to/file.argdown)");
+  });
   //   it("can ignore Newline in Newline Comment Emptyline", function() {
   //     let source = `
   // /* Comment */

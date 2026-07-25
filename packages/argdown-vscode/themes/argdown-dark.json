@@ -110,7 +110,24 @@
       "name": "Argdown Tags",
       "scope": ["meta.tag.argdown"],
       "settings": {
-        "foreground": "#777777"
+        "foreground": "#777777",
+        "fontStyle": ""
+      }
+    },
+    {
+      "name": "Include Keyword",
+      "scope": "keyword.control.include.argdown",
+      "settings": {
+        "foreground": "#9CDCFE",
+        "fontStyle": "bold"
+      }
+    },
+    {
+      "name": "Include Filename",
+      "scope": "entity.name.filename.argdown",
+      "settings": {
+        "foreground": "#CE9178",
+        "fontStyle": "italic"
       }
     }
   ]

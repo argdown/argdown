@@ -22,7 +22,7 @@ export class ExportDocumentToGraphMLCommand implements Command {
     if (!uri) throw new Error("No file provided!");
     const config = new ArgdownConfiguration(uri, this.engine);
     const doc: TextDocument = await workspace.openTextDocument(uri);
-    const result = this.engine.exportGraphML(doc, config);
+    const result = await this.engine.exportGraphML(doc, config);
     await saveExportedFile(uri, result, { graphml: ["graphml"] }, "graphml");
   }
 }

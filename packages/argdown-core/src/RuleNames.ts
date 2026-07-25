@@ -31,5 +31,6 @@ export enum RuleNames {
   OUTGOING_UNDERCUT = "outgoingUndercut",
   BOLD = "bold",
   ITALIC = "italic",
-  FREESTYLE_TEXT = "freestyleText"
+  FREESTYLE_TEXT = "freestyleText",
+  INCLUDE = "include",
 }
