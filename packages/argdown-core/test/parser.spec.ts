@@ -82,6 +82,68 @@ THE END
     expect(lexResult.errors).to.be.empty;
     expect(parser.errors).to.be.empty;
   });
+  it("can parse adp relation symbols", function () {
+    const source = `
+[S1]: Root
+    => [S2]
+    <= [S3]
+    ^> <A1>
+    <^ [S4]
+    :> [S5]
+    <: [S6]
+    %> [S7]
+    <% [S8]
+    ?> [Q1]
+    <? [Q2]
+    !> [Q3]
+    <! [S9]
+    @> [R1]
+    <@ [E1]
+    == [S10]
+    ~= [S11]
+`;
+    const lexResult = tokenize(source, "argdown+");
+    parser.input = lexResult.tokens;
+    parser.argdown();
+    expect(lexResult.errors).to.be.empty;
+    expect(parser.errors).to.be.empty;
+  });
+  it("can parse adp reverse shorthand relation symbols", function () {
+    const source = `
+[S1]: Root
+    ^ [S2]
+    % [S3]
+    ? [?Q1]
+
+[?Q2]: Root question
+    ! [S4]
+
+[S5]: Root cited target
+    @ [@R1]
+`;
+    const lexResult = tokenize(source, "argdown+");
+    parser.input = lexResult.tokens;
+    parser.argdown();
+    expect(lexResult.errors).to.be.empty;
+    expect(parser.errors).to.be.empty;
+  });
+  it("can parse block operator syntax", function () {
+    const source = `
+[>E1] >>
+    First line.
+    => not a relation token inside block.
+    Second line.
+
+[S1]: Root
+    <: [S2] >>
+        Block relation text.
+`;
+    const lexResult = tokenize(source, "argdown+");
+    parser.input = lexResult.tokens;
+    parser.argdown();
+    expect(lexResult.errors).to.be.empty;
+    expect(parser.errors).to.be.empty;
+  });
   it("can parse argument with premise relations", function () {
     let source = `A
       + B`;

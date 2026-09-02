@@ -61,9 +61,8 @@ describe("Argdown Pandoc Filter", function () {
         );
       }
     } catch (error) {
-      throw new Error(
-        "pandoc is required for tests. Please install pandoc first."
-      );
+      console.warn("Skipping Pandoc filter tests: pandoc is not installed.");
+      this.skip();
     }
 
     // Check rsvg-convert version (required for PDF tests)

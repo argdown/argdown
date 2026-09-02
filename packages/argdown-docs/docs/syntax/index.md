@@ -29,6 +29,68 @@ All but one of the main sections of this documentation describe the block elemen
 
 The one main section that does not describe a block element, is the section about Argdown relations. Argdown relations do not occur at the top level and may _not_ be preceded by an empty line. They always connect a new child block element (a statement or an argument) to a preceding parent block element. But it makes sense to give them their own section to avoid repetition and because of their fundamental importance.
 
+## Argdown and Argdown+ modes
+
+Argdown supports three parser syntax modes:
+
+- `argdown` (default): the classic syntax and semantics.
+- `argdown+`: a strict superset with typed Discussion Points, exact Excerpt text artifacts, extended semantic relations, and contextual edge text.
+- `micro-argdown+`: a condensed, indentation-based drafting syntax that produces the same normalized graph.
+
+Set `parser.syntax` to `argdown+` or `micro-argdown+` to opt into either new surface syntax.
+
+### Typed entity identifiers
+
+Statements, Questions, References, and Arguments are typed Discussion Points. Excerpts are exact text artifacts and are not Discussion Points:
+
+| Kind | Type | Definition syntax | Mention syntax |
+| :--- | :--- | :--- | :--- |
+| Discussion Point | Statement | `[ID]` or `[!ID]` | `@[ID]` or `@[!ID]` |
+| Discussion Point | Question | `[?ID]` | `@[?ID]` |
+| Discussion Point | Reference | `[@ID]` | `@[@ID]` |
+| Text artifact | Excerpt | `[>ID]` | `@[>ID]` |
+| Discussion Point | Argument | `<ID>` | `@<ID>` |
+
+`[ID]` and `[!ID]` are equivalent statement identifiers.
+
+### Extended relation symbols
+
+| Relation | Symbol |
+| :--- | :--- |
+| implies | `=>` / `<=` |
+| justifies | `+>` / `<+` or `+` |
+| isPresupposedBy | `^>` / `<^` or `^` |
+| contradicts | `><` |
+| specifies | `:>` / `<:` |
+| isExampleFor | `%>` / `<%` or `%` |
+| questions | `?>` / `<?` or `?` |
+| answers | `!>` / `<!` or `!` |
+| isCitedBy | `@>` / `<@` or `@` |
+| isEqual | `==` |
+| isPotentiallyEqual | `~=` |
+
+Classic relation symbols (`+`, `-`, `_`, `->`, `<-`) remain accepted in Argdown+ so documents can be migrated incrementally. Reverse relations also support the shorthand forms `+`, `^`, `%`, `?`, `!`, and `@` where applicable.
+
+### Root text and contextual text
+
+- Root-level definitions such as `[ID]: Text` define context-free entity text.
+- Relation-level definitions such as `:> [ID]: Text` attach contextual text to that relation occurrence.
+- A root-level Excerpt block defines its complete exact text. Contextual Excerpt text is a passage selected by a citation occurrence and requires the complete root definition.
+
+### Excerpt blocks
+
+Excerpt definitions in full Argdown+ require the block operator:
+
+```argdown
+[>E1] >>
+    This is an excerpt.
+    It can span multiple lines.
+```
+
+`>>` can also give non-Excerpt Discussion Points multiline block text. Excerpts may only occur in citation relations and cannot participate in `==` or `~=`.
+
+Micro-Argdown+ reserves `>>` for Excerpts; anonymous `>>` creates an Excerpt, and multiline non-Excerpt text is outside the Micro profile. Micro also has no bare-identifier mentions: every unwrapped line or relation target is prose, even when a single token matches a known ID.
+
 ## Statements
 
 ```argdown-cheatsheet

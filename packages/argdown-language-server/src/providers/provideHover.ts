@@ -2,7 +2,8 @@ import { Hover, Position } from "vscode-languageserver";
 import { findNodeAtPosition } from "./findNodeAtPosition.js";
 import {
   generateMarkdownForArgument,
-  generateMarkdownForStatement
+  generateMarkdownForStatement,
+  formatStatementTitle
 } from "./utils.js";
 import { IArgdownResponse, isTokenNode } from "@argdown/core";
 export const provideHover = (
@@ -29,7 +30,14 @@ export const provideHover = (
       const statementsStr = Object.keys(response.statements)
         .map((k) => response.statements[k])
         .filter((s: any) => s.tags && s.tags.includes(tag))
-        .reduce((acc, val) => `${acc} * [${val.title}]\n`, "");
+        .reduce(
+          (acc, val) =>
+            `${acc} * ${formatStatementTitle(
+              val.title,
+              (val as any).discussionPointType
+            )}\n`,
+          ""
+        );
       const argumentsStr = Object.keys(response.arguments)
         .map((k) => response.arguments[k])
         .filter((a: any) => a.tags && a.tags.includes(tag))

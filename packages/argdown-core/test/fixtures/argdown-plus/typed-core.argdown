@@ -1,0 +1,21 @@
+===
+parser:
+  syntax: argdown+
+===
+
+[S1]: Renewable energy reduces long-term costs.
+
+[?Q1]: Can it cover peak demand?
+
+<A1>: Storage balances variable generation.
+
+[@R1]: https://example.com/report
+
+[>E1] >>
+    Storage deployment increased.
+
+[S1]
+    <+ <A1>: Contextual argument wording.
+        <^ [S2]: Battery costs declined.
+        <@ [@R1]
+            @> [>E1]

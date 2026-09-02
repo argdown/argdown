@@ -315,7 +315,7 @@
       }
     },
     {
-      "match": "^\\s*(\\<?\\+)[ \\t]+",
+      "match": "^\\s*(\\<\\+|\\+|\\<\\=|\\<\\^|\\^|\\<\\:|\\<\\%|\\%|\\<\\!|\\!|\\<\\@|\\@)[ \\t]+",
       "captures": {
         "1": {
           "name": "markup.list.unordered.support.outgoing.argdown"
@@ -323,7 +323,7 @@
       }
     },
     {
-      "match": "^\\s*(\\+\\>)[ \\t]+",
+      "match": "^\\s*(\\+\\>|\\=\\>|\\^\\>|\\:\\>|\\%\\>|\\?\\>|\\!\\>|\\@\\>|\\=\\=|\\~\\=)[ \\t]+",
       "captures": {
         "1": {
           "name": "markup.list.unordered.support.incoming.argdown"
@@ -331,7 +331,7 @@
       }
     },
     {
-      "match": "^\\s*(\\<?-)[ \\t]+",
+      "match": "^\\s*(\\<\\-|\\-|\\<\\?|\\?)[ \\t]+",
       "captures": {
         "1": {
           "name": "markup.list.unordered.attack.outgoing.argdown"
@@ -339,7 +339,7 @@
       }
     },
     {
-      "match": "^\\s*(-\\>)[ \\t]+",
+      "match": "^\\s*(\\-\\>|\\?\\>)[ \\t]+",
       "captures": {
         "1": {
           "name": "markup.list.unordered.attack.incoming.argdown"
@@ -363,10 +363,26 @@
       }
     },
     {
-      "match": "^\\s*(_\\>)[ \\t]+",
+      "match": "^\\s*(_\\>|_)[ \\t]+",
       "captures": {
         "1": {
           "name": "markup.list.unordered.undercut.incoming.argdown"
+        }
+      }
+    },
+    {
+      "match": "(?<=\\]|>)\\s*(>>)(?=\\s*$)",
+      "captures": {
+        "1": {
+          "name": "keyword.operator.block-start.argdown"
+        }
+      }
+    },
+    {
+      "match": "^\\s*(>>)(?=\\s*$)",
+      "captures": {
+        "1": {
+          "name": "keyword.operator.block-start.argdown"
         }
       }
     },

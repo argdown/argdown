@@ -8,7 +8,6 @@ export enum FrontMatterSettingsModes {
   PRIORITY = "priority"
 }
 import defaultsDeep from "lodash.defaultsdeep";
-import merge from "lodash.merge";
 import { mergeDefaults, isObject } from "../utils.js";
 
 /**
@@ -93,7 +92,7 @@ export class DataPlugin implements IArgdownPlugin {
           parentNode.data = data;
         }
       },
-      FrontMatter: (request, response, token, parentNode) => {
+      FrontMatter: (_request, response, token, parentNode) => {
         const options: yaml.LoadOptions = {};
         const dataStr = token.image
           .replace(frontMatterStartPattern, "")
@@ -103,21 +102,8 @@ export class DataPlugin implements IArgdownPlugin {
           parentNode.data = data;
         }
         response.frontMatter = data;
-        const settings = this.getSettings(request);
-        if (
-          data &&
-          isObject(data) &&
-          settings.frontMatterSettingsMode !== FrontMatterSettingsModes.IGNORE
-        ) {
-          if (
-            settings.frontMatterSettingsMode ===
-            FrontMatterSettingsModes.DEFAULT
-          ) {
-            defaultsDeep(request, data);
-          } else {
-            merge(request, data);
-          }
-        }
+        // Request settings were already resolved from this frontmatter by the
+        // application preflight, before tokenization and plugin preparation.
       }
     };
   }

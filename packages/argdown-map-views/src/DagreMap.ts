@@ -149,12 +149,19 @@ export class DagreMap implements CanSelectNode {
     }
 
     for (const edge of props.map.edges) {
+      const relationType = edge.relationType as any;
       const props: { [key: string]: any } = {
-        class: edge.relationType
+        class: relationType
       };
-      if (edge.relationType === ("contradictory" as any)) {
+      if (relationType === "contradictory") {
         props.arrowhead = "diamond";
         props.arrowtail = "diamond";
+      } else if (
+        relationType === "equal" ||
+        relationType === "potentially-equal"
+      ) {
+        props.arrowhead = "normal";
+        props.arrowtail = "normal";
       }
       // if the map data is json data, from and to will be ids, otherwise the original objects
       const from = isObject(edge.from) ? edge.from.id : edge.from;
@@ -395,7 +402,9 @@ const createDagreNode = function (
     labelType: "svg",
     id: node.id,
     label: svgLabel,
-    class: <string>node.type,
+    class: [<string>node.type, node.discussionPointType, node.entityKind]
+      .filter(Boolean)
+      .join(" "),
     rx,
     ry,
     width: lineWidth + 20

@@ -1,6 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { ArgdownApplication, ParserPlugin, ModelPlugin } from "@argdown/core";
 import { DocumentSymbolPlugin } from "../src/providers/DocumentSymbolPlugin";
+import { FoldingRangesPlugin } from "../src/providers/FoldingRangesPlugin";
 
 let app = new ArgdownApplication();
 
@@ -96,5 +97,87 @@ A
     expect(result.documentSymbols![1].children![1].children![3].name).to.equal(
       "(3) [Untitled 4]"
     );
+  });
+  it("uses typed IDs for argdown+ statement symbols and relations", function () {
+    const source = `
+[?Q1]: Why?
+
+[?Q1]
+  :> [?Q2]: A narrower question.`;
+    const result = app.run({
+      process: ["parse-input", "build-model", "export-symbols"],
+      input: source,
+      parser: { syntax: "argdown+" },
+      logLevel: "error"
+    });
+    expect(result.documentSymbols).to.exist;
+    expect(result.documentSymbols![0].name).to.equal("[?Q1]");
+    expect(result.documentSymbols![1].name).to.equal("[?Q1]");
+    expect(result.documentSymbols![1].children![0].name).to.equal(":> [?Q2]");
+  });
+  it("uses canonical shorthand labels for reverse shorthand-capable relations", function () {
+    const source = `
+[S1]: Main statement.
+[?Q2]: Main question.
+[S2]: Supporting statement.
+[?Q1]: Open question.
+[@R1]: https://example.com
+
+[S1]
+  <% [S2]
+
+[?Q2]
+  <+ [S2]
+  <^ [S2]
+  <? [?Q1]
+  <! [S2]
+  <@ [@R1]`;
+    const result = app.run({
+      process: ["parse-input", "build-model", "export-symbols"],
+      input: source,
+      parser: { syntax: "argdown+" },
+      logLevel: "error"
+    });
+    expect(result.documentSymbols).to.exist;
+    expect(result.documentSymbols![1].name).to.equal("[S1]");
+    expect(result.documentSymbols![1].children![0].name).to.equal("% [S2]");
+    expect(result.documentSymbols![2].name).to.equal("[?Q2]");
+    expect(result.documentSymbols![2].children![0].name).to.equal("+ [S2]");
+    expect(result.documentSymbols![2].children![1].name).to.equal("^ [S2]");
+    expect(result.documentSymbols![2].children![2].name).to.equal("? [?Q1]");
+    expect(result.documentSymbols![2].children![3].name).to.equal("! [S2]");
+    expect(result.documentSymbols![2].children![4].name).to.equal("@ [@R1]");
+  });
+  it("creates symbols for Micro definitions and discourse roots", function () {
+    const result = app.run({
+      process: ["parse-input", "build-model", "export-symbols"],
+      parser: { syntax: "micro-argdown+" },
+      input: `[?Q1]: Why?
+<A1>: Because.
+
+[?Q1]
+    <+ <A1>`,
+      logLevel: "error"
+    });
+    expect(result.documentSymbols!.map((symbol) => symbol.name)).to.deep.equal([
+      "[?Q1]",
+      "<A1>",
+      "[?Q1]"
+    ]);
+  });
+  it("creates folding ranges for Micro discourse trees", function () {
+    const foldingApp = new ArgdownApplication();
+    foldingApp.addPlugin(new ParserPlugin(), "parse-input");
+    foldingApp.addPlugin(new ModelPlugin(), "build-model");
+    foldingApp.addPlugin(new FoldingRangesPlugin(), "export-folding");
+    const result = foldingApp.run({
+      process: ["parse-input", "build-model", "export-folding"],
+      parser: { syntax: "micro-argdown+" },
+      input: `[S1]
+    <+ <A1>
+        <^ [S2]`,
+      logLevel: "error"
+    });
+    expect(result.foldingRanges).to.deep.equal([{ startLine: 0, endLine: 2 }]);
   });
 });

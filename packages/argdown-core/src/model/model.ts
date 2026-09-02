@@ -64,8 +64,31 @@ export enum RelationType {
   ENTAILS = "entails",
   CONTRARY = "contrary",
   CONTRADICTORY = "contradictory",
-  UNDERCUT = "undercut"
+  UNDERCUT = "undercut",
+  IMPLIES = "implies",
+  JUSTIFIES = "justifies",
+  IS_PRESUPPOSED_BY = "is-presupposed-by",
+  SPECIFIES = "specifies",
+  IS_EXAMPLE_FOR = "is-example-for",
+  QUESTIONS = "questions",
+  ANSWERS = "answers",
+  IS_CITED_BY = "is-cited-by",
+  EQUAL = "equal",
+  POTENTIALLY_EQUAL = "potentially-equal"
 }
+export enum DiscussionPointType {
+  STATEMENT = "statement",
+  QUESTION = "question",
+  REFERENCE = "reference",
+  EXCERPT = "excerpt",
+  ARGUMENT = "argument"
+}
+export type DiscussionPointKind =
+  | DiscussionPointType.STATEMENT
+  | DiscussionPointType.QUESTION
+  | DiscussionPointType.REFERENCE
+  | DiscussionPointType.ARGUMENT;
+export type EntityKind = "discussion-point" | "text-artifact";
 /**
  * A formatted range of text.
  *
@@ -139,6 +162,10 @@ export interface IRuleNode
   equivalenceClass?: IEquivalenceClass;
   inference?: IInference;
   trailingWhitespace?: string;
+  contextualText?: string;
+  contextualData?: any;
+  contextualRanges?: IRange[];
+  contextualizedEndpoint?: "from" | "to";
 }
 export namespace IRuleNode {
   export const create = (name: RuleNames, children: IAstNode[]): IRuleNode => {
@@ -174,15 +201,13 @@ export interface ITokenNode extends IToken, HasTitle, HasData, HasText {
  * A node in the abstract syntax tree produced by the [[ParserPlugin]]
  */
 export type IAstNode = IRuleNode | ITokenNode;
+
 /**
- * Argument with an optional premise-conclusion-structure (pcs)
- *
- * If the argument has a premise-conclusion-structure,
- * all outgoing relations that were defined for this argument
- * are transformed by the [[ModelPlugin]] into relations of the argument's main conclusion
- * (the last statement in the argument's pcs).
+ * Shared normalized model for every typed discussion point. Statements,
+ * questions, references, and excerpts use an equivalence-class storage
+ * implementation; Arguments use an argument storage implementation.
  */
-export interface IArgument
+export interface IDiscussionPointBase
   extends
     HasTitle,
     HasRelations,
@@ -192,6 +217,25 @@ export interface IArgument
     HasSection,
     HasColor,
     HasFontColor {
+  type: ArgdownTypes.ARGUMENT | ArgdownTypes.EQUIVALENCE_CLASS;
+  entityKind?: EntityKind;
+  discussionPointType?: DiscussionPointType;
+  canonicalMember?: IStatement;
+  canonicalText?: string;
+  definitionOccurrences?: IStatement[];
+  /** False when the source used identifier-free text and the title is generated. */
+  hasExplicitIdentifier?: boolean;
+  members: IStatement[];
+}
+/**
+ * Argument with an optional premise-conclusion-structure (pcs)
+ *
+ * If the argument has a premise-conclusion-structure,
+ * all outgoing relations that were defined for this argument
+ * are transformed by the [[ModelPlugin]] into relations of the argument's main conclusion
+ * (the last statement in the argument's pcs).
+ */
+export interface IArgument extends IDiscussionPointBase {
   type: ArgdownTypes.ARGUMENT;
   /**
    * If the argument was logically reconstructed, it has a premise conclusion structure (pcs).
@@ -221,6 +265,7 @@ export namespace IArgument {
    * Chooses the last description defined in the Argdown source code that is not a reference.
    */
   export const getCanonicalMember = (a: IArgument): IStatement | undefined => {
+    if (a.canonicalMember) return a.canonicalMember;
     if (!a.members || a.members.length <= 0) {
       return undefined;
     }
@@ -268,6 +313,8 @@ export interface IStatement
   role?: StatementRole;
   isReference?: boolean;
   isTopLevel?: boolean;
+  isAnonymous?: boolean;
+  discussionPointType?: DiscussionPointType;
 }
 /**
  * The role of a statement occurrence in an Argdown document.
@@ -328,16 +375,7 @@ export interface IArgumentDescription extends IStatement {
  * Dialectical relations with arguments or inferences can be of type: support, attack, undercut.
  *
  */
-export interface IEquivalenceClass
-  extends
-    HasTitle,
-    HasRelations,
-    HasTags,
-    HasData,
-    HasLocation,
-    HasSection,
-    HasColor,
-    HasFontColor {
+export interface IEquivalenceClass extends IDiscussionPointBase {
   type: ArgdownTypes.EQUIVALENCE_CLASS;
   /**
    * The statements that share the title with this equivalence class and are considered to be logically equivalent.
@@ -381,6 +419,7 @@ export namespace IEquivalenceClass {
   export const getCanonicalMember = (
     ec: IEquivalenceClass
   ): IStatement | undefined => {
+    if (ec.canonicalMember) return ec.canonicalMember;
     if (!ec.members || ec.members.length <= 0) {
       return undefined;
     }
@@ -436,7 +475,33 @@ export interface IInference
  *
  * Note that [[IInference]] can only be a relation target and never be a relation source.
  */
-export type RelationMember = IArgument | IEquivalenceClass | IInference;
+export type IEquivalenceClassDiscussionPoint = IEquivalenceClass & {
+  discussionPointType?:
+    | DiscussionPointType.STATEMENT
+    | DiscussionPointType.QUESTION
+    | DiscussionPointType.REFERENCE;
+  entityKind?: "discussion-point";
+};
+export interface IExcerpt extends IEquivalenceClass {
+  discussionPointType: DiscussionPointType.EXCERPT;
+  entityKind: "text-artifact";
+  /** Exact content after structural indentation and line-ending normalization. */
+  normalizedText?: string;
+  /** Additional explicit identifiers that name the same exact text artifact. */
+  aliases?: string[];
+}
+export type IDiscussionPoint = IArgument | IEquivalenceClassDiscussionPoint;
+export type ITextArtifact = IExcerpt;
+/** Storage-level entity union. IEquivalenceClass is narrowed to DP or Excerpt by entityKind. */
+export type IGraphEntity = IArgument | IEquivalenceClass;
+export type IStructuralInference = IInference;
+export type RelationEndpoint = IGraphEntity | IStructuralInference;
+/** @deprecated Use RelationEndpoint. */
+export type RelationMember = RelationEndpoint;
+
+export interface IRelationOccurrence extends IRuleNode {
+  contextualizedEndpoint?: "from" | "to";
+}
 
 /**
  * Represents a relation between two Argdown elements.
@@ -461,7 +526,10 @@ export interface IRelation extends HasColor {
    * The same relation can be defined in different ways.
    * It can also be defined in the same way, but in multiple places.
    */
-  occurrences: IRuleNode[];
+  occurrences: IRelationOccurrence[];
+}
+export interface INormalizedRelation extends IRelation {
+  occurrences: IRelationOccurrence[];
 }
 export namespace IRelation {
   export const toString = (r: IRelation) => {
@@ -472,7 +540,9 @@ export namespace IRelation {
   export const isSymmetric = (r: IRelation) => {
     return (
       r.relationType === RelationType.CONTRARY ||
-      r.relationType === RelationType.CONTRADICTORY
+      r.relationType === RelationType.CONTRADICTORY ||
+      r.relationType === RelationType.EQUAL ||
+      r.relationType === RelationType.POTENTIALLY_EQUAL
     );
   };
 }
@@ -522,12 +592,16 @@ export type MapNodeType =
  */
 export interface IMapNode extends HasTitle, HasTags, HasColor, HasFontColor {
   type: MapNodeType;
+  entityKind?: EntityKind;
+  discussionPointType?: DiscussionPointType;
   labelTitle?: string;
   labelTitleRanges?: IRange[];
   labelText?: string;
   labelTextRanges?: IRange[];
   id: string;
   images?: string[];
+  /** Additional explicit Excerpt identifiers for the same exact artifact. */
+  aliases?: string[];
 }
 /**
  * A group node within an argument map.
@@ -566,6 +640,9 @@ export interface IMapEdge extends HasColor {
    */
   toEquivalenceClass?: IEquivalenceClass;
   relationType: RelationType;
+  relationOccurrences?: IRelationOccurrence[];
+  contextualText?: string;
+  contextualData?: any;
 }
 export namespace IMapEdge {
   export const toString = (e: IMapEdge) => {

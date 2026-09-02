@@ -1,0 +1,41 @@
+===
+parser:
+  syntax: argdown+
+===
+
+# Argdown+ Primer
+
+[?Q-UBI]: Should UBI be introduced nationwide?
+
+[S-Poverty]: UBI reduces poverty rates.
+
+[A-PovertyModel]: Poverty floor argument.
+  +> [S-Poverty]
+
+[S-Poverty]
+  !> [?Q-UBI]: Yes, direct transfers reduce poverty.
+  => [S-LowerMaterialDeprivation]: Lower deprivation follows from lower poverty.
+  :> [S-ChildPoverty]: Effect is strongest for child poverty.
+  ~= [S-MaterialSecurity]: The claim is close in meaning to improved material security.
+
+[S-ChildPoverty]: Child poverty drops when transfer floors exist.
+
+[S-LowerMaterialDeprivation]: Fewer households lack essentials.
+
+[S-MaterialSecurity]: Households gain greater material security.
+
+[?Q-UBI]
+  ?> [S-Poverty]
+
+[@R-Meta]: https://doi.org/10.1038/s41562-019-1458-5
+
+[>E-Meta] >>
+    "Cash transfers significantly improve household resilience."
+
+[S-Poverty]
+  <@ [>E-Meta]: Cash transfers significantly improve household resilience.
+
+[S-StocktonPilot]: Stockton's SEED pilot used direct cash transfers.
+
+[S-StocktonPilot]
+  %> [S-Poverty]: A concrete pilot illustrates the broader poverty-reduction claim.

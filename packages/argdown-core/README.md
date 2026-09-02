@@ -23,6 +23,22 @@ If you want to use the package in your own software, use `npm install @argdown/c
 
 `yarn test`
 
+## Argdown+ modes
+
+`ParserPlugin` defaults to classic `argdown`. Extended syntax is opt-in:
+
+```ts
+const request = {
+  input,
+  process: ["parse-input", "build-model"],
+  parser: { syntax: "argdown+" }
+};
+```
+
+Set `parser.syntax` to `micro-argdown+` for the compact drafting dialect. Both extended modes produce a normalized entity graph, relation occurrences, and structured diagnostics; the classic `statements` and `arguments` maps remain compatibility views. `discussionPoints` contains Statements, Questions, References, and Arguments, while exact Excerpt text artifacts are exposed separately through `excerpts`.
+
+Syntax can also be selected in a document's `===` YAML frontmatter, which is resolved before tokenization and plugin preparation. The normative contracts are [ADP-SPEC](../../ADP-SPEC.md), [Micro-Argdown+](../../micro-argdown-plus.md), and the [alignment and conversion contract](../../ADP-MICRO-ALIGNMENT.md).
+
 ## Building
 
 `yarn build`

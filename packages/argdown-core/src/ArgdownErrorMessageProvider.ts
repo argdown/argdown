@@ -88,6 +88,38 @@ const getTokenDescription = (
     description = "an incoming attack relation (->)";
   } else if (tokenMatcher(token, ArgdownLexer.Contradiction)) {
     description = "a contradictory relation (><)";
+  } else if (tokenMatcher(token, ArgdownLexer.Implies)) {
+    description = "an implies relation (=>)";
+  } else if (tokenMatcher(token, ArgdownLexer.ReverseImplies)) {
+    description = "a reverse implies relation (<=)";
+  } else if (tokenMatcher(token, ArgdownLexer.PresupposedBy)) {
+    description = "a presupposed-by relation (^>)";
+  } else if (tokenMatcher(token, ArgdownLexer.ReversePresupposedBy)) {
+    description = "a reverse presupposed-by relation (<^ or ^)";
+  } else if (tokenMatcher(token, ArgdownLexer.Specifies)) {
+    description = "a specifies relation (:>)";
+  } else if (tokenMatcher(token, ArgdownLexer.ReverseSpecifies)) {
+    description = "a reverse specifies relation (<:)";
+  } else if (tokenMatcher(token, ArgdownLexer.ExampleFor)) {
+    description = "an example-for relation (%>)";
+  } else if (tokenMatcher(token, ArgdownLexer.ReverseExampleFor)) {
+    description = "a reverse example-for relation (<% or %)";
+  } else if (tokenMatcher(token, ArgdownLexer.QuestionsRelation)) {
+    description = "a questions relation (?>)";
+  } else if (tokenMatcher(token, ArgdownLexer.ReverseQuestions)) {
+    description = "a reverse questions relation (<? or ?)";
+  } else if (tokenMatcher(token, ArgdownLexer.AnswersRelation)) {
+    description = "an answers relation (!>)";
+  } else if (tokenMatcher(token, ArgdownLexer.ReverseAnswers)) {
+    description = "a reverse answers relation (<! or !)";
+  } else if (tokenMatcher(token, ArgdownLexer.CitedBy)) {
+    description = "a cited-by relation (@>)";
+  } else if (tokenMatcher(token, ArgdownLexer.ReverseCitedBy)) {
+    description = "a reverse cited-by relation (<@ or @)";
+  } else if (tokenMatcher(token, ArgdownLexer.EqualRelation)) {
+    description = "an equality relation (==)";
+  } else if (tokenMatcher(token, ArgdownLexer.PotentiallyEqualRelation)) {
+    description = "a potentially-equal relation (~=)";
   } else if (tokenMatcher(token, ArgdownLexer.IncomingUndercut)) {
     description = "an incoming undercut relation (_>)";
   } else if (tokenMatcher(token, ArgdownLexer.OutgoingUndercut)) {
@@ -112,6 +144,22 @@ const isRelationToken = (token: IToken): boolean => {
     tokenMatcher(token, ArgdownLexer.OutgoingSupport) ||
     tokenMatcher(token, ArgdownLexer.IncomingAttack) ||
     tokenMatcher(token, ArgdownLexer.OutgoingAttack) ||
+    tokenMatcher(token, ArgdownLexer.Implies) ||
+    tokenMatcher(token, ArgdownLexer.ReverseImplies) ||
+    tokenMatcher(token, ArgdownLexer.PresupposedBy) ||
+    tokenMatcher(token, ArgdownLexer.ReversePresupposedBy) ||
+    tokenMatcher(token, ArgdownLexer.Specifies) ||
+    tokenMatcher(token, ArgdownLexer.ReverseSpecifies) ||
+    tokenMatcher(token, ArgdownLexer.ExampleFor) ||
+    tokenMatcher(token, ArgdownLexer.ReverseExampleFor) ||
+    tokenMatcher(token, ArgdownLexer.QuestionsRelation) ||
+    tokenMatcher(token, ArgdownLexer.ReverseQuestions) ||
+    tokenMatcher(token, ArgdownLexer.AnswersRelation) ||
+    tokenMatcher(token, ArgdownLexer.ReverseAnswers) ||
+    tokenMatcher(token, ArgdownLexer.CitedBy) ||
+    tokenMatcher(token, ArgdownLexer.ReverseCitedBy) ||
+    tokenMatcher(token, ArgdownLexer.EqualRelation) ||
+    tokenMatcher(token, ArgdownLexer.PotentiallyEqualRelation) ||
     tokenMatcher(token, ArgdownLexer.IncomingUndercut) ||
     tokenMatcher(token, ArgdownLexer.OutgoingUndercut) ||
     tokenMatcher(token, ArgdownLexer.Contradiction)
@@ -119,6 +167,22 @@ const isRelationToken = (token: IToken): boolean => {
 };
 const isRelationRule = (ruleName: string): boolean => {
   return (
+    ruleName === "implies" ||
+    ruleName === "reverseImplies" ||
+    ruleName === "presupposedBy" ||
+    ruleName === "reversePresupposedBy" ||
+    ruleName === "specifies" ||
+    ruleName === "reverseSpecifies" ||
+    ruleName === "exampleFor" ||
+    ruleName === "reverseExampleFor" ||
+    ruleName === "questions" ||
+    ruleName === "reverseQuestions" ||
+    ruleName === "answers" ||
+    ruleName === "reverseAnswers" ||
+    ruleName === "citedBy" ||
+    ruleName === "reverseCitedBy" ||
+    ruleName === "equal" ||
+    ruleName === "potentiallyEqual" ||
     ruleName.endsWith("Support") ||
     ruleName.endsWith("Attack") ||
     ruleName.endsWith("Undercut") ||

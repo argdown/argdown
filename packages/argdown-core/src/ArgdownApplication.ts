@@ -7,6 +7,7 @@ import { Logger } from "./Logger.js";
 import { IArgdownRequest, IArgdownResponse } from "./index.js";
 import defaultsDeep from "lodash.defaultsdeep";
 import { isString, isFunction, arrayIsEmpty } from "./utils.js";
+import { applyFrontMatterSettings } from "./frontMatter.js";
 
 /**
  * A processor is a "working step" in a process, containing a group of plugins
@@ -288,8 +289,25 @@ export class ArgdownApplication {
     this.logger.setLevel("error");
     const resp: IArgdownResponse = response || <IArgdownResponse>{};
     let req: IArgdownRequest = request;
+    const exceptions: Error[] = [];
+    resp.exceptions = exceptions;
 
     if (req) {
+      try {
+        const frontMatter = applyFrontMatterSettings(req);
+        if (frontMatter !== undefined) {
+          resp.frontMatter = frontMatter;
+        }
+      } catch (e) {
+        const error = new ArgdownPluginError(
+          "ArgdownApplication",
+          "frontmatter-error",
+          e instanceof Error ? e.message : String(e)
+        );
+        error.processor = "preflight";
+        if (req.throwExceptions) throw error;
+        exceptions.push(error);
+      }
       if (req.logLevel) {
         this.logger.setLevel(req.logLevel);
       }
@@ -318,9 +336,6 @@ export class ArgdownApplication {
       this.logger.log("error", "[ArgdownApplication]: No processors to run.");
       return resp;
     }
-    const exceptions: Error[] = [];
-    resp.exceptions = exceptions;
-
     for (const processorId of processorsToRun) {
       let cancelProcessor = false;
       const processor = this.processors[processorId];

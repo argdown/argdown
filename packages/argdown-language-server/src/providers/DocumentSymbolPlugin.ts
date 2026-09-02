@@ -12,8 +12,10 @@ import {
   ArgumentReference,
   ArgumentDefinition,
   IArgdownResponse,
-  IRuleNode
+  IRuleNode,
+  IRequestHandler
 } from "@argdown/core";
+import { formatStatementTitle } from "./utils.js";
 
 declare module "@argdown/core" {
   interface IArgdownResponse {
@@ -78,7 +80,10 @@ const onRelationEntry = (
       if (secondChild.argument) {
         relationMemberTitle = `<${secondChild.argument.title}>`;
       } else if (secondChild.statement) {
-        relationMemberTitle = `[${secondChild.statement.title}]`;
+        relationMemberTitle = formatStatementTitle(
+          secondChild.statement.title,
+          (secondChild.statement as any).discussionPointType
+        );
       }
     }
   }
@@ -96,6 +101,45 @@ const onRelationExit = (
 export class DocumentSymbolPlugin implements IArgdownPlugin {
   name = "DocumentSymbolPlugin";
   ruleListeners: { [eventId: string]: IRuleNodeHandler };
+  run: IRequestHandler = (_request, response) => {
+    const microDocument = (response as any).microDocument;
+    if (!microDocument) return response;
+    const rootLines = new Set<number>(
+      microDocument.roots.map((root: any) => root.line)
+    );
+    response.documentSymbols = microDocument.sourceOccurrences
+      .filter(
+        (occurrence: any) =>
+          occurrence.kind === "definition" ||
+          rootLines.has(occurrence.startLine)
+      )
+      .map((occurrence: any) => {
+        const isArgument = occurrence.discussionPointType === "argument";
+        const name = isArgument
+          ? `<${occurrence.title}>`
+          : formatStatementTitle(
+              occurrence.title,
+              occurrence.discussionPointType
+            );
+        const range = Range.create(
+          occurrence.startLine - 1,
+          occurrence.startColumn - 1,
+          occurrence.endLine - 1,
+          occurrence.endColumn
+        );
+        return {
+          name,
+          kind: SymbolKind.Variable,
+          range,
+          selectionRange: range,
+          argdownType: isArgument
+            ? ArgdownTypes.ARGUMENT
+            : ArgdownTypes.EQUIVALENCE_CLASS,
+          argdownId: occurrence.title
+        } as ArgdownSymbol;
+      });
+    return response;
+  };
   constructor() {
     let parentsStack: ArgdownSymbol[] = [];
     let inRelations = 0;
@@ -160,7 +204,10 @@ export class DocumentSymbolPlugin implements IArgdownPlugin {
           return;
         }
         const symbol = {} as ArgdownSymbol;
-        symbol.name = `[${node.statement.title}]`;
+        symbol.name = formatStatementTitle(
+          node.statement.title,
+          (node.statement as any).discussionPointType
+        );
         symbol.range = getRange(node);
         const firstChild =
           node.children && node.children.length > 0 ? node.children[0] : null;
@@ -240,7 +287,10 @@ export class DocumentSymbolPlugin implements IArgdownPlugin {
       },
       [RuleNames.PCS_STATEMENT + "Entry"]: (_request, _response, node) => {
         const symbol = {} as ArgdownSymbol;
-        symbol.name = `(${node.statementNr}) [${node.statement.title}]`;
+        symbol.name = `(${node.statementNr}) ${formatStatementTitle(
+          node.statement.title,
+          (node.statement as any).discussionPointType
+        )}`;
         symbol.range = getRange(node);
         const firstChild =
           node.children && node.children.length > 0 ? node.children[0] : null;
@@ -309,7 +359,7 @@ export class DocumentSymbolPlugin implements IArgdownPlugin {
         onRelationExit(resp, parentsStack);
       },
       [RuleNames.OUTGOING_SUPPORT + "Entry"]: (_req, _resp, node) => {
-        onRelationEntry(parentsStack, node, "<+");
+        onRelationEntry(parentsStack, node, "+");
       },
       [RuleNames.OUTGOING_SUPPORT + "Exit"]: (_req, resp) => {
         onRelationExit(resp, parentsStack);
@@ -324,6 +374,102 @@ export class DocumentSymbolPlugin implements IArgdownPlugin {
         onRelationEntry(parentsStack, node, "><");
       },
       [RuleNames.CONTRADICTION + "Exit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["impliesEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "=>");
+      },
+      ["impliesExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["reverseImpliesEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "<=");
+      },
+      ["reverseImpliesExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["presupposedByEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "^>");
+      },
+      ["presupposedByExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["reversePresupposedByEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "^");
+      },
+      ["reversePresupposedByExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["specifiesEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, ":>");
+      },
+      ["specifiesExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["reverseSpecifiesEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "<:");
+      },
+      ["reverseSpecifiesExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["exampleForEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "%>");
+      },
+      ["exampleForExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["reverseExampleForEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "%");
+      },
+      ["reverseExampleForExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["questionsEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "?>");
+      },
+      ["questionsExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["reverseQuestionsEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "?");
+      },
+      ["reverseQuestionsExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["answersEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "!>");
+      },
+      ["answersExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["reverseAnswersEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "!");
+      },
+      ["reverseAnswersExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["citedByEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "@>");
+      },
+      ["citedByExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["reverseCitedByEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "@");
+      },
+      ["reverseCitedByExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["equalEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "==");
+      },
+      ["equalExit"]: (_req, resp) => {
+        onRelationExit(resp, parentsStack);
+      },
+      ["potentiallyEqualEntry"]: (_req, _resp, node) => {
+        onRelationEntry(parentsStack, node, "~=");
+      },
+      ["potentiallyEqualExit"]: (_req, resp) => {
         onRelationExit(resp, parentsStack);
       }
     };

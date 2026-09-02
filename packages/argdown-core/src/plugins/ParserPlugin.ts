@@ -4,7 +4,15 @@ import { IArgdownPlugin, IRequestHandler } from "../IArgdownPlugin.js";
 import { IArgdownLogger } from "../IArgdownLogger.js";
 import { ArgdownPluginError } from "../ArgdownPluginError.js";
 import { IArgdownRequest, IArgdownResponse } from "../index.js";
-import { IAstNode } from "../model/model.js";
+import {
+  DiscussionPointType,
+  IAstNode,
+  IRuleNode,
+  ITokenNode
+} from "../model/model.js";
+import { RuleNames } from "../RuleNames.js";
+import { parseMicroArgdown } from "../micro/MicroArgdownParser.js";
+import { addDiagnostic } from "../diagnostics.js";
 import {
   IToken,
   ILexingError,
@@ -55,14 +63,23 @@ declare module "../index.js" {
     parser?: IParserPluginSettings;
   }
 }
-interface IParserPluginSettings {
+export interface IParserPluginSettings {
   /**
    * Throw exceptions if parser or lexer returns error. Otherwise will simply add the errors to the response. By default set to false.
    */
   throwExceptions?: boolean;
+  /**
+   * Selects Argdown syntax mode.
+   *
+   * "argdown" keeps legacy behavior.
+   * "argdown+" enables strict extended ADP syntax.
+   * "micro-argdown+" enables the condensed drafting dialect.
+   */
+  syntax?: "argdown" | "argdown+" | "micro-argdown+";
 }
 const defaultSettings: IParserPluginSettings = {
-  throwExceptions: false
+  throwExceptions: false,
+  syntax: "argdown"
 };
 
 /**
@@ -106,13 +123,79 @@ export class ParserPlugin implements IArgdownPlugin {
       );
     }
     const settings = this.getSettings(request);
-    const lexResult = argdownLexer.tokenize(request.input);
+    if (settings.syntax === "micro-argdown+") {
+      const document = parseMicroArgdown(request.input);
+      response.microDocument = document;
+      response.discussionPoints = document.discussionPoints;
+      response.excerpts = document.excerpts;
+      response.statements = document.statements;
+      response.arguments = document.arguments;
+      response.relations = document.relations;
+      response.diagnostics = document.diagnostics;
+      const microTokens = document.sourceOccurrences.map(
+        (occurrence, index) => {
+          const isArgument =
+            occurrence.discussionPointType === DiscussionPointType.ARGUMENT;
+          const tokenType = isArgument
+            ? occurrence.kind === "definition"
+              ? argdownLexer.ArgumentDefinition
+              : argdownLexer.ArgumentReference
+            : occurrence.kind === "definition"
+              ? argdownLexer.StatementDefinition
+              : argdownLexer.StatementReference;
+          const token = createTokenInstance(
+            tokenType,
+            occurrence.image,
+            index,
+            index + occurrence.image.length - 1,
+            occurrence.startLine,
+            occurrence.endLine,
+            occurrence.startColumn,
+            occurrence.endColumn
+          ) as ITokenNode;
+          token.title = occurrence.title;
+          return token;
+        }
+      );
+      response.tokens = microTokens;
+      response.lexerErrors = [];
+      response.parserErrors = [];
+      response.ast = IRuleNode.create(RuleNames.ARGDOWN, microTokens);
+      if (
+        settings.throwExceptions &&
+        document.diagnostics.some(
+          (diagnostic) => diagnostic.severity === "error"
+        )
+      ) {
+        throw new ArgdownPluginError(
+          this.name,
+          "micro-parser-error",
+          JSON.stringify(document.diagnostics)
+        );
+      }
+      return response;
+    }
+    const lexResult = argdownLexer.tokenize(request.input, settings.syntax);
     response.tokens = lexResult.tokens;
     response.lexerErrors = lexResult.errors;
     parser.input = lexResult.tokens;
     response.ast = parser.argdown();
     response.parserErrors = parser.errors;
 
+    for (const error of response.lexerErrors || []) {
+      addDiagnostic(response, {
+        code: "lexer-error",
+        severity: "error",
+        source: this.name,
+        message: error.message,
+        startLine: error.line,
+        endLine: error.line,
+        startColumn: error.column,
+        endColumn: (error.column ?? 1) + error.length,
+        startOffset: error.offset,
+        endOffset: error.offset + error.length
+      });
+    }
     if (response.lexerErrors && response.lexerErrors.length > 0) {
       if (settings.throwExceptions) {
         // do throw error instead of returning a response
@@ -134,11 +217,11 @@ export class ParserPlugin implements IArgdownPlugin {
       const lastToken = last(response.tokens);
       for (const error of response.parserErrors) {
         if (error.token && tokenMatcher(error.token, EOF)) {
-          const startLine = lastToken!.endLine || 1;
+          const startLine = (lastToken && lastToken.endLine) || 1;
           const endLine = startLine;
-          const startOffset = lastToken!.endOffset || 1;
+          const startOffset = (lastToken && lastToken.endOffset) || 1;
           const endOffset = startOffset;
-          const startColumn = lastToken!.endColumn || 1;
+          const startColumn = (lastToken && lastToken.endColumn) || 1;
           const endColumn = startColumn;
           const newToken = createTokenInstance(
             EOF,
@@ -152,6 +235,16 @@ export class ParserPlugin implements IArgdownPlugin {
           );
           error.token = newToken;
         }
+        addDiagnostic(
+          response,
+          {
+            code: "parser-error",
+            severity: "error",
+            source: this.name,
+            message: error.message
+          },
+          error.token
+        );
       }
       if (settings.throwExceptions) {
         // do throw error instead of returning a response

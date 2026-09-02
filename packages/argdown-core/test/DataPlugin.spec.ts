@@ -92,4 +92,15 @@ test
     app.run(request);
     expect((<any>request).dot.graphVizSettings.rankDir).to.equal("YES!");
   });
+  it("reports malformed preflight frontmatter without crashing the run", () => {
+    const result = app.run({
+      process: ["parse-input", "build-model"],
+      input: "===\nparser: [\n===\n\n[S1]: Claim"
+    });
+    expect(
+      result.exceptions!.some(
+        (error: any) => error.code === "frontmatter-error"
+      )
+    ).to.equal(true);
+  });
 });

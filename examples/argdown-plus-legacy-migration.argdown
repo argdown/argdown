@@ -1,0 +1,32 @@
+===
+parser:
+  syntax: argdown+
+===
+
+# Legacy Symbol Migration In Argdown+
+
+[S1]: Carbon pricing reduces emissions.
+
+[S2]: Lower emissions reduce climate risk.
+
+[S3]: Transition costs can be mitigated by rebates.
+
+[A1]: Incentive argument for pricing.
+  +> [S1]
+
+[S1]
+  + [S2]
+  -> [S3]: Some sectors face short-term transition costs.
+
+[S2]
+  >< [S4]: Emissions reductions do not lower climate risk.
+
+[S4]: Climate risk remains unchanged.
+
+[S5]: Canada's rebate-backed carbon pricing system is a concrete example.
+
+[S2]
+  ~= [S2-Alt]: Lower emissions reduce expected climate harms.
+
+[S1]
+  % [S5]: Reverse shorthand for isExampleFor is available in the `%` symbol family.

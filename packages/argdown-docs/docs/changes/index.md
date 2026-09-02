@@ -1,5 +1,28 @@
 # Release Notes 2026
 
+## Argdown+ rollout (unreleased)
+
+This development line adds Argdown+ as a strict superset mode while retaining classic Argdown as the default.
+
+### Core parsing and model
+
+- Added `parser.syntax` selection for `argdown`, `argdown+`, and `micro-argdown+`.
+- Added typed Discussion Points, exact Excerpt text artifacts, extended semantic relation symbols, and the `>>` block operator.
+- Added strict relation/type validation, relation-level contextual text and data, and a normalized `discussionPoints` model with compatibility views for statements and arguments.
+- Added preflight frontmatter activation, structured diagnostics, canonical Micro serialization, and normalized-document comparison.
+- Added Excerpt identity, aliases, citation passage selections, and artifact-aware JSON, map, DOT, and GraphML output.
+
+### Tooling
+
+- Updated language-server rename, completion, hover, references, folding, and document-symbol providers for typed identifiers and Micro syntax.
+- Updated VS Code, Highlight.js, Prism, and CodeMirror grammars for Argdown+ relations and `>>`.
+- Updated map rendering to expose Discussion Point types, Excerpts, semantic relations, and weak-relation styles.
+
+### Documentation and examples
+
+- Added syntax and configuration guidance for full and Micro modes.
+- Added an Argdown+ primer and a classic-symbol migration example.
+
 
 ## v2.0.x (April 2026)
 

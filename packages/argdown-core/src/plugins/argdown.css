@@ -78,6 +78,64 @@
   color: #ff00d4;
   background-color: #ffb9f3;
 }
+.argdown .justifies.relation-symbol {
+  color: #04c93f;
+  background-color: #cee7d6;
+}
+.argdown .implies.relation-symbol,
+.argdown .reverse-implies.relation-symbol {
+  color: #6f8f2b;
+  background-color: #e4f0c6;
+}
+.argdown .presupposed-by.relation-symbol,
+.argdown .reverse-presupposed-by.relation-symbol {
+  color: #8a6d1d;
+  background-color: #f6e8b7;
+}
+.argdown .specifies.relation-symbol,
+.argdown .reverse-specifies.relation-symbol {
+  color: #12796c;
+  background-color: #c5ece6;
+}
+.argdown .example-for.relation-symbol,
+.argdown .reverse-example-for.relation-symbol {
+  color: #2f8a47;
+  background-color: #d1edd8;
+}
+.argdown .questions.relation-symbol,
+.argdown .reverse-questions.relation-symbol {
+  color: #8d4f39;
+  background-color: #edd9cf;
+}
+.argdown .answers.relation-symbol,
+.argdown .reverse-answers.relation-symbol {
+  color: #c46a00;
+  background-color: #ffe0b8;
+}
+.argdown .cited-by.relation-symbol,
+.argdown .reverse-cited-by.relation-symbol {
+  color: #6844af;
+  background-color: #ddd1f4;
+}
+.argdown .equal.relation-symbol {
+  color: #1e72bf;
+  background-color: #d2eaff;
+}
+.argdown .potentially-equal.relation-symbol {
+  color: #3d82b8;
+  background-color: #d8ecfb;
+}
+
+.argdown .relation.example-for,
+.argdown .relation.reverse-example-for,
+.argdown .relation.questions,
+.argdown .relation.reverse-questions,
+.argdown .relation.cited-by,
+.argdown .relation.reverse-cited-by,
+.argdown .relation.potentially-equal {
+  border-left: 1px dashed #cccccc;
+  padding-left: calc(1.5em - 1px);
+}
 
 .argdown .pcs {
   margin-top: 2em;
@@ -92,6 +150,9 @@
 }
 .argdown .argument.top-level > .statement-content {
   font-weight: 600;
+}
+.argdown .statement-content.block-content {
+  white-space: pre-wrap;
 }
 .argdown .statement-reference:hover,
 .argdown .statement-mention:hover,

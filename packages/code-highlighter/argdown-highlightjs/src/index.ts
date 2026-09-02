@@ -24,19 +24,20 @@ export default function (hljs: any) {
   };
   const SUPPORT = {
     className: "support",
-    begin: "^[ \t]*(\\+>|(<)?\\+)(?=\\s+)",
+    begin:
+      "^[ \t]*(\\+>|<\\+|\\+|=>|<=|\\^>|<\\^|\\^|:>|<:|%>|<%|%|!>|<!|!|@>|<@|@|==|~=)(?=\\s+)",
     end: "\\s+",
     excludeEnd: true
   };
   const ATTACK = {
     className: "attack",
-    begin: "^[ \t]*(->|(<)?-)(?=\\s+)",
+    begin: "^[ \t]*(->|<-|-|\\?>|<\\?|\\?)(?=\\s+)",
     end: "\\s+",
     excludeEnd: true
   };
   const UNDERCUT = {
     className: "undercut",
-    begin: "^[ \t]*(_>|(<)?_)(?=\\s+)",
+    begin: "^[ \t]*(_>|<_|_)(?=\\s+)",
     end: "\\s+",
     excludeEnd: true
   };
@@ -68,6 +69,12 @@ export default function (hljs: any) {
       { begin: "^[ \\t]*---", end: "-+[ \\t]*$" },
       { begin: "^[ \\t]*--+[ \\t]*", end: "[ \\t]*--+[ \\t]*$" }
     ]
+  };
+  const BLOCK_START = {
+    className: "inference",
+    begin: ">>(?=\\s*$)",
+    end: "$",
+    excludeEnd: true
   };
   const HASHTAG = {
     className: "tag",
@@ -193,6 +200,7 @@ export default function (hljs: any) {
       ATTACK,
       UNDERCUT,
       CONTRADICTION,
+      BLOCK_START,
       ARGUMENT_TITLE,
       STATEMENT_TITLE,
       ARGUMENT_STATEMENT,

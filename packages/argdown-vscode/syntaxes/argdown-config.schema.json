@@ -118,6 +118,13 @@
           "title": "Throwexceptions",
           "type": "boolean",
           "default": false
+        },
+        "syntax": {
+          "description": "Select parser syntax mode. 'argdown+' enables strict extended ADP syntax; 'micro-argdown+' enables the condensed drafting dialect.",
+          "title": "Syntax",
+          "type": "string",
+          "enum": ["argdown", "argdown+", "micro-argdown+"],
+          "default": "argdown"
         }
       }
     },
@@ -128,10 +135,10 @@
       "properties": {
         "frontMatterSettingsMode": {
           "title": "frontMatterSettingsMode",
-          "description": "How should frontmatter settings be merged with settings from config files? By default, config files take precedence. Set to 'priority' if frontmatter settings should have precedence.",
+          "description": "How should frontmatter settings be merged with settings from config files? Frontmatter has priority by default for compatibility. Set to 'default' if API/config settings should take precedence, or 'ignore' to skip frontmatter settings.",
           "type": "string",
           "enum": ["default", "ignore", "priority"],
-          "default": "default"
+          "default": "priority"
         },
         "switchToBlockFormatIfMultiline": {
           "title": "switchToBlockFormatIfMultiline",

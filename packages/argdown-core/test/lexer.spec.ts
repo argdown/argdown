@@ -35,6 +35,108 @@ function startTest(tokens: chevrotain.IToken[]) {
 }
 
 describe("Lexer", function () {
+  it("recognizes adp relation symbols", function () {
+    const source = `=>
+<=
+^>
+<^
+:>
+<:
+%>
+<%
+?>
+<?
+!>
+<!
+@>
+<@
+==
+~=`;
+    const result = lexer.tokenize(source, "argdown+");
+    startTest(result.tokens);
+    expectToken(lexer.Implies);
+    expectToken(lexer.Newline);
+    expectToken(lexer.ReverseImplies);
+    expectToken(lexer.Newline);
+    expectToken(lexer.PresupposedBy);
+    expectToken(lexer.Newline);
+    expectToken(lexer.ReversePresupposedBy);
+    expectToken(lexer.Newline);
+    expectToken(lexer.Specifies);
+    expectToken(lexer.Newline);
+    expectToken(lexer.ReverseSpecifies);
+    expectToken(lexer.Newline);
+    expectToken(lexer.ExampleFor);
+    expectToken(lexer.Newline);
+    expectToken(lexer.ReverseExampleFor);
+    expectToken(lexer.Newline);
+    expectToken(lexer.QuestionsRelation);
+    expectToken(lexer.Newline);
+    expectToken(lexer.ReverseQuestions);
+    expectToken(lexer.Newline);
+    expectToken(lexer.AnswersRelation);
+    expectToken(lexer.Newline);
+    expectToken(lexer.ReverseAnswers);
+    expectToken(lexer.Newline);
+    expectToken(lexer.CitedBy);
+    expectToken(lexer.Newline);
+    expectToken(lexer.ReverseCitedBy);
+    expectToken(lexer.Newline);
+    expectToken(lexer.EqualRelation);
+    expectToken(lexer.Newline);
+    expectToken(lexer.PotentiallyEqualRelation);
+  });
+  it("recognizes adp reverse shorthand relation symbols", function () {
+    const source = `^ [S1]
+% [S2]
+? [?Q1]
+! [S3]
+@ [@R1]`;
+    const result = lexer.tokenize(source, "argdown+");
+    startTest(result.tokens);
+    expectToken(lexer.ReversePresupposedBy);
+    expectToken(lexer.StatementReference);
+    expectToken(lexer.Newline);
+    expectToken(lexer.ReverseExampleFor);
+    expectToken(lexer.StatementReference);
+    expectToken(lexer.Newline);
+    expectToken(lexer.ReverseQuestions);
+    expectToken(lexer.StatementReference);
+    expectToken(lexer.Newline);
+    expectToken(lexer.ReverseAnswers);
+    expectToken(lexer.StatementReference);
+    expectToken(lexer.Newline);
+    expectToken(lexer.ReverseCitedBy);
+    expectToken(lexer.StatementReference);
+  });
+  it("keeps urls with // inside argdown+ reference definitions", function () {
+    const source = "[@R1]: https://doi.org/10.1038/s41562-019-1458-5\n";
+    const result = lexer.tokenize(source, "argdown+");
+    startTest(result.tokens);
+    expectToken(lexer.StatementDefinition);
+    const urlTokens = currentTokens.slice(1, currentTokens.length - 1);
+    expect(
+      urlTokens.some((token) => chevrotain.tokenMatcher(token, lexer.Comment))
+    ).to.be.false;
+    expect(urlTokens.map((token) => token.image).join("")).to.equal(
+      "https://doi.org/10.1038/s41562-019-1458-5"
+    );
+    i = currentTokens.length - 1;
+    expectToken(lexer.Newline);
+  });
+  it("recognizes block operator tokens", function () {
+    const source = `
+[>E1] >>
+    First line.
+    Second line.
+`;
+    const result = lexer.tokenize(source, "argdown+");
+    startTest(result.tokens);
+    expectToken(lexer.Newline);
+    expectToken(lexer.StatementReference);
+    expectToken(lexer.BlockStart);
+    expectToken(lexer.BlockContent);
+  });
   it("recognizes incoming and outgoing relations", function () {
     let source = fs.readFileSync("./test/lexer-relations.argdown", "utf8");
     const result = lexer.tokenize(source);

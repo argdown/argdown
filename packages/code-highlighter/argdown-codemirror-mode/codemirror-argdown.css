@@ -1,29 +1,76 @@
 .cm-statement-definition,
 .cm-statement-reference,
 .cm-statement-mention {
-  color: cornflowerblue;
+  color: #76bae2;
   font-weight: bold;
 }
 .cm-argument-definition,
 .cm-argument-reference,
 .cm-argument-mention {
-  color: blue;
+  color: #0582ca;
   font-weight: bold;
 }
 .cm-incoming-support,
 .cm-outgoing-support {
-  color: green;
+  color: #04c93f;
   font-weight: bold;
 }
 .cm-incoming-attack,
 .cm-outgoing-attack,
 .cm-contradiction {
-  color: red;
+  color: #c93504;
   font-weight: bold;
 }
 .cm-incoming-undercut,
 .cm-outgoing-undercut {
-  color: purple;
+  color: #ff00d4;
+  font-weight: bold;
+}
+.cm-justifies {
+  color: #04c93f;
+  font-weight: bold;
+}
+.cm-implies,
+.cm-reverse-implies {
+  color: #6f8f2b;
+  font-weight: bold;
+}
+.cm-presupposed-by,
+.cm-reverse-presupposed-by {
+  color: #8a6d1d;
+  font-weight: bold;
+}
+.cm-specifies,
+.cm-reverse-specifies {
+  color: #12796c;
+  font-weight: bold;
+}
+.cm-example-for,
+.cm-reverse-example-for {
+  color: #2f8a47;
+  font-weight: bold;
+}
+.cm-questions,
+.cm-reverse-questions {
+  color: #8d4f39;
+  font-weight: bold;
+}
+.cm-answers,
+.cm-reverse-answers {
+  color: #c46a00;
+  font-weight: bold;
+}
+.cm-cited-by,
+.cm-reverse-cited-by {
+  color: #6844af;
+  font-weight: bold;
+}
+.cm-equal {
+  color: #1e72bf;
+  font-weight: bold;
+}
+.cm-potentially-equal {
+  color: #3d82b8;
   font-weight: bold;
 }
 .cm-heading {
@@ -32,6 +79,10 @@
 }
 .cm-inference {
   color: blue;
+}
+.cm-block-start {
+  color: blue;
+  font-weight: bold;
 }
 .cm-argument-statement {
   color: blue;

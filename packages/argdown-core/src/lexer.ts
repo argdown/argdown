@@ -153,6 +153,49 @@ const matchIncomingAttack = partialRight(matchRelation, /^([' '\t]*)(->)/);
 const matchOutgoingSupport = partialRight(matchRelation, /^([' '\t]*)(<?\+)/);
 const matchOutgoingAttack = partialRight(matchRelation, /^([' '\t]*)(<?-)/);
 const matchContradiction = partialRight(matchRelation, /^([' '\t]*)(><)/);
+const matchImplies = partialRight(matchRelation, /^([' '\t]*)(=>(?=\s|$))/);
+const matchReverseImplies = partialRight(
+  matchRelation,
+  /^([' '\t]*)(<=(?=\s|$))/
+);
+const matchPresupposedBy = partialRight(
+  matchRelation,
+  /^([' '\t]*)(\^>(?=\s|$))/
+);
+const matchReversePresupposedBy = partialRight(
+  matchRelation,
+  /^([' '\t]*)(<\^(?=\s|$)|\^(?=\s|$))/
+);
+const matchSpecifies = partialRight(matchRelation, /^([' '\t]*)(:>(?=\s|$))/);
+const matchReverseSpecifies = partialRight(
+  matchRelation,
+  /^([' '\t]*)(<:(?=\s|$))/
+);
+const matchExampleFor = partialRight(matchRelation, /^([' '\t]*)(%>(?=\s|$))/);
+const matchReverseExampleFor = partialRight(
+  matchRelation,
+  /^([' '\t]*)(<%(?=\s|$)|%(?=\s|$))/
+);
+const matchQuestions = partialRight(matchRelation, /^([' '\t]*)(\?>(?=\s|$))/);
+const matchReverseQuestions = partialRight(
+  matchRelation,
+  /^([' '\t]*)(<\?(?=\s|$)|\?(?=\s|$))/
+);
+const matchAnswers = partialRight(matchRelation, /^([' '\t]*)(!>(?=\s|$))/);
+const matchReverseAnswers = partialRight(
+  matchRelation,
+  /^([' '\t]*)(<!(?=\s|$)|!(?=\s|$))/
+);
+const matchCitedBy = partialRight(matchRelation, /^([' '\t]*)(@>(?=\s|$))/);
+const matchReverseCitedBy = partialRight(
+  matchRelation,
+  /^([' '\t]*)(<@(?=\s|$)|@(?=\s|$))/
+);
+const matchEqual = partialRight(matchRelation, /^([' '\t]*)(==(?!=)(?=\s|$))/);
+const matchPotentiallyEqual = partialRight(
+  matchRelation,
+  /^([' '\t]*)(~=(?=\s|$))/
+);
 const matchIncomingUndercut = partialRight(matchRelation, /^([' '\t]*)(_>)/);
 const matchOutgoingUndercut = partialRight(
   matchRelation,
@@ -203,6 +246,134 @@ export const Contradiction = createToken({
   start_chars_hint: [" ", "\t", ">"]
 });
 tokenList.push(Contradiction);
+export const Implies = createToken({
+  name: TokenNames.IMPLIES,
+  pattern: matchImplies,
+  line_breaks: true,
+  label: "=> (Implies)",
+  start_chars_hint: [" ", "\t", "="]
+});
+tokenList.push(Implies);
+export const ReverseImplies = createToken({
+  name: TokenNames.REVERSE_IMPLIES,
+  pattern: matchReverseImplies,
+  line_breaks: true,
+  label: "<= (Reverse Implies)",
+  start_chars_hint: [" ", "\t", "<"]
+});
+tokenList.push(ReverseImplies);
+export const PresupposedBy = createToken({
+  name: TokenNames.PRESUPPOSED_BY,
+  pattern: matchPresupposedBy,
+  line_breaks: true,
+  label: "^> (isPresupposedBy)",
+  start_chars_hint: [" ", "\t", "^"]
+});
+tokenList.push(PresupposedBy);
+export const ReversePresupposedBy = createToken({
+  name: TokenNames.REVERSE_PRESUPPOSED_BY,
+  pattern: matchReversePresupposedBy,
+  line_breaks: true,
+  label: "<^ or ^ (Reverse isPresupposedBy)",
+  start_chars_hint: [" ", "\t", "<"]
+});
+tokenList.push(ReversePresupposedBy);
+export const Specifies = createToken({
+  name: TokenNames.SPECIFIES,
+  pattern: matchSpecifies,
+  line_breaks: true,
+  label: ":> (Specifies)",
+  start_chars_hint: [" ", "\t", ":"]
+});
+tokenList.push(Specifies);
+export const ReverseSpecifies = createToken({
+  name: TokenNames.REVERSE_SPECIFIES,
+  pattern: matchReverseSpecifies,
+  line_breaks: true,
+  label: "<: (Reverse Specifies)",
+  start_chars_hint: [" ", "\t", "<"]
+});
+tokenList.push(ReverseSpecifies);
+export const ExampleFor = createToken({
+  name: TokenNames.EXAMPLE_FOR,
+  pattern: matchExampleFor,
+  line_breaks: true,
+  label: "%> (isExampleFor)",
+  start_chars_hint: [" ", "\t", "%"]
+});
+tokenList.push(ExampleFor);
+export const ReverseExampleFor = createToken({
+  name: TokenNames.REVERSE_EXAMPLE_FOR,
+  pattern: matchReverseExampleFor,
+  line_breaks: true,
+  label: "<% or % (Reverse isExampleFor)",
+  start_chars_hint: [" ", "\t", "<", "%"]
+});
+tokenList.push(ReverseExampleFor);
+export const QuestionsRelation = createToken({
+  name: TokenNames.QUESTIONS,
+  pattern: matchQuestions,
+  line_breaks: true,
+  label: "?> (Questions)",
+  start_chars_hint: [" ", "\t", "?"]
+});
+tokenList.push(QuestionsRelation);
+export const ReverseQuestions = createToken({
+  name: TokenNames.REVERSE_QUESTIONS,
+  pattern: matchReverseQuestions,
+  line_breaks: true,
+  label: "<? or ? (Reverse Questions)",
+  start_chars_hint: [" ", "\t", "<"]
+});
+tokenList.push(ReverseQuestions);
+export const AnswersRelation = createToken({
+  name: TokenNames.ANSWERS,
+  pattern: matchAnswers,
+  line_breaks: true,
+  label: "!> (Answers)",
+  start_chars_hint: [" ", "\t", "!"]
+});
+tokenList.push(AnswersRelation);
+export const ReverseAnswers = createToken({
+  name: TokenNames.REVERSE_ANSWERS,
+  pattern: matchReverseAnswers,
+  line_breaks: true,
+  label: "<! or ! (Reverse Answers)",
+  start_chars_hint: [" ", "\t", "<"]
+});
+tokenList.push(ReverseAnswers);
+export const CitedBy = createToken({
+  name: TokenNames.CITED_BY,
+  pattern: matchCitedBy,
+  line_breaks: true,
+  label: "@> (isCitedBy)",
+  start_chars_hint: [" ", "\t", "@"]
+});
+tokenList.push(CitedBy);
+export const ReverseCitedBy = createToken({
+  name: TokenNames.REVERSE_CITED_BY,
+  pattern: matchReverseCitedBy,
+  line_breaks: true,
+  label: "<@ or @ (Reverse isCitedBy)",
+  start_chars_hint: [" ", "\t", "<"]
+});
+tokenList.push(ReverseCitedBy);
+export const EqualRelation = createToken({
+  name: TokenNames.EQUAL,
+  pattern: matchEqual,
+  line_breaks: true,
+  label: "== (isEqual)",
+  start_chars_hint: [" ", "\t", "="]
+});
+tokenList.push(EqualRelation);
+export const PotentiallyEqualRelation = createToken({
+  name: TokenNames.POTENTIALLY_EQUAL,
+  pattern: matchPotentiallyEqual,
+  line_breaks: true,
+  label: "~= (isPotentiallyEqual)",
+  start_chars_hint: [" ", "\t", "~"]
+});
+tokenList.push(PotentiallyEqualRelation);
 export const IncomingUndercut = createToken({
   name: TokenNames.INCOMING_UNDERCUT,
   pattern: matchIncomingUndercut,
@@ -380,6 +551,122 @@ export const Dedent = createToken({
   pattern: chevrotain.Lexer.NA
 });
 tokenList.push(Dedent);
+
+const isRelationTokenName = (tokenName?: TokenNames): boolean =>
+  tokenName === TokenNames.INCOMING_SUPPORT ||
+  tokenName === TokenNames.OUTGOING_SUPPORT ||
+  tokenName === TokenNames.INCOMING_ATTACK ||
+  tokenName === TokenNames.OUTGOING_ATTACK ||
+  tokenName === TokenNames.CONTRADICTION ||
+  tokenName === TokenNames.IMPLIES ||
+  tokenName === TokenNames.REVERSE_IMPLIES ||
+  tokenName === TokenNames.PRESUPPOSED_BY ||
+  tokenName === TokenNames.REVERSE_PRESUPPOSED_BY ||
+  tokenName === TokenNames.SPECIFIES ||
+  tokenName === TokenNames.REVERSE_SPECIFIES ||
+  tokenName === TokenNames.EXAMPLE_FOR ||
+  tokenName === TokenNames.REVERSE_EXAMPLE_FOR ||
+  tokenName === TokenNames.QUESTIONS ||
+  tokenName === TokenNames.REVERSE_QUESTIONS ||
+  tokenName === TokenNames.ANSWERS ||
+  tokenName === TokenNames.REVERSE_ANSWERS ||
+  tokenName === TokenNames.CITED_BY ||
+  tokenName === TokenNames.REVERSE_CITED_BY ||
+  tokenName === TokenNames.EQUAL ||
+  tokenName === TokenNames.POTENTIALLY_EQUAL ||
+  tokenName === TokenNames.INCOMING_UNDERCUT ||
+  tokenName === TokenNames.OUTGOING_UNDERCUT;
+const matchBlockStart = (
+  text: string,
+  offset?: number,
+  tokens?: chevrotain.IToken[]
+) => {
+  const remainingText = text.substr(offset || 0);
+  const match = /^>>/.exec(remainingText);
+  if (!match) {
+    return null;
+  }
+  const lastToken = last(tokens);
+  if (!lastToken) {
+    return match;
+  }
+  const lastTokenName = lastToken.tokenType.name as TokenNames;
+  if (
+    lastTokenName === TokenNames.STATEMENT_REFERENCE ||
+    lastTokenName === TokenNames.ARGUMENT_REFERENCE ||
+    lastTokenName === TokenNames.NEWLINE ||
+    lastTokenName === TokenNames.EMPTYLINE ||
+    isRelationTokenName(lastTokenName)
+  ) {
+    return match;
+  }
+  return null;
+};
+const matchBlockContent = (
+  text: string,
+  offset?: number,
+  tokens?: chevrotain.IToken[]
+) => {
+  const lastToken = last(tokens);
+  if (
+    !lastToken ||
+    (lastToken.tokenType.name as TokenNames) !== TokenNames.BLOCK_START
+  ) {
+    return null;
+  }
+  const remainingText = text.substr(offset || 0);
+  const firstBreak = /^[ \t]*(?:\r\n|\n|\r)/.exec(remainingText);
+  if (!firstBreak) {
+    return null;
+  }
+  let cursor = firstBreak[0].length;
+  const firstLine = /^([ \t]+)(.*?)(?:\r\n|\n|\r|$)/.exec(
+    remainingText.substr(cursor)
+  );
+  if (!firstLine) {
+    return null;
+  }
+  const baseIndent = firstLine[1].length;
+  cursor += firstLine[0].length;
+  while (cursor < remainingText.length) {
+    const rest = remainingText.substr(cursor);
+    const lineMatch = /^([ \t]*)(.*?)(?:\r\n|\n|\r|$)/.exec(rest);
+    if (!lineMatch) {
+      break;
+    }
+    const indentLength = lineMatch[1].length;
+    if (indentLength < baseIndent) {
+      break;
+    }
+    cursor += lineMatch[0].length;
+    if (lineMatch[0].length === 0) {
+      break;
+    }
+  }
+  const matchedText = remainingText
+    .substring(0, cursor)
+    .replace(/(?:\r\n|\n|\r)$/, "");
+  const match = [matchedText] as unknown as RegExpExecArray;
+  match.index = 0;
+  match.input = remainingText;
+  return match;
+};
+export const BlockStart = createToken({
+  name: TokenNames.BLOCK_START,
+  pattern: matchBlockStart,
+  line_breaks: false,
+  label: ">> (Block Start)",
+  start_chars_hint: [">"]
+});
+tokenList.push(BlockStart);
+export const BlockContent = createToken({
+  name: TokenNames.BLOCK_CONTENT,
+  pattern: matchBlockContent,
+  line_breaks: true,
+  label: "{linebreak}{indentation}Text (Block Content)",
+  start_chars_hint: [" ", "\t", "\r", "\n"]
+});
+tokenList.push(BlockContent);
 
 export const StatementDefinition = createToken({
   name: TokenNames.STATEMENT_DEFINITION,
@@ -667,27 +954,71 @@ tokenList.push(UnderscoreItalicEnd);
 // 1) skip all trailing linebreaks if the comment is preceded by an Emptyline
 // 2) skip trailing linebreaks if the comment is preceded by a Newline and is followed by a single Newline (and not an Emptyline)
 // This makes it necessary to use a custom pattern matcher to check the type of the last token
-const commentPattern =
-  /(?:<!--(?:.|\n|\r)*?-->)|(?:\/\*(?:.|\n|\r)*?\*\/)|(?:\/\/.*?(?=\r\n|\n|\r))/y;
+const commentPattern = /(?:<!--(?:.|\n|\r)*?-->)|(?:\/\*(?:.|\n|\r)*?\*\/)/y;
 const commentWithTrailingLinebreaksPattern =
-  /(?:(?:<!--(?:.|\n|\r)*?-->)|(?:\/\*(?:.|\n|\r)*?\*\/)|(?:\/\/.*?(?=\r\n|\n|\r)))(?:[ \t]*\r\n|\n|\r)*/y;
+  /(?:(?:<!--(?:.|\n|\r)*?-->)|(?:\/\*(?:.|\n|\r)*?\*\/))(?:[ \t]*\r\n|\n|\r)*/y;
 const commentWithOneTrailingLinebreakPattern =
-  /(?:(?:<!--(?:.|\n|\r)*?-->)|(?:\/\*(?:.|\n|\r)*?\*\/)|(?:\/\/.*?(?=\r\n|\n|\r)))(?:[ \t]*(?:\r\n|\n|\r)(?!([ \t]*(\r\n|\n|\r))))?/y;
+  /(?:(?:<!--(?:.|\n|\r)*?-->)|(?:\/\*(?:.|\n|\r)*?\*\/))(?:[ \t]*(?:\r\n|\n|\r)(?!([ \t]*(\r\n|\n|\r))))?/y;
+const lineCommentPattern = /\/\/.*?(?=\r\n|\n|\r)/y;
+const lineCommentWithTrailingLinebreaksPattern =
+  /(?:\/\/.*?(?=\r\n|\n|\r))(?:[ \t]*\r\n|\n|\r)*/y;
+const lineCommentWithOneTrailingLinebreakPattern =
+  /(?:\/\/.*?(?=\r\n|\n|\r))(?:[ \t]*(?:\r\n|\n|\r)(?!([ \t]*(\r\n|\n|\r))))?/y;
+const canMatchLineComment = (text: string, offset: number) => {
+  if (text.substr(offset, 2) !== "//") {
+    return false;
+  }
+  if (offset === 0) {
+    return true;
+  }
+  const previousChar = text[offset - 1];
+  return (
+    previousChar === " " ||
+    previousChar === "\t" ||
+    previousChar === "\n" ||
+    previousChar === "\r"
+  );
+};
 const matchComment = (
   text: string,
   offset?: number,
   tokens?: chevrotain.IToken[]
 ) => {
+  const currentOffset = offset || 0;
   const lastToken = last(tokens);
   if (lastToken && tokenMatcher(lastToken, Emptyline)) {
-    commentWithTrailingLinebreaksPattern.lastIndex = offset || 0;
-    return commentWithTrailingLinebreaksPattern.exec(text);
+    commentWithTrailingLinebreaksPattern.lastIndex = currentOffset;
+    const blockCommentMatch = commentWithTrailingLinebreaksPattern.exec(text);
+    if (blockCommentMatch) {
+      return blockCommentMatch;
+    }
+    if (canMatchLineComment(text, currentOffset)) {
+      lineCommentWithTrailingLinebreaksPattern.lastIndex = currentOffset;
+      return lineCommentWithTrailingLinebreaksPattern.exec(text);
+    }
+    return null;
   } else if (lastToken && tokenMatcher(lastToken, Newline)) {
-    commentWithOneTrailingLinebreakPattern.lastIndex = offset || 0;
-    return commentWithOneTrailingLinebreakPattern.exec(text);
+    commentWithOneTrailingLinebreakPattern.lastIndex = currentOffset;
+    const blockCommentMatch = commentWithOneTrailingLinebreakPattern.exec(text);
+    if (blockCommentMatch) {
+      return blockCommentMatch;
+    }
+    if (canMatchLineComment(text, currentOffset)) {
+      lineCommentWithOneTrailingLinebreakPattern.lastIndex = currentOffset;
+      return lineCommentWithOneTrailingLinebreakPattern.exec(text);
+    }
+    return null;
   } else {
-    commentPattern.lastIndex = offset || 0;
-    return commentPattern.exec(text);
+    commentPattern.lastIndex = currentOffset;
+    const blockCommentMatch = commentPattern.exec(text);
+    if (blockCommentMatch) {
+      return blockCommentMatch;
+    }
+    if (canMatchLineComment(text, currentOffset)) {
+      lineCommentPattern.lastIndex = currentOffset;
+      return lineCommentPattern.exec(text);
+    }
+    return null;
   }
 };
 export const Comment = createToken({
@@ -765,6 +1096,27 @@ tokenList.push(UnusedControlChar);
 
 export const EOF = chevrotain.EOF;
 
+const argdownPlusTokens: chevrotain.TokenType[] = [
+  BlockContent,
+  Implies,
+  ReverseImplies,
+  PresupposedBy,
+  ReversePresupposedBy,
+  Specifies,
+  ReverseSpecifies,
+  ExampleFor,
+  ReverseExampleFor,
+  QuestionsRelation,
+  ReverseQuestions,
+  AnswersRelation,
+  ReverseAnswers,
+  CitedBy,
+  ReverseCitedBy,
+  EqualRelation,
+  PotentiallyEqualRelation,
+  BlockStart
+];
+
 const lexerConfig: chevrotain.IMultiModeLexerDefinition = {
   modes: {
     default_mode: [
@@ -773,6 +1125,7 @@ const lexerConfig: chevrotain.IMultiModeLexerDefinition = {
       Data,
       EscapedChar, //must come first after $.Comment
       SpecialChar,
+      BlockContent,
       Emptyline,
       Newline,
       // Relation tokens must appear before Spaces, otherwise all indentation will always be consumed as spaces.
@@ -780,6 +1133,22 @@ const lexerConfig: chevrotain.IMultiModeLexerDefinition = {
       Dedent,
       Indent,
       InferenceStart, //needs to be lexed before OutgoingAttack (- vs --)
+      Implies,
+      ReverseImplies,
+      PresupposedBy,
+      ReversePresupposedBy,
+      Specifies,
+      ReverseSpecifies,
+      ExampleFor,
+      ReverseExampleFor,
+      QuestionsRelation,
+      ReverseQuestions,
+      AnswersRelation,
+      ReverseAnswers,
+      CitedBy,
+      ReverseCitedBy,
+      EqualRelation,
+      PotentiallyEqualRelation,
       IncomingSupport,
       IncomingAttack,
       OutgoingSupport,
@@ -807,6 +1176,7 @@ const lexerConfig: chevrotain.IMultiModeLexerDefinition = {
       // $.StatementDefinitionByNumber, // needs to be lexed before ArgumentReference
       // $.StatementReferenceByNumber, // needs to be lexed before ArgumentReference
       // $.StatementMentionByNumber, // needs to be lexed before ArgumentReference
+      BlockStart,
       StatementDefinition,
       StatementReference,
       StatementMention,
@@ -834,15 +1204,26 @@ const lexerConfig: chevrotain.IMultiModeLexerDefinition = {
   defaultMode: "default_mode"
 };
 
-const lexer = new chevrotain.Lexer(lexerConfig);
-export const tokenize = (text: string): chevrotain.ILexingResult => {
+const legacyLexerConfig: chevrotain.IMultiModeLexerDefinition = {
+  modes: {
+    default_mode: lexerConfig.modes.default_mode.filter(
+      (tokenType) => argdownPlusTokens.indexOf(tokenType) === -1
+    ),
+    inference_mode: lexerConfig.modes.inference_mode
+  },
+  defaultMode: "default_mode"
+};
+
+const argdownPlusLexer = new chevrotain.Lexer(lexerConfig);
+const legacyLexer = new chevrotain.Lexer(legacyLexerConfig);
+export const tokenize = (
+  text: string,
+  syntax: "argdown" | "argdown+" = "argdown"
+): chevrotain.ILexingResult => {
   init();
 
+  const lexer = syntax === "argdown+" ? argdownPlusLexer : legacyLexer;
   const lexResult = lexer.tokenize(text);
-  if (lexResult.errors && lexResult.errors.length > 0) {
-    throw new Error("sad sad panda lexing errors detected");
-  }
-
   //remove trailing Emptyline (parser cannot cope with it)
   const lastToken = last(lexResult.tokens);
   if (lastToken && tokenMatcher(lastToken, Emptyline)) {

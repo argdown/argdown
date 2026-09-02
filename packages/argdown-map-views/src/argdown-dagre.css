@@ -37,6 +37,17 @@
   font-family: Arial, sans-serif;
   font-weight: normal;
 }
+.dagre .node.question rect {
+  stroke-dasharray: 5 2;
+}
+.dagre .node.reference rect {
+  stroke-dasharray: 2 2;
+}
+.dagre .node.excerpt rect,
+.dagre .node.text-artifact rect {
+  stroke-dasharray: 7 3;
+  fill-opacity: 0.92;
+}
 .dagre .edgePath {
   stroke: #333;
   stroke-width: 1.5px;
@@ -86,6 +97,84 @@
 }
 .dagre .edgePath.undercut marker {
   fill: purple;
+  stroke: none;
+}
+.dagre .edgePath.implies,
+.dagre .edgePath.entails {
+  stroke: #9ccc65;
+}
+.dagre .edgePath.implies marker,
+.dagre .edgePath.entails marker {
+  fill: #9ccc65;
+  stroke: none;
+}
+.dagre .edgePath.justifies,
+.dagre .edgePath.support {
+  stroke: #00a651;
+}
+.dagre .edgePath.justifies marker,
+.dagre .edgePath.support marker {
+  fill: #00a651;
+  stroke: none;
+}
+.dagre .edgePath.is-presupposed-by {
+  stroke: #d1a100;
+}
+.dagre .edgePath.is-presupposed-by marker {
+  fill: #d1a100;
+  stroke: none;
+}
+.dagre .edgePath.specifies {
+  stroke: #1aa89a;
+}
+.dagre .edgePath.specifies marker {
+  fill: #1aa89a;
+  stroke: none;
+}
+.dagre .edgePath.is-example-for {
+  stroke: #4caf50;
+  stroke-dasharray: 4 2;
+}
+.dagre .edgePath.is-example-for marker {
+  fill: #4caf50;
+  stroke: none;
+}
+.dagre .edgePath.questions {
+  stroke: #8d4f39;
+  stroke-dasharray: 4 2;
+}
+.dagre .edgePath.questions marker {
+  fill: #8d4f39;
+  stroke: none;
+}
+.dagre .edgePath.answers {
+  stroke: #fb8c00;
+}
+.dagre .edgePath.answers marker {
+  fill: #fb8c00;
+  stroke: none;
+}
+.dagre .edgePath.is-cited-by {
+  stroke: #7e57c2;
+  stroke-dasharray: 4 2;
+}
+.dagre .edgePath.is-cited-by marker {
+  fill: #7e57c2;
+  stroke: none;
+}
+.dagre .edgePath.equal {
+  stroke: #42a5f5;
+}
+.dagre .edgePath.equal marker {
+  fill: #42a5f5;
+  stroke: none;
+}
+.dagre .edgePath.potentially-equal {
+  stroke: #64b5f6;
+  stroke-dasharray: 4 2;
+}
+.dagre .edgePath.potentially-equal marker {
+  fill: #64b5f6;
   stroke: none;
 }
 /* .dagre .node {

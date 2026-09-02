@@ -46,6 +46,8 @@ const groupPlugin = new GroupPlugin();
 const dotExport = new DotExportPlugin();
 const graphMLExport = new GraphMLExportPlugin();
 import primer from "/examples/argdown-primer.argdown?url&raw";
+import argdownPlusPrimer from "/examples/argdown-plus-primer.argdown?url&raw";
+import argdownPlusLegacyMigration from "/examples/argdown-plus-legacy-migration.argdown?url&raw";
 
 app.addPlugin(parserPlugin, "parse-input");
 app.addPlugin(dataPlugin, "build-model");
@@ -70,6 +72,18 @@ const examples = {
     title: "Argdown Primer",
     url: "./examples/argdown-primer.argdown",
     cachedContent: primer
+  },
+  "argdown-plus-primer": {
+    id: "argdown-plus-primer",
+    title: "Argdown+ Primer",
+    url: "./examples/argdown-plus-primer.argdown",
+    cachedContent: argdownPlusPrimer
+  },
+  "argdown-plus-legacy-migration": {
+    id: "argdown-plus-legacy-migration",
+    title: "Argdown+ Legacy Symbol Migration",
+    url: "./examples/argdown-plus-legacy-migration.argdown",
+    cachedContent: argdownPlusLegacyMigration
   },
   greenspan: {
     id: "greenspan",

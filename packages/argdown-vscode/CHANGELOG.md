@@ -1,4 +1,11 @@
 # Release Notes 2026
+
+## Argdown+ rollout (unreleased)
+
+- Adds editor highlighting for typed Discussion Points, extended semantic relation symbols, and the `>>` block operator.
+- Adds configuration schema support for the `argdown`, `argdown+`, and `micro-argdown+` parser modes.
+- Updates language-server rename, completion, hover, references, folding, diagnostics, and document symbols for Argdown+ and Micro documents.
+
 ## v2.0.x (April 2026)
 
 More than 10 years ago, [Christian Voigt](https://github.com/christianvoigt) presented his idea of "a simple

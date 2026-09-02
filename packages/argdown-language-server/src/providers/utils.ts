@@ -29,36 +29,68 @@ export const createRange = (el: HasLocation): Range => {
     el.endColumn || 1
   );
 };
-const relationSymbols: { [key: string]: string } = {
-  support: "+",
-  attack: "-",
-  entails: "+",
-  contrary: "-",
-  undercut: "_",
-  contradictory: "><"
+
+export const formatStatementTitle = (
+  title: string,
+  discussionPointType?: string
+): string => {
+  if (discussionPointType === "question") {
+    return `[?${title}]`;
+  }
+  if (discussionPointType === "reference") {
+    return `[@${title}]`;
+  }
+  if (discussionPointType === "excerpt") {
+    return `[>${title}]`;
+  }
+  return `[${title}]`;
 };
+
+export const formatDiscussionPointTitle = (member: RelationMember): string => {
+  if (member.type === ArgdownTypes.ARGUMENT) {
+    return `<${member.title}>`;
+  }
+  return formatStatementTitle(
+    member.title,
+    (member as any).discussionPointType
+  );
+};
+
+const relationSymbols: { [key: string]: { forward: string; reverse: string } } =
+  {
+    support: { forward: "+>", reverse: "+" },
+    attack: { forward: "->", reverse: "<-" },
+    entails: { forward: "+>", reverse: "+" },
+    contrary: { forward: "->", reverse: "<-" },
+    undercut: { forward: "_>", reverse: "<_" },
+    contradictory: { forward: "><", reverse: "><" },
+    implies: { forward: "=>", reverse: "<=" },
+    justifies: { forward: "+>", reverse: "+" },
+    "is-presupposed-by": { forward: "^>", reverse: "^" },
+    specifies: { forward: ":>", reverse: "<:" },
+    "is-example-for": { forward: "%>", reverse: "%" },
+    questions: { forward: "?>", reverse: "?" },
+    answers: { forward: "!>", reverse: "!" },
+    "is-cited-by": { forward: "@>", reverse: "@" },
+    equal: { forward: "==", reverse: "==" },
+    "potentially-equal": { forward: "~=", reverse: "~=" }
+  };
 const getRelationSymbol = (
   relationType: string,
   isOutgoing: boolean
 ): string => {
-  let symbol = relationSymbols[relationType];
-  if (relationType !== "contradictory") {
-    if (isOutgoing) {
-      symbol = `<${symbol}`;
-    } else {
-      symbol = `${symbol}>`;
-    }
+  const config = relationSymbols[relationType];
+  if (!config) {
+    return isOutgoing ? "<+?" : "+>?";
   }
-  return symbol;
+  return isOutgoing ? config.reverse : config.forward;
 };
 const generateArgdownRelationString = function (
   relationType: RelationType,
   isOutgoing: boolean,
-  title: string,
-  type: ArgdownTypes
+  relationPartner: RelationMember
 ) {
-  const relationPartnerStr =
-    type === ArgdownTypes.ARGUMENT ? `<${title}>` : `[${title}]`;
+  const relationPartnerStr = formatDiscussionPointTitle(relationPartner);
   const relationSymbol = getRelationSymbol(relationType, isOutgoing);
   return `
   ${relationSymbol} ${relationPartnerStr}`;
@@ -72,8 +104,7 @@ const generateArgdownRelationStringFromRelation = function (
   return generateArgdownRelationString(
     relation.relationType,
     isOutgoing,
-    otherRelationMember.title,
-    otherRelationMember.type
+    otherRelationMember
   );
 };
 const caveat = `
@@ -124,7 +155,10 @@ export const generateMarkdownForStatement = (
   }
   return `
 \`\`\`argdown
-[${eqClass.title}]${text}${explicitRelationsStr}${implicitRelationsStr}${caveat}
+${formatStatementTitle(
+  eqClass.title,
+  (eqClass as any).discussionPointType
+)}${text}${explicitRelationsStr}${implicitRelationsStr}${caveat}
 \`\`\``;
 };
 

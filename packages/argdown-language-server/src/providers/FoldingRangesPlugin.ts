@@ -6,7 +6,8 @@ import {
   ITokenNodeHandler,
   StatementRole,
   IArgumentDescription,
-  TokenNames
+  TokenNames,
+  IRequestHandler
 } from "@argdown/core";
 
 declare module "@argdown/core" {
@@ -16,6 +17,20 @@ declare module "@argdown/core" {
 }
 export class FoldingRangesPlugin implements IArgdownPlugin {
   name = "FoldingRangesPlugin";
+  run: IRequestHandler = (_request, response) => {
+    const microDocument = (response as any).microDocument;
+    if (!microDocument) return response;
+    const maxLine = (occurrence: any): number =>
+      occurrence.children.reduce(
+        (maximum: number, child: any) => Math.max(maximum, maxLine(child)),
+        occurrence.line
+      );
+    response.foldingRanges = microDocument.roots
+      .map((root: any) => ({ start: root.line, end: maxLine(root) }))
+      .filter((range: any) => range.end > range.start)
+      .map((range: any) => FoldingRange.create(range.start - 1, range.end - 1));
+    return response;
+  };
   tokenListeners: { [eventId: string]: ITokenNodeHandler } = {
     [TokenNames.FRONT_MATTER]: (_req, response, node) => {
       response.foldingRanges.push(

@@ -12,6 +12,7 @@ import {
   ArgdownTypes
 } from "../model/model.js";
 import { IArgdownRequest } from "../index.js";
+import { isWeakRelationType } from "../model/relationStyles.js";
 import {
   addLineBreaks,
   mergeDefaults,
@@ -213,6 +214,30 @@ export class GraphMLExportPlugin implements IArgdownPlugin {
       "yfiles.type": "edgegraphics",
       id: "d1"
     });
+    graphml.e("key", {
+      for: "node",
+      "attr.name": "discussionPointType",
+      "attr.type": "string",
+      id: "d2"
+    });
+    graphml.e("key", {
+      for: "node",
+      "attr.name": "entityKind",
+      "attr.type": "string",
+      id: "d3"
+    });
+    graphml.e("key", {
+      for: "edge",
+      "attr.name": "relationOccurrences",
+      "attr.type": "string",
+      id: "d4"
+    });
+    graphml.e("key", {
+      for: "node",
+      "attr.name": "aliases",
+      "attr.type": "string",
+      id: "d5"
+    });
     return graphml;
   }
   createEdgeElement(
@@ -231,6 +256,10 @@ export class GraphMLExportPlugin implements IArgdownPlugin {
         sourceArrow = "diamond";
         targetArrow = "diamond";
         break;
+      case RelationType.EQUAL:
+      case RelationType.POTENTIALLY_EQUAL:
+        sourceArrow = "standard";
+        break;
     }
     const edgeEl = graph.e("edge", {
       id: edge.id,
@@ -238,11 +267,24 @@ export class GraphMLExportPlugin implements IArgdownPlugin {
       source: edge.from.id,
       target: edge.to.id
     });
+    if (edge.relationOccurrences && edge.relationOccurrences.length > 0) {
+      edgeEl.e("data", { key: "d4" }).txt(
+        JSON.stringify(
+          edge.relationOccurrences.map((occurrence) => ({
+            contextualText: occurrence.contextualText,
+            contextualizedEndpoint: occurrence.contextualizedEndpoint,
+            contextualData: occurrence.contextualData,
+            startLine: occurrence.startLine,
+            endLine: occurrence.endLine
+          }))
+        )
+      );
+    }
     const polyLine = edgeEl.e("data", { key: "d1" }).e("y:PolyLineEdge", {});
     polyLine.e("y:Path", { sx: "0.0", sy: "0.0", tx: "0.0", ty: "0.0" });
     polyLine.e("y:LineStyle", {
       color: edgeColor,
-      type: "line",
+      type: isWeakRelationType(edge.relationType) ? "dashed" : "line",
       width: settings.edge!.width
     });
     polyLine.e("y:Arrows", { source: sourceArrow, target: targetArrow });
@@ -480,6 +522,15 @@ export class GraphMLExportPlugin implements IArgdownPlugin {
       textHeight +
       nodeSettings!.verticalPadding! * nrOfVerticalPaddings;
     const nodeEl = parent.e("node", { id: mapNode.id });
+    nodeEl
+      .e("data", { key: "d2" })
+      .txt(mapNode.discussionPointType || "statement");
+    nodeEl
+      .e("data", { key: "d3" })
+      .txt(mapNode.entityKind || "discussion-point");
+    if (mapNode.aliases && mapNode.aliases.length > 0) {
+      nodeEl.e("data", { key: "d5" }).txt(JSON.stringify(mapNode.aliases));
+    }
     const shapeNode = nodeEl.e("data", { key: "d0" }).e("y:ShapeNode");
     shapeNode.e("y:Geometry", {
       width: nodeSettings!.width!.toString(),

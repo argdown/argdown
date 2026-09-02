@@ -36,7 +36,14 @@ const prepareArgumentForJSON = (a: IArgument) => {
   return copy;
 };
 const prepareMapEdgeForJSON = (e: IMapEdge) => {
-  const edge: any = { id: e.id, type: e.type, relationType: e.relationType };
+  const edge: any = {
+    id: e.id,
+    type: e.type,
+    relationType: e.relationType,
+    occurrences: prepareOccurrences(e.relationOccurrences || []),
+    contextualText: e.contextualText,
+    contextualData: e.contextualData
+  };
   if (e.from) {
     edge.from = e.from.id;
   }
@@ -56,6 +63,9 @@ const prepareMapNodeForJSON = (n: IMapNode) => {
     id: n.id,
     title: n.title,
     type: n.type,
+    discussionPointType: n.discussionPointType,
+    entityKind: n.entityKind,
+    aliases: n.aliases,
     labelTitle: n.labelTitle,
     labelText: n.labelText,
     tags: n.tags,
@@ -83,7 +93,8 @@ const prepareGroupMapNodeForJSON = (n: IGroupMapNode) => {
 const prepareRelationForJSON = (r: IRelation): any => {
   const rel: any = {
     type: r.type,
-    relationType: r.relationType
+    relationType: r.relationType,
+    occurrences: prepareOccurrences(r.occurrences)
   };
 
   if (r.from) {
@@ -102,6 +113,20 @@ const prepareRelationForJSON = (r: IRelation): any => {
 
   return rel;
 };
+const prepareOccurrences = (occurrences: IRelation["occurrences"]): any[] =>
+  occurrences.map((occurrence) => ({
+    name: occurrence.name,
+    startLine: occurrence.startLine,
+    endLine: occurrence.endLine,
+    startOffset: occurrence.startOffset,
+    endOffset: occurrence.endOffset,
+    startColumn: occurrence.startColumn,
+    endColumn: occurrence.endColumn,
+    contextualText: occurrence.contextualText,
+    contextualizedEndpoint: occurrence.contextualizedEndpoint,
+    contextualRanges: occurrence.contextualRanges,
+    contextualData: occurrence.contextualData
+  }));
 /**
  * Substitutes parent with parent's id.
  */

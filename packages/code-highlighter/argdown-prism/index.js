@@ -91,17 +91,18 @@ Prism.languages["argdown"] = {
     alias: "cdata"
   },
   support: {
-    pattern: /(^\s*)(?:\<?\+|\+\>?)(?=[\t ])/m,
+    pattern:
+      /(^\s*)(?:<\+|\+>|\+|<=|=>|<\^|\^>|\^|<:|:>|<%|%>|%|<!|!>|!|<@|@>|@|==|~=)(?=[\t ].)/m,
     lookbehind: true,
     alias: "operator"
   },
   attack: {
-    pattern: /(^\s*)(?:\<?\-|\-\>?)(?=[\t ].)/m,
+    pattern: /(^\s*)(?:<-|->|-|<\?|\?>|\?)(?=[\t ].)/m,
     lookbehind: true,
     alias: "operator"
   },
   undercut: {
-    pattern: /(^\s*)(?:\<?\_|\_\>?)(?=[\t ].)/m,
+    pattern: /(^\s*)(?:<_|_>|_)(?=[\t ].)/m,
     lookbehind: true,
     alias: "operator"
   },
@@ -109,6 +110,10 @@ Prism.languages["argdown"] = {
     pattern: /(^\s*)><(?=[\t ].)/m,
     lookbehind: true,
     alias: "operator"
+  },
+  "block-start": {
+    pattern: />>(?=\s*(?:\r?\n|$))/,
+    alias: ["inference", "function"]
   },
   argument: {
     pattern: /(<[^<->][^<>]*>\:?|@<[^<->][^<>]+>)/,

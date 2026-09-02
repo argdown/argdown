@@ -91,6 +91,8 @@ export class JSONExportPlugin implements IArgdownPlugin {
     ]);
 
     const argdown: any = {
+      discussionPoints: response.discussionPoints,
+      excerpts: response.excerpts,
       arguments: response.arguments,
       statements: response.statements,
       relations: response.relations

@@ -18,7 +18,8 @@ import {
   IMapEdge,
   IPCSStatement,
   RelationType,
-  IInference
+  IInference,
+  DiscussionPointType
 } from "../model/model.js";
 import { relationMemberIsInSelection } from "./selectionUtils.js";
 import defaultsDeep from "lodash.defaultsdeep";
@@ -160,10 +161,18 @@ const createStatementNode =
   (ec: IEquivalenceClass, index: number) => {
     const node: IMapNode = {
       type: ArgdownTypes.STATEMENT_MAP_NODE,
+      discussionPointType: ec.discussionPointType,
+      entityKind:
+        ec.discussionPointType === DiscussionPointType.EXCERPT
+          ? "text-artifact"
+          : "discussion-point",
       title: ec.title,
       color: ec.color,
       id: "n" + Number(initialNodeCount + index)
     };
+    if (ec.discussionPointType === DiscussionPointType.EXCERPT) {
+      node.aliases = (ec as any).aliases;
+    }
     if (ec.data && ec.data["images"] && Array.isArray(ec.data["images"])) {
       node.images = ec.data["images"];
     }
@@ -202,6 +211,8 @@ const createArgumentNode =
     const node: IMapNode = {
       title: a.title,
       type: ArgdownTypes.ARGUMENT_MAP_NODE,
+      discussionPointType: a.discussionPointType,
+      entityKind: "discussion-point",
       color: a.color,
       id: "n" + Number(initialNodeCount + index)
     };
@@ -245,21 +256,16 @@ const getFroms = (
 ) => {
   const froms: IMapNode[] = [];
   if (!isReverseRelation && rel.from!.type === ArgdownTypes.ARGUMENT) {
-    const node = argumentNodesMap.get(rel.from!.title ?? "");
-    if (node) {
-      froms.push(node);
-    }
+    froms.push(argumentNodesMap.get(rel.from!.title!)!);
   } else if (rel.from!.type === ArgdownTypes.EQUIVALENCE_CLASS) {
-    const statementNode = statementNodesMap.get(rel.from!.title ?? "");
+    const statementNode = statementNodesMap.get(rel.from!.title!);
     if (statementNode) {
       froms.push(statementNode);
     } else {
       const ec = rel.from!;
       ec.members.reduce((acc, s) => {
         if (s.role === StatementRole.MAIN_CONCLUSION) {
-          const node = argumentNodesMap.get(
-            (<IPCSStatement>s).argumentTitle ?? ""
-          );
+          const node = argumentNodesMap.get((<IPCSStatement>s).argumentTitle!);
           if (node) {
             acc.push(node);
           }
@@ -278,28 +284,21 @@ const getTos = (
 ) => {
   const tos: IMapNode[] = [];
   if (!isReverseRelation && rel.to!.type === ArgdownTypes.ARGUMENT) {
-    const argumentNode = argumentNodesMap.get(rel.to!.title ?? "");
-    if (argumentNode) {
-      tos.push(argumentNode);
-    }
+    tos.push(argumentNodesMap.get(rel.to!.title!)!);
   } else if (!isReverseRelation && rel.to!.type === ArgdownTypes.INFERENCE) {
     const argumentNode = argumentNodesMap.get(
-      (<IInference>rel.to).argumentTitle ?? ""
+      (<IInference>rel.to).argumentTitle!
     );
-    if (argumentNode) {
-      tos.push(argumentNode);
-    }
+    tos.push(argumentNode!);
   } else if (rel.to!.type === ArgdownTypes.EQUIVALENCE_CLASS) {
-    const statementNode = statementNodesMap.get(rel.to!.title ?? "");
+    const statementNode = statementNodesMap.get(rel.to!.title!);
     if (!isReverseRelation && statementNode) {
       tos.push(statementNode);
     } else if (!statementNode) {
       const ec = <IEquivalenceClass>rel.to;
       ec.members.reduce((acc, s) => {
         if (s.role === StatementRole.PREMISE) {
-          const node = argumentNodesMap.get(
-            (<IPCSStatement>s).argumentTitle ?? ""
-          );
+          const node = argumentNodesMap.get((<IPCSStatement>s).argumentTitle!);
           if (node) {
             acc.push(node);
           }
@@ -342,7 +341,12 @@ const createEdgesFromRelation = (
           from: from,
           to: to,
           id: "e" + Number(acc.length + 1),
-          relationType: rel.relationType
+          relationType: rel.relationType,
+          relationOccurrences: rel.occurrences,
+          contextualText:
+            rel.occurrences[0] && rel.occurrences[0].contextualText,
+          contextualData:
+            rel.occurrences[0] && rel.occurrences[0].contextualData
         };
         if (rel.from!.type === ArgdownTypes.EQUIVALENCE_CLASS) {
           edge.fromEquivalenceClass = <IEquivalenceClass>rel.from;
@@ -431,7 +435,7 @@ const createSupportEdgesFromEquivalences = (
     }
     const conclusion = argument.pcs[argument.pcs.length - 1];
     const ec = response.statements![conclusion.title!];
-    const statementNode = statementNodesMap.get(conclusion.title ?? "");
+    const statementNode = statementNodesMap.get(conclusion.title!);
     // 1)
     if (
       statementNode &&
@@ -452,7 +456,7 @@ const createSupportEdgesFromEquivalences = (
     for (const statement of ec.members) {
       if (statement.role === StatementRole.PREMISE) {
         const argumentNode2 = argumentNodesMap.get(
-          (<IPCSStatement>statement).argumentTitle ?? ""
+          (<IPCSStatement>statement).argumentTitle!
         );
         if (
           argumentNode2 &&
@@ -476,7 +480,7 @@ const createSupportEdgesFromEquivalences = (
     for (const statement of ec.members) {
       if (statement.role === StatementRole.PREMISE) {
         const argumentNode = argumentNodesMap.get(
-          (<IPCSStatement>statement).argumentTitle ?? ""
+          (<IPCSStatement>statement).argumentTitle!
         );
         // 3)
         if (
@@ -514,18 +518,16 @@ const isRelationSelected =
     selectedArguments: Map<string, IArgument>
   ) =>
   (relation: IRelation): boolean => {
-    return !!(
-      relation.from &&
-      relation.to &&
+    return (
       relationMemberIsInSelection(
         relation,
-        relation.from,
+        relation.from!,
         selectedStatements,
         selectedArguments
       ) &&
       relationMemberIsInSelection(
         relation,
-        relation.to,
+        relation.to!,
         selectedStatements,
         selectedArguments
       )

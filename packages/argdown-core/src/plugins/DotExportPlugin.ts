@@ -12,6 +12,7 @@ import {
   IRange
 } from "../model/model.js";
 import { IArgdownRequest, IArgdownResponse } from "../index.js";
+import { isWeakRelationType } from "../model/relationStyles.js";
 import {
   validateColorString,
   mergeDefaults,
@@ -273,12 +274,33 @@ export class DotExportPlugin implements IArgdownPlugin {
       let attributes = `type="${edge.relationType}", `;
       attributes += `color="${edge.color}", `;
       attributes += `tooltip="${edge.relationType}"`;
+      if (isWeakRelationType(edge.relationType)) {
+        attributes += `, style="dashed"`;
+      }
+      if (edge.relationOccurrences && edge.relationOccurrences.length > 0) {
+        const occurrences = edge.relationOccurrences.map((occurrence) => ({
+          contextualText: occurrence.contextualText,
+          contextualizedEndpoint: occurrence.contextualizedEndpoint,
+          contextualData: occurrence.contextualData,
+          startLine: occurrence.startLine,
+          endLine: occurrence.endLine
+        }));
+        attributes += `, relationOccurrences="${escapeDotAttribute(
+          JSON.stringify(occurrences)
+        )}"`;
+      }
       switch (edge.relationType) {
         case RelationType.CONTRARY:
           attributes += `, dir="both"`;
           break;
         case RelationType.CONTRADICTORY:
           attributes += `, dir="both", arrowtail="diamond", arrowhead="diamond"`;
+          break;
+        case RelationType.EQUAL:
+          attributes += `, dir="both"`;
+          break;
+        case RelationType.POTENTIALLY_EQUAL:
+          attributes += `, dir="both"`;
           break;
       }
       dot += `  ${edge.from.id} -> ${edge.to.id} [${attributes}];\n`;
@@ -385,6 +407,10 @@ export class DotExportPlugin implements IArgdownPlugin {
     const imageSettings = request.images || {};
     imageSettings.files = imageSettings.files || {};
     label = getLabel(node, settings, imageSettings);
+    const aliasesAttribute =
+      node.aliases && node.aliases.length > 0
+        ? `, aliases="${escapeDotAttribute(JSON.stringify(node.aliases))}"`
+        : "";
     if (node.type === ArgdownTypes.ARGUMENT_MAP_NODE) {
       const shape = settings.argument!.shape;
       const widthProp =
@@ -396,7 +422,9 @@ export class DotExportPlugin implements IArgdownPlugin {
         settings.argument!.style
       }", fillcolor="${color}", fontcolor="${node.fontColor}",  type="${
         node.type
-      }"${widthProp}];\n`;
+      }", discussionPointType="${node.discussionPointType || "argument"}", entityKind="${
+        node.entityKind || "discussion-point"
+      }"${aliasesAttribute}${widthProp}];\n`;
     } else if (node.type === ArgdownTypes.STATEMENT_MAP_NODE) {
       const shape = settings.statement!.shape;
       const widthProp =
@@ -408,7 +436,11 @@ export class DotExportPlugin implements IArgdownPlugin {
         settings.statement!.style
       }", color="${color}", fillcolor="white", labelfontcolor="white", fontcolor="${
         node.fontColor
-      }", type="${node.type}"${widthProp}];\n`;
+      }", type="${node.type}", discussionPointType="${
+        node.discussionPointType || "statement"
+      }", entityKind="${node.entityKind || "discussion-point"}"${
+        aliasesAttribute
+      }${widthProp}];\n`;
     }
     return dot;
   }
@@ -442,6 +474,12 @@ const addLineBreaksAndEscape = (
 const escapeQuotesForDot = (str: string): string => {
   return str.replace(/"/g, '\\"');
 };
+const escapeDotAttribute = (str: string): string =>
+  str
+    .replace(/\\/g, "\\\\")
+    .replace(/"/g, '\\"')
+    .replace(/\r/g, "\\r")
+    .replace(/\n/g, "\\n");
 const getLabel = (
   node: IMapNode,
   settings: IDotSettings,

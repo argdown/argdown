@@ -71,7 +71,8 @@
       "scope": [
         "variable.inference",
         "variable.inference variable.inference-rule",
-        "variable.inference variable.inference-meta"
+        "variable.inference variable.inference-meta",
+        "keyword.operator.block-start.argdown"
       ],
       "settings": {
         "foreground": "#0582CA",

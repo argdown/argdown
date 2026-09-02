@@ -43,6 +43,16 @@ export interface IColorSettings {
     entails?: string | number;
     contrary?: string | number;
     contradictory?: string | number;
+    implies?: string | number;
+    justifies?: string | number;
+    "is-presupposed-by"?: string | number;
+    specifies?: string | number;
+    "is-example-for"?: string | number;
+    questions?: string | number;
+    answers?: string | number;
+    "is-cited-by"?: string | number;
+    equal?: string | number;
+    "potentially-equal"?: string | number;
   };
   /**
    * Should arguments and statements be colorized by tag?
@@ -105,10 +115,20 @@ const defaultSettings: DefaultSettings<IColorSettings> = {
   relationColors: ensure.object({
     attack: "#ff0000",
     support: "#00ff00",
-    undercut: "#551A8B",
+    undercut: "#ad1457",
     entails: "#00ff00",
     contrary: "#ff0000",
-    contradictory: "#ff0000"
+    contradictory: "#ff0000",
+    implies: "#9ccc65",
+    justifies: "#00ff00",
+    "is-presupposed-by": "#f1c40f",
+    specifies: "#26a69a",
+    "is-example-for": "#66bb6a",
+    questions: "#8d4f39",
+    answers: "#fb8c00",
+    "is-cited-by": "#7e57c2",
+    equal: "#42a5f5",
+    "potentially-equal": "#64b5f6"
   }),
   colorizeByTag: true,
   colorizeGroupsByTag: false

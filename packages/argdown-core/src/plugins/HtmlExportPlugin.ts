@@ -17,6 +17,15 @@ import {
 } from "../utils.js";
 import defaultsDeep from "lodash.defaultsdeep";
 
+const getTypedStatementMarker = (
+  request: IArgdownRequest,
+  token: ITokenNode
+): string => {
+  if (!request.parser || request.parser.syntax !== "argdown+") return "";
+  const match = /\[([!?@>])/.exec(token.image);
+  return match ? match[1] : "";
+};
+
 /**
  * Settings used by the HTMLExportPlugin
  */
@@ -111,7 +120,7 @@ export class HtmlExportPlugin implements IArgdownPlugin {
     this.defaults = defaultsDeep({}, config, defaultSettings);
     this.tokenListeners = {
       [TokenNames.STATEMENT_DEFINITION]: (
-        _request,
+        request,
         response,
         token,
         parentNode
@@ -136,12 +145,13 @@ export class HtmlExportPlugin implements IArgdownPlugin {
           classes += " top-level";
         }
 
-        response.html += `<span id="${htmlId}" class="${classes}">[<span class="title statement-title">${escapeHtml(
+        const marker = getTypedStatementMarker(request, token);
+        response.html += `<span id="${htmlId}" class="${classes}">[${marker}<span class="title statement-title">${escapeHtml(
           token.title
         )}</span>]: </span>`;
       },
       [TokenNames.STATEMENT_REFERENCE]: (
-        _request,
+        request,
         response,
         token,
         parentNode
@@ -161,12 +171,13 @@ export class HtmlExportPlugin implements IArgdownPlugin {
           classes += " top-level";
         }
 
-        response.html += `<a href="#${htmlId}" class="${classes}">[<span class="title statement-title">${escapeHtml(
+        const marker = getTypedStatementMarker(request, token);
+        response.html += `<a href="#${htmlId}" class="${classes}">[${marker}<span class="title statement-title">${escapeHtml(
           token.title
         )}</span>] </a>`;
       },
       [TokenNames.STATEMENT_MENTION]: (
-        _request,
+        request,
         response,
         token,
         _parentNode,
@@ -185,9 +196,10 @@ export class HtmlExportPlugin implements IArgdownPlugin {
           classes +=
             " " + this.getCssClassesFromTags(response, equivalenceClass.tags);
         }
-        const htmlId = getHtmlId("statement", token.title ?? "untitled");
-        response.html += `<a href="#${htmlId}" class="${classes}">@[<span class="title statement-title">${escapeHtml(
-          token.title ?? "untitled"
+        const htmlId = getHtmlId("statement", token.title!);
+        const marker = getTypedStatementMarker(request, token);
+        response.html += `<a href="#${htmlId}" class="${classes}">@[${marker}<span class="title statement-title">${escapeHtml(
+          token.title
         )}</span>]</a>${token.trailingWhitespace}`;
       },
       [TokenNames.ARGUMENT_REFERENCE]: (
@@ -292,6 +304,13 @@ export class HtmlExportPlugin implements IArgdownPlugin {
           linkText = "removed insecure url.";
         }
         response.html += `<a href="${linkUrl}">${linkText}</a>${token.trailingWhitespace}`;
+      },
+      [TokenNames.BLOCK_CONTENT]: (_request, response, token) => {
+        if (!token) {
+          return;
+        }
+        response.html =
+          (response.html || "") + escapeHtml(token.text || token.image || "");
       },
       [TokenNames.TAG]: (_request, response, node) => {
         const token = node;
@@ -487,6 +506,106 @@ export class HtmlExportPlugin implements IArgdownPlugin {
       [RuleNames.CONTRADICTION + "Exit"]: (_request, response) => {
         response.html += "</div>";
       },
+      [RuleNames.IMPLIES + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line implies relation"><div class="implies relation-symbol"><span>=&gt;</span></div>`;
+      },
+      [RuleNames.IMPLIES + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.REVERSE_IMPLIES + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line reverse-implies relation"><div class="reverse-implies relation-symbol"><span>&lt;=</span></div>`;
+      },
+      [RuleNames.REVERSE_IMPLIES + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.PRESUPPOSED_BY + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line presupposed-by relation"><div class="presupposed-by relation-symbol"><span>^&gt;</span></div>`;
+      },
+      [RuleNames.PRESUPPOSED_BY + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.REVERSE_PRESUPPOSED_BY + "Entry"]: (
+        _request,
+        response,
+        node
+      ) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line reverse-presupposed-by relation"><div class="reverse-presupposed-by relation-symbol"><span>^</span></div>`;
+      },
+      [RuleNames.REVERSE_PRESUPPOSED_BY + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.SPECIFIES + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line specifies relation"><div class="specifies relation-symbol"><span>:&gt;</span></div>`;
+      },
+      [RuleNames.SPECIFIES + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.REVERSE_SPECIFIES + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line reverse-specifies relation"><div class="reverse-specifies relation-symbol"><span>&lt;:</span></div>`;
+      },
+      [RuleNames.REVERSE_SPECIFIES + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.EXAMPLE_FOR + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line example-for relation"><div class="example-for relation-symbol"><span>%&gt;</span></div>`;
+      },
+      [RuleNames.EXAMPLE_FOR + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.REVERSE_EXAMPLE_FOR + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line reverse-example-for relation"><div class="reverse-example-for relation-symbol"><span>%</span></div>`;
+      },
+      [RuleNames.REVERSE_EXAMPLE_FOR + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.QUESTIONS + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line questions relation"><div class="questions relation-symbol"><span>?&gt;</span></div>`;
+      },
+      [RuleNames.QUESTIONS + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.REVERSE_QUESTIONS + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line reverse-questions relation"><div class="reverse-questions relation-symbol"><span>?</span></div>`;
+      },
+      [RuleNames.REVERSE_QUESTIONS + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.ANSWERS + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line answers relation"><div class="answers relation-symbol"><span>!&gt;</span></div>`;
+      },
+      [RuleNames.ANSWERS + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.REVERSE_ANSWERS + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line reverse-answers relation"><div class="reverse-answers relation-symbol"><span>!</span></div>`;
+      },
+      [RuleNames.REVERSE_ANSWERS + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.CITED_BY + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line cited-by relation"><div class="cited-by relation-symbol"><span>@&gt;</span></div>`;
+      },
+      [RuleNames.CITED_BY + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.REVERSE_CITED_BY + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line reverse-cited-by relation"><div class="reverse-cited-by relation-symbol"><span>@</span></div>`;
+      },
+      [RuleNames.REVERSE_CITED_BY + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.EQUAL + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line equal relation"><div class="equal relation-symbol"><span>==</span></div>`;
+      },
+      [RuleNames.EQUAL + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
+      [RuleNames.POTENTIALLY_EQUAL + "Entry"]: (_request, response, node) => {
+        response.html += `<div data-line="${node.startLine}" class="has-line potentially-equal relation"><div class="potentially-equal relation-symbol"><span>~=</span></div>`;
+      },
+      [RuleNames.POTENTIALLY_EQUAL + "Exit"]: (_request, response) => {
+        response.html += "</div>";
+      },
       [RuleNames.RELATIONS + "Entry"]: (_request, response) => {
         response.html += `<div class="relations">`;
       },
@@ -544,6 +663,18 @@ export class HtmlExportPlugin implements IArgdownPlugin {
       },
       [RuleNames.STATEMENT_CONTENT + "Exit"]: (_request, response) => {
         response.html += `</span>`;
+      },
+      [RuleNames.BLOCK + "Entry"]: (_request, response, _node, parentNode) => {
+        let classes = "statement-content block-content";
+        const isTopLevel =
+          parentNode && parentNode.statement && parentNode.statement.isTopLevel;
+        if (isTopLevel) {
+          classes += " top-level";
+        }
+        response.html += `<div class="${classes}">`;
+      },
+      [RuleNames.BLOCK + "Exit"]: (_request, response) => {
+        response.html += "</div>";
       },
       [RuleNames.FREESTYLE_TEXT + "Entry"]: (
         _request,

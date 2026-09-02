@@ -205,13 +205,31 @@ class ArgdownParser extends EmbeddedActionsParser {
       },
       {
         ALT: () => {
-          children.push(this.CONSUME1(lexer.ArgumentReference));
-          this.MANY(() => {
-            children.push(this.CONSUME2(lexer.Tag));
-          });
-          this.OPTION1(() => {
-            children.push(this.CONSUME1(lexer.Newline));
-          });
+          const reference = this.CONSUME1(lexer.ArgumentReference);
+          this.OR1([
+            {
+              ALT: () => {
+                const blockChildren: IAstNode[] = [reference];
+                blockChildren.push(this.CONSUME(lexer.BlockStart));
+                blockChildren.push(this.CONSUME(lexer.BlockContent));
+                this.OPTION5(() => {
+                  blockChildren.push(this.CONSUME5(lexer.Newline));
+                });
+                children.push(IRuleNode.create(RuleNames.BLOCK, blockChildren));
+              }
+            },
+            {
+              ALT: () => {
+                children.push(reference);
+                this.MANY(() => {
+                  children.push(this.CONSUME2(lexer.Tag));
+                });
+                this.OPTION6(() => {
+                  children.push(this.CONSUME6(lexer.Newline));
+                });
+              }
+            }
+          ]);
         }
       }
     ]);
@@ -233,6 +251,11 @@ class ArgdownParser extends EmbeddedActionsParser {
       {
         ALT: () => {
           children.push(this.SUBRULE1(this.statementContent));
+        }
+      },
+      {
+        ALT: () => {
+          children.push(this.SUBRULE2(this.block));
         }
       },
       {
@@ -267,6 +290,18 @@ class ArgdownParser extends EmbeddedActionsParser {
       children.push(this.SUBRULE(this.relations));
     });
     return IRuleNode.create(RuleNames.STATEMENT, children);
+  });
+  private block = this.RULE(RuleNames.BLOCK, () => {
+    const children: IAstNode[] = [];
+    this.OPTION(() => {
+      children.push(this.CONSUME(lexer.StatementReference));
+    });
+    children.push(this.CONSUME(lexer.BlockStart));
+    children.push(this.CONSUME(lexer.BlockContent));
+    this.OPTION1(() => {
+      children.push(this.CONSUME(lexer.Newline));
+    });
+    return IRuleNode.create(RuleNames.BLOCK, children);
   });
 
   private inferenceRelations = this.RULE("inferenceRelations", () => {
@@ -303,6 +338,54 @@ class ArgdownParser extends EmbeddedActionsParser {
               },
               {
                 ALT: () => this.SUBRULE(this.contradiction)
+              },
+              {
+                ALT: () => this.SUBRULE(this.implies)
+              },
+              {
+                ALT: () => this.SUBRULE(this.reverseImplies)
+              },
+              {
+                ALT: () => this.SUBRULE(this.presupposedBy)
+              },
+              {
+                ALT: () => this.SUBRULE(this.reversePresupposedBy)
+              },
+              {
+                ALT: () => this.SUBRULE(this.specifies)
+              },
+              {
+                ALT: () => this.SUBRULE(this.reverseSpecifies)
+              },
+              {
+                ALT: () => this.SUBRULE(this.exampleFor)
+              },
+              {
+                ALT: () => this.SUBRULE(this.reverseExampleFor)
+              },
+              {
+                ALT: () => this.SUBRULE(this.questions)
+              },
+              {
+                ALT: () => this.SUBRULE(this.reverseQuestions)
+              },
+              {
+                ALT: () => this.SUBRULE(this.answers)
+              },
+              {
+                ALT: () => this.SUBRULE(this.reverseAnswers)
+              },
+              {
+                ALT: () => this.SUBRULE(this.citedBy)
+              },
+              {
+                ALT: () => this.SUBRULE(this.reverseCitedBy)
+              },
+              {
+                ALT: () => this.SUBRULE(this.equalRelation)
+              },
+              {
+                ALT: () => this.SUBRULE(this.potentiallyEqualRelation)
               },
               {
                 ALT: () => this.SUBRULE(this.incomingUndercut)
@@ -392,6 +475,188 @@ class ArgdownParser extends EmbeddedActionsParser {
     children.push(this.SUBRULE(this.statement));
     return IRuleNode.create(RuleNames.CONTRADICTION, children);
   });
+  private implies = this.RULE(RuleNames.IMPLIES, () => {
+    const children: IAstNode[] = [];
+    children.push(this.CONSUME(lexer.Implies));
+    this.OR({
+      DEF: [
+        { ALT: () => children.push(this.SUBRULE(this.statement)) },
+        { ALT: () => children.push(this.SUBRULE(this.argument)) }
+      ]
+    });
+    return IRuleNode.create(RuleNames.IMPLIES, children);
+  });
+  private reverseImplies = this.RULE(RuleNames.REVERSE_IMPLIES, () => {
+    const children: IAstNode[] = [];
+    children.push(this.CONSUME(lexer.ReverseImplies));
+    this.OR({
+      DEF: [
+        { ALT: () => children.push(this.SUBRULE(this.statement)) },
+        { ALT: () => children.push(this.SUBRULE(this.argument)) }
+      ]
+    });
+    return IRuleNode.create(RuleNames.REVERSE_IMPLIES, children);
+  });
+  private presupposedBy = this.RULE(RuleNames.PRESUPPOSED_BY, () => {
+    const children: IAstNode[] = [];
+    children.push(this.CONSUME(lexer.PresupposedBy));
+    this.OR({
+      DEF: [
+        { ALT: () => children.push(this.SUBRULE(this.statement)) },
+        { ALT: () => children.push(this.SUBRULE(this.argument)) }
+      ]
+    });
+    return IRuleNode.create(RuleNames.PRESUPPOSED_BY, children);
+  });
+  private reversePresupposedBy = this.RULE(
+    RuleNames.REVERSE_PRESUPPOSED_BY,
+    () => {
+      const children: IAstNode[] = [];
+      children.push(this.CONSUME(lexer.ReversePresupposedBy));
+      this.OR({
+        DEF: [
+          { ALT: () => children.push(this.SUBRULE(this.statement)) },
+          { ALT: () => children.push(this.SUBRULE(this.argument)) }
+        ]
+      });
+      return IRuleNode.create(RuleNames.REVERSE_PRESUPPOSED_BY, children);
+    }
+  );
+  private specifies = this.RULE(RuleNames.SPECIFIES, () => {
+    const children: IAstNode[] = [];
+    children.push(this.CONSUME(lexer.Specifies));
+    this.OR({
+      DEF: [
+        { ALT: () => children.push(this.SUBRULE(this.statement)) },
+        { ALT: () => children.push(this.SUBRULE(this.argument)) }
+      ]
+    });
+    return IRuleNode.create(RuleNames.SPECIFIES, children);
+  });
+  private reverseSpecifies = this.RULE(RuleNames.REVERSE_SPECIFIES, () => {
+    const children: IAstNode[] = [];
+    children.push(this.CONSUME(lexer.ReverseSpecifies));
+    this.OR({
+      DEF: [
+        { ALT: () => children.push(this.SUBRULE(this.statement)) },
+        { ALT: () => children.push(this.SUBRULE(this.argument)) }
+      ]
+    });
+    return IRuleNode.create(RuleNames.REVERSE_SPECIFIES, children);
+  });
+  private exampleFor = this.RULE(RuleNames.EXAMPLE_FOR, () => {
+    const children: IAstNode[] = [];
+    children.push(this.CONSUME(lexer.ExampleFor));
+    this.OR({
+      DEF: [
+        { ALT: () => children.push(this.SUBRULE(this.statement)) },
+        { ALT: () => children.push(this.SUBRULE(this.argument)) }
+      ]
+    });
+    return IRuleNode.create(RuleNames.EXAMPLE_FOR, children);
+  });
+  private reverseExampleFor = this.RULE(RuleNames.REVERSE_EXAMPLE_FOR, () => {
+    const children: IAstNode[] = [];
+    children.push(this.CONSUME(lexer.ReverseExampleFor));
+    this.OR({
+      DEF: [
+        { ALT: () => children.push(this.SUBRULE(this.statement)) },
+        { ALT: () => children.push(this.SUBRULE(this.argument)) }
+      ]
+    });
+    return IRuleNode.create(RuleNames.REVERSE_EXAMPLE_FOR, children);
+  });
+  private questions = this.RULE(RuleNames.QUESTIONS, () => {
+    const children: IAstNode[] = [];
+    children.push(this.CONSUME(lexer.QuestionsRelation));
+    this.OR({
+      DEF: [
+        { ALT: () => children.push(this.SUBRULE(this.statement)) },
+        { ALT: () => children.push(this.SUBRULE(this.argument)) }
+      ]
+    });
+    return IRuleNode.create(RuleNames.QUESTIONS, children);
+  });
+  private reverseQuestions = this.RULE(RuleNames.REVERSE_QUESTIONS, () => {
+    const children: IAstNode[] = [];
+    children.push(this.CONSUME(lexer.ReverseQuestions));
+    this.OR({
+      DEF: [
+        { ALT: () => children.push(this.SUBRULE(this.statement)) },
+        { ALT: () => children.push(this.SUBRULE(this.argument)) }
+      ]
+    });
+    return IRuleNode.create(RuleNames.REVERSE_QUESTIONS, children);
+  });
+  private answers = this.RULE(RuleNames.ANSWERS, () => {
+    const children: IAstNode[] = [];
+    children.push(this.CONSUME(lexer.AnswersRelation));
+    this.OR({
+      DEF: [
+        { ALT: () => children.push(this.SUBRULE(this.statement)) },
+        { ALT: () => children.push(this.SUBRULE(this.argument)) }
+      ]
+    });
+    return IRuleNode.create(RuleNames.ANSWERS, children);
+  });
+  private reverseAnswers = this.RULE(RuleNames.REVERSE_ANSWERS, () => {
+    const children: IAstNode[] = [];
+    children.push(this.CONSUME(lexer.ReverseAnswers));
+    this.OR({
+      DEF: [
+        { ALT: () => children.push(this.SUBRULE(this.statement)) },
+        { ALT: () => children.push(this.SUBRULE(this.argument)) }
+      ]
+    });
+    return IRuleNode.create(RuleNames.REVERSE_ANSWERS, children);
+  });
+  private citedBy = this.RULE(RuleNames.CITED_BY, () => {
+    const children: IAstNode[] = [];
+    children.push(this.CONSUME(lexer.CitedBy));
+    this.OR({
+      DEF: [
+        { ALT: () => children.push(this.SUBRULE(this.statement)) },
+        { ALT: () => children.push(this.SUBRULE(this.argument)) }
+      ]
+    });
+    return IRuleNode.create(RuleNames.CITED_BY, children);
+  });
+  private reverseCitedBy = this.RULE(RuleNames.REVERSE_CITED_BY, () => {
+    const children: IAstNode[] = [];
+    children.push(this.CONSUME(lexer.ReverseCitedBy));
+    this.OR({
+      DEF: [
+        { ALT: () => children.push(this.SUBRULE(this.statement)) },
+        { ALT: () => children.push(this.SUBRULE(this.argument)) }
+      ]
+    });
+    return IRuleNode.create(RuleNames.REVERSE_CITED_BY, children);
+  });
+  private equalRelation = this.RULE(RuleNames.EQUAL, () => {
+    const children: IAstNode[] = [];
+    children.push(this.CONSUME(lexer.EqualRelation));
+    this.OR({
+      DEF: [
+        { ALT: () => children.push(this.SUBRULE(this.statement)) },
+        { ALT: () => children.push(this.SUBRULE(this.argument)) }
+      ]
+    });
+    return IRuleNode.create(RuleNames.EQUAL, children);
+  });
+  private potentiallyEqualRelation = this.RULE(
+    RuleNames.POTENTIALLY_EQUAL,
+    () => {
+      const children: IAstNode[] = [];
+      children.push(this.CONSUME(lexer.PotentiallyEqualRelation));
+      this.OR({
+        DEF: [
+          { ALT: () => children.push(this.SUBRULE(this.statement)) },
+          { ALT: () => children.push(this.SUBRULE(this.argument)) }
+        ]
+      });
+      return IRuleNode.create(RuleNames.POTENTIALLY_EQUAL, children);
+    }
+  );
 
   private bold = this.RULE(RuleNames.BOLD, () => {
     const children: IAstNode[] = [];

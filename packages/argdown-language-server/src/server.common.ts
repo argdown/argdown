@@ -277,28 +277,38 @@ export class Server {
       input: text
     });
 
-    const diagnostics: Diagnostic[] =
-      result.parserErrors
-        ?.map(
-          ({
-            message,
-            token: { startLine, startColumn, endLine, endColumn }
-          }) => {
-            if (!startLine || !startColumn || !endLine || !endColumn) return; // Should never happen
-            const start = {
-              line: startLine - 1,
-              character: startColumn - 1
-            };
-            const end = {
-              line: endLine - 1,
-              character: endColumn
-            }; //end character is zero based, exclusive
-            const range = Range.create(start, end);
-            const severity = DiagnosticSeverity.Error;
-            return Diagnostic.create(range, message, severity, "argdown");
-          }
+    const diagnostics: Diagnostic[] = (result.diagnostics ?? []).map((item) => {
+      const severity =
+        item.severity === "error"
+          ? DiagnosticSeverity.Error
+          : item.severity === "information"
+            ? DiagnosticSeverity.Information
+            : DiagnosticSeverity.Warning;
+      const range = Range.create(
+        Math.max(0, (item.startLine ?? 1) - 1),
+        Math.max(0, (item.startColumn ?? 1) - 1),
+        Math.max(0, (item.endLine ?? item.startLine ?? 1) - 1),
+        Math.max(0, item.endColumn ?? item.startColumn ?? 1)
+      );
+      return Diagnostic.create(
+        range,
+        item.message,
+        severity,
+        item.source ?? "argdown",
+        item.code
+      );
+    });
+
+    for (const exception of result.exceptions ?? []) {
+      diagnostics.push(
+        Diagnostic.create(
+          Range.create(0, 0, 0, 1),
+          exception.message,
+          DiagnosticSeverity.Error,
+          "argdown"
         )
-        .filter((x): x is Diagnostic => !!x) ?? [];
+      );
+    }
 
     // Send the computed diagnostics to VSCode.
     void this.connection.sendDiagnostics({
