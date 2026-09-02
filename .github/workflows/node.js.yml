@@ -5,11 +5,10 @@ name: Node.js Test CI
 
 on:
   workflow_dispatch:
-  # Uncomment the lines below to run this workflow on push or pull request events targeting the default branch
   push:
-    branches: [$default-branch, dev]
+    branches: [main, dev]
   pull_request:
-    branches: [$default-branch, dev]
+    branches: [main, dev]
 
 jobs:
   build:
@@ -68,3 +67,9 @@ jobs:
       - name: Run tests
         run: yarn test
         if: runner.os != 'Linux'
+      - name: Install Playwright Chromium
+        if: matrix.node-version == '22.x'
+        run: yarn workspace @argdown/sandbox exec playwright install --with-deps chromium
+      - name: Run sandbox browser tests
+        if: matrix.node-version == '22.x'
+        run: yarn workspace @argdown/sandbox test:e2e
