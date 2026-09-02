@@ -8,7 +8,10 @@ const syntaxCases = [
     syntax: "argdown",
     input: `[Conclusion]: The city should expand its tree canopy.
   +> [Reason]: Trees provide shade.`,
-    titles: ["Conclusion", "Reason"]
+    titles: ["Conclusion", "Reason"],
+    nodeLine: 1,
+    nodeTitle: "Conclusion",
+    edgeLine: 2
   },
   {
     name: "Argdown+",
@@ -21,7 +24,10 @@ const syntaxCases = [
 
 <Reason>: Trees provide shade.`,
     titles: ["Question", "Answer", "Reason"],
-    typedQuestion: true
+    typedQuestion: true,
+    nodeLine: 1,
+    nodeTitle: "Question",
+    edgeLine: 4
   },
   {
     name: "Micro-Argdown+",
@@ -36,7 +42,10 @@ DISCOURSE TREE:
     <! [Answer]
         <+ <Reason>`,
     titles: ["Question", "Answer", "Reason"],
-    typedQuestion: true
+    typedQuestion: true,
+    nodeLine: 2,
+    nodeTitle: "Question",
+    edgeLine: 8
   }
 ];
 
@@ -89,5 +98,27 @@ describe.each(syntaxCases)("$name sandbox outputs", (syntaxCase) => {
     expect(json.map.nodes.map((node) => node.title)).toEqual(
       expect.arrayContaining(syntaxCase.titles)
     );
+  });
+
+  it("links source lines to graph nodes and edges", () => {
+    store.selectMapElementAtLine(syntaxCase.nodeLine);
+    expect(store.selectedMapElement.kind).toBe("node");
+    expect(
+      store.map.nodes.find((node) => node.id === store.selectedMapElement.id)
+        ?.title
+    ).toBe(syntaxCase.nodeTitle);
+
+    store.selectMapElementAtLine(syntaxCase.edgeLine);
+    expect(store.selectedMapElement.kind).toBe("edge");
+    expect(
+      store.map.edges.some((edge) => edge.id === store.selectedMapElement.id)
+    ).toBe(true);
+
+    const selection = { ...store.selectedMapElement };
+    store.setArgdownInput(syntaxCase.input);
+    expect(store.selectedMapElement).toEqual(selection);
+
+    store.selectMapElementAtLine(999);
+    expect(store.selectedMapElement).toBe(null);
   });
 });

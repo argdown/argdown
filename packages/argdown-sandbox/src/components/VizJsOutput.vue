@@ -1,5 +1,9 @@
 <template>
-  <div class="viz-js-output map-output output">
+  <div
+    class="viz-js-output map-output output"
+    @click="handleGraphInteraction"
+    @keydown="handleGraphKeydown"
+  >
     <div class="content">
       <div ref="container" class="rendered">
         <svg
@@ -11,6 +15,7 @@
         ></svg>
       </div>
     </div>
+    <GraphInspector />
   </div>
 </template>
 
@@ -27,9 +32,16 @@ import { useArgdownStore } from "../store.js";
 import { EventBus } from "../event-bus.js";
 import { saveAsSvg, saveAsPng } from "../map-export.js";
 import { VizJsMap } from "@argdown/map-views";
+import GraphInspector from "./GraphInspector.vue";
+import {
+  decorateGraph,
+  selectionFromEvent,
+  syncGraphSelection
+} from "../graph-selection.js";
 
 export default {
   name: "VizJsOutput",
+  components: { GraphInspector },
   setup() {
     const store = useArgdownStore();
     const container = ref(null);
@@ -46,6 +58,29 @@ export default {
     const configData = computed(() => store.configData);
     const argdownData = computed(() => store.argdownData);
     const pngScale = computed(() => store.pngScale);
+    const map = computed(() => store.map);
+    const selectedMapElement = computed(() => store.selectedMapElement);
+
+    function decorateRenderedMap() {
+      decorateGraph(svgElement.value, map.value, (group) =>
+        vizJsMap.value?.getArgdownId(group)
+      );
+      syncGraphSelection(svgElement.value, selectedMapElement.value);
+    }
+
+    function handleGraphInteraction(event) {
+      const selection = selectionFromEvent(event);
+      if (!selection) return;
+      store.selectMapElement(selection);
+    }
+
+    function handleGraphKeydown(event) {
+      if (event.key !== "Enter" && event.key !== " ") return;
+      const selection = selectionFromEvent(event);
+      if (!selection) return;
+      event.preventDefault();
+      store.selectMapElement(selection);
+    }
 
     // Export functions - defined at component scope
     const saveVizAsPng = () => {
@@ -152,17 +187,20 @@ export default {
         settings: { ...configData.value.vizJs, images }
       };
 
-      vizJsMap.value.render(props).catch((error) => {
-        svgElement.value?.replaceChildren();
-        console.error("Viz.js render error:", error);
-        // If render fails due to dimension issues, try reinitializing
-        if (error.message && error.message.includes("NaN")) {
-          setTimeout(() => {
-            updateSvgDimensions();
-            initializeMap();
-          }, 200);
-        }
-      });
+      vizJsMap.value
+        .render(props)
+        .then(() => decorateRenderedMap())
+        .catch((error) => {
+          svgElement.value?.replaceChildren();
+          console.error("Viz.js render error:", error);
+          // If render fails due to dimension issues, try reinitializing
+          if (error.message && error.message.includes("NaN")) {
+            setTimeout(() => {
+              updateSvgDimensions();
+              initializeMap();
+            }, 200);
+          }
+        });
     }
 
     // Watchers
@@ -171,6 +209,12 @@ export default {
         renderMap();
       }
     });
+
+    watch(
+      selectedMapElement,
+      (selection) => syncGraphSelection(svgElement.value, selection),
+      { deep: true }
+    );
 
     // Lifecycle
     onMounted(() => {
@@ -199,19 +243,57 @@ export default {
       container,
       svgElement,
       svgWidth,
-      svgHeight
+      svgHeight,
+      handleGraphInteraction,
+      handleGraphKeydown
     };
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.map-output {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+:deep(g.node),
+:deep(g.edge) {
+  cursor: pointer;
+}
+
+:deep(.edge-hit-target) {
+  fill: none !important;
+  stroke: transparent !important;
+  stroke-width: 14px !important;
+  pointer-events: stroke;
+}
+
+:deep(g.node:focus-visible),
+:deep(g.edge:focus-visible) {
+  outline: 2px solid #006b8f;
+  outline-offset: 3px;
+}
+
+:deep(g.node.graph-selected path),
+:deep(g.node.graph-selected polygon),
+:deep(g.node.graph-selected ellipse) {
+  stroke: #006b8f !important;
+  stroke-width: 5px !important;
+}
+
+:deep(g.edge.graph-selected path:not(.edge-hit-target)) {
+  stroke-width: 5px !important;
+  filter: drop-shadow(0 0 2px rgb(0 107 143 / 45%));
+}
+
 .content {
   flex: 1;
   overflow: auto;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: auto;
 
   .rendered {
     flex: 1;

@@ -168,6 +168,7 @@ export const useArgdownStore = defineStore("argdown", () => {
   const showSettings = ref(false);
   const showSaveAsPngDialog = ref(false);
   const pngScale = ref(1);
+  const selectedMapElement = ref(null);
 
   // Computed properties (getters)
   const argdownData = computed(() => {
@@ -394,6 +395,7 @@ export const useArgdownStore = defineStore("argdown", () => {
   function setSyntax(value) {
     if (!["argdown", "argdown+", "micro-argdown+"].includes(value)) return;
     config.value.parser.syntax = value;
+    clearMapSelection();
   }
 
   function setArgdownInput(value) {
@@ -406,8 +408,10 @@ export const useArgdownStore = defineStore("argdown", () => {
     }
 
     if (typeof value !== "string") return;
+    if (argdownInput.value === value) return;
 
     argdownInput.value = value;
+    clearMapSelection();
     return;
   }
 
@@ -432,6 +436,79 @@ export const useArgdownStore = defineStore("argdown", () => {
 
   function closeSaveAsPngDialog() {
     showSaveAsPngDialog.value = false;
+  }
+
+  function selectMapElement(selection) {
+    selectedMapElement.value = selection || null;
+  }
+
+  function clearMapSelection() {
+    selectedMapElement.value = null;
+  }
+
+  function flattenMapNodes(nodes, result = []) {
+    for (const node of nodes || []) {
+      result.push(node);
+      if (node.children) flattenMapNodes(node.children, result);
+    }
+    return result;
+  }
+
+  function containsSourceLine(occurrence, line) {
+    if (!occurrence?.startLine) return false;
+    return (
+      line >= occurrence.startLine &&
+      line <= (occurrence.endLine || occurrence.startLine)
+    );
+  }
+
+  function selectMapElementAtLine(sourceLine) {
+    const line = Number(sourceLine);
+    const currentMap = map.value;
+    const data = argdownData.value;
+    if (!Number.isInteger(line) || line < 1 || !currentMap) {
+      clearMapSelection();
+      return;
+    }
+
+    const exactEdge = currentMap.edges.find((edge) =>
+      edge.relationOccurrences?.some(
+        (occurrence) => occurrence.startLine === line
+      )
+    );
+    if (exactEdge) {
+      selectMapElement({ kind: "edge", id: exactEdge.id });
+      return;
+    }
+
+    for (const node of flattenMapNodes(currentMap.nodes)) {
+      const entity =
+        node.type === "argument-map-node"
+          ? data.arguments?.[node.title]
+          : data.statements?.[node.title];
+      const occurrences = [
+        ...(entity?.members || []),
+        ...(entity?.pcs || []),
+        ...(node.section ? [node.section] : [])
+      ];
+      if (
+        occurrences.some((occurrence) => containsSourceLine(occurrence, line))
+      ) {
+        selectMapElement({ kind: "node", id: node.id });
+        return;
+      }
+    }
+
+    const spanningEdge = currentMap.edges.find((edge) =>
+      edge.relationOccurrences?.some((occurrence) =>
+        containsSourceLine(occurrence, line)
+      )
+    );
+    if (spanningEdge) {
+      selectMapElement({ kind: "edge", id: spanningEdge.id });
+      return;
+    }
+    clearMapSelection();
   }
 
   async function loadExample(payload) {
@@ -464,6 +541,7 @@ export const useArgdownStore = defineStore("argdown", () => {
     showSettings,
     showSaveAsPngDialog,
     pngScale,
+    selectedMapElement,
 
     // Computed properties
     argdownData,
@@ -499,6 +577,9 @@ export const useArgdownStore = defineStore("argdown", () => {
     toggleSettings,
     openSaveAsPngDialog,
     closeSaveAsPngDialog,
+    selectMapElement,
+    selectMapElementAtLine,
+    clearMapSelection,
     loadExample
   };
 });

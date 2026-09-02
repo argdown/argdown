@@ -271,12 +271,18 @@ export default {
         localValue.value = cm.getValue();
         debouncedChangeEmission(cm.getValue());
       });
+      editor.value.on("cursorActivity", (cm) => {
+        if (!cm.hasFocus()) return;
+        store.selectMapElementAtLine(cm.getCursor().line + 1);
+      });
       EventBus.$on("navigate-to-diagnostic", navigateToDiagnostic);
+      EventBus.$on("navigate-to-source", navigateToDiagnostic);
       renderDiagnostics();
     });
 
     onBeforeUnmount(() => {
       EventBus.$off("navigate-to-diagnostic", navigateToDiagnostic);
+      EventBus.$off("navigate-to-source", navigateToDiagnostic);
       clearDiagnostics();
       if (editor.value) {
         editor.value.toTextArea();
