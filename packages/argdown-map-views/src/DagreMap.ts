@@ -132,7 +132,7 @@ export class DagreMap implements CanSelectNode {
       return;
     }
     // Create the input graph
-    const g = new dagreD3.graphlib.Graph({ compound: true });
+    const g = new dagreD3.graphlib.Graph({ compound: true, multigraph: true });
 
     g.setGraph({
       rankdir: settings.rankDir,
@@ -150,23 +150,24 @@ export class DagreMap implements CanSelectNode {
 
     for (const edge of props.map.edges) {
       const relationType = edge.relationType as any;
-      const props: { [key: string]: any } = {
+      const edgeProperties: { [key: string]: any } = {
+        id: edge.id,
         class: relationType
       };
       if (relationType === "contradictory") {
-        props.arrowhead = "diamond";
-        props.arrowtail = "diamond";
+        edgeProperties.arrowhead = "diamond";
+        edgeProperties.arrowtail = "diamond";
       } else if (
         relationType === "equal" ||
         relationType === "potentially-equal"
       ) {
-        props.arrowhead = "normal";
-        props.arrowtail = "normal";
+        edgeProperties.arrowhead = "normal";
+        edgeProperties.arrowtail = "normal";
       }
       // if the map data is json data, from and to will be ids, otherwise the original objects
       const from = isObject(edge.from) ? edge.from.id : edge.from;
       const to = isObject(edge.to) ? edge.to.id : edge.to;
-      g.setEdge(from, to, props);
+      g.setEdge(from, to, edgeProperties, edge.id);
     }
 
     //   const nodes = g.nodes();

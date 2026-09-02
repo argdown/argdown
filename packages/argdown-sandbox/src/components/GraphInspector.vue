@@ -6,25 +6,51 @@
         <section>
           <h3>Nodes</h3>
           <div class="legend-grid">
-            <div v-for="item in visibleNodeTypes" :key="item.key">
+            <button
+              v-for="item in visibleNodeTypes"
+              :key="item.key"
+              type="button"
+              class="legend-item"
+              :class="{ active: nodeFilterActive(item.key) }"
+              :aria-pressed="nodeFilterActive(item.key)"
+              :title="`Focus ${item.label.toLowerCase()} nodes`"
+              @click="store.toggleGraphFilter('nodeTypes', item.key)"
+            >
               <span class="node-swatch" :class="item.key"></span>
               {{ item.label }}
-            </div>
+            </button>
           </div>
         </section>
         <section v-if="visibleRelations.length">
           <h3>Relations</h3>
           <div class="legend-grid relations">
-            <div v-for="item in visibleRelations" :key="item.key">
+            <button
+              v-for="item in visibleRelations"
+              :key="item.key"
+              type="button"
+              class="legend-item"
+              :class="{ active: relationFilterActive(item.key) }"
+              :aria-pressed="relationFilterActive(item.key)"
+              :title="`Focus ${item.label.toLowerCase()} relations`"
+              @click="store.toggleGraphFilter('relationTypes', item.key)"
+            >
               <span
                 class="relation-swatch"
                 :class="{ weak: item.weak }"
                 :style="{ borderColor: item.color }"
               ></span>
               {{ item.label }}
-            </div>
+            </button>
           </div>
         </section>
+        <button
+          v-if="hasGraphFilters"
+          type="button"
+          class="clear-filters"
+          @click="store.clearGraphFilters()"
+        >
+          Show all
+        </button>
       </div>
     </details>
 
@@ -69,14 +95,32 @@
           <dd>{{ selectedItem.occurrenceCount }}</dd>
         </template>
       </dl>
-      <button
-        v-if="selectedItem.startLine"
-        type="button"
-        class="source-button"
-        @click="showInSource"
+      <section
+        v-if="selectedItem.occurrences.length"
+        class="source-occurrences"
       >
-        Show in source · line {{ selectedItem.startLine }}
-      </button>
+        <h3>Source occurrences</h3>
+        <div class="occurrence-list">
+          <button
+            v-for="occurrence in selectedItem.occurrences"
+            :key="occurrence.key"
+            type="button"
+            :disabled="!occurrence.startLine"
+            @click="navigateToSource(occurrence)"
+          >
+            <span class="occurrence-line">
+              {{
+                occurrence.startLine
+                  ? `Line ${occurrence.startLine}`
+                  : "Location unavailable"
+              }}
+            </span>
+            <span v-if="occurrence.label" class="occurrence-label">
+              {{ occurrence.label }}
+            </span>
+          </button>
+        </div>
+      </section>
     </aside>
   </div>
 </template>
@@ -144,11 +188,29 @@ function nodeType(node) {
   return node.discussionPointType || "statement";
 }
 
+function sourceOccurrences(items) {
+  return (items || []).map((occurrence, index) => ({
+    key: `${occurrence.startLine || "unknown"}-${occurrence.startColumn || 0}-${index}`,
+    startLine: occurrence.startLine,
+    startColumn: occurrence.startColumn || 1,
+    endLine: occurrence.endLine,
+    label:
+      occurrence.contextualText ||
+      occurrence.text ||
+      (occurrence.isReference ? "Reference" : "")
+  }));
+}
+
 export default {
   name: "GraphInspector",
   setup() {
     const store = useArgdownStore();
     const flatNodes = computed(() => flattenNodes(store.map?.nodes || []));
+    const hasGraphFilters = computed(
+      () =>
+        store.graphFilters.nodeTypes.length > 0 ||
+        store.graphFilters.relationTypes.length > 0
+    );
 
     const visibleNodeTypes = computed(() => {
       const keys = new Set(flatNodes.value.map(nodeType));
@@ -176,7 +238,7 @@ export default {
       if (selection.kind === "edge") {
         const edge = store.map?.edges?.find((item) => item.id === selection.id);
         if (!edge) return null;
-        const occurrence = edge.relationOccurrences?.[0];
+        const occurrences = sourceOccurrences(edge.relationOccurrences);
         const relation = relationTypes[edge.relationType];
         return {
           typeLabel: "Relation",
@@ -184,8 +246,8 @@ export default {
           from: edge.from.labelTitle || edge.from.title,
           to: edge.to.labelTitle || edge.to.title,
           context: edge.contextualText,
-          startLine: occurrence?.startLine,
-          occurrenceCount: edge.relationOccurrences?.length || 0
+          occurrences,
+          occurrenceCount: occurrences.length
         };
       }
 
@@ -197,24 +259,34 @@ export default {
           ? store.argdownData.arguments?.[node.title]
           : store.argdownData.statements?.[node.title];
       const member = canonicalMember(entity);
+      const occurrences = sourceOccurrences(
+        entity?.members || (node.section ? [node.section] : [])
+      );
       return {
         typeLabel: nodeTypes[type]?.label || "Statement",
         title: node.labelTitle || node.title || "Untitled",
         text: node.labelText || member?.text,
         aliases: node.aliases,
         tags: node.tags,
-        startLine:
-          member?.startLine || entity?.startLine || node.section?.startLine,
-        occurrenceCount: entity?.members?.length || 0
+        occurrences,
+        occurrenceCount: occurrences.length
       };
     });
 
-    function showInSource() {
-      if (!selectedItem.value?.startLine) return;
+    function navigateToSource(occurrence) {
+      if (!occurrence?.startLine) return;
       EventBus.$emit("navigate-to-source", {
-        startLine: selectedItem.value.startLine,
-        startColumn: 1
+        startLine: occurrence.startLine,
+        startColumn: occurrence.startColumn || 1
       });
+    }
+
+    function nodeFilterActive(type) {
+      return store.graphFilters.nodeTypes.includes(type);
+    }
+
+    function relationFilterActive(type) {
+      return store.graphFilters.relationTypes.includes(type);
     }
 
     return {
@@ -222,7 +294,10 @@ export default {
       visibleNodeTypes,
       visibleRelations,
       selectedItem,
-      showInSource
+      hasGraphFilters,
+      nodeFilterActive,
+      relationFilterActive,
+      navigateToSource
     };
   }
 };
@@ -323,10 +398,44 @@ export default {
   font-size: 0.8rem;
 }
 
-.legend-grid > div {
+.legend-item {
   display: flex;
+  width: 100%;
+  height: auto;
   align-items: center;
   gap: 0.35rem;
+  margin: 0;
+  padding: 0.25rem 0.3rem;
+  border: 1px solid transparent;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  text-align: left;
+}
+
+.legend-item:hover,
+.legend-item:focus-visible {
+  border-color: #8bb8ca;
+  background: #eef8fc;
+}
+
+.legend-item.active {
+  border-color: #3e8eaf;
+  background: #dff2f9;
+  color: #194f65;
+  font-weight: 600;
+}
+
+.clear-filters {
+  width: 100%;
+  height: auto;
+  margin: 0.7rem 0 0;
+  justify-content: center;
+  padding: 0.35rem 0.5rem;
+  border-color: #8bb8ca;
+  background: #eef8fc;
+  color: #27657e;
+  font-weight: 600;
 }
 
 .node-swatch {
@@ -439,16 +548,50 @@ dd {
   overflow-wrap: anywhere;
 }
 
-.source-button {
+.source-occurrences {
+  margin-top: 0.75rem;
+}
+
+.source-occurrences h3 {
+  margin: 0 0 0.4rem;
+  color: #607287;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.occurrence-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  gap: 0.35rem;
+}
+
+.occurrence-list button {
+  display: flex;
   width: 100%;
   height: auto;
-  margin-top: 0.75rem;
-  padding: 0.45rem 0.6rem;
-  border: 1px solid #3e8eaf;
-  border-radius: 0.3rem;
+  min-width: 0;
+  align-items: flex-start;
+  margin: 0;
+  padding: 0.4rem 0.5rem;
+  border-color: #8bb8ca;
   background: #eef8fc;
   color: #27657e;
-  font-weight: 600;
+  text-align: left;
+}
+
+.occurrence-line {
+  flex: 0 0 auto;
+  font-weight: 700;
+}
+
+.occurrence-label {
+  min-width: 0;
+  overflow: hidden;
+  color: #46566a;
+  font-size: 0.76rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 @media (max-width: 850px) {

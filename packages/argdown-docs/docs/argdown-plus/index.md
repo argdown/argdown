@@ -39,7 +39,7 @@ parser:
 
 Open **Argdown+ Quickstart** from the Examples menu in the [Sandbox](/sandbox/map/viz-js) to edit it and inspect its map. The Sandbox shows the active syntax mode and reports lexer, parser, and semantic diagnostics together.
 
-In either map renderer, open **Legend** to see the entity and relation semantics present in the current graph. Select a node or edge to inspect its canonical text, endpoints, tags, aliases, and source occurrences. **Show in source** moves the editor to its definition; moving the editor cursor over a mapped definition or relation highlights that graph element in return. Graph targets support keyboard focus and selection with <kbd>Enter</kbd> or <kbd>Space</kbd>.
+In either map renderer, open **Legend** to see the entity and relation semantics present in the current graph. Select legend entries to focus matching nodes and relations; filters remain active when switching renderers, and **Show all** clears them. Select a node or edge to inspect its canonical text, endpoints, tags, aliases, and every source occurrence. Selecting an occurrence moves the editor to that exact definition or relation; moving the editor cursor over a mapped definition or relation highlights that graph element in return. Graph targets support keyboard focus and selection with <kbd>Enter</kbd> or <kbd>Space</kbd>.
 
 ## Typed entities
 

@@ -271,7 +271,8 @@ export class DotExportPlugin implements IArgdownPlugin {
     dot += "\n\n";
     const edges = response.map!.edges;
     for (const edge of edges) {
-      let attributes = `type="${edge.relationType}", `;
+      let attributes = `id="${escapeDotAttribute(edge.id)}", `;
+      attributes += `type="${edge.relationType}", `;
       attributes += `color="${edge.color}", `;
       attributes += `tooltip="${edge.relationType}"`;
       if (isWeakRelationType(edge.relationType)) {
@@ -369,13 +370,13 @@ export class DotExportPlugin implements IArgdownPlugin {
       }
       const groupColor = node.color || "#CCCCCC";
       if (groupNode.isClosed) {
-        dot += `  ${node.id} [label=${groupLabel}, shape="box", margin="${
+        dot += `  ${node.id} [id="${escapeDotAttribute(node.id)}", label=${groupLabel}, shape="box", margin="${
           groupSettings!.margin
         }", style="filled", penwidth="0" fillcolor="${groupColor}", fontcolor="${
           node.fontColor
         }",  type="${node.type}"];\n`;
       } else {
-        dot += `\nsubgraph ${dotGroupId} {\n  label = ${groupLabel};\n  color = "${groupColor}";\n  margin="${
+        dot += `\nsubgraph ${dotGroupId} {\n  id = "${escapeDotAttribute(node.id)}";\n  label = ${groupLabel};\n  color = "${groupColor}";\n  margin="${
           groupSettings!.margin
         }" style = filled;\n`;
         let labelloc = "t";
@@ -416,7 +417,7 @@ export class DotExportPlugin implements IArgdownPlugin {
       const widthProp =
         label == `""` ? `, width="${settings.argument!.minWidth}"` : "";
       const tooltip = node.labelText || node.labelTitle || "";
-      dot += `  ${node.id} [label=${label}, tooltip="${escapeQuotesForDot(tooltip)}", margin="${
+      dot += `  ${node.id} [id="${escapeDotAttribute(node.id)}", label=${label}, tooltip="${escapeQuotesForDot(tooltip)}", margin="${
         settings.argument!.margin
       }", shape="${shape}", style="${
         settings.argument!.style
@@ -430,7 +431,7 @@ export class DotExportPlugin implements IArgdownPlugin {
       const widthProp =
         label == `""` ? `, width="${settings.statement!.minWidth}"` : "";
       const tooltip = node.labelText || node.labelTitle || "";
-      dot += `  ${node.id} [label=${label}, tooltip="${escapeQuotesForDot(tooltip)}", shape="${shape}",  margin="${
+      dot += `  ${node.id} [id="${escapeDotAttribute(node.id)}", label=${label}, tooltip="${escapeQuotesForDot(tooltip)}", shape="${shape}",  margin="${
         settings.statement!.margin
       }", style="${
         settings.statement!.style

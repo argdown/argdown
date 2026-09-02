@@ -36,6 +36,7 @@ import GraphInspector from "./GraphInspector.vue";
 import {
   decorateGraph,
   selectionFromEvent,
+  syncGraphFilters,
   syncGraphSelection
 } from "../graph-selection.js";
 
@@ -55,9 +56,11 @@ export default {
     const argdownData = computed(() => store.argdownData);
     const pngScale = computed(() => store.pngScale);
     const selectedMapElement = computed(() => store.selectedMapElement);
+    const graphFilters = computed(() => store.graphFilters);
 
     function decorateRenderedMap() {
-      decorateGraph(svgElement.value, map.value, (group) => group.id);
+      decorateGraph(svgElement.value, map.value);
+      syncGraphFilters(svgElement.value, graphFilters.value);
       syncGraphSelection(svgElement.value, selectedMapElement.value);
     }
 
@@ -119,6 +122,19 @@ export default {
       }
     }
 
+    function refitMapAfterLayoutChange() {
+      nextTick(() => {
+        requestAnimationFrame(() => {
+          updateSvgDimensions();
+          dagreD3Map.value?.zoomManager.showAllAndCenterMap();
+        });
+      });
+    }
+
+    function handleResize() {
+      refitMapAfterLayoutChange();
+    }
+
     // Initialize Dagre map
     function initializeMap() {
       if (isInitializing.value || !svgElement.value) return;
@@ -172,7 +188,18 @@ export default {
 
     watch(
       selectedMapElement,
-      (selection) => syncGraphSelection(svgElement.value, selection),
+      (selection, previousSelection) => {
+        syncGraphSelection(svgElement.value, selection);
+        if (Boolean(selection) !== Boolean(previousSelection)) {
+          refitMapAfterLayoutChange();
+        }
+      },
+      { deep: true }
+    );
+
+    watch(
+      graphFilters,
+      (filters) => syncGraphFilters(svgElement.value, filters),
       { deep: true }
     );
 
@@ -186,6 +213,7 @@ export default {
           // Set up event listeners after initialization
           EventBus.$on("save-map-as-svg", saveDagreAsSvg);
           EventBus.$on("save-map-as-png", saveDagreAsPng);
+          window.addEventListener("resize", handleResize);
         }, 50);
       });
     });
@@ -193,6 +221,7 @@ export default {
     onBeforeUnmount(() => {
       EventBus.$off("save-map-as-svg", saveDagreAsSvg);
       EventBus.$off("save-map-as-png", saveDagreAsPng);
+      window.removeEventListener("resize", handleResize);
     });
 
     return {
@@ -217,8 +246,14 @@ export default {
 }
 
 :deep(g.node),
+:deep(g.cluster),
 :deep(g.edgePath) {
   cursor: pointer;
+}
+
+:deep(.graph-filtered-out:not(.graph-selected)) {
+  opacity: 0.12;
+  pointer-events: none;
 }
 
 :deep(.edge-hit-target) {
@@ -229,12 +264,18 @@ export default {
 }
 
 :deep(g.node:focus-visible),
+:deep(g.cluster:focus-visible),
 :deep(g.edgePath:focus-visible) {
   outline: 2px solid #006b8f;
   outline-offset: 3px;
 }
 
 :deep(g.node.graph-selected rect) {
+  stroke: #006b8f !important;
+  stroke-width: 5px !important;
+}
+
+:deep(g.cluster.graph-selected rect) {
   stroke: #006b8f !important;
   stroke-width: 5px !important;
 }

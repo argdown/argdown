@@ -49,6 +49,14 @@ DISCOURSE TREE:
   }
 ];
 
+function flattenNodes(nodes, result = []) {
+  for (const node of nodes || []) {
+    result.push(node);
+    if (node.children) flattenNodes(node.children, result);
+  }
+  return result;
+}
+
 describe.each(syntaxCases)("$name sandbox outputs", (syntaxCase) => {
   let store;
 
@@ -88,6 +96,12 @@ describe.each(syntaxCases)("$name sandbox outputs", (syntaxCase) => {
     for (const title of syntaxCase.titles) {
       expect(store.dot).toContain(title);
     }
+    for (const node of flattenNodes(store.map.nodes)) {
+      expect(store.dot).toContain(`id="${node.id}"`);
+    }
+    for (const edge of store.map.edges) {
+      expect(store.dot).toContain(`id="${edge.id}"`);
+    }
   });
 
   it("exports DOT, GraphML, and JSON", () => {
@@ -120,5 +134,53 @@ describe.each(syntaxCases)("$name sandbox outputs", (syntaxCase) => {
 
     store.selectMapElementAtLine(999);
     expect(store.selectedMapElement).toBe(null);
+  });
+
+  it("keeps graph focus filters across renderers and clears them on edits", () => {
+    store.toggleGraphFilter("nodeTypes", "statement");
+    store.toggleGraphFilter("relationTypes", store.map.edges[0].relationType);
+    expect(store.graphFilters.nodeTypes).toEqual(["statement"]);
+    expect(store.graphFilters.relationTypes).toHaveLength(1);
+
+    store.setViewState("output-maximized");
+    expect(store.graphFilters.nodeTypes).toEqual(["statement"]);
+    store.setArgdownInput(`${syntaxCase.input}\n`);
+    expect(store.graphFilters).toEqual({ nodeTypes: [], relationTypes: [] });
+  });
+});
+
+describe("graph relation edge cases", () => {
+  beforeEach(() => setActivePinia(createPinia()));
+
+  it("keeps parallel and symmetric relations distinct", () => {
+    const store = useArgdownStore();
+    store.setSyntax("argdown+");
+    store.setArgdownInput(`[A]: Alpha
+  => [B]: Beta
+  >< [B]`);
+
+    expect(store.diagnostics).toEqual([]);
+    expect(store.map.edges).toHaveLength(2);
+    expect(new Set(store.map.edges.map((edge) => edge.id)).size).toBe(2);
+    expect(new Set(store.map.edges.map((edge) => edge.relationType))).toEqual(
+      new Set(["implies", "contradictory"])
+    );
+  });
+
+  it("retains every occurrence of a repeated relation", () => {
+    const store = useArgdownStore();
+    store.setSyntax("argdown");
+    store.setArgdownInput(`<Reason>: Alpha
+  +> [Claim]: Beta
+
+<Reason>
+  +> [Claim]`);
+
+    expect(store.map.edges).toHaveLength(1);
+    expect(
+      store.map.edges[0].relationOccurrences.map(
+        (occurrence) => occurrence.startLine
+      )
+    ).toEqual([2, 5]);
   });
 });

@@ -190,4 +190,27 @@ n3;
     expect(result.dot!.includes('tooltip="Statement Only Title"')).to.be.true;
     expect(result.dot!.includes('tooltip="Argument Only Title"')).to.be.true;
   });
+  it("exports stable SVG ids for every map node and edge", function () {
+    const result = app.run({
+      process: [
+        "parse-input",
+        "build-model",
+        "create-map",
+        "colorize",
+        "export-dot"
+      ],
+      input: `[A]: Alpha
+  +> [B]: Beta
+  -> [B]`,
+      logLevel: "error"
+    });
+
+    expect(result.map!.edges.length).to.be.greaterThan(1);
+    for (const node of result.map!.nodes) {
+      expect(result.dot).to.contain(`id="${node.id}"`);
+    }
+    for (const edge of result.map!.edges) {
+      expect(result.dot).to.contain(`id="${edge.id}"`);
+    }
+  });
 });

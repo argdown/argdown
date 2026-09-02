@@ -12,7 +12,8 @@
     "dev": "vite dev",
     "build": "vite build",
     "serve": "vite preview",
-    "test": "vitest run",
+    "test": "vitest run test/*.spec.js",
+    "test:e2e": "playwright test",
     "lint": "eslint src",
     "copy-examples": "rimraf \"./public/examples\" && copyfiles -f \"../../examples/*.argdown\" ./public/examples"
   },
@@ -37,6 +38,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.5",
     "eslint-plugin-vue": "^10.7.0",
+    "playwright": "^1.57.0",
     "prettier": "^3.3.3",
     "rimraf": "^6.0.1",
     "sass": "^1.72.0",

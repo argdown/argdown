@@ -36,6 +36,7 @@ import GraphInspector from "./GraphInspector.vue";
 import {
   decorateGraph,
   selectionFromEvent,
+  syncGraphFilters,
   syncGraphSelection
 } from "../graph-selection.js";
 
@@ -60,11 +61,11 @@ export default {
     const pngScale = computed(() => store.pngScale);
     const map = computed(() => store.map);
     const selectedMapElement = computed(() => store.selectedMapElement);
+    const graphFilters = computed(() => store.graphFilters);
 
     function decorateRenderedMap() {
-      decorateGraph(svgElement.value, map.value, (group) =>
-        vizJsMap.value?.getArgdownId(group)
-      );
+      decorateGraph(svgElement.value, map.value);
+      syncGraphFilters(svgElement.value, graphFilters.value);
       syncGraphSelection(svgElement.value, selectedMapElement.value);
     }
 
@@ -122,6 +123,19 @@ export default {
 
       svgWidth.value = width;
       svgHeight.value = height;
+    }
+
+    function refitMapAfterLayoutChange() {
+      nextTick(() => {
+        requestAnimationFrame(() => {
+          updateSvgDimensions();
+          nextTick(() => vizJsMap.value?.zoomManager.showAllAndCenterMap());
+        });
+      });
+    }
+
+    function handleResize() {
+      refitMapAfterLayoutChange();
     }
 
     // Initialize Viz.js map
@@ -212,7 +226,18 @@ export default {
 
     watch(
       selectedMapElement,
-      (selection) => syncGraphSelection(svgElement.value, selection),
+      (selection, previousSelection) => {
+        syncGraphSelection(svgElement.value, selection);
+        if (Boolean(selection) !== Boolean(previousSelection)) {
+          refitMapAfterLayoutChange();
+        }
+      },
+      { deep: true }
+    );
+
+    watch(
+      graphFilters,
+      (filters) => syncGraphFilters(svgElement.value, filters),
       { deep: true }
     );
 
@@ -226,6 +251,7 @@ export default {
           // Set up event listeners after initialization
           EventBus.$on("save-map-as-svg", saveVizAsSvg);
           EventBus.$on("save-map-as-png", saveVizAsPng);
+          window.addEventListener("resize", handleResize);
         }, 50);
       });
     });
@@ -233,6 +259,7 @@ export default {
     onBeforeUnmount(() => {
       EventBus.$off("save-map-as-svg", saveVizAsSvg);
       EventBus.$off("save-map-as-png", saveVizAsPng);
+      window.removeEventListener("resize", handleResize);
 
       if (vizJsMap.value) {
         vizJsMap.value = null;
@@ -259,8 +286,14 @@ export default {
 }
 
 :deep(g.node),
+:deep(g.cluster),
 :deep(g.edge) {
   cursor: pointer;
+}
+
+:deep(.graph-filtered-out:not(.graph-selected)) {
+  opacity: 0.12;
+  pointer-events: none;
 }
 
 :deep(.edge-hit-target) {
@@ -271,6 +304,7 @@ export default {
 }
 
 :deep(g.node:focus-visible),
+:deep(g.cluster:focus-visible),
 :deep(g.edge:focus-visible) {
   outline: 2px solid #006b8f;
   outline-offset: 3px;
@@ -279,6 +313,12 @@ export default {
 :deep(g.node.graph-selected path),
 :deep(g.node.graph-selected polygon),
 :deep(g.node.graph-selected ellipse) {
+  stroke: #006b8f !important;
+  stroke-width: 5px !important;
+}
+
+:deep(g.cluster.graph-selected path),
+:deep(g.cluster.graph-selected polygon) {
   stroke: #006b8f !important;
   stroke-width: 5px !important;
 }

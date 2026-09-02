@@ -169,6 +169,7 @@ export const useArgdownStore = defineStore("argdown", () => {
   const showSaveAsPngDialog = ref(false);
   const pngScale = ref(1);
   const selectedMapElement = ref(null);
+  const graphFilters = ref({ nodeTypes: [], relationTypes: [] });
 
   // Computed properties (getters)
   const argdownData = computed(() => {
@@ -396,6 +397,7 @@ export const useArgdownStore = defineStore("argdown", () => {
     if (!["argdown", "argdown+", "micro-argdown+"].includes(value)) return;
     config.value.parser.syntax = value;
     clearMapSelection();
+    clearGraphFilters();
   }
 
   function setArgdownInput(value) {
@@ -412,6 +414,7 @@ export const useArgdownStore = defineStore("argdown", () => {
 
     argdownInput.value = value;
     clearMapSelection();
+    clearGraphFilters();
     return;
   }
 
@@ -444,6 +447,21 @@ export const useArgdownStore = defineStore("argdown", () => {
 
   function clearMapSelection() {
     selectedMapElement.value = null;
+  }
+
+  function toggleGraphFilter(kind, type) {
+    if (!["nodeTypes", "relationTypes"].includes(kind) || !type) return;
+    const current = graphFilters.value[kind];
+    graphFilters.value = {
+      ...graphFilters.value,
+      [kind]: current.includes(type)
+        ? current.filter((item) => item !== type)
+        : [...current, type]
+    };
+  }
+
+  function clearGraphFilters() {
+    graphFilters.value = { nodeTypes: [], relationTypes: [] };
   }
 
   function flattenMapNodes(nodes, result = []) {
@@ -542,6 +560,7 @@ export const useArgdownStore = defineStore("argdown", () => {
     showSaveAsPngDialog,
     pngScale,
     selectedMapElement,
+    graphFilters,
 
     // Computed properties
     argdownData,
@@ -580,6 +599,8 @@ export const useArgdownStore = defineStore("argdown", () => {
     selectMapElement,
     selectMapElementAtLine,
     clearMapSelection,
+    toggleGraphFilter,
+    clearGraphFilters,
     loadExample
   };
 });
