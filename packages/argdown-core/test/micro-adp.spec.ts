@@ -7,6 +7,7 @@ import {
   ColorPlugin,
   DataPlugin,
   DiscussionPointType,
+  HtmlExportPlugin,
   MapPlugin,
   ModelPlugin,
   ParserPlugin,
@@ -264,6 +265,34 @@ parser:
       "A1"
     ]);
     expect(response.map?.edges).to.have.length(1);
+  });
+
+  it("exports Micro-Argdown+ through the regular semantic HTML view", function () {
+    const app = new ArgdownApplication();
+    app.addPlugin(new ParserPlugin(), "parse-input");
+    app.addPlugin(new DataPlugin(), "build-model");
+    app.addPlugin(new ModelPlugin(), "build-model");
+    app.addPlugin(new HtmlExportPlugin({ headless: true }), "export-html");
+
+    const response = app.run({
+      process: ["parse-input", "build-model", "export-html"],
+      input: `[?Question]: Should the city expand its tree canopy?
+[Answer]: The city should expand its tree canopy.
+<Reason>: Trees provide shade.
+
+[?Question]
+    <! [Answer]
+        <+ <Reason>`,
+      parser: { syntax: "micro-argdown+" }
+    });
+
+    expect(response.exceptions).to.be.empty;
+    expect(response.html).to.contain('<div class="argdown">');
+    expect(response.html).to.contain(
+      '[?<span class="title statement-title">Question</span>'
+    );
+    expect(response.html).to.contain("Answer");
+    expect(response.html).to.contain("Reason");
   });
 
   it("produces the same normalized graph for paired full and Micro fixtures", function () {

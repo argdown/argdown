@@ -583,6 +583,7 @@ __metadata:
     rimraf: "npm:^6.0.1"
     sass: "npm:^1.72.0"
     vite: "npm:^7.2.4"
+    vitest: "npm:^4.1.0"
     vue: "npm:^3.4.28"
     vue-eslint-parser: "npm:^10.2.0"
     vue-router: "npm:^4.3.2"

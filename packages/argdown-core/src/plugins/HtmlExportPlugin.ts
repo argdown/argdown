@@ -16,12 +16,18 @@ import {
   isObject
 } from "../utils.js";
 import defaultsDeep from "lodash.defaultsdeep";
+import { ArgdownApplication } from "../ArgdownApplication.js";
+import { convertMicroToArgdownPlus } from "../micro/MicroArgdownSerializer.js";
+import { ParserPlugin } from "./ParserPlugin.js";
+import { DataPlugin } from "./DataPlugin.js";
+import { ModelPlugin } from "./ModelPlugin.js";
 
 const getTypedStatementMarker = (
   request: IArgdownRequest,
   token: ITokenNode
 ): string => {
-  if (!request.parser || request.parser.syntax !== "argdown+") return "";
+  const syntax = request.parser?.syntax;
+  if (syntax !== "argdown+" && syntax !== "micro-argdown+") return "";
   const match = /\[([!?@>])/.exec(token.image);
   return match ? match[1] : "";
 };
@@ -115,6 +121,42 @@ export class HtmlExportPlugin implements IArgdownPlugin {
   prepare: IRequestHandler = (request, response) => {
     checkResponseFields(this, response, ["statements", "arguments", "ast"]);
     mergeDefaults(this.getSettings(request), this.defaults);
+  };
+  run: IRequestHandler = (request, response, logger) => {
+    if (
+      request.parser?.syntax !== "micro-argdown+" ||
+      !response.microDocument
+    ) {
+      return;
+    }
+
+    // Micro-Argdown+ deliberately exposes a normalized model instead of the
+    // classic parser's presentation AST. Reuse the regular HTML walker on a
+    // lossless full-syntax projection so HTML remains consistent across modes.
+    const conversion = convertMicroToArgdownPlus(response.microDocument);
+    if (!conversion.output) {
+      throw new Error("Could not convert Micro-Argdown+ for HTML export.");
+    }
+
+    const exportApp = new ArgdownApplication(logger);
+    exportApp.addPlugin(new ParserPlugin(), "parse-input");
+    exportApp.addPlugin(new DataPlugin(), "build-model");
+    exportApp.addPlugin(new ModelPlugin(), "build-model");
+    exportApp.addPlugin(this, "export-html");
+
+    const exportRequest = defaultsDeep(
+      {
+        input: conversion.output,
+        process: ["parse-input", "build-model", "export-html"],
+        parser: { syntax: "argdown+" }
+      },
+      request
+    );
+    const exported = exportApp.run(exportRequest);
+    if (exported.exceptions && exported.exceptions.length > 0) {
+      throw exported.exceptions[0];
+    }
+    response.html = exported.html;
   };
   constructor(config?: IHtmlExportSettings) {
     this.defaults = defaultsDeep({}, config, defaultSettings);
