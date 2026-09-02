@@ -1,0 +1,20 @@
+===
+title: Micro-Argdown+ Primer
+parser:
+  syntax: micro-argdown+
+===
+
+CONTEXT-FREE DEFINITIONS:
+[?Q-Heat]: Should the city expand its tree canopy?
+[S-Cooling]: The city should expand its tree canopy.
+<A-Shade>: Trees reduce dangerous street-level heat through shade and evapotranspiration.
+[@R-Review]: https://doi.org/10.1016/j.buildenv.2021.107777
+[>E-Review] >>
+    Urban trees can produce measurable local cooling.
+
+DISCOURSE TREE:
+[?Q-Heat]
+    <! [S-Cooling]
+        <+ <A-Shade>
+        <@ [>E-Review]
+            <@ [@R-Review]

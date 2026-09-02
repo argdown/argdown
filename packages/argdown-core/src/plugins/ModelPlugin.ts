@@ -1541,6 +1541,11 @@ export class ModelPlugin implements IArgdownPlugin {
     this.ruleListeners = {
       [RuleNames.ARGDOWN + "Entry"]: (request, response) => {
         if (request.parser && request.parser.syntax === "micro-argdown+") {
+          // The Micro parser already supplies the normalized model, but
+          // downstream model consumers still rely on these empty collections.
+          response.sections = response.sections || [];
+          response.tags = response.tags || {};
+          response.maxSectionLevel = response.maxSectionLevel || 0;
           currentStatement = null;
           currentHeading = null;
           currentSection = null;

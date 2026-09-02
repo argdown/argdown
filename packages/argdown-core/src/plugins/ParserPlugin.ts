@@ -13,6 +13,7 @@ import {
 import { RuleNames } from "../RuleNames.js";
 import { parseMicroArgdown } from "../micro/MicroArgdownParser.js";
 import { addDiagnostic } from "../diagnostics.js";
+import { maskFrontMatter } from "../frontMatter.js";
 import {
   IToken,
   ILexingError,
@@ -124,7 +125,7 @@ export class ParserPlugin implements IArgdownPlugin {
     }
     const settings = this.getSettings(request);
     if (settings.syntax === "micro-argdown+") {
-      const document = parseMicroArgdown(request.input);
+      const document = parseMicroArgdown(maskFrontMatter(request.input));
       response.microDocument = document;
       response.discussionPoints = document.discussionPoints;
       response.excerpts = document.excerpts;

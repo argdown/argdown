@@ -26,7 +26,7 @@ import { useArgdownStore } from "../store.js";
 import { EventBus } from "../event-bus.js";
 import { saveAsSvg, saveAsPng } from "../map-export.js";
 import { DagreMap } from "@argdown/map-views";
-import "../scss/dagre.css";
+import "@argdown/map-views/style.css";
 
 export default {
   name: "DagreD3Output",
@@ -108,7 +108,10 @@ export default {
       if (!dagreD3Map.value) return;
 
       const exceptions = argdownData.value.exceptions;
-      if (exceptions && exceptions.length > 0) return;
+      if (exceptions && exceptions.length > 0) {
+        svgElement.value?.replaceChildren();
+        return;
+      }
 
       const props = {
         settings: configData.value.dagre,

@@ -97,6 +97,29 @@ export default withPwa(
         level: "deep"
       },
       sidebar: {
+        "/argdown-plus/": [
+          {
+            text: "Argdown+",
+            items: [
+              {
+                text: "Overview and quickstart",
+                link: "/argdown-plus/"
+              },
+              {
+                text: "Semantic relations",
+                link: "/argdown-plus/relations"
+              },
+              {
+                text: "Configuration",
+                link: "/guide/configuration"
+              },
+              {
+                text: "Complete syntax",
+                link: "/syntax/#argdown-and-argdown-modes"
+              }
+            ]
+          }
+        ],
         "/changes/": [
           {
             text: "Changes",
@@ -280,6 +303,7 @@ export default withPwa(
       nav: [
         { text: "Home", link: "/" },
         { text: "Guide", link: "/guide/" },
+        { text: "Argdown+", link: "/argdown-plus/" },
         { text: "Syntax", link: "/syntax/" },
         {
           text: "API",

@@ -11,6 +11,7 @@
         </router-link>
       </li>
       <li><router-link to="/json">JSON</router-link></li>
+      <li><router-link to="/debug">Diagnostics</router-link></li>
       <li><a href="https://argdown.org">Documentation</a></li>
       <li>
         <a href="https://github.com/argdown/argdown">View on Github</a>

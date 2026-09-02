@@ -10,6 +10,18 @@ const frontMatterPattern =
   /^[\s\r\n]*(={3,})[ \t]*\r?\n([\s\S]*?)\r?\n[ \t]*\1[ \t]*(?:\r?\n|$)/;
 
 /**
+ * Replaces leading frontmatter characters with spaces while preserving line
+ * endings. Parsers that do not have a frontmatter token can therefore ignore
+ * the block without shifting diagnostic and source-occurrence locations.
+ */
+export const maskFrontMatter = (input: string): string => {
+  const match = frontMatterPattern.exec(input);
+  if (!match) return input;
+  const masked = match[0].replace(/[^\r\n]/g, " ");
+  return masked + input.slice(match[0].length);
+};
+
+/**
  * Parses and applies document frontmatter before any processor is prepared.
  * This is intentionally independent of the AST so parser/model configuration
  * can affect the same run in which it is declared.

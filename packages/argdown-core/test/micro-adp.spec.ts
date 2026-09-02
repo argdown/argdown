@@ -2,12 +2,17 @@ import { expect } from "chai";
 import { describe, it } from "mocha";
 import * as fs from "fs";
 import {
+  ArgumentSelectionPlugin,
   ArgdownApplication,
+  ColorPlugin,
   DataPlugin,
   DiscussionPointType,
+  MapPlugin,
   ModelPlugin,
   ParserPlugin,
+  PreselectionPlugin,
   RelationType,
+  StatementSelectionPlugin,
   convertMicroToArgdownPlus,
   convertArgdownPlusToMicro,
   normalizedGraphsEqual,
@@ -196,6 +201,69 @@ Same anonymous wording`);
     });
     expect(full.parserErrors).to.be.empty;
     expect(full.relations![0].relationType).to.equal(RelationType.JUSTIFIES);
+  });
+
+  it("activates Micro-Argdown+ from frontmatter without parsing it as prose", function () {
+    const app = new ArgdownApplication();
+    app.addPlugin(new ParserPlugin(), "parse-input");
+    app.addPlugin(new DataPlugin(), "build-model");
+    app.addPlugin(new ModelPlugin(), "build-model");
+    const response = app.run({
+      process: ["parse-input", "build-model"],
+      input: `===
+parser:
+  syntax: micro-argdown+
+===
+
+[S1]: Claim
+<A1>: Argument
+
+[S1]
+    <+ <A1>`
+    });
+
+    expect(response.frontMatter).to.deep.include({
+      parser: { syntax: "micro-argdown+" }
+    });
+    expect(response.microDocument).to.not.equal(undefined);
+    expect(response.discussionPoints).to.have.keys("[S1]", "<A1>");
+    expect(response.relations).to.have.length(1);
+    expect(response.diagnostics).to.be.empty;
+  });
+
+  it("provides the empty model collections required by map colorization", function () {
+    const app = new ArgdownApplication();
+    app.addPlugin(new ParserPlugin(), "parse-input");
+    app.addPlugin(new DataPlugin(), "build-model");
+    app.addPlugin(new ModelPlugin(), "build-model");
+    app.addPlugin(new PreselectionPlugin(), "build-map");
+    app.addPlugin(new StatementSelectionPlugin(), "build-map");
+    app.addPlugin(new ArgumentSelectionPlugin(), "build-map");
+    app.addPlugin(new MapPlugin(), "build-map");
+    app.addPlugin(new ColorPlugin(), "colorize");
+
+    const response = app.run({
+      process: ["parse-input", "build-model", "build-map", "colorize"],
+      input: `===
+parser:
+  syntax: micro-argdown+
+===
+
+[S1]: Claim
+<A1>: Argument
+
+[S1]
+    <+ <A1>`
+    });
+
+    expect(response.exceptions).to.be.empty;
+    expect(response.tags).to.deep.equal({});
+    expect(response.sections).to.deep.equal([]);
+    expect(response.map?.nodes.map((node) => node.title)).to.have.members([
+      "S1",
+      "A1"
+    ]);
+    expect(response.map?.edges).to.have.length(1);
   });
 
   it("produces the same normalized graph for paired full and Micro fixtures", function () {

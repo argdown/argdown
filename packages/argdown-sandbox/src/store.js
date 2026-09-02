@@ -46,8 +46,10 @@ const groupPlugin = new GroupPlugin();
 const dotExport = new DotExportPlugin();
 const graphMLExport = new GraphMLExportPlugin();
 import primer from "/examples/argdown-primer.argdown?url&raw";
-import argdownPlusPrimer from "/examples/argdown-plus-primer.argdown?url&raw";
-import argdownPlusLegacyMigration from "/examples/argdown-plus-legacy-migration.argdown?url&raw";
+import argdownPlusQuickstart from "../../../examples/argdown-plus-quickstart.argdown?raw";
+import argdownPlusPrimer from "../../../examples/argdown-plus-primer.argdown?raw";
+import argdownPlusLegacyMigration from "../../../examples/argdown-plus-legacy-migration.argdown?raw";
+import microArgdownPlusPrimer from "../../../examples/micro-argdown-plus-primer.argdown?raw";
 
 app.addPlugin(parserPlugin, "parse-input");
 app.addPlugin(dataPlugin, "build-model");
@@ -78,6 +80,18 @@ const examples = {
     title: "Argdown+ Primer",
     url: "./examples/argdown-plus-primer.argdown",
     cachedContent: argdownPlusPrimer
+  },
+  "argdown-plus-quickstart": {
+    id: "argdown-plus-quickstart",
+    title: "Argdown+ Quickstart",
+    url: "./examples/argdown-plus-quickstart.argdown",
+    cachedContent: argdownPlusQuickstart
+  },
+  "micro-argdown-plus-primer": {
+    id: "micro-argdown-plus-primer",
+    title: "Micro-Argdown+ Primer",
+    url: "./examples/micro-argdown-plus-primer.argdown",
+    cachedContent: microArgdownPlusPrimer
   },
   "argdown-plus-legacy-migration": {
     id: "argdown-plus-legacy-migration",
@@ -121,6 +135,9 @@ export const useArgdownStore = defineStore("argdown", () => {
   const examplesData = ref(examples);
   const useArgVu = ref(false);
   const config = ref({
+    parser: {
+      syntax: "argdown"
+    },
     selection: {
       excludeDisconnected: true,
       statementSelectionMode: StatementSelectionMode.WITH_TITLE
@@ -271,6 +288,59 @@ export const useArgdownStore = defineStore("argdown", () => {
     return argdownData.value?.lexerErrors || [];
   });
 
+  const diagnostics = computed(() => {
+    const data = argdownData.value;
+    const items = [...(data?.diagnostics || [])];
+    for (const exception of data?.exceptions || []) {
+      const code = exception.code || "plugin-error";
+      const message = exception.message || String(exception);
+      if (
+        items.some((item) => item.code === code && item.message === message)
+      ) {
+        continue;
+      }
+      items.push({
+        code,
+        severity: "error",
+        source: exception.plugin || exception.processor || "Argdown",
+        message
+      });
+    }
+    return items.sort((left, right) => {
+      const leftLine = left.startLine ?? Number.MAX_SAFE_INTEGER;
+      const rightLine = right.startLine ?? Number.MAX_SAFE_INTEGER;
+      return leftLine - rightLine;
+    });
+  });
+
+  const documentSyntax = computed(() => {
+    const syntax = argdownData.value?.frontMatter?.parser?.syntax;
+    return ["argdown", "argdown+", "micro-argdown+"].includes(syntax)
+      ? syntax
+      : null;
+  });
+
+  const configuredSyntax = computed(
+    () => config.value?.parser?.syntax || "argdown"
+  );
+
+  const activeSyntax = computed(
+    () => documentSyntax.value || configuredSyntax.value
+  );
+
+  const errorCount = computed(
+    () =>
+      diagnostics.value.filter((diagnostic) => diagnostic.severity === "error")
+        .length
+  );
+
+  const warningCount = computed(
+    () =>
+      diagnostics.value.filter(
+        (diagnostic) => diagnostic.severity === "warning"
+      ).length
+  );
+
   const statements = computed(() => {
     return argdownData.value?.statements || [];
   });
@@ -319,6 +389,11 @@ export const useArgdownStore = defineStore("argdown", () => {
   // Actions
   function setUseArgVu(value) {
     useArgVu.value = value;
+  }
+
+  function setSyntax(value) {
+    if (!["argdown", "argdown+", "micro-argdown+"].includes(value)) return;
+    config.value.parser.syntax = value;
   }
 
   function setArgdownInput(value) {
@@ -400,6 +475,12 @@ export const useArgdownStore = defineStore("argdown", () => {
     json,
     parserErrors,
     lexerErrors,
+    diagnostics,
+    documentSyntax,
+    configuredSyntax,
+    activeSyntax,
+    errorCount,
+    warningCount,
     statements,
     arguments: arguments_,
     relations,
@@ -411,6 +492,7 @@ export const useArgdownStore = defineStore("argdown", () => {
 
     // Actions
     setUseArgVu,
+    setSyntax,
     setArgdownInput,
     setViewState,
     cacheExample,

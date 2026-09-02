@@ -2,23 +2,36 @@
   <nav class="sub-nav">
     <ul class="nav-list">
       <li>
-        <router-link to="/map/viz-js">Viz Js Map</router-link>
+        <router-link to="/map/viz-js" aria-label="Viz Js Map">
+          <span class="map-label-long">Viz Js Map</span>
+          <span class="map-label-short" aria-hidden="true">Viz</span>
+        </router-link>
       </li>
       <li>
-        <router-link to="/map/dagre-d3">Dagre D3 Map</router-link>
+        <router-link to="/map/dagre-d3" aria-label="Dagre D3 Map">
+          <span class="map-label-long">Dagre D3 Map</span>
+          <span class="map-label-short" aria-hidden="true">Dagre</span>
+        </router-link>
       </li>
       <li>
-        <router-link to="/map/dot">Dot Source</router-link>
+        <router-link to="/map/dot" aria-label="Dot Source">
+          <span class="map-label-long">Dot Source</span>
+          <span class="map-label-short" aria-hidden="true">Dot</span>
+        </router-link>
       </li>
       <li>
-        <router-link to="/map/graphml">GraphML Source</router-link>
+        <router-link to="/map/graphml" aria-label="GraphML Source">
+          <span class="map-label-long">GraphML Source</span>
+          <span class="map-label-short" aria-hidden="true">GraphML</span>
+        </router-link>
       </li>
       <!-- <li><router-link to="/map/graphml">GraphML Source</router-link></li> -->
       <li
         v-if="$route.name == 'map-viz-js' || $route.name == 'map-dagre-d3'"
         class="save-map"
       >
-        save map as
+        <span class="map-label-long">save map as</span>
+        <span class="map-label-short" aria-hidden="true">export</span>
         <a class="save-as-svg" href @click.stop.prevent="saveAsSvg">svg</a>
         <a class="save as png" href @click.stop.prevent="openSaveAsPngDialog"
           >png</a
@@ -95,6 +108,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.map-label-short {
+  display: none;
+}
+
 .save-map {
   border-left: 1px solid #eee;
   color: #999;
@@ -141,6 +158,20 @@ export default {
     padding: 0.5em 1em;
     text-wrap: nowrap;
     margin: 0;
+  }
+}
+
+@media (max-width: 1200px) {
+  .map-label-long {
+    display: none;
+  }
+
+  .map-label-short {
+    display: inline;
+  }
+
+  .save-map {
+    padding-left: 0.5rem;
   }
 }
 </style>

@@ -125,7 +125,10 @@ export default {
       if (!vizJsMap.value) return;
 
       const exceptions = argdownData.value.exceptions;
-      if (exceptions && exceptions.length > 0) return;
+      if ((exceptions && exceptions.length > 0) || !dot.value) {
+        svgElement.value?.replaceChildren();
+        return;
+      }
 
       // Verify SVG dimensions before rendering
       if (!svgElement.value) {
@@ -150,6 +153,7 @@ export default {
       };
 
       vizJsMap.value.render(props).catch((error) => {
+        svgElement.value?.replaceChildren();
         console.error("Viz.js render error:", error);
         // If render fails due to dimension issues, try reinitializing
         if (error.message && error.message.includes("NaN")) {

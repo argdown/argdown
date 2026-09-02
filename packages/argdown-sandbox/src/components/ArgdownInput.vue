@@ -20,24 +20,118 @@ import "codemirror/lib/codemirror.css";
 import "codemirror/addon/mode/simple";
 import argdownMode from "@argdown/codemirror-mode";
 import "@argdown/codemirror-mode/codemirror-argdown.css";
+import { EventBus } from "../event-bus.js";
 
 export default {
   name: "ArgdownInput",
-  props: ["value"],
+  props: {
+    value: {
+      type: [String, Object],
+      default: ""
+    }
+  },
+  emits: ["change"],
   setup(props, { emit }) {
     const store = useArgdownStore();
     const editorRef = ref(null);
     const localValue = ref(String(props.value || ""));
     const editor = ref(null);
     const needsRefresh = ref(false);
+    const diagnosticMarks = ref([]);
 
     const useArgVu = computed(() => store.useArgVu);
+    const diagnostics = computed(() => store.diagnostics);
 
     const debouncedChangeEmission = debounce((value) => {
       emit("change", value);
     }, 100);
 
     function sizeEditorToContainer() {}
+
+    function clearDiagnostics() {
+      for (const mark of diagnosticMarks.value) mark.clear();
+      diagnosticMarks.value = [];
+      if (editor.value) editor.value.clearGutter("argdown-diagnostics-gutter");
+    }
+
+    function sourcePosition(diagnostic) {
+      if (!editor.value || !diagnostic.startLine) return null;
+      const line = Math.min(
+        Math.max(diagnostic.startLine - 1, 0),
+        editor.value.lineCount() - 1
+      );
+      const lineLength = editor.value.getLine(line).length;
+      const ch = Math.min(
+        Math.max((diagnostic.startColumn || 1) - 1, 0),
+        lineLength
+      );
+      return { line, ch };
+    }
+
+    function renderDiagnostics() {
+      if (!editor.value) return;
+      clearDiagnostics();
+      const diagnosticsByLine = new Map();
+      for (const diagnostic of diagnostics.value) {
+        const from = sourcePosition(diagnostic);
+        if (!from) continue;
+        const existing = diagnosticsByLine.get(from.line);
+        if (!existing || diagnostic.severity === "error") {
+          diagnosticsByLine.set(from.line, diagnostic);
+        }
+
+        const endLine = Math.min(
+          Math.max((diagnostic.endLine || diagnostic.startLine) - 1, from.line),
+          editor.value.lineCount() - 1
+        );
+        const endLength = editor.value.getLine(endLine).length;
+        let endCh = Math.min(
+          Math.max(
+            (diagnostic.endColumn || diagnostic.startColumn || 1) - 1,
+            0
+          ),
+          endLength
+        );
+        if (endLine === from.line && endCh <= from.ch) {
+          endCh = Math.min(from.ch + 1, endLength);
+        }
+        diagnosticMarks.value.push(
+          editor.value.markText(
+            from,
+            { line: endLine, ch: endCh },
+            {
+              className: `argdown-diagnostic-range ${diagnostic.severity}`,
+              title: `${diagnostic.code}: ${diagnostic.message}`
+            }
+          )
+        );
+      }
+
+      for (const [line, diagnostic] of diagnosticsByLine) {
+        const marker = document.createElement("button");
+        marker.type = "button";
+        marker.className = `argdown-diagnostic-marker ${diagnostic.severity}`;
+        marker.title = `${diagnostic.code}: ${diagnostic.message}`;
+        marker.setAttribute("aria-label", marker.title);
+        marker.textContent = "●";
+        marker.addEventListener("click", () =>
+          navigateToDiagnostic(diagnostic)
+        );
+        editor.value.setGutterMarker(
+          line,
+          "argdown-diagnostics-gutter",
+          marker
+        );
+      }
+    }
+
+    function navigateToDiagnostic(diagnostic) {
+      const position = sourcePosition(diagnostic);
+      if (!editor.value || !position) return;
+      editor.value.setCursor(position);
+      editor.value.scrollIntoView(position, 80);
+      editor.value.focus();
+    }
 
     function refreshEditor() {
       if (!editorRef.value) {
@@ -50,6 +144,7 @@ export default {
       // Re-initialize CodeMirror
       editor.value = CodeMirror.fromTextArea(editorRef.value, {
         mode: "argdown",
+        gutters: ["CodeMirror-linenumbers", "argdown-diagnostics-gutter"],
         lineNumbers: true,
         theme: "default",
         tabSize: 4,
@@ -68,6 +163,7 @@ export default {
         localValue.value = cm.getValue();
         debouncedChangeEmission(cm.getValue());
       });
+      renderDiagnostics();
       // Ensure sizing happens after DOM is painted
       requestAnimationFrame(() => sizeEditorToContainer());
     }
@@ -144,10 +240,19 @@ export default {
       }
     );
 
+    watch(
+      diagnostics,
+      () => {
+        nextTick(() => renderDiagnostics());
+      },
+      { deep: true }
+    );
+
     onMounted(() => {
       CodeMirror.defineSimpleMode("argdown", argdownMode);
       editor.value = CodeMirror.fromTextArea(editorRef.value, {
         mode: "argdown",
+        gutters: ["CodeMirror-linenumbers", "argdown-diagnostics-gutter"],
         lineNumbers: true,
         theme: "default",
         tabSize: 4,
@@ -166,9 +271,13 @@ export default {
         localValue.value = cm.getValue();
         debouncedChangeEmission(cm.getValue());
       });
+      EventBus.$on("navigate-to-diagnostic", navigateToDiagnostic);
+      renderDiagnostics();
     });
 
     onBeforeUnmount(() => {
+      EventBus.$off("navigate-to-diagnostic", navigateToDiagnostic);
+      clearDiagnostics();
       if (editor.value) {
         editor.value.toTextArea();
       }
@@ -180,6 +289,7 @@ export default {
       editor,
       needsRefresh,
       useArgVu,
+      diagnostics,
       refreshEditor
     };
   }
@@ -252,6 +362,47 @@ export default {
 
   .CodeMirror-gutters {
     padding-left: 20px;
+  }
+
+  .argdown-diagnostics-gutter {
+    width: 0.9rem;
+  }
+
+  .argdown-diagnostic-marker {
+    width: 0.9rem;
+    height: 1.2rem;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    font-size: 0.65rem;
+    line-height: 1;
+  }
+
+  .argdown-diagnostic-marker.error {
+    color: #d92d20;
+  }
+
+  .argdown-diagnostic-marker.warning {
+    color: #dc8b00;
+  }
+
+  .argdown-diagnostic-marker.information {
+    color: #2878b5;
+  }
+
+  .argdown-diagnostic-range.error {
+    text-decoration: underline wavy #d92d20;
+    text-decoration-skip-ink: none;
+  }
+
+  .argdown-diagnostic-range.warning {
+    text-decoration: underline wavy #dc8b00;
+    text-decoration-skip-ink: none;
+  }
+
+  .argdown-diagnostic-range.information {
+    text-decoration: underline dotted #2878b5;
   }
 
   .CodeMirror-line {

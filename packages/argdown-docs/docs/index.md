@@ -11,6 +11,9 @@ hero:
     - theme: brand
       text: Get Started →
       link: /guide/
+    - theme: alt
+      text: Explore Argdown+
+      link: /argdown-plus/
       
 features:
   - title: Simple
@@ -19,6 +22,8 @@ features:
     details: With these simple rules you will be able to define more complex relations between arguments or dive into the details of their logical premise-conclusion structures.
   - title: Powerful
     details: Argdown can even be used within Markdown! Your code is transformed into an argument map while you are typing. When your are ready, you can publish your analysis as pdf, embed it as a web-component in a webpage or simply export your map as an image.
+  - title: Typed with Argdown+
+    details: Model Questions, References, exact Excerpts, and explicit semantic relations—or draft the same graph quickly with Micro-Argdown+.
 
 footer: MIT Licensed | Copyright © 2018-present Christian Voigt | Funded by Debatelab, KIT Karlsuhe
 ---
