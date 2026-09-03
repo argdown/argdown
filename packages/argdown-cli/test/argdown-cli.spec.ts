@@ -10,9 +10,15 @@ interface IExecCallback {
   (error: Error | null, stdout: any, stderr: any): void;
 }
 const execPromise = (cmd: string, callback: IExecCallback) => {
+  const env = { ...process.env };
+  // Nx forces colored target output. Do not leak that presentation setting into
+  // the CLI process under test, where it conflicts with NO_COLOR and writes a
+  // Node warning to stderr.
+  delete env.FORCE_COLOR;
   return new Promise<void>((resolve, reject) => {
     require("child_process").exec(
       cmd,
+      { env },
       (error: Error | null, stdout: any, stderr: any) => {
         if (error !== null) {
           reject(error);
