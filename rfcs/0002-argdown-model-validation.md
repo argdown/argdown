@@ -31,12 +31,16 @@ Checks that rely on the *meaning* of logical relations or inferences belong to R
 
 ## 4. Structural derivations
 
-For an argument *a* with referenced inferences *I(a)*:
+For an argument *a*, let *I(a)* be its `inferences`: a set of directed hyperedges over statements (RFC 0001 §4.4, §4.5). A statement occurring in *I(a)* is
 
-- **inference graph of *a*:** directed graph on statements with an edge *p* → *c* for each premise *p* of each inference in *I(a)* with conclusion *c*;
-- **premises of *a*:** statements that are premises of some inference in *I(a)* and the conclusion of none;
-- **intermediate conclusions of *a*:** statements that are the conclusion of some inference in *I(a)* and a premise of some other;
-- **final conclusions of *a*:** statements that are the conclusion of some inference in *I(a)* and a premise of none.
+- a **premise** of *a* if it is the conclusion of no inference in *I(a)*,
+- a **final conclusion** of *a* if it is a premise of no inference in *I(a)*,
+- an **intermediate conclusion** of *a* otherwise.
+
+*I(a)* is
+
+- **connected** if any two inferences in *I(a)* are linked by a chain of inferences in *I(a)* in which consecutive inferences share a statement;
+- **cyclic** if there are inferences *i1*, …, *in* in *I(a)* such that the conclusion of each is a premise of the next, and the conclusion of *in* is a premise of *i1*.
 
 ## 5. Conformance
 
@@ -66,8 +70,8 @@ Severity: `ERROR`. Input level: asserted, except C10 (structural, no closure).
 
 | ID | Check | Input | Severity |
 |---|---|---|---|
-| INF-1 | An argument's inference graph is not weakly connected. | structural | WARNING |
-| INF-2 | An argument's inference graph contains a cycle. | structural | WARNING |
+| INF-1 | *I(a)* is not connected. | structural | WARNING |
+| INF-2 | *I(a)* is cyclic. | structural | WARNING |
 | INF-3 | An argument has more than one final conclusion. | structural | WARNING |
 | INF-4 | An inference's conclusion is also one of its premises. | asserted | WARNING |
 | INF-5 | Two premises of an argument are linked as `contradictory` or `contrary`. | structural | WARNING |
