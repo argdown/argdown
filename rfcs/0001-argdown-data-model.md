@@ -34,7 +34,7 @@ A small, explicit, abstract model addresses all four. It separates *what an Argd
 
 ## 3. Design principles
 
-**P1. Asserted content only.** The model stores what has been asserted. It does not store what follows from it. Closure properties (for example transitivity of equivalence or of inference), consistency between the logical and dialectical layers, and derived structures (for example a subdebate's induced subgraph) are left to reasoners.
+**P1. Asserted content only.** The model stores what has been asserted. It does not store what follows from it. Closure properties (for example transitivity of equivalence or of inference), consistency between the logical and dialectical layers, and derived structures (for example a subdebate's induced subgraph) are not part of the model. P1 constrains what the model *stores*, not what processing may *compute*: validation (§5) MAY compute derived structure on the fly, and reasoners MAY derive further content, without either becoming part of the model.
 
 **P2. Parsers decide what gets asserted.** The model takes no position on how source text maps to entities. For example, whether two Argdown statements with the same title are linked by an equivalence relation is decided by the parser, not by the model.
 
