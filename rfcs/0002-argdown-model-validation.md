@@ -11,7 +11,7 @@
 
 ## 1. Summary
 
-This RFC defines validation checks for models of RFC 0001. Checks are grouped into *conformance* (errors: not a model instance) and *diagnostics* (warnings and infos: a valid but possibly flawed model).
+This RFC defines validation checks for models of RFC 0001. Checks are grouped into *well-formedness* (errors: not a model instance) and *diagnostics* (warnings and infos: a well-formed but possibly flawed model).
 
 ## 2. Scope
 
@@ -42,7 +42,7 @@ For an argument *a*, let *I(a)* be its `inferences`: a set of directed hyperedge
 - **connected** if any two inferences in *I(a)* are linked by a chain of inferences in *I(a)* in which consecutive inferences share a statement;
 - **cyclic** if there are inferences *i1*, …, *in* in *I(a)* such that the conclusion of each is a premise of the next, and the conclusion of *in* is a premise of *i1*.
 
-## 5. Conformance
+## 5. Well-formedness
 
 Severity: `ERROR`. Input level: asserted, except C10 (structural, no closure).
 
@@ -106,8 +106,4 @@ A finding has:
 - `severity`;
 - `message`: a human-readable explanation.
 
-A model *conforms* if it produces no `ERROR` finding. Reasoners following RFC 0003 or RFC 0004 SHOULD report their diagnostics in the same format.
-
-## 8. Unresolved questions
-
-1. Encoding in SHACL: `sh:conforms` is false for any result, including warnings, so "conforms" in §7 differs from SHACL's.
+A model is *well-formed* if it produces no `ERROR` finding. Reasoners following RFC 0003 or RFC 0004 SHOULD report their diagnostics in the same format.

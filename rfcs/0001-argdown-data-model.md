@@ -40,7 +40,7 @@ A small, explicit, abstract model addresses all four. It separates *what an Argd
 
 **P3. Permissive core, separate validation.** The model can represent any state that is meaningful but incomplete or flawed. Constraints are checked afterwards by validation (§5). One test decides what the model admits:
 
-> A state is admitted by the model if and only if it is a meaningful state that people actually produce (for example, an argument that has not been reconstructed yet). States that are meaningless (for example, undercutting a statement) are excluded by conformance constraints.
+> A state is admitted by the model if and only if it is a meaningful state that people actually produce (for example, an argument that has not been reconstructed yet). States that are meaningless (for example, undercutting a statement) are excluded by well-formedness constraints.
 
 **P4. Identity is separate from labels.** Every entity has its own identifier. Labels are display names. They are optional and need not be unique.
 
@@ -219,7 +219,7 @@ AIF has nothing that corresponds to argument nodes, gists or subdebates. AIF is 
 2. **Structured metadata.** How are nested metadata values (for example, from YAML data) represented?
 3. **Annotation vocabularies.** If there is to be an annotation layer for provenance and premise order, what is its scope?
 4. **Authoring approach.** Should the companion specifications be authored with LinkML, or by hand?
-5. **GraphQL mapping.** How does validation (RFC 0002) map onto GraphQL's closed-world type system (for example, conformance as non-null types and diagnostics as a separate result)?
+5. **GraphQL mapping.** How does validation (RFC 0002) map onto GraphQL's closed-world type system (for example, well-formedness as non-null types and diagnostics as a separate result)?
 
 ## 10. Related work
 
