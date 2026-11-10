@@ -23,3 +23,6 @@ Each RFC starts with a header table (number, title, status, authors, created, re
 | RFC | Title | Status |
 |---|---|---|
 | [0001](0001-argdown-data-model.md) | Abstract Argdown Data Model | Draft |
+| [0002](0002-argdown-model-validation.md) | Validation of the Argdown Data Model | Draft |
+| [0003](0003-argdown-dialectical-grounding.md) | Dialectical Grounding | Draft |
+| [0004](0004-argdown-classical-semantics.md) | Classical Semantics for the Argdown Data Model | Draft |

@@ -7,7 +7,7 @@
 | **Status** | Draft |
 | **Authors** | Gregor Betz |
 | **Created** | 2026-11-10 |
-| **Related** | planned companion RFCs: RDF/SHACL vocabulary, GraphQL schema, informative AIF mapping |
+| **Related** | RFC 0002 (validation), RFC 0003 (dialectical grounding), RFC 0004 (classical semantics); planned: RFC 0005 (RDF/SHACL encoding), GraphQL schema, informative AIF mapping |
 
 ## 1. Summary
 
@@ -17,7 +17,7 @@ This RFC defines an abstract data model for Argdown that does not depend on any 
 - a **dialectical layer**: a directed multigraph of support, attack and undercut relations between arguments and statements;
 - **debate structures**: subdebates, which are named and possibly overlapping sets of nodes.
 
-The model is deliberately permissive. It records what has been asserted and leaves derivation to reasoners. Constraints are checked by a separate, two-tier validation.
+The model is deliberately permissive. It records what has been asserted and leaves derivation to reasoners. Validation (RFC 0002), dialectical grounding (RFC 0003) and classical semantics (RFC 0004) are specified separately.
 
 This RFC fixes only the abstract model. Companion RFCs will encode it in RDF with SHACL, and later in GraphQL.
 
@@ -87,7 +87,7 @@ An argument *a* ∈ *A* has:
 - `label`: an optional string.
 - `gist`: an optional string, which MAY contain inline Markdown.
 - `inferences`: a finite set of inferences, which MAY be empty. These are the inferences the argument references, and together they form its *premise-conclusion structure*. An argument with an empty set is *sketched* (unreconstructed).
-- `mainConclusion`: optionally, one statement.
+- `mainConclusion`: one statement, present if and only if `inferences` is non-empty. It is a final conclusion of the argument's inferences (RFC 0002, C9 and C10).
 
 A statement's role within an argument (premise, intermediate conclusion, main conclusion) is not stored. It can be derived from the referenced inferences.
 
@@ -134,7 +134,7 @@ A dialectical relation *r* ∈ *R* is a **directed** edge with a `type`, a `sour
 
 The dialectical layer is a **directed multigraph**: dialectical relations are entities (P5), and duplicates are allowed. This multigraph corresponds to what is drawn as an argument map.
 
-**Dialectical relations are primitives.** They are not derived from the logical layer. Whether a dialectical relation agrees with the logical relations and inferences is a question for reasoning (P1).
+**Dialectical relations are primitives.** They are not derived from the logical layer. Whether a dialectical relation agrees with the logical relations and inferences is a question for reasoning (P1); see RFC 0003.
 
 **An undercut targets the argument as a whole.** It does not say which of the argument's inferences it challenges. An undercut is meaningful even for an argument that references no inferences at all. Identifying the inference that is challenged is left to reasoners.
 
@@ -155,28 +155,7 @@ Every entity, including the debate, MAY carry arbitrary properties (P6). `tag` i
 
 ## 5. Validation
 
-Validation is separate from the model (P3) and has two tiers.
-
-**Conformance** (severity: *error*). A model that violates a conformance constraint is not a valid instance of this model at all. Conformance constraints include:
-
-- C1. The sets of §4.1 are pairwise disjoint, and every entity has a unique identifier.
-- C2. A statement has a `label`, a `text`, or both.
-- C3. Every inference has a non-empty premise set of statements and exactly one conclusion statement.
-- C4. Logical relations connect exactly two statements and have one of the types in §4.6.
-- C5. Dialectical relations respect the type, source and target table in §4.7. In particular, an undercut targets an argument.
-- C6. Subdebate members are nodes.
-- C7. The model holds exactly one debate.
-- C8. No relation, logical or dialectical, connects a statement to itself.
-
-**Well-formedness** (severity: *warning*). A model that violates a well-formedness check is valid but incomplete or flawed. The candidate checks below are not final:
-
-- W1. An argument has no `label`.
-- W2. The inferences an argument references are disconnected, cyclic, or do not have exactly one final conclusion (a single sink).
-- W3. An argument references at least one inference, and its `mainConclusion` is missing or is not the conclusion of any of those inferences.
-- W4. An inference's conclusion is also one of its premises.
-- W5. A dialectical relation connects an argument to itself.
-
-The specific checks of each tier, and how they are expressed (for example as SHACL shapes with `sh:Violation` and `sh:Warning`), will be fixed in the RDF companion RFC.
+Validation is separate from the model (P3). Validation checks are specified in RFC 0002.
 
 ## 6. Mapping from Argdown syntax (informative)
 
@@ -194,7 +173,7 @@ This section is not normative (P2). It illustrates how a parser might map Argdow
 - **Provenance:** source positions, and which source text produced which entity.
 - **Premise order** within an argument.
 - **Document structure:** the order of headings and the exact shape of the document outline.
-- **Reasoning:** closure, consistency checks, deriving dialectical relations, and identifying the inference that an undercut challenges.
+- **Reasoning:** specified separately (RFC 0003, RFC 0004).
 - **Dialogue structure:** speakers and locutions.
 
 These may be covered later by separate annotation vocabularies.
@@ -224,7 +203,7 @@ These may be covered later by separate annotation vocabularies.
 - **TypeDB:** weak interoperability.
 - **HIF:** no semantics.
 
-RDF with SHACL fits best: it supports reified hyperedges, validation severities, formal semantics and interoperability. LinkML remains an option as an authoring layer that generates RDF, SHACL, JSON Schema and GraphQL. Both will be evaluated in the companion RFC.
+RDF with SHACL fits best: it supports reified hyperedges, validation severities, formal semantics and interoperability. LinkML remains an option as an authoring layer that generates RDF, SHACL, JSON Schema and GraphQL. Both will be evaluated in RFC 0005.
 
 **Aligning with AIF.** The logical layer corresponds closely to AIF:
 
@@ -238,10 +217,9 @@ AIF has nothing that corresponds to argument nodes, gists or subdebates. AIF is 
 
 1. **Identifier scheme.** How are entity identifiers minted (for example, IRIs that are stable across re-parsing)?
 2. **Structured metadata.** How are nested metadata values (for example, from YAML data) represented?
-3. **Final validation checks.** What exactly belongs in each validation tier?
-4. **Annotation vocabularies.** If there is to be an annotation layer for provenance and premise order, what is its scope?
-5. **Authoring approach.** Should the companion specifications be authored with LinkML, or by hand?
-6. **GraphQL mapping.** How do the validation tiers map onto GraphQL's closed-world type system (for example, conformance as non-null types and well-formedness as diagnostics)?
+3. **Annotation vocabularies.** If there is to be an annotation layer for provenance and premise order, what is its scope?
+4. **Authoring approach.** Should the companion specifications be authored with LinkML, or by hand?
+5. **GraphQL mapping.** How does validation (RFC 0002) map onto GraphQL's closed-world type system (for example, conformance as non-null types and diagnostics as a separate result)?
 
 ## 10. Related work
 
