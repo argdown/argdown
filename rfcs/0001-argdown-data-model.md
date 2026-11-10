@@ -15,7 +15,7 @@ This RFC defines an abstract data model for Argdown that does not depend on any 
 
 - a **logical layer**: a directed multi-hypergraph of inferences between statements, plus undirected logical relations;
 - a **dialectical layer**: a directed multigraph of support, attack and undercut relations between arguments and statements;
-- **debate structures**: subdebates, which are named, nestable and possibly overlapping sets of nodes.
+- **debate structures**: subdebates, which are named and possibly overlapping sets of nodes.
 
 The model is deliberately permissive. It records what has been asserted and leaves derivation to reasoners. Constraints are checked by a separate, two-tier validation.
 
@@ -143,10 +143,11 @@ The dialectical layer is a **directed multigraph**: dialectical relations are en
 A subdebate *g* ∈ *G* has:
 
 - `label`: an optional string;
-- `members`: a finite set of nodes (arguments and statements);
-- `parents`: a finite set of subdebates, which MAY be empty.
+- `members`: a finite set of nodes (arguments and statements).
 
-Subdebates MAY overlap, because a node can belong to several of them. They MAY nest, through `parents`, and a subdebate can have several parents. Relations are not members. A subdebate's subgraph is the one induced by its members, and that is derived, not stored.
+Subdebates MAY overlap, because a node can belong to several of them. Relations are not members. A subdebate's subgraph is the one induced by its members, and that is derived, not stored.
+
+Nesting is not stored either. A subdebate *g* is nested in a subdebate *h* if the members of *g* are a proper subset of the members of *h*. This derived relation is a strict partial order, so it cannot contain cycles, and a subdebate can be nested in several others.
 
 ### 4.9 Properties and tags
 
@@ -163,7 +164,7 @@ Validation is separate from the model (P3) and has two tiers.
 - C3. Every inference has a non-empty premise set of statements and exactly one conclusion statement.
 - C4. Logical relations connect exactly two statements and have one of the types in §4.6.
 - C5. Dialectical relations respect the type, source and target table in §4.7. In particular, an undercut targets an argument.
-- C6. Subdebate members are nodes, and subdebate parents are subdebates.
+- C6. Subdebate members are nodes.
 - C7. The model holds exactly one debate.
 - C8. No relation, logical or dialectical, connects a statement to itself.
 
@@ -172,9 +173,8 @@ Validation is separate from the model (P3) and has two tiers.
 - W1. An argument has no `label`.
 - W2. The inferences an argument references are disconnected, cyclic, or do not have exactly one final conclusion (a single sink).
 - W3. An argument references at least one inference, and its `mainConclusion` is missing or is not the conclusion of any of those inferences.
-- W4. The `parents` relation between subdebates contains a cycle.
-- W5. An inference's conclusion is also one of its premises.
-- W6. A dialectical relation connects an argument to itself.
+- W4. An inference's conclusion is also one of its premises.
+- W5. A dialectical relation connects an argument to itself.
 
 The specific checks of each tier, and how they are expressed (for example as SHACL shapes with `sh:Violation` and `sh:Warning`), will be fixed in the RDF companion RFC.
 
@@ -185,7 +185,7 @@ This section is not normative (P2). It illustrates how a parser might map Argdow
 - **Same title, different texts.** `[A]: text 1` and `[A]: text 2` produce two statements with the label `A`. The parser MAY also add an `equivalent` relation between them.
 - **Relation between statements.** `[A] +> [B]` MAY produce both a single-premise inference {*A*} → *B* and a `support` relation from *A* to *B*.
 - **Premise-conclusion structure.** An argument's premise-conclusion structure produces one inference per inference step, and the argument references each of them.
-- **Sections.** Headings produce subdebates, and nested headings produce `parents` links.
+- **Sections.** Each heading produces a subdebate. Its members are all nodes in its section, including the nodes under nested subheadings, so that the derived nesting (§4.8) reproduces the heading hierarchy.
 - **Tags and data.** `#tags` become `tag` values, and YAML data blocks become properties.
 
 ## 7. Out of scope
@@ -193,6 +193,7 @@ This section is not normative (P2). It illustrates how a parser might map Argdow
 - **Presentation:** layout, colours, map-only nodes and other display settings.
 - **Provenance:** source positions, and which source text produced which entity.
 - **Premise order** within an argument.
+- **Document structure:** the order of headings and the exact shape of the document outline.
 - **Reasoning:** closure, consistency checks, deriving dialectical relations, and identifying the inference that an undercut challenges.
 - **Dialogue structure:** speakers and locutions.
 
@@ -209,6 +210,8 @@ These may be covered later by separate annotation vocabularies.
 **Undercut targeting an inference.** Argdown's implementation allows a relation to target a single inference. This RFC keeps undercut argument-level, so that undercuts can be expressed without any reconstruction, and so that the challenged inference can be left unspecified.
 
 **Dialectical relations derived from, or linked to, logical relations.** Rejected under P1. Matching the two layers is reasoning.
+
+**Explicit subdebate nesting.** Subdebates could carry a `parents` property. That would store structure which can be derived from membership (P1), and it would allow cycles, which validation then has to catch. Deriving nesting from member inclusion avoids both. The price is that empty subdebates, and subdebates with the same members, have no position in the hierarchy, and a node set that happens to fall inside another counts as nested. A deliberate outline belongs to document structure (§7).
 
 **A strict model without separate validation.** Rejected under P3. Incomplete reconstructions are normal, meaningful states of the data.
 
