@@ -11,7 +11,7 @@
 
 ## 1. Summary
 
-This RFC defines when the logical layer of RFC 0001 *grounds* a dialectical relation. Grounding is parametric in a **logical oracle** and does not presuppose any particular logic.
+This RFC defines when the inferential and logical layers of RFC 0001 *ground* a dialectical relation. Grounding is parametric in a **logical oracle** and does not presuppose any particular logic.
 
 It defines:
 
@@ -78,12 +78,13 @@ Several asserted relations with the same triple (RFC 0001, P5) share one status.
   - *s1* = *s2*, or
   - an `equivalent` relation links *s1* and *s2*, or
   - an inference referenced by no argument has premises {*s1*} and conclusion *s2*.
-- `conflicts`(*s1*, *s2*) iff a `contradictory` or `contrary` relation links *s1* and *s2*.
+- `conflicts`(*s1*, *s2*) iff *s1* and *s2* are both members of a `contradictory` or `exclusive` relation.
 
 The asserted oracle uses no closure. It reproduces Argdown's current map relations if the parser:
 
-- asserts `equivalent` between all statements with the same title, and
-- maps `[A] +> [B]` to a standalone inference {*A*} → *B* (RFC 0001 §6).
+- asserts `equivalent` between all statements with the same title,
+- maps `[A] +> [B]` to a standalone inference {*A*} → *B*, and
+- maps `[A] -> [B]` to an `exclusive` relation with members *A* and *B* (RFC 0001 §6).
 
 ## 6. Diagnostics
 

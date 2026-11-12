@@ -49,7 +49,7 @@ Severity: `ERROR`. Input level: asserted, except C10 (structural, no closure).
 - C1. The sets of RFC 0001 §4.1 are pairwise disjoint, and every entity has a unique identifier.
 - C2. A statement has a `label`, a `text`, or both.
 - C3. Every inference has a non-empty premise set of statements and exactly one conclusion statement.
-- C4. Logical relations connect exactly two statements and have one of the types in RFC 0001 §4.6.
+- C4. Logical relations have one of the types in RFC 0001 §4.6, and their members are distinct statements in the number given there (exactly two for `equivalent` and `contradictory`, at least two for `exclusive` and `exhaustive`).
 - C5. Dialectical relations respect the type, source and target table in RFC 0001 §4.7.
 - C6. Subdebate members are nodes.
 - C7. The model holds exactly one debate.
@@ -74,8 +74,8 @@ Severity: `ERROR`. Input level: asserted, except C10 (structural, no closure).
 | INF-2 | *I(a)* is cyclic. | structural | WARNING |
 | INF-3 | An argument has more than one final conclusion. | structural | WARNING |
 | INF-4 | An inference's conclusion is also one of its premises. | asserted | WARNING |
-| INF-5 | Two premises of an argument are linked as `contradictory` or `contrary`. | structural | WARNING |
-| INF-6 | A premise of an argument and its `mainConclusion` are linked as `contradictory` or `contrary`. | structural | WARNING |
+| INF-5 | Two premises of an argument are both members of a `contradictory` or `exclusive` relation. | structural | WARNING |
+| INF-6 | A premise of an argument and its `mainConclusion` are both members of a `contradictory` or `exclusive` relation. | structural | WARNING |
 | INF-7 | Two inferences have the same premises and the same conclusion. | asserted | INFO |
 
 ### 6.3 Dialectical relations
@@ -93,9 +93,9 @@ An argument MAY both support and attack another argument; this is not flagged.
 | ID | Check | Input | Severity |
 |---|---|---|---|
 | LOG-1 | Two statements are linked as both `equivalent` and `contradictory` (unsatisfiable). | asserted | WARNING |
-| LOG-2 | Two statements are linked as both `equivalent` and `contrary` (satisfiable, but both are forced false). | asserted | WARNING |
-| LOG-3 | Two statements are linked as both `contradictory` and `contrary` (redundant). | asserted | INFO |
-| LOG-4 | Two logical relations have the same type and the same members. | asserted | INFO |
+| LOG-2 | Two statements linked as `equivalent` are both members of an `exclusive` relation (satisfiable, but both are forced false). | asserted | WARNING |
+| LOG-3 | Two statements linked as `contradictory` are the members of an `exclusive` or `exhaustive` relation (redundant). | asserted | INFO |
+| LOG-4 | Two logical relations have the same type and the same set of members. | asserted | INFO |
 
 ## 7. Findings
 
